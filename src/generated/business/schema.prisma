@@ -1,0 +1,184 @@
+//npx prisma migrate dev --schema=prisma/businessDB/schema.prisma --name init_business
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/generated/business"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE001")
+}
+
+model User {
+  userId              String    @id
+  userFirstName       String
+  userLastName        String
+  userEmail           String    @unique
+  userLastConnection  DateTime?
+  userCodePhoneNumber String
+  userPhoneNumber     String
+  userDocumentType    String
+  userDocumentNumber  String
+  userRole            Role
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relaciones
+  customers  Customer[]
+  Product    Product[]
+  Service    Service[]
+  Category   Category[]
+  Sale       Sale[]
+  Payment    Payment[]
+  SaleDetail SaleDetail[]
+}
+
+model Customer {
+  customerId              String       @id @default(uuid())
+  customerFirstName       String
+  customerLastName        String
+  customerEmail           String?
+  customerCodePhoneNumber String?
+  customerPhoneNumber     String?
+  customerDocumentType    String?
+  customerDocumentNumber  String?
+  customerComment         String?
+  createdAt               DateTime     @default(now())
+  updatedAt               DateTime     @updatedAt
+  createdByUserId         String
+  createdBy               User?        @relation(fields: [createdByUserId], references: [userId])
+  Sale                    Sale[]
+  SaleDetail              SaleDetail[]
+}
+
+model Product {
+  productId          String        @id @default(uuid())
+  productName        String
+  productDescription String?
+  productSKU         String        @unique
+  categoryId         String
+  category           Category      @relation(fields: [categoryId], references: [categoryId])
+  productPrice       Int
+  productPriceFixed  Boolean?
+  productStatus      ProductStatus
+  productUnit        ProductUnit
+  createdByUserId    String
+  user               User          @relation(fields: [createdByUserId], references: [userId])
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  SaleDetail         SaleDetail[]
+}
+
+model Service {
+  serviceId          String        @id @default(uuid())
+  serviceName        String
+  serviceDescription String?
+  serviceSKU         String        @unique
+  servicePrice       Int
+  servicePriceFixed  Boolean?
+  serviceStatus      ProductStatus
+  serviceUnit        ServiceUnit
+  categoryId         String
+  category           Category      @relation(fields: [categoryId], references: [categoryId])
+  createdByUserId    String
+  user               User          @relation(fields: [createdByUserId], references: [userId])
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  SaleDetail         SaleDetail[]
+}
+
+model Category {
+  categoryId      String       @id @default(uuid())
+  categoryName    String
+  createdByUserId String
+  allowedFor      UsageContext
+  products        Product[]
+  services        Service[]
+  user            User         @relation(fields: [createdByUserId], references: [userId])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model Sale {
+  saleId            String       @id
+  saleCustomerId    String
+  saleTotal         Int
+  saleTotalPayments Int
+  salePendingAmount Int
+  createdByUserId   String
+  saleComment       String?
+  user              User         @relation(fields: [createdByUserId], references: [userId])
+  customer          Customer     @relation(fields: [saleCustomerId], references: [customerId])
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  SaleDetail        SaleDetail[]
+  Payment           Payment[]
+}
+
+model SaleDetail {
+  saleDetailId        String   @id
+  saleId              String
+  saleDetailProductId String?
+  saleDetailServiceId String?
+  saleDetailQuantity  Int
+  saleDetailPrice     Int
+  saleDetailTotal     Int
+  saleDetailType      String
+  createdByUserId     String
+  saleCustomerId      String
+  customer            Customer @relation(fields: [saleCustomerId], references: [customerId])
+  user                User     @relation(fields: [createdByUserId], references: [userId])
+  sale                Sale     @relation(fields: [saleId], references: [saleId])
+  product             Product? @relation(fields: [saleDetailProductId], references: [productId])
+  service             Service? @relation(fields: [saleDetailServiceId], references: [serviceId])
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Payment {
+  paymentId       String   @id
+  saleId          String
+  paymentAmount   Int
+  paymentMethod   String
+  createdByUserId String
+  user            User     @relation(fields: [createdByUserId], references: [userId])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  Sale            Sale     @relation(fields: [saleId], references: [saleId])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+enum ProductUnit {
+  UNIT
+  KILOGRAM
+  GRAM
+  LITER
+  MILLILITER
+  METER
+  CENTIMETER
+}
+
+enum ServiceUnit {
+  UNIT
+  MONTH
+  DAY
+  HOUR
+  MINUTE
+}
+
+enum UsageContext {
+  PRODUCTS
+  SERVICES
+  BOTH
+}
