@@ -1,8 +1,9 @@
 //npx prisma migrate dev --schema=prisma/businessDB/schema.prisma --name init_business
 
 generator client {
-    provider = "prisma-client-js"
-    output   = "../../src/generated/business"
+    provider      = "prisma-client-js"
+    output        = "../../src/generated/business"
+    binaryTargets = ["native", "windows", "debian-openssl-3.0.x"]
 }
 
 datasource db {

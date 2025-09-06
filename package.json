@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "postinstall": "prisma generate --schema=prisma/businessDB/schema.prisma && prisma generate --schema=prisma/generalDB/schema.prisma",
+    "migrate:deploy": "prisma migrate deploy --schema=prisma/businessDB/schema.prisma && prisma migrate deploy --schema=prisma/generalDB/schema.prisma"
   },
   "type": "module",
   "keywords": [],
