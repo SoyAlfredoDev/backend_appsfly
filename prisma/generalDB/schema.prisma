@@ -1,0 +1,103 @@
+//npx prisma migrate dev --schema=prisma/generalDB/schema.prisma --name UserGuestID
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "../../src/generated/general"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_GENERAL_URL")
+}
+
+model User {
+    userId              String    @id @default(uuid())
+    userFirstName       String
+    userLastName        String
+    userEmail           String    @unique
+    userPassword        String
+    userLastConnection  DateTime?
+    userCodePhoneNumber String
+    userPhoneNumber     String
+    userDocumentType    String
+    userDocumentNumber  String
+    createdAt           DateTime  @default(now())
+    updatedAt           DateTime  @updatedAt
+
+    // Relaciones
+    UserBusiness UserBusiness[]
+    UserGuest    UserGuest[]
+}
+
+model Business {
+    businessId                 String         @id
+    businessName               String
+    businessType               String
+    businessDocumentType       String
+    businessDocumentNumber     String
+    businessEmail              String
+    businessPhoneNumber        String
+    businessCodePhoneNumber    String
+    businessCountry            String
+    businessCodeWhatsappNumber String?
+    businessWhatsappNumber     String?
+    businessEntity             BusinessEntity
+    businessStatus             BusinessStatus
+    createdAt                  DateTime       @default(now())
+    updatedAt                  DateTime       @updatedAt
+
+    // Relaciones
+    UserGuest    UserGuest[]
+    UserBusiness UserBusiness[]
+}
+
+model UserBusiness {
+    userBusinessUserId     String
+    userBusinessBusinessId String
+    userBusinessRole       Role
+    createdAt              DateTime @default(now())
+    updatedAt              DateTime @updatedAt
+    User                   User     @relation(fields: [userBusinessUserId], references: [userId])
+    Business               Business @relation(fields: [userBusinessBusinessId], references: [businessId])
+
+    @@id([userBusinessUserId, userBusinessBusinessId])
+}
+
+model UserGuest {
+    userGuestId         String          @id
+    userGuestEmail      String
+    userGuestUserId     String
+    userGuestBusinessId String
+    userGuestRole       Role
+    userGuestStatus     UserGuestStatus
+    createdAt           DateTime        @default(now())
+    updatedAt           DateTime        @updatedAt
+
+    User     User     @relation(fields: [userGuestUserId], references: [userId])
+    Business Business @relation(fields: [userGuestBusinessId], references: [businessId])
+}
+
+enum Role {
+    ADMIN
+    USER
+    GUEST
+}
+
+enum BusinessStatus {
+    ACTIVE
+    INACTIVE
+    SUSPENDED
+    PENDING
+}
+
+enum BusinessEntity {
+    INDIVIDUAL
+    COMPANY
+}
+
+enum UserGuestStatus {
+    PENDIENT
+    ACCEPTED
+    REJECTED
+    DELETED
+}
