@@ -1,5 +1,4 @@
 
-
 export const createSale = async (data, prisma) => {
     try {
         const res = await prisma.sale.create({ data });
@@ -96,8 +95,8 @@ export const deleteSale = async (id, prisma) => {
 
 export const getMonthlySales = async (month, year, prisma) => {
     try {
-        const startDate = new Date(year, month, 1);
-        const endDate = new Date(year, month + 1, 1);
+        const startDate = new Date(year, month - 1, 1);
+        const endDate = new Date(year, month, 1);
 
         const total = await prisma.sale.aggregate({
             _sum: {
@@ -122,6 +121,9 @@ export const getMonthlySales = async (month, year, prisma) => {
                 },
             },
         });
+
+        console.log('TOTAL: ', total, startDate, endDate);
+        console.log('PENDINT: ', pendint);
 
         const data = {
             saleTotal: total._sum.saleTotal || 0,
