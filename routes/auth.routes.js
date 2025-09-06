@@ -10,4 +10,8 @@ router.post('/login', dbSelectorMiddleware, login);
 
 router.post('/logout', logout)
 
+router.get('/test', (req, res) => {
+    res.json({ message: "Test endpoint" });
+});
+
 export default router;
