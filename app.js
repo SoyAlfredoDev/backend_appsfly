@@ -21,10 +21,22 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://appsfly.netlify.app"
+];
+
 app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 }));
+
 
 app.use(morgan('dev'));
 app.use('/api', authRoutes);
