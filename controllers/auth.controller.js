@@ -43,7 +43,11 @@ export const register = async (req, res) => {
         };
         const user = await createUser(data);
         const token = await createAccessToken({ id: user.id })
-        res.cookie('token', token);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // solo https en prod
+            sameSite: "none" // 🔑 necesario para cross-site
+        });
         res.status(201).json({
             message: 'User registered successfully',
             user: {
@@ -79,7 +83,11 @@ export const login = async (req, res) => {
         });
 
         const token = await createAccessToken({ id: user.userId })
-        res.cookie('token', token);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // solo https en prod
+            sameSite: "none" // 🔑 necesario para cross-site
+        });
         res.status(201).json({
             message: 'User login successfully',
             user: {
