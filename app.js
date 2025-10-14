@@ -14,6 +14,11 @@ import paymentsRoutes from "./routes/payments.routes.js"
 import businessRoutes from "./routes/business.routes.js";
 import userBusinessRoutes from "./routes/userBussiness.routes.js";
 import userGuestRoutes from "./routes/userGuest.routes.js";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const isProduction = process.env.NODE_ENV === "production";
 
 
 
@@ -21,22 +26,13 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://appsfly.netlify.app"
-];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true
+  origin: isProduction
+    ? "https://appsfly.netlify.app"   // producción
+    : "http://localhost:5173",        // desarrollo
+  credentials: true                   // permite cookies
 }));
-
 
 app.use(morgan('dev'));
 app.use('/api', authRoutes);

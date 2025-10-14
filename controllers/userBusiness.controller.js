@@ -2,7 +2,6 @@ import { createUserBusiness, getUserBusinessById } from '../services/userBusines
 import { createUserBusinessDB } from '../services/businessDB/usersServices.js'
 import { getUserById } from '../services/usersService.js'
 
-
 export const createUserBusinessController = async (req, res) => {
     try {
         const { userBusinessUserId, userBusinessBusinessId, userBusinessRole } = req.body;

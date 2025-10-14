@@ -3,6 +3,12 @@ import { createUser, getUserByEmail } from '../services/usersService.js';
 import { createAccessToken } from '../libs/jwt.js';
 import validateRut from '../libs/validateRut.js';
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const isProduction = process.env.NODE_ENV === "production";
+
 export const register = async (req, res) => {
     try {
         const {
@@ -83,11 +89,38 @@ export const login = async (req, res) => {
         });
 
         const token = await createAccessToken({ id: user.userId })
+
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // solo https en prod
-            sameSite: "none" // 🔑 necesario para cross-site
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax"
         });
+
+
+        /*
+        // para desarrollo
+         res.cookie('token', token, {
+             httpOnly: true,
+             secure: false,   // OK en localhost
+             sameSite: "lax"  // ✅ permite cookies en el mismo dominio y puerto distinto
+         });
+ 
+          para producción
+                 res.cookie('token', token, {
+           httpOnly: true,
+           secure: true,    // obligatorio en HTTPS
+           sameSite: "none" // necesario si frontend/backend en dominios diferentes
+         });*/
+
+        //secure: false,
+        // false Permite HTTP y HTTPS
+        // true solo HTTPS
+
+        // sameSite:
+        // "strict" → solo mismo dominio (más seguro)
+        // "lax" → mismo dominio, ignora fetch/POST externos
+        // "none" → permite cross-site (usar con secure:true)
+
         res.status(201).json({
             message: 'User login successfully',
             user: {

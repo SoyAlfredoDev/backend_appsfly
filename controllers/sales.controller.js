@@ -60,6 +60,18 @@ export const getMonthlySalescontroller = async (req, res) => {
     }
 };
 
+export const getMonthlySalesNowController = async (req, res) => {
+
+    try {
+        const month = new Date().getMonth() + 1; // Months are zero-based
+        const year = new Date().getFullYear();
+
+        res.status(200).json(await getMonthlySales(Number(month), Number(year), req.prisma));
+    } catch (error) {
+        console.error("(sales.controller.js): Error getting monthly sales:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 export const getDaySalesController = async (req, res) => {
     try {
         const { day, month, year } = req.params;

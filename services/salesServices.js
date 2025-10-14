@@ -11,34 +11,69 @@ export const createSale = async (data, prisma) => {
 
 export const getSales = async (prisma) => {
     try {
-        const res = await prisma.sale.findMany({
+        const salesOriginal = await prisma.sale.findMany({
             include: {
                 customer: {
                     select: {
                         customerId: true,
                         customerFirstName: true,
-                        customerLastName: true
-                    }
+                        customerLastName: true,
+                    },
                 },
                 user: {
                     select: {
                         userId: true,
                         userFirstName: true,
-                        userLastName: true
-                    }
-                }
+                        userLastName: true,
+                    },
+                },
+                SaleDetail: {
+                    select: {
+                        saleDetailId: true,
+                        saleDetailTotal: true,
+                    },
+                },
+                Payment: {
+                    select: {
+                        paymentId: true,
+                        paymentAmount: true,
+                    },
+                },
             },
             orderBy: {
-                createdAt: 'desc'
+                createdAt: 'desc',
+            },
+        });
+
+        const sales = salesOriginal.map(salesOriginal => {
+            const totalPayments = salesOriginal.Payment.reduce((acc, payment) => acc + payment.paymentAmount, 0);
+            const totalDetails = salesOriginal.SaleDetail.reduce((acc, detail) => acc + detail.saleDetailTotal, 0);
+            return {
+                ...salesOriginal,
+                saleTotalPayments: totalPayments,
+                saleTotal: totalDetails,
+                salePendingAmount: totalDetails - totalPayments
+            };
+        });
+
+        for (const sale of sales) {
+            if (sale.salePendingAmount < 0) {
+                console.log('saleID', sale.saleId, "customer", sale.customer.customerFirstName, sale.customer.customerLastName, "Total:", sale.saleTotal, "Total Payments:", sale.saleTotalPayments, "Pending Amount:", sale.salePendingAmount);
             }
 
-        });
-        return res;
+
+
+        }
+
+        console.log("Sales fetched:", sales[0]);
+
+        return sales;
     } catch (error) {
         console.error("(salesServices.js): Error getting sales:", error);
-        throw error;
+        throw error
     }
 };
+
 
 export const getSaleById = async (id, prisma) => {
     try {
@@ -122,9 +157,6 @@ export const getMonthlySales = async (month, year, prisma) => {
             },
         });
 
-        console.log('TOTAL: ', total, startDate, endDate);
-        console.log('PENDINT: ', pendint);
-
         const data = {
             saleTotal: total._sum.saleTotal || 0,
             salePendingAmount: pendint._sum.salePendingAmount || 0
@@ -154,8 +186,6 @@ export const getDaySales = async (day, month, year, prisma) => {
                 },
             },
         });
-
-        console.log('DAY: ', salesDay);
 
         return salesDay._sum.saleTotal || 0;
     } catch (error) {
