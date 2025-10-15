@@ -55,18 +55,6 @@ export const getSales = async (prisma) => {
                 salePendingAmount: totalDetails - totalPayments
             };
         });
-
-        for (const sale of sales) {
-            if (sale.salePendingAmount < 0) {
-                console.log('saleID', sale.saleId, "customer", sale.customer.customerFirstName, sale.customer.customerLastName, "Total:", sale.saleTotal, "Total Payments:", sale.saleTotalPayments, "Pending Amount:", sale.salePendingAmount);
-            }
-
-
-
-        }
-
-        console.log("Sales fetched:", sales[0]);
-
         return sales;
     } catch (error) {
         console.error("(salesServices.js): Error getting sales:", error);
@@ -93,10 +81,28 @@ export const getSaleById = async (id, prisma) => {
                         userFirstName: true,
                         userLastName: true
                     }
-                }
+                },
+                SaleDetail: {
+                    select: {
+                        saleDetailId: true,
+                        saleDetailTotal: true,
+                    },
+                },
+                Payment: {
+                    select: {
+                        paymentId: true,
+                        paymentAmount: true,
+                    },
+                },
             }
         });
-        return res;
+        const saleFinal = {
+            ...res,
+            saleTotalPayments: res.Payment.reduce((acc, payment) => acc + payment.paymentAmount, 0),
+            saleTotal: res.SaleDetail.reduce((acc, detail) => acc + detail.saleDetailTotal, 0),
+        };
+        saleFinal.salePendingAmount = saleFinal.saleTotal - saleFinal.saleTotalPayments;
+        return saleFinal;
     } catch (error) {
         console.error("(salesServices.js): Error getting sale by ID:", error);
         throw error;
