@@ -33,3 +33,22 @@ export const getPaymentBySaleId = async (id, prisma) => {
         console.error("(paymentsService.js): Error getting payment by saleId:", error);
     }
 }
+
+// get payments between dates, return an array of payments
+export const getPaymentByDate = async (startDate, endDate, prisma) => {
+    try {
+        const start = new Date(`${startDate}T00:00:00.000Z`);
+        const end = new Date(`${endDate}T23:59:59.999Z`);
+        const payments = await prisma.payment.findMany({
+            where: {
+                createdAt: {
+                    gte: start,
+                    lte: end
+                }
+            }
+        });
+        return payments || [];
+    } catch (error) {
+        console.error("(paymentsService.js): Error getting payment by date:", error);
+    }
+}

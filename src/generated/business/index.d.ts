@@ -53,6 +53,16 @@ export type SaleDetail = $Result.DefaultSelection<Prisma.$SaleDetailPayload>
  * 
  */
 export type Payment = $Result.DefaultSelection<Prisma.$PaymentPayload>
+/**
+ * Model CashExpense
+ * 
+ */
+export type CashExpense = $Result.DefaultSelection<Prisma.$CashExpensePayload>
+/**
+ * Model DailySales
+ * 
+ */
+export type DailySales = $Result.DefaultSelection<Prisma.$DailySalesPayload>
 
 /**
  * Enums
@@ -326,6 +336,26 @@ export class PrismaClient<
     * ```
     */
   get payment(): Prisma.PaymentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.cashExpense`: Exposes CRUD operations for the **CashExpense** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CashExpenses
+    * const cashExpenses = await prisma.cashExpense.findMany()
+    * ```
+    */
+  get cashExpense(): Prisma.CashExpenseDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.dailySales`: Exposes CRUD operations for the **DailySales** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DailySales
+    * const dailySales = await prisma.dailySales.findMany()
+    * ```
+    */
+  get dailySales(): Prisma.DailySalesDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -773,7 +803,9 @@ export namespace Prisma {
     Category: 'Category',
     Sale: 'Sale',
     SaleDetail: 'SaleDetail',
-    Payment: 'Payment'
+    Payment: 'Payment',
+    CashExpense: 'CashExpense',
+    DailySales: 'DailySales'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -792,7 +824,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "customer" | "product" | "service" | "category" | "sale" | "saleDetail" | "payment"
+      modelProps: "user" | "customer" | "product" | "service" | "category" | "sale" | "saleDetail" | "payment" | "cashExpense" | "dailySales"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1388,6 +1420,154 @@ export namespace Prisma {
           }
         }
       }
+      CashExpense: {
+        payload: Prisma.$CashExpensePayload<ExtArgs>
+        fields: Prisma.CashExpenseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CashExpenseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CashExpenseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload>
+          }
+          findFirst: {
+            args: Prisma.CashExpenseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CashExpenseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload>
+          }
+          findMany: {
+            args: Prisma.CashExpenseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload>[]
+          }
+          create: {
+            args: Prisma.CashExpenseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload>
+          }
+          createMany: {
+            args: Prisma.CashExpenseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CashExpenseCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload>[]
+          }
+          delete: {
+            args: Prisma.CashExpenseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload>
+          }
+          update: {
+            args: Prisma.CashExpenseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload>
+          }
+          deleteMany: {
+            args: Prisma.CashExpenseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CashExpenseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CashExpenseUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload>[]
+          }
+          upsert: {
+            args: Prisma.CashExpenseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CashExpensePayload>
+          }
+          aggregate: {
+            args: Prisma.CashExpenseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCashExpense>
+          }
+          groupBy: {
+            args: Prisma.CashExpenseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CashExpenseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CashExpenseCountArgs<ExtArgs>
+            result: $Utils.Optional<CashExpenseCountAggregateOutputType> | number
+          }
+        }
+      }
+      DailySales: {
+        payload: Prisma.$DailySalesPayload<ExtArgs>
+        fields: Prisma.DailySalesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DailySalesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DailySalesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload>
+          }
+          findFirst: {
+            args: Prisma.DailySalesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DailySalesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload>
+          }
+          findMany: {
+            args: Prisma.DailySalesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload>[]
+          }
+          create: {
+            args: Prisma.DailySalesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload>
+          }
+          createMany: {
+            args: Prisma.DailySalesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DailySalesCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload>[]
+          }
+          delete: {
+            args: Prisma.DailySalesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload>
+          }
+          update: {
+            args: Prisma.DailySalesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload>
+          }
+          deleteMany: {
+            args: Prisma.DailySalesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DailySalesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DailySalesUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload>[]
+          }
+          upsert: {
+            args: Prisma.DailySalesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DailySalesPayload>
+          }
+          aggregate: {
+            args: Prisma.DailySalesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDailySales>
+          }
+          groupBy: {
+            args: Prisma.DailySalesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DailySalesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DailySalesCountArgs<ExtArgs>
+            result: $Utils.Optional<DailySalesCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1488,6 +1668,8 @@ export namespace Prisma {
     sale?: SaleOmit
     saleDetail?: SaleDetailOmit
     payment?: PaymentOmit
+    cashExpense?: CashExpenseOmit
+    dailySales?: DailySalesOmit
   }
 
   /* Types for Logging */
@@ -1575,6 +1757,8 @@ export namespace Prisma {
     Sale: number
     Payment: number
     SaleDetail: number
+    CashExpense: number
+    DailySales: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1585,6 +1769,8 @@ export namespace Prisma {
     Sale?: boolean | UserCountOutputTypeCountSaleArgs
     Payment?: boolean | UserCountOutputTypeCountPaymentArgs
     SaleDetail?: boolean | UserCountOutputTypeCountSaleDetailArgs
+    CashExpense?: boolean | UserCountOutputTypeCountCashExpenseArgs
+    DailySales?: boolean | UserCountOutputTypeCountDailySalesArgs
   }
 
   // Custom InputTypes
@@ -1645,6 +1831,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSaleDetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SaleDetailWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCashExpenseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CashExpenseWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDailySalesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DailySalesWhereInput
   }
 
 
@@ -2061,6 +2261,8 @@ export namespace Prisma {
     Sale?: boolean | User$SaleArgs<ExtArgs>
     Payment?: boolean | User$PaymentArgs<ExtArgs>
     SaleDetail?: boolean | User$SaleDetailArgs<ExtArgs>
+    CashExpense?: boolean | User$CashExpenseArgs<ExtArgs>
+    DailySales?: boolean | User$DailySalesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2118,6 +2320,8 @@ export namespace Prisma {
     Sale?: boolean | User$SaleArgs<ExtArgs>
     Payment?: boolean | User$PaymentArgs<ExtArgs>
     SaleDetail?: boolean | User$SaleDetailArgs<ExtArgs>
+    CashExpense?: boolean | User$CashExpenseArgs<ExtArgs>
+    DailySales?: boolean | User$DailySalesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2133,6 +2337,8 @@ export namespace Prisma {
       Sale: Prisma.$SalePayload<ExtArgs>[]
       Payment: Prisma.$PaymentPayload<ExtArgs>[]
       SaleDetail: Prisma.$SaleDetailPayload<ExtArgs>[]
+      CashExpense: Prisma.$CashExpensePayload<ExtArgs>[]
+      DailySales: Prisma.$DailySalesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       userId: string
@@ -2548,6 +2754,8 @@ export namespace Prisma {
     Sale<T extends User$SaleArgs<ExtArgs> = {}>(args?: Subset<T, User$SaleArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Payment<T extends User$PaymentArgs<ExtArgs> = {}>(args?: Subset<T, User$PaymentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     SaleDetail<T extends User$SaleDetailArgs<ExtArgs> = {}>(args?: Subset<T, User$SaleDetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SaleDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    CashExpense<T extends User$CashExpenseArgs<ExtArgs> = {}>(args?: Subset<T, User$CashExpenseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    DailySales<T extends User$DailySalesArgs<ExtArgs> = {}>(args?: Subset<T, User$DailySalesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3142,6 +3350,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SaleDetailScalarFieldEnum | SaleDetailScalarFieldEnum[]
+  }
+
+  /**
+   * User.CashExpense
+   */
+  export type User$CashExpenseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    where?: CashExpenseWhereInput
+    orderBy?: CashExpenseOrderByWithRelationInput | CashExpenseOrderByWithRelationInput[]
+    cursor?: CashExpenseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CashExpenseScalarFieldEnum | CashExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * User.DailySales
+   */
+  export type User$DailySalesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    where?: DailySalesWhereInput
+    orderBy?: DailySalesOrderByWithRelationInput | DailySalesOrderByWithRelationInput[]
+    cursor?: DailySalesWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DailySalesScalarFieldEnum | DailySalesScalarFieldEnum[]
   }
 
   /**
@@ -11566,6 +11822,2272 @@ export namespace Prisma {
 
 
   /**
+   * Model CashExpense
+   */
+
+  export type AggregateCashExpense = {
+    _count: CashExpenseCountAggregateOutputType | null
+    _avg: CashExpenseAvgAggregateOutputType | null
+    _sum: CashExpenseSumAggregateOutputType | null
+    _min: CashExpenseMinAggregateOutputType | null
+    _max: CashExpenseMaxAggregateOutputType | null
+  }
+
+  export type CashExpenseAvgAggregateOutputType = {
+    cashExpenseAmount: number | null
+  }
+
+  export type CashExpenseSumAggregateOutputType = {
+    cashExpenseAmount: number | null
+  }
+
+  export type CashExpenseMinAggregateOutputType = {
+    cashExpenseId: string | null
+    cashExpenseAmount: number | null
+    cashExpenseDescription: string | null
+    cashExpenseLinkImage: string | null
+    createdByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CashExpenseMaxAggregateOutputType = {
+    cashExpenseId: string | null
+    cashExpenseAmount: number | null
+    cashExpenseDescription: string | null
+    cashExpenseLinkImage: string | null
+    createdByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CashExpenseCountAggregateOutputType = {
+    cashExpenseId: number
+    cashExpenseAmount: number
+    cashExpenseDescription: number
+    cashExpenseLinkImage: number
+    createdByUserId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CashExpenseAvgAggregateInputType = {
+    cashExpenseAmount?: true
+  }
+
+  export type CashExpenseSumAggregateInputType = {
+    cashExpenseAmount?: true
+  }
+
+  export type CashExpenseMinAggregateInputType = {
+    cashExpenseId?: true
+    cashExpenseAmount?: true
+    cashExpenseDescription?: true
+    cashExpenseLinkImage?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CashExpenseMaxAggregateInputType = {
+    cashExpenseId?: true
+    cashExpenseAmount?: true
+    cashExpenseDescription?: true
+    cashExpenseLinkImage?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CashExpenseCountAggregateInputType = {
+    cashExpenseId?: true
+    cashExpenseAmount?: true
+    cashExpenseDescription?: true
+    cashExpenseLinkImage?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CashExpenseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CashExpense to aggregate.
+     */
+    where?: CashExpenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CashExpenses to fetch.
+     */
+    orderBy?: CashExpenseOrderByWithRelationInput | CashExpenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CashExpenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CashExpenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CashExpenses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CashExpenses
+    **/
+    _count?: true | CashExpenseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CashExpenseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CashExpenseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CashExpenseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CashExpenseMaxAggregateInputType
+  }
+
+  export type GetCashExpenseAggregateType<T extends CashExpenseAggregateArgs> = {
+        [P in keyof T & keyof AggregateCashExpense]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCashExpense[P]>
+      : GetScalarType<T[P], AggregateCashExpense[P]>
+  }
+
+
+
+
+  export type CashExpenseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CashExpenseWhereInput
+    orderBy?: CashExpenseOrderByWithAggregationInput | CashExpenseOrderByWithAggregationInput[]
+    by: CashExpenseScalarFieldEnum[] | CashExpenseScalarFieldEnum
+    having?: CashExpenseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CashExpenseCountAggregateInputType | true
+    _avg?: CashExpenseAvgAggregateInputType
+    _sum?: CashExpenseSumAggregateInputType
+    _min?: CashExpenseMinAggregateInputType
+    _max?: CashExpenseMaxAggregateInputType
+  }
+
+  export type CashExpenseGroupByOutputType = {
+    cashExpenseId: string
+    cashExpenseAmount: number
+    cashExpenseDescription: string | null
+    cashExpenseLinkImage: string | null
+    createdByUserId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: CashExpenseCountAggregateOutputType | null
+    _avg: CashExpenseAvgAggregateOutputType | null
+    _sum: CashExpenseSumAggregateOutputType | null
+    _min: CashExpenseMinAggregateOutputType | null
+    _max: CashExpenseMaxAggregateOutputType | null
+  }
+
+  type GetCashExpenseGroupByPayload<T extends CashExpenseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CashExpenseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CashExpenseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CashExpenseGroupByOutputType[P]>
+            : GetScalarType<T[P], CashExpenseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CashExpenseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    cashExpenseId?: boolean
+    cashExpenseAmount?: boolean
+    cashExpenseDescription?: boolean
+    cashExpenseLinkImage?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cashExpense"]>
+
+  export type CashExpenseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    cashExpenseId?: boolean
+    cashExpenseAmount?: boolean
+    cashExpenseDescription?: boolean
+    cashExpenseLinkImage?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cashExpense"]>
+
+  export type CashExpenseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    cashExpenseId?: boolean
+    cashExpenseAmount?: boolean
+    cashExpenseDescription?: boolean
+    cashExpenseLinkImage?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["cashExpense"]>
+
+  export type CashExpenseSelectScalar = {
+    cashExpenseId?: boolean
+    cashExpenseAmount?: boolean
+    cashExpenseDescription?: boolean
+    cashExpenseLinkImage?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CashExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"cashExpenseId" | "cashExpenseAmount" | "cashExpenseDescription" | "cashExpenseLinkImage" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["cashExpense"]>
+  export type CashExpenseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CashExpenseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CashExpenseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CashExpensePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CashExpense"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      cashExpenseId: string
+      cashExpenseAmount: number
+      cashExpenseDescription: string | null
+      cashExpenseLinkImage: string | null
+      createdByUserId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["cashExpense"]>
+    composites: {}
+  }
+
+  type CashExpenseGetPayload<S extends boolean | null | undefined | CashExpenseDefaultArgs> = $Result.GetResult<Prisma.$CashExpensePayload, S>
+
+  type CashExpenseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CashExpenseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CashExpenseCountAggregateInputType | true
+    }
+
+  export interface CashExpenseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CashExpense'], meta: { name: 'CashExpense' } }
+    /**
+     * Find zero or one CashExpense that matches the filter.
+     * @param {CashExpenseFindUniqueArgs} args - Arguments to find a CashExpense
+     * @example
+     * // Get one CashExpense
+     * const cashExpense = await prisma.cashExpense.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CashExpenseFindUniqueArgs>(args: SelectSubset<T, CashExpenseFindUniqueArgs<ExtArgs>>): Prisma__CashExpenseClient<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CashExpense that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CashExpenseFindUniqueOrThrowArgs} args - Arguments to find a CashExpense
+     * @example
+     * // Get one CashExpense
+     * const cashExpense = await prisma.cashExpense.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CashExpenseFindUniqueOrThrowArgs>(args: SelectSubset<T, CashExpenseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CashExpenseClient<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CashExpense that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CashExpenseFindFirstArgs} args - Arguments to find a CashExpense
+     * @example
+     * // Get one CashExpense
+     * const cashExpense = await prisma.cashExpense.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CashExpenseFindFirstArgs>(args?: SelectSubset<T, CashExpenseFindFirstArgs<ExtArgs>>): Prisma__CashExpenseClient<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CashExpense that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CashExpenseFindFirstOrThrowArgs} args - Arguments to find a CashExpense
+     * @example
+     * // Get one CashExpense
+     * const cashExpense = await prisma.cashExpense.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CashExpenseFindFirstOrThrowArgs>(args?: SelectSubset<T, CashExpenseFindFirstOrThrowArgs<ExtArgs>>): Prisma__CashExpenseClient<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CashExpenses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CashExpenseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CashExpenses
+     * const cashExpenses = await prisma.cashExpense.findMany()
+     * 
+     * // Get first 10 CashExpenses
+     * const cashExpenses = await prisma.cashExpense.findMany({ take: 10 })
+     * 
+     * // Only select the `cashExpenseId`
+     * const cashExpenseWithCashExpenseIdOnly = await prisma.cashExpense.findMany({ select: { cashExpenseId: true } })
+     * 
+     */
+    findMany<T extends CashExpenseFindManyArgs>(args?: SelectSubset<T, CashExpenseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CashExpense.
+     * @param {CashExpenseCreateArgs} args - Arguments to create a CashExpense.
+     * @example
+     * // Create one CashExpense
+     * const CashExpense = await prisma.cashExpense.create({
+     *   data: {
+     *     // ... data to create a CashExpense
+     *   }
+     * })
+     * 
+     */
+    create<T extends CashExpenseCreateArgs>(args: SelectSubset<T, CashExpenseCreateArgs<ExtArgs>>): Prisma__CashExpenseClient<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CashExpenses.
+     * @param {CashExpenseCreateManyArgs} args - Arguments to create many CashExpenses.
+     * @example
+     * // Create many CashExpenses
+     * const cashExpense = await prisma.cashExpense.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CashExpenseCreateManyArgs>(args?: SelectSubset<T, CashExpenseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CashExpenses and returns the data saved in the database.
+     * @param {CashExpenseCreateManyAndReturnArgs} args - Arguments to create many CashExpenses.
+     * @example
+     * // Create many CashExpenses
+     * const cashExpense = await prisma.cashExpense.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CashExpenses and only return the `cashExpenseId`
+     * const cashExpenseWithCashExpenseIdOnly = await prisma.cashExpense.createManyAndReturn({
+     *   select: { cashExpenseId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CashExpenseCreateManyAndReturnArgs>(args?: SelectSubset<T, CashExpenseCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CashExpense.
+     * @param {CashExpenseDeleteArgs} args - Arguments to delete one CashExpense.
+     * @example
+     * // Delete one CashExpense
+     * const CashExpense = await prisma.cashExpense.delete({
+     *   where: {
+     *     // ... filter to delete one CashExpense
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CashExpenseDeleteArgs>(args: SelectSubset<T, CashExpenseDeleteArgs<ExtArgs>>): Prisma__CashExpenseClient<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CashExpense.
+     * @param {CashExpenseUpdateArgs} args - Arguments to update one CashExpense.
+     * @example
+     * // Update one CashExpense
+     * const cashExpense = await prisma.cashExpense.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CashExpenseUpdateArgs>(args: SelectSubset<T, CashExpenseUpdateArgs<ExtArgs>>): Prisma__CashExpenseClient<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CashExpenses.
+     * @param {CashExpenseDeleteManyArgs} args - Arguments to filter CashExpenses to delete.
+     * @example
+     * // Delete a few CashExpenses
+     * const { count } = await prisma.cashExpense.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CashExpenseDeleteManyArgs>(args?: SelectSubset<T, CashExpenseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CashExpenses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CashExpenseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CashExpenses
+     * const cashExpense = await prisma.cashExpense.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CashExpenseUpdateManyArgs>(args: SelectSubset<T, CashExpenseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CashExpenses and returns the data updated in the database.
+     * @param {CashExpenseUpdateManyAndReturnArgs} args - Arguments to update many CashExpenses.
+     * @example
+     * // Update many CashExpenses
+     * const cashExpense = await prisma.cashExpense.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CashExpenses and only return the `cashExpenseId`
+     * const cashExpenseWithCashExpenseIdOnly = await prisma.cashExpense.updateManyAndReturn({
+     *   select: { cashExpenseId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CashExpenseUpdateManyAndReturnArgs>(args: SelectSubset<T, CashExpenseUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CashExpense.
+     * @param {CashExpenseUpsertArgs} args - Arguments to update or create a CashExpense.
+     * @example
+     * // Update or create a CashExpense
+     * const cashExpense = await prisma.cashExpense.upsert({
+     *   create: {
+     *     // ... data to create a CashExpense
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CashExpense we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CashExpenseUpsertArgs>(args: SelectSubset<T, CashExpenseUpsertArgs<ExtArgs>>): Prisma__CashExpenseClient<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CashExpenses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CashExpenseCountArgs} args - Arguments to filter CashExpenses to count.
+     * @example
+     * // Count the number of CashExpenses
+     * const count = await prisma.cashExpense.count({
+     *   where: {
+     *     // ... the filter for the CashExpenses we want to count
+     *   }
+     * })
+    **/
+    count<T extends CashExpenseCountArgs>(
+      args?: Subset<T, CashExpenseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CashExpenseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CashExpense.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CashExpenseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CashExpenseAggregateArgs>(args: Subset<T, CashExpenseAggregateArgs>): Prisma.PrismaPromise<GetCashExpenseAggregateType<T>>
+
+    /**
+     * Group by CashExpense.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CashExpenseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CashExpenseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CashExpenseGroupByArgs['orderBy'] }
+        : { orderBy?: CashExpenseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CashExpenseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCashExpenseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CashExpense model
+   */
+  readonly fields: CashExpenseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CashExpense.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CashExpenseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CashExpense model
+   */
+  interface CashExpenseFieldRefs {
+    readonly cashExpenseId: FieldRef<"CashExpense", 'String'>
+    readonly cashExpenseAmount: FieldRef<"CashExpense", 'Int'>
+    readonly cashExpenseDescription: FieldRef<"CashExpense", 'String'>
+    readonly cashExpenseLinkImage: FieldRef<"CashExpense", 'String'>
+    readonly createdByUserId: FieldRef<"CashExpense", 'String'>
+    readonly createdAt: FieldRef<"CashExpense", 'DateTime'>
+    readonly updatedAt: FieldRef<"CashExpense", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CashExpense findUnique
+   */
+  export type CashExpenseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which CashExpense to fetch.
+     */
+    where: CashExpenseWhereUniqueInput
+  }
+
+  /**
+   * CashExpense findUniqueOrThrow
+   */
+  export type CashExpenseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which CashExpense to fetch.
+     */
+    where: CashExpenseWhereUniqueInput
+  }
+
+  /**
+   * CashExpense findFirst
+   */
+  export type CashExpenseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which CashExpense to fetch.
+     */
+    where?: CashExpenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CashExpenses to fetch.
+     */
+    orderBy?: CashExpenseOrderByWithRelationInput | CashExpenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CashExpenses.
+     */
+    cursor?: CashExpenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CashExpenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CashExpenses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CashExpenses.
+     */
+    distinct?: CashExpenseScalarFieldEnum | CashExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * CashExpense findFirstOrThrow
+   */
+  export type CashExpenseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which CashExpense to fetch.
+     */
+    where?: CashExpenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CashExpenses to fetch.
+     */
+    orderBy?: CashExpenseOrderByWithRelationInput | CashExpenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CashExpenses.
+     */
+    cursor?: CashExpenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CashExpenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CashExpenses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CashExpenses.
+     */
+    distinct?: CashExpenseScalarFieldEnum | CashExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * CashExpense findMany
+   */
+  export type CashExpenseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    /**
+     * Filter, which CashExpenses to fetch.
+     */
+    where?: CashExpenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CashExpenses to fetch.
+     */
+    orderBy?: CashExpenseOrderByWithRelationInput | CashExpenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CashExpenses.
+     */
+    cursor?: CashExpenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CashExpenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CashExpenses.
+     */
+    skip?: number
+    distinct?: CashExpenseScalarFieldEnum | CashExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * CashExpense create
+   */
+  export type CashExpenseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CashExpense.
+     */
+    data: XOR<CashExpenseCreateInput, CashExpenseUncheckedCreateInput>
+  }
+
+  /**
+   * CashExpense createMany
+   */
+  export type CashExpenseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CashExpenses.
+     */
+    data: CashExpenseCreateManyInput | CashExpenseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CashExpense createManyAndReturn
+   */
+  export type CashExpenseCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * The data used to create many CashExpenses.
+     */
+    data: CashExpenseCreateManyInput | CashExpenseCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CashExpense update
+   */
+  export type CashExpenseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CashExpense.
+     */
+    data: XOR<CashExpenseUpdateInput, CashExpenseUncheckedUpdateInput>
+    /**
+     * Choose, which CashExpense to update.
+     */
+    where: CashExpenseWhereUniqueInput
+  }
+
+  /**
+   * CashExpense updateMany
+   */
+  export type CashExpenseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CashExpenses.
+     */
+    data: XOR<CashExpenseUpdateManyMutationInput, CashExpenseUncheckedUpdateManyInput>
+    /**
+     * Filter which CashExpenses to update
+     */
+    where?: CashExpenseWhereInput
+    /**
+     * Limit how many CashExpenses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CashExpense updateManyAndReturn
+   */
+  export type CashExpenseUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * The data used to update CashExpenses.
+     */
+    data: XOR<CashExpenseUpdateManyMutationInput, CashExpenseUncheckedUpdateManyInput>
+    /**
+     * Filter which CashExpenses to update
+     */
+    where?: CashExpenseWhereInput
+    /**
+     * Limit how many CashExpenses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CashExpense upsert
+   */
+  export type CashExpenseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CashExpense to update in case it exists.
+     */
+    where: CashExpenseWhereUniqueInput
+    /**
+     * In case the CashExpense found by the `where` argument doesn't exist, create a new CashExpense with this data.
+     */
+    create: XOR<CashExpenseCreateInput, CashExpenseUncheckedCreateInput>
+    /**
+     * In case the CashExpense was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CashExpenseUpdateInput, CashExpenseUncheckedUpdateInput>
+  }
+
+  /**
+   * CashExpense delete
+   */
+  export type CashExpenseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+    /**
+     * Filter which CashExpense to delete.
+     */
+    where: CashExpenseWhereUniqueInput
+  }
+
+  /**
+   * CashExpense deleteMany
+   */
+  export type CashExpenseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CashExpenses to delete
+     */
+    where?: CashExpenseWhereInput
+    /**
+     * Limit how many CashExpenses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CashExpense without action
+   */
+  export type CashExpenseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CashExpense
+     */
+    select?: CashExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CashExpense
+     */
+    omit?: CashExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CashExpenseInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DailySales
+   */
+
+  export type AggregateDailySales = {
+    _count: DailySalesCountAggregateOutputType | null
+    _avg: DailySalesAvgAggregateOutputType | null
+    _sum: DailySalesSumAggregateOutputType | null
+    _min: DailySalesMinAggregateOutputType | null
+    _max: DailySalesMaxAggregateOutputType | null
+  }
+
+  export type DailySalesAvgAggregateOutputType = {
+    dailySalesTotalSales: number | null
+    dailySalesNumberOfSales: number | null
+    dailySalesTotalIncome: number | null
+  }
+
+  export type DailySalesSumAggregateOutputType = {
+    dailySalesTotalSales: number | null
+    dailySalesNumberOfSales: number | null
+    dailySalesTotalIncome: number | null
+  }
+
+  export type DailySalesMinAggregateOutputType = {
+    dailySalesId: string | null
+    dailySalesDay: string | null
+    dailySalesTotalSales: number | null
+    dailySalesNumberOfSales: number | null
+    dailySalesTotalIncome: number | null
+    createdByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DailySalesMaxAggregateOutputType = {
+    dailySalesId: string | null
+    dailySalesDay: string | null
+    dailySalesTotalSales: number | null
+    dailySalesNumberOfSales: number | null
+    dailySalesTotalIncome: number | null
+    createdByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DailySalesCountAggregateOutputType = {
+    dailySalesId: number
+    dailySalesDay: number
+    dailySalesTotalSales: number
+    dailySalesNumberOfSales: number
+    dailySalesTotalIncome: number
+    dailySalesDetailIncome: number
+    createdByUserId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DailySalesAvgAggregateInputType = {
+    dailySalesTotalSales?: true
+    dailySalesNumberOfSales?: true
+    dailySalesTotalIncome?: true
+  }
+
+  export type DailySalesSumAggregateInputType = {
+    dailySalesTotalSales?: true
+    dailySalesNumberOfSales?: true
+    dailySalesTotalIncome?: true
+  }
+
+  export type DailySalesMinAggregateInputType = {
+    dailySalesId?: true
+    dailySalesDay?: true
+    dailySalesTotalSales?: true
+    dailySalesNumberOfSales?: true
+    dailySalesTotalIncome?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DailySalesMaxAggregateInputType = {
+    dailySalesId?: true
+    dailySalesDay?: true
+    dailySalesTotalSales?: true
+    dailySalesNumberOfSales?: true
+    dailySalesTotalIncome?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DailySalesCountAggregateInputType = {
+    dailySalesId?: true
+    dailySalesDay?: true
+    dailySalesTotalSales?: true
+    dailySalesNumberOfSales?: true
+    dailySalesTotalIncome?: true
+    dailySalesDetailIncome?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DailySalesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DailySales to aggregate.
+     */
+    where?: DailySalesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DailySales to fetch.
+     */
+    orderBy?: DailySalesOrderByWithRelationInput | DailySalesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DailySalesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DailySales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DailySales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DailySales
+    **/
+    _count?: true | DailySalesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DailySalesAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DailySalesSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DailySalesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DailySalesMaxAggregateInputType
+  }
+
+  export type GetDailySalesAggregateType<T extends DailySalesAggregateArgs> = {
+        [P in keyof T & keyof AggregateDailySales]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDailySales[P]>
+      : GetScalarType<T[P], AggregateDailySales[P]>
+  }
+
+
+
+
+  export type DailySalesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DailySalesWhereInput
+    orderBy?: DailySalesOrderByWithAggregationInput | DailySalesOrderByWithAggregationInput[]
+    by: DailySalesScalarFieldEnum[] | DailySalesScalarFieldEnum
+    having?: DailySalesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DailySalesCountAggregateInputType | true
+    _avg?: DailySalesAvgAggregateInputType
+    _sum?: DailySalesSumAggregateInputType
+    _min?: DailySalesMinAggregateInputType
+    _max?: DailySalesMaxAggregateInputType
+  }
+
+  export type DailySalesGroupByOutputType = {
+    dailySalesId: string
+    dailySalesDay: string
+    dailySalesTotalSales: number | null
+    dailySalesNumberOfSales: number | null
+    dailySalesTotalIncome: number | null
+    dailySalesDetailIncome: JsonValue | null
+    createdByUserId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: DailySalesCountAggregateOutputType | null
+    _avg: DailySalesAvgAggregateOutputType | null
+    _sum: DailySalesSumAggregateOutputType | null
+    _min: DailySalesMinAggregateOutputType | null
+    _max: DailySalesMaxAggregateOutputType | null
+  }
+
+  type GetDailySalesGroupByPayload<T extends DailySalesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DailySalesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DailySalesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DailySalesGroupByOutputType[P]>
+            : GetScalarType<T[P], DailySalesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DailySalesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    dailySalesId?: boolean
+    dailySalesDay?: boolean
+    dailySalesTotalSales?: boolean
+    dailySalesNumberOfSales?: boolean
+    dailySalesTotalIncome?: boolean
+    dailySalesDetailIncome?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dailySales"]>
+
+  export type DailySalesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    dailySalesId?: boolean
+    dailySalesDay?: boolean
+    dailySalesTotalSales?: boolean
+    dailySalesNumberOfSales?: boolean
+    dailySalesTotalIncome?: boolean
+    dailySalesDetailIncome?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dailySales"]>
+
+  export type DailySalesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    dailySalesId?: boolean
+    dailySalesDay?: boolean
+    dailySalesTotalSales?: boolean
+    dailySalesNumberOfSales?: boolean
+    dailySalesTotalIncome?: boolean
+    dailySalesDetailIncome?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["dailySales"]>
+
+  export type DailySalesSelectScalar = {
+    dailySalesId?: boolean
+    dailySalesDay?: boolean
+    dailySalesTotalSales?: boolean
+    dailySalesNumberOfSales?: boolean
+    dailySalesTotalIncome?: boolean
+    dailySalesDetailIncome?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DailySalesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"dailySalesId" | "dailySalesDay" | "dailySalesTotalSales" | "dailySalesNumberOfSales" | "dailySalesTotalIncome" | "dailySalesDetailIncome" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["dailySales"]>
+  export type DailySalesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DailySalesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type DailySalesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $DailySalesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DailySales"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      dailySalesId: string
+      dailySalesDay: string
+      dailySalesTotalSales: number | null
+      dailySalesNumberOfSales: number | null
+      dailySalesTotalIncome: number | null
+      dailySalesDetailIncome: Prisma.JsonValue | null
+      createdByUserId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["dailySales"]>
+    composites: {}
+  }
+
+  type DailySalesGetPayload<S extends boolean | null | undefined | DailySalesDefaultArgs> = $Result.GetResult<Prisma.$DailySalesPayload, S>
+
+  type DailySalesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DailySalesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DailySalesCountAggregateInputType | true
+    }
+
+  export interface DailySalesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DailySales'], meta: { name: 'DailySales' } }
+    /**
+     * Find zero or one DailySales that matches the filter.
+     * @param {DailySalesFindUniqueArgs} args - Arguments to find a DailySales
+     * @example
+     * // Get one DailySales
+     * const dailySales = await prisma.dailySales.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DailySalesFindUniqueArgs>(args: SelectSubset<T, DailySalesFindUniqueArgs<ExtArgs>>): Prisma__DailySalesClient<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DailySales that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DailySalesFindUniqueOrThrowArgs} args - Arguments to find a DailySales
+     * @example
+     * // Get one DailySales
+     * const dailySales = await prisma.dailySales.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DailySalesFindUniqueOrThrowArgs>(args: SelectSubset<T, DailySalesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DailySalesClient<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DailySales that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DailySalesFindFirstArgs} args - Arguments to find a DailySales
+     * @example
+     * // Get one DailySales
+     * const dailySales = await prisma.dailySales.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DailySalesFindFirstArgs>(args?: SelectSubset<T, DailySalesFindFirstArgs<ExtArgs>>): Prisma__DailySalesClient<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DailySales that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DailySalesFindFirstOrThrowArgs} args - Arguments to find a DailySales
+     * @example
+     * // Get one DailySales
+     * const dailySales = await prisma.dailySales.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DailySalesFindFirstOrThrowArgs>(args?: SelectSubset<T, DailySalesFindFirstOrThrowArgs<ExtArgs>>): Prisma__DailySalesClient<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DailySales that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DailySalesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DailySales
+     * const dailySales = await prisma.dailySales.findMany()
+     * 
+     * // Get first 10 DailySales
+     * const dailySales = await prisma.dailySales.findMany({ take: 10 })
+     * 
+     * // Only select the `dailySalesId`
+     * const dailySalesWithDailySalesIdOnly = await prisma.dailySales.findMany({ select: { dailySalesId: true } })
+     * 
+     */
+    findMany<T extends DailySalesFindManyArgs>(args?: SelectSubset<T, DailySalesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DailySales.
+     * @param {DailySalesCreateArgs} args - Arguments to create a DailySales.
+     * @example
+     * // Create one DailySales
+     * const DailySales = await prisma.dailySales.create({
+     *   data: {
+     *     // ... data to create a DailySales
+     *   }
+     * })
+     * 
+     */
+    create<T extends DailySalesCreateArgs>(args: SelectSubset<T, DailySalesCreateArgs<ExtArgs>>): Prisma__DailySalesClient<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DailySales.
+     * @param {DailySalesCreateManyArgs} args - Arguments to create many DailySales.
+     * @example
+     * // Create many DailySales
+     * const dailySales = await prisma.dailySales.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DailySalesCreateManyArgs>(args?: SelectSubset<T, DailySalesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DailySales and returns the data saved in the database.
+     * @param {DailySalesCreateManyAndReturnArgs} args - Arguments to create many DailySales.
+     * @example
+     * // Create many DailySales
+     * const dailySales = await prisma.dailySales.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DailySales and only return the `dailySalesId`
+     * const dailySalesWithDailySalesIdOnly = await prisma.dailySales.createManyAndReturn({
+     *   select: { dailySalesId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DailySalesCreateManyAndReturnArgs>(args?: SelectSubset<T, DailySalesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DailySales.
+     * @param {DailySalesDeleteArgs} args - Arguments to delete one DailySales.
+     * @example
+     * // Delete one DailySales
+     * const DailySales = await prisma.dailySales.delete({
+     *   where: {
+     *     // ... filter to delete one DailySales
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DailySalesDeleteArgs>(args: SelectSubset<T, DailySalesDeleteArgs<ExtArgs>>): Prisma__DailySalesClient<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DailySales.
+     * @param {DailySalesUpdateArgs} args - Arguments to update one DailySales.
+     * @example
+     * // Update one DailySales
+     * const dailySales = await prisma.dailySales.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DailySalesUpdateArgs>(args: SelectSubset<T, DailySalesUpdateArgs<ExtArgs>>): Prisma__DailySalesClient<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DailySales.
+     * @param {DailySalesDeleteManyArgs} args - Arguments to filter DailySales to delete.
+     * @example
+     * // Delete a few DailySales
+     * const { count } = await prisma.dailySales.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DailySalesDeleteManyArgs>(args?: SelectSubset<T, DailySalesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DailySales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DailySalesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DailySales
+     * const dailySales = await prisma.dailySales.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DailySalesUpdateManyArgs>(args: SelectSubset<T, DailySalesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DailySales and returns the data updated in the database.
+     * @param {DailySalesUpdateManyAndReturnArgs} args - Arguments to update many DailySales.
+     * @example
+     * // Update many DailySales
+     * const dailySales = await prisma.dailySales.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DailySales and only return the `dailySalesId`
+     * const dailySalesWithDailySalesIdOnly = await prisma.dailySales.updateManyAndReturn({
+     *   select: { dailySalesId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DailySalesUpdateManyAndReturnArgs>(args: SelectSubset<T, DailySalesUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DailySales.
+     * @param {DailySalesUpsertArgs} args - Arguments to update or create a DailySales.
+     * @example
+     * // Update or create a DailySales
+     * const dailySales = await prisma.dailySales.upsert({
+     *   create: {
+     *     // ... data to create a DailySales
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DailySales we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DailySalesUpsertArgs>(args: SelectSubset<T, DailySalesUpsertArgs<ExtArgs>>): Prisma__DailySalesClient<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DailySales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DailySalesCountArgs} args - Arguments to filter DailySales to count.
+     * @example
+     * // Count the number of DailySales
+     * const count = await prisma.dailySales.count({
+     *   where: {
+     *     // ... the filter for the DailySales we want to count
+     *   }
+     * })
+    **/
+    count<T extends DailySalesCountArgs>(
+      args?: Subset<T, DailySalesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DailySalesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DailySales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DailySalesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DailySalesAggregateArgs>(args: Subset<T, DailySalesAggregateArgs>): Prisma.PrismaPromise<GetDailySalesAggregateType<T>>
+
+    /**
+     * Group by DailySales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DailySalesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DailySalesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DailySalesGroupByArgs['orderBy'] }
+        : { orderBy?: DailySalesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DailySalesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDailySalesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DailySales model
+   */
+  readonly fields: DailySalesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DailySales.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DailySalesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DailySales model
+   */
+  interface DailySalesFieldRefs {
+    readonly dailySalesId: FieldRef<"DailySales", 'String'>
+    readonly dailySalesDay: FieldRef<"DailySales", 'String'>
+    readonly dailySalesTotalSales: FieldRef<"DailySales", 'Int'>
+    readonly dailySalesNumberOfSales: FieldRef<"DailySales", 'Int'>
+    readonly dailySalesTotalIncome: FieldRef<"DailySales", 'Int'>
+    readonly dailySalesDetailIncome: FieldRef<"DailySales", 'Json'>
+    readonly createdByUserId: FieldRef<"DailySales", 'String'>
+    readonly createdAt: FieldRef<"DailySales", 'DateTime'>
+    readonly updatedAt: FieldRef<"DailySales", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DailySales findUnique
+   */
+  export type DailySalesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    /**
+     * Filter, which DailySales to fetch.
+     */
+    where: DailySalesWhereUniqueInput
+  }
+
+  /**
+   * DailySales findUniqueOrThrow
+   */
+  export type DailySalesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    /**
+     * Filter, which DailySales to fetch.
+     */
+    where: DailySalesWhereUniqueInput
+  }
+
+  /**
+   * DailySales findFirst
+   */
+  export type DailySalesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    /**
+     * Filter, which DailySales to fetch.
+     */
+    where?: DailySalesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DailySales to fetch.
+     */
+    orderBy?: DailySalesOrderByWithRelationInput | DailySalesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DailySales.
+     */
+    cursor?: DailySalesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DailySales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DailySales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DailySales.
+     */
+    distinct?: DailySalesScalarFieldEnum | DailySalesScalarFieldEnum[]
+  }
+
+  /**
+   * DailySales findFirstOrThrow
+   */
+  export type DailySalesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    /**
+     * Filter, which DailySales to fetch.
+     */
+    where?: DailySalesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DailySales to fetch.
+     */
+    orderBy?: DailySalesOrderByWithRelationInput | DailySalesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DailySales.
+     */
+    cursor?: DailySalesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DailySales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DailySales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DailySales.
+     */
+    distinct?: DailySalesScalarFieldEnum | DailySalesScalarFieldEnum[]
+  }
+
+  /**
+   * DailySales findMany
+   */
+  export type DailySalesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    /**
+     * Filter, which DailySales to fetch.
+     */
+    where?: DailySalesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DailySales to fetch.
+     */
+    orderBy?: DailySalesOrderByWithRelationInput | DailySalesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DailySales.
+     */
+    cursor?: DailySalesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DailySales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DailySales.
+     */
+    skip?: number
+    distinct?: DailySalesScalarFieldEnum | DailySalesScalarFieldEnum[]
+  }
+
+  /**
+   * DailySales create
+   */
+  export type DailySalesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DailySales.
+     */
+    data: XOR<DailySalesCreateInput, DailySalesUncheckedCreateInput>
+  }
+
+  /**
+   * DailySales createMany
+   */
+  export type DailySalesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DailySales.
+     */
+    data: DailySalesCreateManyInput | DailySalesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DailySales createManyAndReturn
+   */
+  export type DailySalesCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * The data used to create many DailySales.
+     */
+    data: DailySalesCreateManyInput | DailySalesCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DailySales update
+   */
+  export type DailySalesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DailySales.
+     */
+    data: XOR<DailySalesUpdateInput, DailySalesUncheckedUpdateInput>
+    /**
+     * Choose, which DailySales to update.
+     */
+    where: DailySalesWhereUniqueInput
+  }
+
+  /**
+   * DailySales updateMany
+   */
+  export type DailySalesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DailySales.
+     */
+    data: XOR<DailySalesUpdateManyMutationInput, DailySalesUncheckedUpdateManyInput>
+    /**
+     * Filter which DailySales to update
+     */
+    where?: DailySalesWhereInput
+    /**
+     * Limit how many DailySales to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DailySales updateManyAndReturn
+   */
+  export type DailySalesUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * The data used to update DailySales.
+     */
+    data: XOR<DailySalesUpdateManyMutationInput, DailySalesUncheckedUpdateManyInput>
+    /**
+     * Filter which DailySales to update
+     */
+    where?: DailySalesWhereInput
+    /**
+     * Limit how many DailySales to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DailySales upsert
+   */
+  export type DailySalesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DailySales to update in case it exists.
+     */
+    where: DailySalesWhereUniqueInput
+    /**
+     * In case the DailySales found by the `where` argument doesn't exist, create a new DailySales with this data.
+     */
+    create: XOR<DailySalesCreateInput, DailySalesUncheckedCreateInput>
+    /**
+     * In case the DailySales was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DailySalesUpdateInput, DailySalesUncheckedUpdateInput>
+  }
+
+  /**
+   * DailySales delete
+   */
+  export type DailySalesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+    /**
+     * Filter which DailySales to delete.
+     */
+    where: DailySalesWhereUniqueInput
+  }
+
+  /**
+   * DailySales deleteMany
+   */
+  export type DailySalesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DailySales to delete
+     */
+    where?: DailySalesWhereInput
+    /**
+     * Limit how many DailySales to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DailySales without action
+   */
+  export type DailySalesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DailySales
+     */
+    select?: DailySalesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DailySales
+     */
+    omit?: DailySalesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DailySalesInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -11709,12 +14231,48 @@ export namespace Prisma {
   export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
+  export const CashExpenseScalarFieldEnum: {
+    cashExpenseId: 'cashExpenseId',
+    cashExpenseAmount: 'cashExpenseAmount',
+    cashExpenseDescription: 'cashExpenseDescription',
+    cashExpenseLinkImage: 'cashExpenseLinkImage',
+    createdByUserId: 'createdByUserId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CashExpenseScalarFieldEnum = (typeof CashExpenseScalarFieldEnum)[keyof typeof CashExpenseScalarFieldEnum]
+
+
+  export const DailySalesScalarFieldEnum: {
+    dailySalesId: 'dailySalesId',
+    dailySalesDay: 'dailySalesDay',
+    dailySalesTotalSales: 'dailySalesTotalSales',
+    dailySalesNumberOfSales: 'dailySalesNumberOfSales',
+    dailySalesTotalIncome: 'dailySalesTotalIncome',
+    dailySalesDetailIncome: 'dailySalesDetailIncome',
+    createdByUserId: 'createdByUserId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DailySalesScalarFieldEnum = (typeof DailySalesScalarFieldEnum)[keyof typeof DailySalesScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const QueryMode: {
@@ -11731,6 +14289,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -11858,6 +14425,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -11897,6 +14478,8 @@ export namespace Prisma {
     Sale?: SaleListRelationFilter
     Payment?: PaymentListRelationFilter
     SaleDetail?: SaleDetailListRelationFilter
+    CashExpense?: CashExpenseListRelationFilter
+    DailySales?: DailySalesListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -11919,6 +14502,8 @@ export namespace Prisma {
     Sale?: SaleOrderByRelationAggregateInput
     Payment?: PaymentOrderByRelationAggregateInput
     SaleDetail?: SaleDetailOrderByRelationAggregateInput
+    CashExpense?: CashExpenseOrderByRelationAggregateInput
+    DailySales?: DailySalesOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -11944,6 +14529,8 @@ export namespace Prisma {
     Sale?: SaleListRelationFilter
     Payment?: PaymentListRelationFilter
     SaleDetail?: SaleDetailListRelationFilter
+    CashExpense?: CashExpenseListRelationFilter
+    DailySales?: DailySalesListRelationFilter
   }, "userId" | "userEmail">
 
   export type UserOrderByWithAggregationInput = {
@@ -12600,6 +15187,150 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
   }
 
+  export type CashExpenseWhereInput = {
+    AND?: CashExpenseWhereInput | CashExpenseWhereInput[]
+    OR?: CashExpenseWhereInput[]
+    NOT?: CashExpenseWhereInput | CashExpenseWhereInput[]
+    cashExpenseId?: StringFilter<"CashExpense"> | string
+    cashExpenseAmount?: IntFilter<"CashExpense"> | number
+    cashExpenseDescription?: StringNullableFilter<"CashExpense"> | string | null
+    cashExpenseLinkImage?: StringNullableFilter<"CashExpense"> | string | null
+    createdByUserId?: StringFilter<"CashExpense"> | string
+    createdAt?: DateTimeFilter<"CashExpense"> | Date | string
+    updatedAt?: DateTimeFilter<"CashExpense"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CashExpenseOrderByWithRelationInput = {
+    cashExpenseId?: SortOrder
+    cashExpenseAmount?: SortOrder
+    cashExpenseDescription?: SortOrderInput | SortOrder
+    cashExpenseLinkImage?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type CashExpenseWhereUniqueInput = Prisma.AtLeast<{
+    cashExpenseId?: string
+    AND?: CashExpenseWhereInput | CashExpenseWhereInput[]
+    OR?: CashExpenseWhereInput[]
+    NOT?: CashExpenseWhereInput | CashExpenseWhereInput[]
+    cashExpenseAmount?: IntFilter<"CashExpense"> | number
+    cashExpenseDescription?: StringNullableFilter<"CashExpense"> | string | null
+    cashExpenseLinkImage?: StringNullableFilter<"CashExpense"> | string | null
+    createdByUserId?: StringFilter<"CashExpense"> | string
+    createdAt?: DateTimeFilter<"CashExpense"> | Date | string
+    updatedAt?: DateTimeFilter<"CashExpense"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "cashExpenseId">
+
+  export type CashExpenseOrderByWithAggregationInput = {
+    cashExpenseId?: SortOrder
+    cashExpenseAmount?: SortOrder
+    cashExpenseDescription?: SortOrderInput | SortOrder
+    cashExpenseLinkImage?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CashExpenseCountOrderByAggregateInput
+    _avg?: CashExpenseAvgOrderByAggregateInput
+    _max?: CashExpenseMaxOrderByAggregateInput
+    _min?: CashExpenseMinOrderByAggregateInput
+    _sum?: CashExpenseSumOrderByAggregateInput
+  }
+
+  export type CashExpenseScalarWhereWithAggregatesInput = {
+    AND?: CashExpenseScalarWhereWithAggregatesInput | CashExpenseScalarWhereWithAggregatesInput[]
+    OR?: CashExpenseScalarWhereWithAggregatesInput[]
+    NOT?: CashExpenseScalarWhereWithAggregatesInput | CashExpenseScalarWhereWithAggregatesInput[]
+    cashExpenseId?: StringWithAggregatesFilter<"CashExpense"> | string
+    cashExpenseAmount?: IntWithAggregatesFilter<"CashExpense"> | number
+    cashExpenseDescription?: StringNullableWithAggregatesFilter<"CashExpense"> | string | null
+    cashExpenseLinkImage?: StringNullableWithAggregatesFilter<"CashExpense"> | string | null
+    createdByUserId?: StringWithAggregatesFilter<"CashExpense"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"CashExpense"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CashExpense"> | Date | string
+  }
+
+  export type DailySalesWhereInput = {
+    AND?: DailySalesWhereInput | DailySalesWhereInput[]
+    OR?: DailySalesWhereInput[]
+    NOT?: DailySalesWhereInput | DailySalesWhereInput[]
+    dailySalesId?: StringFilter<"DailySales"> | string
+    dailySalesDay?: StringFilter<"DailySales"> | string
+    dailySalesTotalSales?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesNumberOfSales?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesTotalIncome?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesDetailIncome?: JsonNullableFilter<"DailySales">
+    createdByUserId?: StringFilter<"DailySales"> | string
+    createdAt?: DateTimeFilter<"DailySales"> | Date | string
+    updatedAt?: DateTimeFilter<"DailySales"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type DailySalesOrderByWithRelationInput = {
+    dailySalesId?: SortOrder
+    dailySalesDay?: SortOrder
+    dailySalesTotalSales?: SortOrderInput | SortOrder
+    dailySalesNumberOfSales?: SortOrderInput | SortOrder
+    dailySalesTotalIncome?: SortOrderInput | SortOrder
+    dailySalesDetailIncome?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type DailySalesWhereUniqueInput = Prisma.AtLeast<{
+    dailySalesId?: string
+    AND?: DailySalesWhereInput | DailySalesWhereInput[]
+    OR?: DailySalesWhereInput[]
+    NOT?: DailySalesWhereInput | DailySalesWhereInput[]
+    dailySalesDay?: StringFilter<"DailySales"> | string
+    dailySalesTotalSales?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesNumberOfSales?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesTotalIncome?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesDetailIncome?: JsonNullableFilter<"DailySales">
+    createdByUserId?: StringFilter<"DailySales"> | string
+    createdAt?: DateTimeFilter<"DailySales"> | Date | string
+    updatedAt?: DateTimeFilter<"DailySales"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "dailySalesId">
+
+  export type DailySalesOrderByWithAggregationInput = {
+    dailySalesId?: SortOrder
+    dailySalesDay?: SortOrder
+    dailySalesTotalSales?: SortOrderInput | SortOrder
+    dailySalesNumberOfSales?: SortOrderInput | SortOrder
+    dailySalesTotalIncome?: SortOrderInput | SortOrder
+    dailySalesDetailIncome?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DailySalesCountOrderByAggregateInput
+    _avg?: DailySalesAvgOrderByAggregateInput
+    _max?: DailySalesMaxOrderByAggregateInput
+    _min?: DailySalesMinOrderByAggregateInput
+    _sum?: DailySalesSumOrderByAggregateInput
+  }
+
+  export type DailySalesScalarWhereWithAggregatesInput = {
+    AND?: DailySalesScalarWhereWithAggregatesInput | DailySalesScalarWhereWithAggregatesInput[]
+    OR?: DailySalesScalarWhereWithAggregatesInput[]
+    NOT?: DailySalesScalarWhereWithAggregatesInput | DailySalesScalarWhereWithAggregatesInput[]
+    dailySalesId?: StringWithAggregatesFilter<"DailySales"> | string
+    dailySalesDay?: StringWithAggregatesFilter<"DailySales"> | string
+    dailySalesTotalSales?: IntNullableWithAggregatesFilter<"DailySales"> | number | null
+    dailySalesNumberOfSales?: IntNullableWithAggregatesFilter<"DailySales"> | number | null
+    dailySalesTotalIncome?: IntNullableWithAggregatesFilter<"DailySales"> | number | null
+    dailySalesDetailIncome?: JsonNullableWithAggregatesFilter<"DailySales">
+    createdByUserId?: StringWithAggregatesFilter<"DailySales"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"DailySales"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DailySales"> | Date | string
+  }
+
   export type UserCreateInput = {
     userId: string
     userFirstName: string
@@ -12620,6 +15351,8 @@ export namespace Prisma {
     Sale?: SaleCreateNestedManyWithoutUserInput
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -12642,6 +15375,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -12664,6 +15399,8 @@ export namespace Prisma {
     Sale?: SaleUpdateManyWithoutUserNestedInput
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -12686,6 +15423,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -13387,6 +16126,158 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CashExpenseCreateInput = {
+    cashExpenseId?: string
+    cashExpenseAmount: number
+    cashExpenseDescription?: string | null
+    cashExpenseLinkImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCashExpenseInput
+  }
+
+  export type CashExpenseUncheckedCreateInput = {
+    cashExpenseId?: string
+    cashExpenseAmount: number
+    cashExpenseDescription?: string | null
+    cashExpenseLinkImage?: string | null
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CashExpenseUpdateInput = {
+    cashExpenseId?: StringFieldUpdateOperationsInput | string
+    cashExpenseAmount?: IntFieldUpdateOperationsInput | number
+    cashExpenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    cashExpenseLinkImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCashExpenseNestedInput
+  }
+
+  export type CashExpenseUncheckedUpdateInput = {
+    cashExpenseId?: StringFieldUpdateOperationsInput | string
+    cashExpenseAmount?: IntFieldUpdateOperationsInput | number
+    cashExpenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    cashExpenseLinkImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CashExpenseCreateManyInput = {
+    cashExpenseId?: string
+    cashExpenseAmount: number
+    cashExpenseDescription?: string | null
+    cashExpenseLinkImage?: string | null
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CashExpenseUpdateManyMutationInput = {
+    cashExpenseId?: StringFieldUpdateOperationsInput | string
+    cashExpenseAmount?: IntFieldUpdateOperationsInput | number
+    cashExpenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    cashExpenseLinkImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CashExpenseUncheckedUpdateManyInput = {
+    cashExpenseId?: StringFieldUpdateOperationsInput | string
+    cashExpenseAmount?: IntFieldUpdateOperationsInput | number
+    cashExpenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    cashExpenseLinkImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DailySalesCreateInput = {
+    dailySalesId: string
+    dailySalesDay: string
+    dailySalesTotalSales?: number | null
+    dailySalesNumberOfSales?: number | null
+    dailySalesTotalIncome?: number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutDailySalesInput
+  }
+
+  export type DailySalesUncheckedCreateInput = {
+    dailySalesId: string
+    dailySalesDay: string
+    dailySalesTotalSales?: number | null
+    dailySalesNumberOfSales?: number | null
+    dailySalesTotalIncome?: number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DailySalesUpdateInput = {
+    dailySalesId?: StringFieldUpdateOperationsInput | string
+    dailySalesDay?: StringFieldUpdateOperationsInput | string
+    dailySalesTotalSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutDailySalesNestedInput
+  }
+
+  export type DailySalesUncheckedUpdateInput = {
+    dailySalesId?: StringFieldUpdateOperationsInput | string
+    dailySalesDay?: StringFieldUpdateOperationsInput | string
+    dailySalesTotalSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DailySalesCreateManyInput = {
+    dailySalesId: string
+    dailySalesDay: string
+    dailySalesTotalSales?: number | null
+    dailySalesNumberOfSales?: number | null
+    dailySalesTotalIncome?: number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DailySalesUpdateManyMutationInput = {
+    dailySalesId?: StringFieldUpdateOperationsInput | string
+    dailySalesDay?: StringFieldUpdateOperationsInput | string
+    dailySalesTotalSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DailySalesUncheckedUpdateManyInput = {
+    dailySalesId?: StringFieldUpdateOperationsInput | string
+    dailySalesDay?: StringFieldUpdateOperationsInput | string
+    dailySalesTotalSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -13473,6 +16364,18 @@ export namespace Prisma {
     none?: SaleDetailWhereInput
   }
 
+  export type CashExpenseListRelationFilter = {
+    every?: CashExpenseWhereInput
+    some?: CashExpenseWhereInput
+    none?: CashExpenseWhereInput
+  }
+
+  export type DailySalesListRelationFilter = {
+    every?: DailySalesWhereInput
+    some?: DailySalesWhereInput
+    none?: DailySalesWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -13503,6 +16406,14 @@ export namespace Prisma {
   }
 
   export type SaleDetailOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CashExpenseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DailySalesOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14104,6 +17015,166 @@ export namespace Prisma {
     paymentAmount?: SortOrder
   }
 
+  export type CashExpenseCountOrderByAggregateInput = {
+    cashExpenseId?: SortOrder
+    cashExpenseAmount?: SortOrder
+    cashExpenseDescription?: SortOrder
+    cashExpenseLinkImage?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CashExpenseAvgOrderByAggregateInput = {
+    cashExpenseAmount?: SortOrder
+  }
+
+  export type CashExpenseMaxOrderByAggregateInput = {
+    cashExpenseId?: SortOrder
+    cashExpenseAmount?: SortOrder
+    cashExpenseDescription?: SortOrder
+    cashExpenseLinkImage?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CashExpenseMinOrderByAggregateInput = {
+    cashExpenseId?: SortOrder
+    cashExpenseAmount?: SortOrder
+    cashExpenseDescription?: SortOrder
+    cashExpenseLinkImage?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CashExpenseSumOrderByAggregateInput = {
+    cashExpenseAmount?: SortOrder
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type DailySalesCountOrderByAggregateInput = {
+    dailySalesId?: SortOrder
+    dailySalesDay?: SortOrder
+    dailySalesTotalSales?: SortOrder
+    dailySalesNumberOfSales?: SortOrder
+    dailySalesTotalIncome?: SortOrder
+    dailySalesDetailIncome?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DailySalesAvgOrderByAggregateInput = {
+    dailySalesTotalSales?: SortOrder
+    dailySalesNumberOfSales?: SortOrder
+    dailySalesTotalIncome?: SortOrder
+  }
+
+  export type DailySalesMaxOrderByAggregateInput = {
+    dailySalesId?: SortOrder
+    dailySalesDay?: SortOrder
+    dailySalesTotalSales?: SortOrder
+    dailySalesNumberOfSales?: SortOrder
+    dailySalesTotalIncome?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DailySalesMinOrderByAggregateInput = {
+    dailySalesId?: SortOrder
+    dailySalesDay?: SortOrder
+    dailySalesTotalSales?: SortOrder
+    dailySalesNumberOfSales?: SortOrder
+    dailySalesTotalIncome?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DailySalesSumOrderByAggregateInput = {
+    dailySalesTotalSales?: SortOrder
+    dailySalesNumberOfSales?: SortOrder
+    dailySalesTotalIncome?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
   export type CustomerCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<CustomerCreateWithoutCreatedByInput, CustomerUncheckedCreateWithoutCreatedByInput> | CustomerCreateWithoutCreatedByInput[] | CustomerUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: CustomerCreateOrConnectWithoutCreatedByInput | CustomerCreateOrConnectWithoutCreatedByInput[]
@@ -14153,6 +17224,20 @@ export namespace Prisma {
     connect?: SaleDetailWhereUniqueInput | SaleDetailWhereUniqueInput[]
   }
 
+  export type CashExpenseCreateNestedManyWithoutUserInput = {
+    create?: XOR<CashExpenseCreateWithoutUserInput, CashExpenseUncheckedCreateWithoutUserInput> | CashExpenseCreateWithoutUserInput[] | CashExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CashExpenseCreateOrConnectWithoutUserInput | CashExpenseCreateOrConnectWithoutUserInput[]
+    createMany?: CashExpenseCreateManyUserInputEnvelope
+    connect?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+  }
+
+  export type DailySalesCreateNestedManyWithoutUserInput = {
+    create?: XOR<DailySalesCreateWithoutUserInput, DailySalesUncheckedCreateWithoutUserInput> | DailySalesCreateWithoutUserInput[] | DailySalesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DailySalesCreateOrConnectWithoutUserInput | DailySalesCreateOrConnectWithoutUserInput[]
+    createMany?: DailySalesCreateManyUserInputEnvelope
+    connect?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
+  }
+
   export type CustomerUncheckedCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<CustomerCreateWithoutCreatedByInput, CustomerUncheckedCreateWithoutCreatedByInput> | CustomerCreateWithoutCreatedByInput[] | CustomerUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: CustomerCreateOrConnectWithoutCreatedByInput | CustomerCreateOrConnectWithoutCreatedByInput[]
@@ -14200,6 +17285,20 @@ export namespace Prisma {
     connectOrCreate?: SaleDetailCreateOrConnectWithoutUserInput | SaleDetailCreateOrConnectWithoutUserInput[]
     createMany?: SaleDetailCreateManyUserInputEnvelope
     connect?: SaleDetailWhereUniqueInput | SaleDetailWhereUniqueInput[]
+  }
+
+  export type CashExpenseUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CashExpenseCreateWithoutUserInput, CashExpenseUncheckedCreateWithoutUserInput> | CashExpenseCreateWithoutUserInput[] | CashExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CashExpenseCreateOrConnectWithoutUserInput | CashExpenseCreateOrConnectWithoutUserInput[]
+    createMany?: CashExpenseCreateManyUserInputEnvelope
+    connect?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+  }
+
+  export type DailySalesUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<DailySalesCreateWithoutUserInput, DailySalesUncheckedCreateWithoutUserInput> | DailySalesCreateWithoutUserInput[] | DailySalesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DailySalesCreateOrConnectWithoutUserInput | DailySalesCreateOrConnectWithoutUserInput[]
+    createMany?: DailySalesCreateManyUserInputEnvelope
+    connect?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -14316,6 +17415,34 @@ export namespace Prisma {
     deleteMany?: SaleDetailScalarWhereInput | SaleDetailScalarWhereInput[]
   }
 
+  export type CashExpenseUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CashExpenseCreateWithoutUserInput, CashExpenseUncheckedCreateWithoutUserInput> | CashExpenseCreateWithoutUserInput[] | CashExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CashExpenseCreateOrConnectWithoutUserInput | CashExpenseCreateOrConnectWithoutUserInput[]
+    upsert?: CashExpenseUpsertWithWhereUniqueWithoutUserInput | CashExpenseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CashExpenseCreateManyUserInputEnvelope
+    set?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+    disconnect?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+    delete?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+    connect?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+    update?: CashExpenseUpdateWithWhereUniqueWithoutUserInput | CashExpenseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CashExpenseUpdateManyWithWhereWithoutUserInput | CashExpenseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CashExpenseScalarWhereInput | CashExpenseScalarWhereInput[]
+  }
+
+  export type DailySalesUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DailySalesCreateWithoutUserInput, DailySalesUncheckedCreateWithoutUserInput> | DailySalesCreateWithoutUserInput[] | DailySalesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DailySalesCreateOrConnectWithoutUserInput | DailySalesCreateOrConnectWithoutUserInput[]
+    upsert?: DailySalesUpsertWithWhereUniqueWithoutUserInput | DailySalesUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DailySalesCreateManyUserInputEnvelope
+    set?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
+    disconnect?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
+    delete?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
+    connect?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
+    update?: DailySalesUpdateWithWhereUniqueWithoutUserInput | DailySalesUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DailySalesUpdateManyWithWhereWithoutUserInput | DailySalesUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DailySalesScalarWhereInput | DailySalesScalarWhereInput[]
+  }
+
   export type CustomerUncheckedUpdateManyWithoutCreatedByNestedInput = {
     create?: XOR<CustomerCreateWithoutCreatedByInput, CustomerUncheckedCreateWithoutCreatedByInput> | CustomerCreateWithoutCreatedByInput[] | CustomerUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: CustomerCreateOrConnectWithoutCreatedByInput | CustomerCreateOrConnectWithoutCreatedByInput[]
@@ -14412,6 +17539,34 @@ export namespace Prisma {
     update?: SaleDetailUpdateWithWhereUniqueWithoutUserInput | SaleDetailUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SaleDetailUpdateManyWithWhereWithoutUserInput | SaleDetailUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SaleDetailScalarWhereInput | SaleDetailScalarWhereInput[]
+  }
+
+  export type CashExpenseUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CashExpenseCreateWithoutUserInput, CashExpenseUncheckedCreateWithoutUserInput> | CashExpenseCreateWithoutUserInput[] | CashExpenseUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CashExpenseCreateOrConnectWithoutUserInput | CashExpenseCreateOrConnectWithoutUserInput[]
+    upsert?: CashExpenseUpsertWithWhereUniqueWithoutUserInput | CashExpenseUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CashExpenseCreateManyUserInputEnvelope
+    set?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+    disconnect?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+    delete?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+    connect?: CashExpenseWhereUniqueInput | CashExpenseWhereUniqueInput[]
+    update?: CashExpenseUpdateWithWhereUniqueWithoutUserInput | CashExpenseUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CashExpenseUpdateManyWithWhereWithoutUserInput | CashExpenseUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CashExpenseScalarWhereInput | CashExpenseScalarWhereInput[]
+  }
+
+  export type DailySalesUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<DailySalesCreateWithoutUserInput, DailySalesUncheckedCreateWithoutUserInput> | DailySalesCreateWithoutUserInput[] | DailySalesUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: DailySalesCreateOrConnectWithoutUserInput | DailySalesCreateOrConnectWithoutUserInput[]
+    upsert?: DailySalesUpsertWithWhereUniqueWithoutUserInput | DailySalesUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: DailySalesCreateManyUserInputEnvelope
+    set?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
+    disconnect?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
+    delete?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
+    connect?: DailySalesWhereUniqueInput | DailySalesWhereUniqueInput[]
+    update?: DailySalesUpdateWithWhereUniqueWithoutUserInput | DailySalesUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: DailySalesUpdateManyWithWhereWithoutUserInput | DailySalesUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: DailySalesScalarWhereInput | DailySalesScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCustomersInput = {
@@ -14998,6 +18153,42 @@ export namespace Prisma {
     update?: XOR<XOR<SaleUpdateToOneWithWhereWithoutPaymentInput, SaleUpdateWithoutPaymentInput>, SaleUncheckedUpdateWithoutPaymentInput>
   }
 
+  export type UserCreateNestedOneWithoutCashExpenseInput = {
+    create?: XOR<UserCreateWithoutCashExpenseInput, UserUncheckedCreateWithoutCashExpenseInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCashExpenseInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutCashExpenseNestedInput = {
+    create?: XOR<UserCreateWithoutCashExpenseInput, UserUncheckedCreateWithoutCashExpenseInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCashExpenseInput
+    upsert?: UserUpsertWithoutCashExpenseInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCashExpenseInput, UserUpdateWithoutCashExpenseInput>, UserUncheckedUpdateWithoutCashExpenseInput>
+  }
+
+  export type UserCreateNestedOneWithoutDailySalesInput = {
+    create?: XOR<UserCreateWithoutDailySalesInput, UserUncheckedCreateWithoutDailySalesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDailySalesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutDailySalesNestedInput = {
+    create?: XOR<UserCreateWithoutDailySalesInput, UserUncheckedCreateWithoutDailySalesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDailySalesInput
+    upsert?: UserUpsertWithoutDailySalesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDailySalesInput, UserUpdateWithoutDailySalesInput>, UserUncheckedUpdateWithoutDailySalesInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -15257,6 +18448,56 @@ export namespace Prisma {
     _max?: NestedEnumUsageContextFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
   export type CustomerCreateWithoutCreatedByInput = {
     customerId?: string
     customerFirstName: string
@@ -15511,6 +18752,66 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CashExpenseCreateWithoutUserInput = {
+    cashExpenseId?: string
+    cashExpenseAmount: number
+    cashExpenseDescription?: string | null
+    cashExpenseLinkImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CashExpenseUncheckedCreateWithoutUserInput = {
+    cashExpenseId?: string
+    cashExpenseAmount: number
+    cashExpenseDescription?: string | null
+    cashExpenseLinkImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CashExpenseCreateOrConnectWithoutUserInput = {
+    where: CashExpenseWhereUniqueInput
+    create: XOR<CashExpenseCreateWithoutUserInput, CashExpenseUncheckedCreateWithoutUserInput>
+  }
+
+  export type CashExpenseCreateManyUserInputEnvelope = {
+    data: CashExpenseCreateManyUserInput | CashExpenseCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DailySalesCreateWithoutUserInput = {
+    dailySalesId: string
+    dailySalesDay: string
+    dailySalesTotalSales?: number | null
+    dailySalesNumberOfSales?: number | null
+    dailySalesTotalIncome?: number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DailySalesUncheckedCreateWithoutUserInput = {
+    dailySalesId: string
+    dailySalesDay: string
+    dailySalesTotalSales?: number | null
+    dailySalesNumberOfSales?: number | null
+    dailySalesTotalIncome?: number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DailySalesCreateOrConnectWithoutUserInput = {
+    where: DailySalesWhereUniqueInput
+    create: XOR<DailySalesCreateWithoutUserInput, DailySalesUncheckedCreateWithoutUserInput>
+  }
+
+  export type DailySalesCreateManyUserInputEnvelope = {
+    data: DailySalesCreateManyUserInput | DailySalesCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CustomerUpsertWithWhereUniqueWithoutCreatedByInput = {
     where: CustomerWhereUniqueInput
     update: XOR<CustomerUpdateWithoutCreatedByInput, CustomerUncheckedUpdateWithoutCreatedByInput>
@@ -15735,6 +19036,66 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"SaleDetail"> | Date | string
   }
 
+  export type CashExpenseUpsertWithWhereUniqueWithoutUserInput = {
+    where: CashExpenseWhereUniqueInput
+    update: XOR<CashExpenseUpdateWithoutUserInput, CashExpenseUncheckedUpdateWithoutUserInput>
+    create: XOR<CashExpenseCreateWithoutUserInput, CashExpenseUncheckedCreateWithoutUserInput>
+  }
+
+  export type CashExpenseUpdateWithWhereUniqueWithoutUserInput = {
+    where: CashExpenseWhereUniqueInput
+    data: XOR<CashExpenseUpdateWithoutUserInput, CashExpenseUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CashExpenseUpdateManyWithWhereWithoutUserInput = {
+    where: CashExpenseScalarWhereInput
+    data: XOR<CashExpenseUpdateManyMutationInput, CashExpenseUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CashExpenseScalarWhereInput = {
+    AND?: CashExpenseScalarWhereInput | CashExpenseScalarWhereInput[]
+    OR?: CashExpenseScalarWhereInput[]
+    NOT?: CashExpenseScalarWhereInput | CashExpenseScalarWhereInput[]
+    cashExpenseId?: StringFilter<"CashExpense"> | string
+    cashExpenseAmount?: IntFilter<"CashExpense"> | number
+    cashExpenseDescription?: StringNullableFilter<"CashExpense"> | string | null
+    cashExpenseLinkImage?: StringNullableFilter<"CashExpense"> | string | null
+    createdByUserId?: StringFilter<"CashExpense"> | string
+    createdAt?: DateTimeFilter<"CashExpense"> | Date | string
+    updatedAt?: DateTimeFilter<"CashExpense"> | Date | string
+  }
+
+  export type DailySalesUpsertWithWhereUniqueWithoutUserInput = {
+    where: DailySalesWhereUniqueInput
+    update: XOR<DailySalesUpdateWithoutUserInput, DailySalesUncheckedUpdateWithoutUserInput>
+    create: XOR<DailySalesCreateWithoutUserInput, DailySalesUncheckedCreateWithoutUserInput>
+  }
+
+  export type DailySalesUpdateWithWhereUniqueWithoutUserInput = {
+    where: DailySalesWhereUniqueInput
+    data: XOR<DailySalesUpdateWithoutUserInput, DailySalesUncheckedUpdateWithoutUserInput>
+  }
+
+  export type DailySalesUpdateManyWithWhereWithoutUserInput = {
+    where: DailySalesScalarWhereInput
+    data: XOR<DailySalesUpdateManyMutationInput, DailySalesUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type DailySalesScalarWhereInput = {
+    AND?: DailySalesScalarWhereInput | DailySalesScalarWhereInput[]
+    OR?: DailySalesScalarWhereInput[]
+    NOT?: DailySalesScalarWhereInput | DailySalesScalarWhereInput[]
+    dailySalesId?: StringFilter<"DailySales"> | string
+    dailySalesDay?: StringFilter<"DailySales"> | string
+    dailySalesTotalSales?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesNumberOfSales?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesTotalIncome?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesDetailIncome?: JsonNullableFilter<"DailySales">
+    createdByUserId?: StringFilter<"DailySales"> | string
+    createdAt?: DateTimeFilter<"DailySales"> | Date | string
+    updatedAt?: DateTimeFilter<"DailySales"> | Date | string
+  }
+
   export type UserCreateWithoutCustomersInput = {
     userId: string
     userFirstName: string
@@ -15754,6 +19115,8 @@ export namespace Prisma {
     Sale?: SaleCreateNestedManyWithoutUserInput
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCustomersInput = {
@@ -15775,6 +19138,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCustomersInput = {
@@ -15886,6 +19251,8 @@ export namespace Prisma {
     Sale?: SaleUpdateManyWithoutUserNestedInput
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCustomersInput = {
@@ -15907,6 +19274,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleUpsertWithWhereUniqueWithoutCustomerInput = {
@@ -15985,6 +19354,8 @@ export namespace Prisma {
     Sale?: SaleCreateNestedManyWithoutUserInput
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProductInput = {
@@ -16006,6 +19377,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProductInput = {
@@ -16112,6 +19485,8 @@ export namespace Prisma {
     Sale?: SaleUpdateManyWithoutUserNestedInput
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProductInput = {
@@ -16133,6 +19508,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleDetailUpsertWithWhereUniqueWithoutProductInput = {
@@ -16195,6 +19572,8 @@ export namespace Prisma {
     Sale?: SaleCreateNestedManyWithoutUserInput
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutServiceInput = {
@@ -16216,6 +19595,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutServiceInput = {
@@ -16322,6 +19703,8 @@ export namespace Prisma {
     Sale?: SaleUpdateManyWithoutUserNestedInput
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutServiceInput = {
@@ -16343,6 +19726,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleDetailUpsertWithWhereUniqueWithoutServiceInput = {
@@ -16460,6 +19845,8 @@ export namespace Prisma {
     Sale?: SaleCreateNestedManyWithoutUserInput
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCategoryInput = {
@@ -16481,6 +19868,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCategoryInput = {
@@ -16550,6 +19939,8 @@ export namespace Prisma {
     Sale?: SaleUpdateManyWithoutUserNestedInput
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCategoryInput = {
@@ -16571,6 +19962,8 @@ export namespace Prisma {
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSaleInput = {
@@ -16592,6 +19985,8 @@ export namespace Prisma {
     Category?: CategoryCreateNestedManyWithoutUserInput
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSaleInput = {
@@ -16613,6 +20008,8 @@ export namespace Prisma {
     Category?: CategoryUncheckedCreateNestedManyWithoutUserInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSaleInput = {
@@ -16753,6 +20150,8 @@ export namespace Prisma {
     Category?: CategoryUpdateManyWithoutUserNestedInput
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSaleInput = {
@@ -16774,6 +20173,8 @@ export namespace Prisma {
     Category?: CategoryUncheckedUpdateManyWithoutUserNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CustomerUpsertWithoutSaleInput = {
@@ -16907,6 +20308,8 @@ export namespace Prisma {
     Category?: CategoryCreateNestedManyWithoutUserInput
     Sale?: SaleCreateNestedManyWithoutUserInput
     Payment?: PaymentCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSaleDetailInput = {
@@ -16928,6 +20331,8 @@ export namespace Prisma {
     Category?: CategoryUncheckedCreateNestedManyWithoutUserInput
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSaleDetailInput = {
@@ -17109,6 +20514,8 @@ export namespace Prisma {
     Category?: CategoryUpdateManyWithoutUserNestedInput
     Sale?: SaleUpdateManyWithoutUserNestedInput
     Payment?: PaymentUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSaleDetailInput = {
@@ -17130,6 +20537,8 @@ export namespace Prisma {
     Category?: CategoryUncheckedUpdateManyWithoutUserNestedInput
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleUpsertWithoutSaleDetailInput = {
@@ -17270,6 +20679,8 @@ export namespace Prisma {
     Category?: CategoryCreateNestedManyWithoutUserInput
     Sale?: SaleCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPaymentInput = {
@@ -17291,6 +20702,8 @@ export namespace Prisma {
     Category?: CategoryUncheckedCreateNestedManyWithoutUserInput
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPaymentInput = {
@@ -17359,6 +20772,8 @@ export namespace Prisma {
     Category?: CategoryUpdateManyWithoutUserNestedInput
     Sale?: SaleUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentInput = {
@@ -17380,6 +20795,8 @@ export namespace Prisma {
     Category?: CategoryUncheckedUpdateManyWithoutUserNestedInput
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleUpsertWithoutPaymentInput = {
@@ -17417,6 +20834,222 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutSaleNestedInput
+  }
+
+  export type UserCreateWithoutCashExpenseInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerCreateNestedManyWithoutCreatedByInput
+    Product?: ProductCreateNestedManyWithoutUserInput
+    Service?: ServiceCreateNestedManyWithoutUserInput
+    Category?: CategoryCreateNestedManyWithoutUserInput
+    Sale?: SaleCreateNestedManyWithoutUserInput
+    Payment?: PaymentCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCashExpenseInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerUncheckedCreateNestedManyWithoutCreatedByInput
+    Product?: ProductUncheckedCreateNestedManyWithoutUserInput
+    Service?: ServiceUncheckedCreateNestedManyWithoutUserInput
+    Category?: CategoryUncheckedCreateNestedManyWithoutUserInput
+    Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
+    Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCashExpenseInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCashExpenseInput, UserUncheckedCreateWithoutCashExpenseInput>
+  }
+
+  export type UserUpsertWithoutCashExpenseInput = {
+    update: XOR<UserUpdateWithoutCashExpenseInput, UserUncheckedUpdateWithoutCashExpenseInput>
+    create: XOR<UserCreateWithoutCashExpenseInput, UserUncheckedCreateWithoutCashExpenseInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCashExpenseInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCashExpenseInput, UserUncheckedUpdateWithoutCashExpenseInput>
+  }
+
+  export type UserUpdateWithoutCashExpenseInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUpdateManyWithoutUserNestedInput
+    Service?: ServiceUpdateManyWithoutUserNestedInput
+    Category?: CategoryUpdateManyWithoutUserNestedInput
+    Sale?: SaleUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCashExpenseInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUncheckedUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    Service?: ServiceUncheckedUpdateManyWithoutUserNestedInput
+    Category?: CategoryUncheckedUpdateManyWithoutUserNestedInput
+    Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutDailySalesInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerCreateNestedManyWithoutCreatedByInput
+    Product?: ProductCreateNestedManyWithoutUserInput
+    Service?: ServiceCreateNestedManyWithoutUserInput
+    Category?: CategoryCreateNestedManyWithoutUserInput
+    Sale?: SaleCreateNestedManyWithoutUserInput
+    Payment?: PaymentCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDailySalesInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerUncheckedCreateNestedManyWithoutCreatedByInput
+    Product?: ProductUncheckedCreateNestedManyWithoutUserInput
+    Service?: ServiceUncheckedCreateNestedManyWithoutUserInput
+    Category?: CategoryUncheckedCreateNestedManyWithoutUserInput
+    Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
+    Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDailySalesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDailySalesInput, UserUncheckedCreateWithoutDailySalesInput>
+  }
+
+  export type UserUpsertWithoutDailySalesInput = {
+    update: XOR<UserUpdateWithoutDailySalesInput, UserUncheckedUpdateWithoutDailySalesInput>
+    create: XOR<UserCreateWithoutDailySalesInput, UserUncheckedCreateWithoutDailySalesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDailySalesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDailySalesInput, UserUncheckedUpdateWithoutDailySalesInput>
+  }
+
+  export type UserUpdateWithoutDailySalesInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUpdateManyWithoutUserNestedInput
+    Service?: ServiceUpdateManyWithoutUserNestedInput
+    Category?: CategoryUpdateManyWithoutUserNestedInput
+    Sale?: SaleUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDailySalesInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUncheckedUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    Service?: ServiceUncheckedUpdateManyWithoutUserNestedInput
+    Category?: CategoryUncheckedUpdateManyWithoutUserNestedInput
+    Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CustomerCreateManyCreatedByInput = {
@@ -17499,6 +21132,26 @@ export namespace Prisma {
     saleDetailTotal: number
     saleDetailType: string
     saleCustomerId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CashExpenseCreateManyUserInput = {
+    cashExpenseId?: string
+    cashExpenseAmount: number
+    cashExpenseDescription?: string | null
+    cashExpenseLinkImage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DailySalesCreateManyUserInput = {
+    dailySalesId: string
+    dailySalesDay: string
+    dailySalesTotalSales?: number | null
+    dailySalesNumberOfSales?: number | null
+    dailySalesTotalIncome?: number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17767,6 +21420,66 @@ export namespace Prisma {
     saleDetailTotal?: IntFieldUpdateOperationsInput | number
     saleDetailType?: StringFieldUpdateOperationsInput | string
     saleCustomerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CashExpenseUpdateWithoutUserInput = {
+    cashExpenseId?: StringFieldUpdateOperationsInput | string
+    cashExpenseAmount?: IntFieldUpdateOperationsInput | number
+    cashExpenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    cashExpenseLinkImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CashExpenseUncheckedUpdateWithoutUserInput = {
+    cashExpenseId?: StringFieldUpdateOperationsInput | string
+    cashExpenseAmount?: IntFieldUpdateOperationsInput | number
+    cashExpenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    cashExpenseLinkImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CashExpenseUncheckedUpdateManyWithoutUserInput = {
+    cashExpenseId?: StringFieldUpdateOperationsInput | string
+    cashExpenseAmount?: IntFieldUpdateOperationsInput | number
+    cashExpenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    cashExpenseLinkImage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DailySalesUpdateWithoutUserInput = {
+    dailySalesId?: StringFieldUpdateOperationsInput | string
+    dailySalesDay?: StringFieldUpdateOperationsInput | string
+    dailySalesTotalSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DailySalesUncheckedUpdateWithoutUserInput = {
+    dailySalesId?: StringFieldUpdateOperationsInput | string
+    dailySalesDay?: StringFieldUpdateOperationsInput | string
+    dailySalesTotalSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DailySalesUncheckedUpdateManyWithoutUserInput = {
+    dailySalesId?: StringFieldUpdateOperationsInput | string
+    dailySalesDay?: StringFieldUpdateOperationsInput | string
+    dailySalesTotalSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

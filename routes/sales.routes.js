@@ -13,7 +13,7 @@ router.post('/sales', authRequired, dbSelectorMiddleware, createSaleController);
 router.get('/sales/:month/:year', authRequired, dbSelectorMiddleware, getMonthlySalescontroller);
 router.get('/sales/:day/:month/:year', authRequired, dbSelectorMiddleware, getDaySalesController);
 
-// 
+
 
 
 export default router;

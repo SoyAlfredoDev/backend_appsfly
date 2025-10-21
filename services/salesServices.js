@@ -200,3 +200,23 @@ export const getDaySales = async (day, month, year, prisma) => {
     }
 };
 
+// get sales between two dates, return an array of sales
+export const getSalesByDate = async (startDate, endDate, prisma) => {
+    try {
+        const start = new Date(`${startDate}T00:00:00.000Z`);
+        const end = new Date(`${endDate}T23:59:59.999Z`);
+        const sales = await prisma.sale.findMany({
+            where: {
+                createdAt: {
+                    gte: start,
+                    lte: end,
+                },
+            },
+        });
+
+        return sales;
+    } catch (error) {
+        console.error("(salesServices.js): Error getting sales by date:", error);
+        throw error;
+    }
+};

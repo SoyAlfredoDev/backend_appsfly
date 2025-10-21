@@ -14,4 +14,9 @@ router.get('/test', (req, res) => {
     res.json({ message: "Test endpoint" });
 });
 
+router.get('/', (req, res) => {
+    res.send('API is running...');
+});
+
+
 export default router;

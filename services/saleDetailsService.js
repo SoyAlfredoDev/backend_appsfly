@@ -86,4 +86,25 @@ export const deleteSaleDetail = async (id, prisma) => {
         console.error("(salesServices.js): Error deleting sale detail:", error);
         throw error;
     }
-};   
+};
+
+
+// get detail sales between two dates, return an array of sales
+export const getSaleDetailByDate = async (startDate, endDate, prisma) => {
+    try {
+        const start = new Date(`${startDate}T00:00:00.000Z`);
+        const end = new Date(`${endDate}T23:59:59.999Z`);
+        const saleDetails = await prisma.saleDetail.findMany({
+            where: {
+                createdAt: {
+                    gte: start,
+                    lte: end
+                }
+            }
+        });
+        return saleDetails || [];
+    } catch (error) {
+        console.error("(salesServices.js): Error getting sale detail by date:", error);
+        throw error;
+    }
+};

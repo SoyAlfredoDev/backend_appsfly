@@ -2,6 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
+
+
 import authRoutes from "./routes/auth.routes.js";
 import customersRoutes from "./routes/customers.routes.js";
 import usersRoutes from "./routes/users.routes.js";
@@ -14,6 +16,10 @@ import paymentsRoutes from "./routes/payments.routes.js"
 import businessRoutes from "./routes/business.routes.js";
 import userBusinessRoutes from "./routes/userBussiness.routes.js";
 import userGuestRoutes from "./routes/userGuest.routes.js";
+import dailySalesRoutes from "./routes/dailySales.routes.js";
+
+
+
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -26,6 +32,7 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
+console.log(">>>>> ENVIRONMENT:", isProduction ? "Production" : "Development");
 
 app.use(cors({
   origin: isProduction
@@ -47,5 +54,6 @@ app.use('/api', paymentsRoutes);
 app.use('/api', businessRoutes);
 app.use('/api', userBusinessRoutes);
 app.use('/api', userGuestRoutes);
+app.use('/api', dailySalesRoutes);
 
 export default app;

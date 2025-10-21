@@ -226,9 +226,36 @@ exports.Prisma.PaymentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.CashExpenseScalarFieldEnum = {
+  cashExpenseId: 'cashExpenseId',
+  cashExpenseAmount: 'cashExpenseAmount',
+  cashExpenseDescription: 'cashExpenseDescription',
+  cashExpenseLinkImage: 'cashExpenseLinkImage',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DailySalesScalarFieldEnum = {
+  dailySalesId: 'dailySalesId',
+  dailySalesDay: 'dailySalesDay',
+  dailySalesTotalSales: 'dailySalesTotalSales',
+  dailySalesNumberOfSales: 'dailySalesNumberOfSales',
+  dailySalesTotalIncome: 'dailySalesTotalIncome',
+  dailySalesDetailIncome: 'dailySalesDetailIncome',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -239,6 +266,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.Role = exports.$Enums.Role = {
   ADMIN: 'ADMIN',
@@ -283,7 +316,9 @@ exports.Prisma.ModelName = {
   Category: 'Category',
   Sale: 'Sale',
   SaleDetail: 'SaleDetail',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  CashExpense: 'CashExpense',
+  DailySales: 'DailySales'
 };
 
 /**
