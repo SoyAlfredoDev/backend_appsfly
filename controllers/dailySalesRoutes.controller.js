@@ -1,6 +1,6 @@
 import { createDailySaleService, getDailySalesService } from '../services/dailySalesService.js';
 import { getSalesByDate } from '../services/salesServices.js';
-import { getPaymentByDate } from '../services/paymentsService.js';
+import { getPaymentByDateService } from '../services/paymentsService.js';
 import { getSaleDetailByDate } from '../services/saleDetailsService.js';
 
 export const createDailySaleController = async (req, res) => {
@@ -11,7 +11,7 @@ export const createDailySaleController = async (req, res) => {
         // Ejecuta consultas en paralelo
         const [salesCount, payments, saleDetails] = await Promise.all([
             getSalesByDate(dailySalesDay, dailySalesDay, prisma),
-            getPaymentByDate(dailySalesDay, dailySalesDay, prisma),
+            getPaymentByDateService(dailySalesDay, dailySalesDay, prisma),
             getSaleDetailByDate(dailySalesDay, dailySalesDay, prisma),
         ]);
 

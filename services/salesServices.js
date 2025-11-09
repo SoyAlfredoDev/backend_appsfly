@@ -48,11 +48,13 @@ export const getSales = async (prisma) => {
         const sales = salesOriginal.map(salesOriginal => {
             const totalPayments = salesOriginal.Payment.reduce((acc, payment) => acc + payment.paymentAmount, 0);
             const totalDetails = salesOriginal.SaleDetail.reduce((acc, detail) => acc + detail.saleDetailTotal, 0);
+            const saleDate = salesOriginal.createdAt.toLocaleDateString('es-CL');
             return {
                 ...salesOriginal,
                 saleTotalPayments: totalPayments,
                 saleTotal: totalDetails,
-                salePendingAmount: totalDetails - totalPayments
+                salePendingAmount: totalDetails - totalPayments,
+                saleDate
             };
         });
         return sales;
@@ -217,6 +219,16 @@ export const getSalesByDate = async (startDate, endDate, prisma) => {
         return sales;
     } catch (error) {
         console.error("(salesServices.js): Error getting sales by date:", error);
+        throw error;
+    }
+};
+
+export const countSalesService = async (prisma) => {
+    try {
+        const count = await prisma.sale.count();
+        return count;
+    } catch (error) {
+        console.error("(salesServices.js): Error counting sales:", error);
         throw error;
     }
 };

@@ -1,4 +1,4 @@
-import { createPayment, getPayments, getPaymentBySaleId } from '../services/paymentsService.js';
+import { createPaymentService, getPaymentsService, getPaymentBySaleIdService, sumPaymentsByPaymentMethodsService } from '../services/paymentsService.js';
 
 export const createPaymentController = async (req, res) => {
     try {
@@ -11,7 +11,7 @@ export const createPaymentController = async (req, res) => {
             paymentMethod: String(paymentMethod),
             createdByUserId
         }
-        const payment = await createPayment(data, req.prisma);
+        const payment = await createPaymentService(data, req.prisma);
         res.status(201).json({
             message: 'payment created successfully',
             payment
@@ -24,7 +24,7 @@ export const createPaymentController = async (req, res) => {
 
 export const getPaymentsController = async (req, res) => {
     try {
-        const payments = await getPayments(req.prisma);
+        const payments = await getPaymentsService(req.prisma);
         res.status(200).json(payments);
     } catch (error) {
         console.error("(payment.controller.js): Error getting payment:", error);
@@ -35,15 +35,25 @@ export const getPaymentsController = async (req, res) => {
 export const getPaymentBySaleIdController = async (req, res) => {
     try {
         const { id } = req.params;
-        const paymenBySaleId = await getPaymentBySaleId(id, req.prisma);
-        if (!paymenBySaleId) {
+        const paymentBySaleId = await getPaymentBySaleIdService(id, req.prisma);
+        if (!paymentBySaleId) {
             return res.status(404).json({ message: "payment not found" });
         }
-        res.status(200).json(paymenBySaleId);
+        res.status(200).json(paymentBySaleId);
 
     } catch (error) {
-        console.error("(sales.controller.js): Error fetching payment by ID:", error);
+        console.error("(payment.controller.js): Error fetching payment by ID:", error);
         res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const getSumPaymentsByPaymentMethodsController = async (req, res) => {
+    try {
+        const { paymentMethod } = req.params;
+        const total = await sumPaymentsByPaymentMethodsService(paymentMethod, req.prisma);
+        return res.status(200).json({ total });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
     }
 };
 

@@ -5,13 +5,28 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const {
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+  PrismaClientRustPanicError,
+  PrismaClientInitializationError,
+  PrismaClientValidationError,
+  getPrismaClient,
+  sqltag,
+  empty,
+  join,
+  raw,
+  skip,
   Decimal,
+  Debug,
   objectEnumValues,
   makeStrictEnum,
+  Extensions,
+  warnOnce,
+  defineDmmfProperty,
   Public,
   getRuntime,
-  skip
-} = require('./runtime/index-browser.js')
+  createParam,
+} = require('./runtime/wasm-engine-edge.js')
 
 
 const Prisma = {}
@@ -20,79 +35,35 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.15.0
- * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
+ * Prisma Client JS version: 6.18.0
+ * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
  */
 Prisma.prismaVersion = {
-  client: "6.15.0",
-  engine: "85179d7826409ee107a6ba334b5e305ae3fba9fb"
+  client: "6.18.0",
+  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
 }
 
-Prisma.PrismaClientKnownRequestError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientKnownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)};
-Prisma.PrismaClientUnknownRequestError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientUnknownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientRustPanicError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientRustPanicError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientInitializationError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientInitializationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientValidationError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientValidationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
+Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
+Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError
+Prisma.PrismaClientInitializationError = PrismaClientInitializationError
+Prisma.PrismaClientValidationError = PrismaClientValidationError
 Prisma.Decimal = Decimal
 
 /**
  * Re-export of sql-template-tag
  */
-Prisma.sql = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`sqltag is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.empty = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`empty is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.join = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`join is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.raw = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`raw is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.sql = sqltag
+Prisma.empty = empty
+Prisma.join = join
+Prisma.raw = raw
 Prisma.validator = Public.validator
 
 /**
 * Extensions
 */
-Prisma.getExtensionContext = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`Extensions.getExtensionContext is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.defineExtension = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`Extensions.defineExtension is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.getExtensionContext = Extensions.getExtensionContext
+Prisma.defineExtension = Extensions.defineExtension
 
 /**
  * Shorthand utilities for JSON filtering
@@ -109,10 +80,11 @@ Prisma.NullTypes = {
 
 
 
+
+
 /**
  * Enums
  */
-
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
@@ -197,6 +169,7 @@ exports.Prisma.SaleScalarFieldEnum = {
   salePendingAmount: 'salePendingAmount',
   createdByUserId: 'createdByUserId',
   saleComment: 'saleComment',
+  saleNumber: 'saleNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -246,6 +219,29 @@ exports.Prisma.DailySalesScalarFieldEnum = {
   createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TransactionsScalarFieldEnum = {
+  transactionId: 'transactionId',
+  transactionType: 'transactionType',
+  transactionMethod: 'transactionMethod',
+  transactionTable: 'transactionTable',
+  transactionRecordId: 'transactionRecordId',
+  transactionOldValue: 'transactionOldValue',
+  transactionNewValue: 'transactionNewValue',
+  transactionDescription: 'transactionDescription',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ExpenseScalarFieldEnum = {
+  expenseId: 'expenseId',
+  expenseDescription: 'expenseDescription',
+  expensePaymentMethod: 'expensePaymentMethod',
+  expenseImageUrl: 'expenseImageUrl',
+  expenseAmount: 'expenseAmount',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -318,36 +314,94 @@ exports.Prisma.ModelName = {
   SaleDetail: 'SaleDetail',
   Payment: 'Payment',
   CashExpense: 'CashExpense',
-  DailySales: 'DailySales'
+  DailySales: 'DailySales',
+  Transactions: 'Transactions',
+  Expense: 'Expense'
 };
-
 /**
- * This is a stub Prisma Client that will error at runtime if called.
+ * Create the Client
  */
-class PrismaClient {
-  constructor() {
-    return new Proxy(this, {
-      get(target, prop) {
-        let message
-        const runtime = getRuntime()
-        if (runtime.isEdge) {
-          message = `PrismaClient is not configured to run in ${runtime.prettyName}. In order to run Prisma Client on edge runtime, either:
-- Use Prisma Accelerate: https://pris.ly/d/accelerate
-- Use Driver Adapters: https://pris.ly/d/driver-adapters
-`;
-        } else {
-          message = 'PrismaClient is unable to run in this browser environment, or has been bundled for the browser (running in `' + runtime.prettyName + '`).'
-        }
-
-        message += `
-If this is unexpected, please open an issue: https://pris.ly/prisma-prisma-bug-report`
-
-        throw new Error(message)
+const config = {
+  "generator": {
+    "name": "client",
+    "provider": {
+      "fromEnvVar": null,
+      "value": "prisma-client-js"
+    },
+    "output": {
+      "value": "C:\\Users\\Alfredo  Hurtado\\Desktop\\mis-apps\\appsfly\\backend\\src\\generated\\business",
+      "fromEnvVar": null
+    },
+    "config": {
+      "engineType": "library"
+    },
+    "binaryTargets": [
+      {
+        "fromEnvVar": null,
+        "value": "windows",
+        "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "windows"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
-    })
+    ],
+    "previewFeatures": [],
+    "sourceFilePath": "C:\\Users\\Alfredo  Hurtado\\Desktop\\mis-apps\\appsfly\\backend\\prisma\\businessDB\\schema.prisma",
+    "isCustomOutput": true
+  },
+  "relativeEnvPaths": {
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
+  },
+  "relativePath": "../../../prisma/businessDB",
+  "clientVersion": "6.18.0",
+  "engineVersion": "34b5a692b7bd79939a9a2c3ef97d816e749cda2f",
+  "datasourceNames": [
+    "db"
+  ],
+  "activeProvider": "postgresql",
+  "inlineDatasources": {
+    "db": {
+      "url": {
+        "fromEnvVar": "DATABASE001",
+        "value": null
+      }
+    }
+  },
+  "inlineSchema": "// npx prisma migrate dev --schema=prisma/businessDB/schema.prisma --name init_business\n// npx prisma generate --schema ./prisma/businessDB/schema.prisma\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../../src/generated/business\"\n  binaryTargets = [\"native\", \"windows\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE001\")\n}\n\nmodel User {\n  userId              String    @id\n  userFirstName       String\n  userLastName        String\n  userEmail           String    @unique\n  userLastConnection  DateTime?\n  userCodePhoneNumber String\n  userPhoneNumber     String\n  userDocumentType    String\n  userDocumentNumber  String\n  userRole            Role\n  createdAt           DateTime  @default(now())\n  updatedAt           DateTime  @updatedAt\n\n  // Relaciones\n  customers    Customer[]\n  Product      Product[]\n  Service      Service[]\n  Category     Category[]\n  Sale         Sale[]\n  Payment      Payment[]\n  SaleDetail   SaleDetail[]\n  CashExpense  CashExpense[]\n  DailySales   DailySales[]\n  Transactions Transactions[]\n  Expense      Expense[]\n}\n\nmodel Customer {\n  customerId              String       @id @default(uuid())\n  customerFirstName       String\n  customerLastName        String\n  customerEmail           String?\n  customerCodePhoneNumber String?\n  customerPhoneNumber     String?\n  customerDocumentType    String?\n  customerDocumentNumber  String?\n  customerComment         String?\n  createdAt               DateTime     @default(now())\n  updatedAt               DateTime     @updatedAt\n  createdByUserId         String\n  createdBy               User?        @relation(fields: [createdByUserId], references: [userId])\n  Sale                    Sale[]\n  SaleDetail              SaleDetail[]\n}\n\nmodel Product {\n  productId          String        @id @default(uuid())\n  productName        String\n  productDescription String?\n  productSKU         String        @unique\n  categoryId         String\n  category           Category      @relation(fields: [categoryId], references: [categoryId])\n  productPrice       Int\n  productPriceFixed  Boolean?\n  productStatus      ProductStatus\n  productUnit        ProductUnit\n  createdByUserId    String\n  user               User          @relation(fields: [createdByUserId], references: [userId])\n  createdAt          DateTime      @default(now())\n  updatedAt          DateTime      @updatedAt\n  SaleDetail         SaleDetail[]\n}\n\nmodel Service {\n  serviceId          String        @id @default(uuid())\n  serviceName        String\n  serviceDescription String?\n  serviceSKU         String        @unique\n  servicePrice       Int\n  servicePriceFixed  Boolean?\n  serviceStatus      ProductStatus\n  serviceUnit        ServiceUnit\n  categoryId         String\n  category           Category      @relation(fields: [categoryId], references: [categoryId])\n  createdByUserId    String\n  user               User          @relation(fields: [createdByUserId], references: [userId])\n  createdAt          DateTime      @default(now())\n  updatedAt          DateTime      @updatedAt\n  SaleDetail         SaleDetail[]\n}\n\nmodel Category {\n  categoryId      String       @id @default(uuid())\n  categoryName    String\n  createdByUserId String\n  allowedFor      UsageContext\n  products        Product[]\n  services        Service[]\n  user            User         @relation(fields: [createdByUserId], references: [userId])\n  createdAt       DateTime     @default(now())\n  updatedAt       DateTime     @updatedAt\n}\n\nmodel Sale {\n  saleId            String       @id\n  saleCustomerId    String\n  saleTotal         Int\n  saleTotalPayments Int\n  salePendingAmount Int\n  createdByUserId   String\n  saleComment       String?\n  saleNumber        String?\n  user              User         @relation(fields: [createdByUserId], references: [userId])\n  customer          Customer     @relation(fields: [saleCustomerId], references: [customerId])\n  createdAt         DateTime     @default(now())\n  updatedAt         DateTime     @updatedAt\n  SaleDetail        SaleDetail[]\n  Payment           Payment[]\n}\n\nmodel SaleDetail {\n  saleDetailId        String   @id\n  saleId              String\n  saleDetailProductId String?\n  saleDetailServiceId String?\n  saleDetailQuantity  Int\n  saleDetailPrice     Int\n  saleDetailTotal     Int\n  saleDetailType      String\n  createdByUserId     String\n  saleCustomerId      String\n  customer            Customer @relation(fields: [saleCustomerId], references: [customerId])\n  user                User     @relation(fields: [createdByUserId], references: [userId])\n  sale                Sale     @relation(fields: [saleId], references: [saleId])\n  product             Product? @relation(fields: [saleDetailProductId], references: [productId])\n  service             Service? @relation(fields: [saleDetailServiceId], references: [serviceId])\n  createdAt           DateTime @default(now())\n  updatedAt           DateTime @updatedAt\n}\n\nmodel Payment {\n  paymentId       String   @id\n  saleId          String\n  paymentAmount   Int\n  paymentMethod   String\n  createdByUserId String\n  user            User     @relation(fields: [createdByUserId], references: [userId])\n  createdAt       DateTime @default(now())\n  updatedAt       DateTime @updatedAt\n  Sale            Sale     @relation(fields: [saleId], references: [saleId])\n}\n\nmodel CashExpense {\n  cashExpenseId          String   @id @default(uuid())\n  cashExpenseAmount      Int\n  cashExpenseDescription String?\n  cashExpenseLinkImage   String?\n  createdByUserId        String\n  createdAt              DateTime @default(now())\n  updatedAt              DateTime @updatedAt\n  user                   User     @relation(fields: [createdByUserId], references: [userId])\n}\n\nmodel DailySales {\n  dailySalesId            String   @id\n  dailySalesDay           String\n  dailySalesTotalSales    Int?\n  dailySalesNumberOfSales Int?\n  dailySalesTotalIncome   Int?\n  dailySalesDetailIncome  Json?\n  createdByUserId         String\n  createdAt               DateTime @default(now())\n  updatedAt               DateTime @updatedAt\n  user                    User     @relation(fields: [createdByUserId], references: [userId])\n}\n\nmodel Transactions {\n  transactionId          String   @id @default(uuid())\n  transactionType        String?\n  transactionMethod      String?\n  transactionTable       String?\n  transactionRecordId    String?\n  transactionOldValue    Json?\n  transactionNewValue    Json?\n  transactionDescription String?\n  createdByUserId        String\n  createdAt              DateTime @default(now())\n  user                   User     @relation(fields: [createdByUserId], references: [userId])\n}\n\nenum Role {\n  ADMIN\n  USER\n}\n\nmodel Expense {\n  expenseId            String   @id\n  expenseDescription   String?\n  expensePaymentMethod String?\n  expenseImageUrl      String?\n  expenseAmount        Int?\n  createdByUserId      String\n  createdAt            DateTime @default(now())\n  user                 User     @relation(fields: [createdByUserId], references: [userId])\n}\n\nenum ProductStatus {\n  ACTIVE\n  INACTIVE\n  DELETED\n}\n\nenum ProductUnit {\n  UNIT\n  KILOGRAM\n  GRAM\n  LITER\n  MILLILITER\n  METER\n  CENTIMETER\n}\n\nenum ServiceUnit {\n  UNIT\n  MONTH\n  DAY\n  HOUR\n  MINUTE\n}\n\nenum UsageContext {\n  PRODUCTS\n  SERVICES\n  BOTH\n}\n",
+  "inlineSchemaHash": "19ec5905d158601beb5a3484503985161ded3475e639bc186c88804607da3099",
+  "copyEngine": true
+}
+config.dirname = '/'
+
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userFirstName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userLastName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userLastConnection\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userCodePhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userPhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userDocumentType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userDocumentNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userRole\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"customers\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToUser\"},{\"name\":\"Product\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"ProductToUser\"},{\"name\":\"Service\",\"kind\":\"object\",\"type\":\"Service\",\"relationName\":\"ServiceToUser\"},{\"name\":\"Category\",\"kind\":\"object\",\"type\":\"Category\",\"relationName\":\"CategoryToUser\"},{\"name\":\"Sale\",\"kind\":\"object\",\"type\":\"Sale\",\"relationName\":\"SaleToUser\"},{\"name\":\"Payment\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"PaymentToUser\"},{\"name\":\"SaleDetail\",\"kind\":\"object\",\"type\":\"SaleDetail\",\"relationName\":\"SaleDetailToUser\"},{\"name\":\"CashExpense\",\"kind\":\"object\",\"type\":\"CashExpense\",\"relationName\":\"CashExpenseToUser\"},{\"name\":\"DailySales\",\"kind\":\"object\",\"type\":\"DailySales\",\"relationName\":\"DailySalesToUser\"},{\"name\":\"Transactions\",\"kind\":\"object\",\"type\":\"Transactions\",\"relationName\":\"TransactionsToUser\"},{\"name\":\"Expense\",\"kind\":\"object\",\"type\":\"Expense\",\"relationName\":\"ExpenseToUser\"}],\"dbName\":null},\"Customer\":{\"fields\":[{\"name\":\"customerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerFirstName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerLastName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerCodePhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerPhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerDocumentType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerDocumentNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customerComment\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdBy\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CustomerToUser\"},{\"name\":\"Sale\",\"kind\":\"object\",\"type\":\"Sale\",\"relationName\":\"CustomerToSale\"},{\"name\":\"SaleDetail\",\"kind\":\"object\",\"type\":\"SaleDetail\",\"relationName\":\"CustomerToSaleDetail\"}],\"dbName\":null},\"Product\":{\"fields\":[{\"name\":\"productId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"productName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"productDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"productSKU\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"categoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"object\",\"type\":\"Category\",\"relationName\":\"CategoryToProduct\"},{\"name\":\"productPrice\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"productPriceFixed\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"productStatus\",\"kind\":\"enum\",\"type\":\"ProductStatus\"},{\"name\":\"productUnit\",\"kind\":\"enum\",\"type\":\"ProductUnit\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProductToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"SaleDetail\",\"kind\":\"object\",\"type\":\"SaleDetail\",\"relationName\":\"ProductToSaleDetail\"}],\"dbName\":null},\"Service\":{\"fields\":[{\"name\":\"serviceId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"serviceName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"serviceDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"serviceSKU\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"servicePrice\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"servicePriceFixed\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"serviceStatus\",\"kind\":\"enum\",\"type\":\"ProductStatus\"},{\"name\":\"serviceUnit\",\"kind\":\"enum\",\"type\":\"ServiceUnit\"},{\"name\":\"categoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"category\",\"kind\":\"object\",\"type\":\"Category\",\"relationName\":\"CategoryToService\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ServiceToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"SaleDetail\",\"kind\":\"object\",\"type\":\"SaleDetail\",\"relationName\":\"SaleDetailToService\"}],\"dbName\":null},\"Category\":{\"fields\":[{\"name\":\"categoryId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"categoryName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"allowedFor\",\"kind\":\"enum\",\"type\":\"UsageContext\"},{\"name\":\"products\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"CategoryToProduct\"},{\"name\":\"services\",\"kind\":\"object\",\"type\":\"Service\",\"relationName\":\"CategoryToService\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CategoryToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Sale\":{\"fields\":[{\"name\":\"saleId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleCustomerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleTotal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"saleTotalPayments\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"salePendingAmount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleComment\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SaleToUser\"},{\"name\":\"customer\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToSale\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"SaleDetail\",\"kind\":\"object\",\"type\":\"SaleDetail\",\"relationName\":\"SaleToSaleDetail\"},{\"name\":\"Payment\",\"kind\":\"object\",\"type\":\"Payment\",\"relationName\":\"PaymentToSale\"}],\"dbName\":null},\"SaleDetail\":{\"fields\":[{\"name\":\"saleDetailId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleDetailProductId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleDetailServiceId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleDetailQuantity\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"saleDetailPrice\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"saleDetailTotal\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"saleDetailType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleCustomerId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"customer\",\"kind\":\"object\",\"type\":\"Customer\",\"relationName\":\"CustomerToSaleDetail\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SaleDetailToUser\"},{\"name\":\"sale\",\"kind\":\"object\",\"type\":\"Sale\",\"relationName\":\"SaleToSaleDetail\"},{\"name\":\"product\",\"kind\":\"object\",\"type\":\"Product\",\"relationName\":\"ProductToSaleDetail\"},{\"name\":\"service\",\"kind\":\"object\",\"type\":\"Service\",\"relationName\":\"SaleDetailToService\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Payment\":{\"fields\":[{\"name\":\"paymentId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"saleId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"paymentAmount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"paymentMethod\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PaymentToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"Sale\",\"kind\":\"object\",\"type\":\"Sale\",\"relationName\":\"PaymentToSale\"}],\"dbName\":null},\"CashExpense\":{\"fields\":[{\"name\":\"cashExpenseId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cashExpenseAmount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"cashExpenseDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cashExpenseLinkImage\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CashExpenseToUser\"}],\"dbName\":null},\"DailySales\":{\"fields\":[{\"name\":\"dailySalesId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dailySalesDay\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"dailySalesTotalSales\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dailySalesNumberOfSales\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dailySalesTotalIncome\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dailySalesDetailIncome\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"DailySalesToUser\"}],\"dbName\":null},\"Transactions\":{\"fields\":[{\"name\":\"transactionId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transactionType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transactionMethod\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transactionTable\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transactionRecordId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"transactionOldValue\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"transactionNewValue\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"transactionDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"TransactionsToUser\"}],\"dbName\":null},\"Expense\":{\"fields\":[{\"name\":\"expenseId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expenseDescription\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expensePaymentMethod\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expenseImageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expenseAmount\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ExpenseToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
+config.engineWasm = {
+  getRuntime: async () => require('./query_engine_bg.js'),
+  getQueryEngineWasmModule: async () => {
+    const loader = (await import('#wasm-engine-loader')).default
+    const engine = (await loader).default
+    return engine
   }
 }
+config.compilerWasm = undefined
 
+config.injectableEdgeEnv = () => ({
+  parsed: {
+    DATABASE001: typeof globalThis !== 'undefined' && globalThis['DATABASE001'] || typeof process !== 'undefined' && process.env && process.env.DATABASE001 || undefined
+  }
+})
+
+if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
+  Debug.enable(typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined)
+}
+
+const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
-
 Object.assign(exports, Prisma)
+

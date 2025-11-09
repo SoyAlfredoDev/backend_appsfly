@@ -1,11 +1,15 @@
 import { createSale, getSaleById, getSales, getMonthlySales, getDaySales } from '../services/salesServices.js';
+import defineSaleNumber from '../libs/defineSaleNumber.js';
 
 export const createSaleController = async (req, res) => {
     try {
         const { saleId, saleCustomerId, saleTotal, saleTotalPayments, saleComment } = req.body;
         const userId = req.user.payload.id
+        const numberSale = await defineSaleNumber(req.prisma);
+        console.log("Generated Sale Number:", numberSale);
         const data = {
             saleId,
+            saleNumber: numberSale,
             saleCustomerId,
             createdByUserId: userId,
             saleTotal: Number(saleTotal),
@@ -72,6 +76,7 @@ export const getMonthlySalesNowController = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
 export const getDaySalesController = async (req, res) => {
     try {
         const { day, month, year } = req.params;

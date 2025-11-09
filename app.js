@@ -3,7 +3,6 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 
-
 import authRoutes from "./routes/auth.routes.js";
 import customersRoutes from "./routes/customers.routes.js";
 import usersRoutes from "./routes/users.routes.js";
@@ -17,16 +16,15 @@ import businessRoutes from "./routes/business.routes.js";
 import userBusinessRoutes from "./routes/userBussiness.routes.js";
 import userGuestRoutes from "./routes/userGuest.routes.js";
 import dailySalesRoutes from "./routes/dailySales.routes.js";
-
-
+import transactionsRoutes from "./routes/transactions.routes.js";
+import expensesRoutes from "./routes/expenses.routes.js";
+import utilsRoutes from "./routes/utils.routes.js";
 
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 const isProduction = process.env.NODE_ENV === "production";
-
-
 
 const app = express();
 
@@ -55,5 +53,8 @@ app.use('/api', businessRoutes);
 app.use('/api', userBusinessRoutes);
 app.use('/api', userGuestRoutes);
 app.use('/api', dailySalesRoutes);
+app.use('/api', transactionsRoutes);
+app.use('/api', expensesRoutes);
+app.use('/api', utilsRoutes);
 
 export default app;

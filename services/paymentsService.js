@@ -1,6 +1,6 @@
 
 
-export const createPayment = async (data, prisma) => {
+export const createPaymentService = async (data, prisma) => {
     try {
         const res = await prisma.payment.create({ data });
         return res
@@ -10,7 +10,7 @@ export const createPayment = async (data, prisma) => {
     }
 };
 
-export const getPayments = async (prisma) => {
+export const getPaymentsService = async (prisma) => {
     try {
         const res = await prisma.payment.findMany();
         return res
@@ -21,7 +21,7 @@ export const getPayments = async (prisma) => {
     }
 };
 
-export const getPaymentBySaleId = async (id, prisma) => {
+export const getPaymentBySaleIdService = async (id, prisma) => {
     try {
         const payments = await prisma.payment.findMany({
             where: {
@@ -34,8 +34,7 @@ export const getPaymentBySaleId = async (id, prisma) => {
     }
 }
 
-// get payments between dates, return an array of payments
-export const getPaymentByDate = async (startDate, endDate, prisma) => {
+export const getPaymentByDateService = async (startDate, endDate, prisma) => {
     try {
         const start = new Date(`${startDate}T00:00:00.000Z`);
         const end = new Date(`${endDate}T23:59:59.999Z`);
@@ -50,5 +49,18 @@ export const getPaymentByDate = async (startDate, endDate, prisma) => {
         return payments || [];
     } catch (error) {
         console.error("(paymentsService.js): Error getting payment by date:", error);
+    }
+}
+
+export const sumPaymentsByPaymentMethodsService = async (paymentMethod, prisma) => {
+    try {
+        const result = await prisma.payment.aggregate({
+            where: { paymentMethod: paymentMethod },
+            _sum: { paymentAmount: true },
+        });
+        return result._sum.paymentAmount || 0;
+    } catch (error) {
+        console.error(`(paymentsService.js): Error getting sum of payments by payment method ${paymentMethod}:`, error);
+        throw error;
     }
 }

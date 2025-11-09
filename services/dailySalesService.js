@@ -10,7 +10,11 @@ export const createDailySaleService = async (data, prisma) => {
 
 export const getDailySalesService = async (prisma) => {
     try {
-        const res = await prisma.dailySales.findMany();
+        const res = await prisma.dailySales.findMany({
+            orderBy: {
+                dailySalesDay: 'desc'
+            }
+        });
         return res;
     } catch (error) {
         console.error("(dailySalesService.js): Error getting daily sales:", error);

@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.15.0
- * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
+ * Prisma Client JS version: 6.18.0
+ * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
  */
 Prisma.prismaVersion = {
-  client: "6.15.0",
-  engine: "85179d7826409ee107a6ba334b5e305ae3fba9fb"
+  client: "6.18.0",
+  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -197,6 +197,7 @@ exports.Prisma.SaleScalarFieldEnum = {
   salePendingAmount: 'salePendingAmount',
   createdByUserId: 'createdByUserId',
   saleComment: 'saleComment',
+  saleNumber: 'saleNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -246,6 +247,29 @@ exports.Prisma.DailySalesScalarFieldEnum = {
   createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TransactionsScalarFieldEnum = {
+  transactionId: 'transactionId',
+  transactionType: 'transactionType',
+  transactionMethod: 'transactionMethod',
+  transactionTable: 'transactionTable',
+  transactionRecordId: 'transactionRecordId',
+  transactionOldValue: 'transactionOldValue',
+  transactionNewValue: 'transactionNewValue',
+  transactionDescription: 'transactionDescription',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ExpenseScalarFieldEnum = {
+  expenseId: 'expenseId',
+  expenseDescription: 'expenseDescription',
+  expensePaymentMethod: 'expensePaymentMethod',
+  expenseImageUrl: 'expenseImageUrl',
+  expenseAmount: 'expenseAmount',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -318,7 +342,9 @@ exports.Prisma.ModelName = {
   SaleDetail: 'SaleDetail',
   Payment: 'Payment',
   CashExpense: 'CashExpense',
-  DailySales: 'DailySales'
+  DailySales: 'DailySales',
+  Transactions: 'Transactions',
+  Expense: 'Expense'
 };
 
 /**
