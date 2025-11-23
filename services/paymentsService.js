@@ -26,8 +26,23 @@ export const getPaymentBySaleIdService = async (id, prisma) => {
         const payments = await prisma.payment.findMany({
             where: {
                 saleId: id
+            },
+            include: {
+                user: {
+                    select: {
+                        userId: true,
+                        userFirstName: true,
+                        userLastName: true,
+                    },
+                },
+                Sale: {
+                    select: {
+                        saleId: true,
+                        saleNumber: true,
+                    },
+                }
             }
-        })
+        });
         return payments || []
     } catch (error) {
         console.error("(paymentsService.js): Error getting payment by saleId:", error);
@@ -61,6 +76,20 @@ export const sumPaymentsByPaymentMethodsService = async (paymentMethod, prisma) 
         return result._sum.paymentAmount || 0;
     } catch (error) {
         console.error(`(paymentsService.js): Error getting sum of payments by payment method ${paymentMethod}:`, error);
+        throw error;
+    }
+}
+
+export const getPaymentByCustomerIdService = async (customerId, prisma) => {
+    try {
+        const payments = await prisma.payment.findMany({
+            where: {
+                customerId: customerId
+            }
+        });
+        return payments || [];
+    } catch (error) {
+        console.error(`(paymentsService.js): Error getting payments by customerId ${customerId}:`, error);
         throw error;
     }
 }

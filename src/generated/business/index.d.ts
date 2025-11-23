@@ -2420,10 +2420,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection: Date | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber: string | null
+    userPhoneNumber: string | null
+    userDocumentType: string | null
+    userDocumentNumber: string | null
     userRole: $Enums.Role
     createdAt: Date
     updatedAt: Date
@@ -2557,10 +2557,10 @@ export namespace Prisma {
       userLastName: string
       userEmail: string
       userLastConnection: Date | null
-      userCodePhoneNumber: string
-      userPhoneNumber: string
-      userDocumentType: string
-      userDocumentNumber: string
+      userCodePhoneNumber: string | null
+      userPhoneNumber: string | null
+      userDocumentType: string | null
+      userDocumentNumber: string | null
       userRole: $Enums.Role
       createdAt: Date
       updatedAt: Date
@@ -17001,10 +17001,10 @@ export namespace Prisma {
     userLastName?: StringFilter<"User"> | string
     userEmail?: StringFilter<"User"> | string
     userLastConnection?: DateTimeNullableFilter<"User"> | Date | string | null
-    userCodePhoneNumber?: StringFilter<"User"> | string
-    userPhoneNumber?: StringFilter<"User"> | string
-    userDocumentType?: StringFilter<"User"> | string
-    userDocumentNumber?: StringFilter<"User"> | string
+    userCodePhoneNumber?: StringNullableFilter<"User"> | string | null
+    userPhoneNumber?: StringNullableFilter<"User"> | string | null
+    userDocumentType?: StringNullableFilter<"User"> | string | null
+    userDocumentNumber?: StringNullableFilter<"User"> | string | null
     userRole?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -17027,10 +17027,10 @@ export namespace Prisma {
     userLastName?: SortOrder
     userEmail?: SortOrder
     userLastConnection?: SortOrderInput | SortOrder
-    userCodePhoneNumber?: SortOrder
-    userPhoneNumber?: SortOrder
-    userDocumentType?: SortOrder
-    userDocumentNumber?: SortOrder
+    userCodePhoneNumber?: SortOrderInput | SortOrder
+    userPhoneNumber?: SortOrderInput | SortOrder
+    userDocumentType?: SortOrderInput | SortOrder
+    userDocumentNumber?: SortOrderInput | SortOrder
     userRole?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17056,10 +17056,10 @@ export namespace Prisma {
     userFirstName?: StringFilter<"User"> | string
     userLastName?: StringFilter<"User"> | string
     userLastConnection?: DateTimeNullableFilter<"User"> | Date | string | null
-    userCodePhoneNumber?: StringFilter<"User"> | string
-    userPhoneNumber?: StringFilter<"User"> | string
-    userDocumentType?: StringFilter<"User"> | string
-    userDocumentNumber?: StringFilter<"User"> | string
+    userCodePhoneNumber?: StringNullableFilter<"User"> | string | null
+    userPhoneNumber?: StringNullableFilter<"User"> | string | null
+    userDocumentType?: StringNullableFilter<"User"> | string | null
+    userDocumentNumber?: StringNullableFilter<"User"> | string | null
     userRole?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
@@ -17082,10 +17082,10 @@ export namespace Prisma {
     userLastName?: SortOrder
     userEmail?: SortOrder
     userLastConnection?: SortOrderInput | SortOrder
-    userCodePhoneNumber?: SortOrder
-    userPhoneNumber?: SortOrder
-    userDocumentType?: SortOrder
-    userDocumentNumber?: SortOrder
+    userCodePhoneNumber?: SortOrderInput | SortOrder
+    userPhoneNumber?: SortOrderInput | SortOrder
+    userDocumentType?: SortOrderInput | SortOrder
+    userDocumentNumber?: SortOrderInput | SortOrder
     userRole?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -17103,10 +17103,10 @@ export namespace Prisma {
     userLastName?: StringWithAggregatesFilter<"User"> | string
     userEmail?: StringWithAggregatesFilter<"User"> | string
     userLastConnection?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-    userCodePhoneNumber?: StringWithAggregatesFilter<"User"> | string
-    userPhoneNumber?: StringWithAggregatesFilter<"User"> | string
-    userDocumentType?: StringWithAggregatesFilter<"User"> | string
-    userDocumentNumber?: StringWithAggregatesFilter<"User"> | string
+    userCodePhoneNumber?: StringNullableWithAggregatesFilter<"User"> | string | null
+    userPhoneNumber?: StringNullableWithAggregatesFilter<"User"> | string | null
+    userDocumentType?: StringNullableWithAggregatesFilter<"User"> | string | null
+    userDocumentNumber?: StringNullableWithAggregatesFilter<"User"> | string | null
     userRole?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -18032,10 +18032,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18058,10 +18058,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18084,10 +18084,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18110,10 +18110,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18136,10 +18136,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18151,10 +18151,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18166,10 +18166,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19173,6 +19173,21 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type EnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -19383,6 +19398,24 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -19405,21 +19438,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type UserNullableScalarRelationFilter = {
@@ -19470,24 +19488,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -20302,6 +20302,10 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type EnumRoleFieldUpdateOperationsInput = {
     set?: $Enums.Role
   }
@@ -20650,10 +20654,6 @@ export namespace Prisma {
     connectOrCreate?: SaleDetailCreateOrConnectWithoutCustomerInput | SaleDetailCreateOrConnectWithoutCustomerInput[]
     createMany?: SaleDetailCreateManyCustomerInputEnvelope
     connect?: SaleDetailWhereUniqueInput | SaleDetailWhereUniqueInput[]
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type UserUpdateOneWithoutCustomersNestedInput = {
@@ -21291,6 +21291,20 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedEnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -21362,6 +21376,23 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -21384,37 +21415,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type NestedBoolNullableFilter<$PrismaModel = never> = {
@@ -22305,10 +22305,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22330,10 +22330,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22447,10 +22447,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22472,10 +22472,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22554,10 +22554,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22579,10 +22579,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22689,10 +22689,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22714,10 +22714,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22780,10 +22780,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22805,10 +22805,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22915,10 +22915,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22940,10 +22940,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23061,10 +23061,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23086,10 +23086,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23159,10 +23159,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23184,10 +23184,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23209,10 +23209,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23234,10 +23234,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23378,10 +23378,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23403,10 +23403,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23540,10 +23540,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23565,10 +23565,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23752,10 +23752,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23777,10 +23777,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23923,10 +23923,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23948,10 +23948,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24022,10 +24022,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24047,10 +24047,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24111,10 +24111,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24136,10 +24136,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24177,10 +24177,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24202,10 +24202,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24227,10 +24227,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24252,10 +24252,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24293,10 +24293,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24318,10 +24318,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24343,10 +24343,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24368,10 +24368,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24409,10 +24409,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24434,10 +24434,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24459,10 +24459,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24484,10 +24484,10 @@ export namespace Prisma {
     userLastName: string
     userEmail: string
     userLastConnection?: Date | string | null
-    userCodePhoneNumber: string
-    userPhoneNumber: string
-    userDocumentType: string
-    userDocumentNumber: string
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
     userRole: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24525,10 +24525,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24550,10 +24550,10 @@ export namespace Prisma {
     userLastName?: StringFieldUpdateOperationsInput | string
     userEmail?: StringFieldUpdateOperationsInput | string
     userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
-    userPhoneNumber?: StringFieldUpdateOperationsInput | string
-    userDocumentType?: StringFieldUpdateOperationsInput | string
-    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
     userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

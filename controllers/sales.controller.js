@@ -1,4 +1,4 @@
-import { createSale, getSaleById, getSales, getMonthlySales, getDaySales } from '../services/salesServices.js';
+import { createSale, getSaleById, getSales, getMonthlySales, getDaySales, getSalesByCustomerIdService } from '../services/salesServices.js';
 import defineSaleNumber from '../libs/defineSaleNumber.js';
 
 export const createSaleController = async (req, res) => {
@@ -6,7 +6,7 @@ export const createSaleController = async (req, res) => {
         const { saleId, saleCustomerId, saleTotal, saleTotalPayments, saleComment } = req.body;
         const userId = req.user.payload.id
         const numberSale = await defineSaleNumber(req.prisma);
-        console.log("Generated Sale Number:", numberSale);
+
         const data = {
             saleId,
             saleNumber: numberSale,
@@ -85,6 +85,17 @@ export const getDaySalesController = async (req, res) => {
         console.error("(sales.controller.js): Error getting day sales:", error);
         res.status(500).json({ message: "Internal server error" });
 
+    }
+};
+
+export const getSalesByCustomerIdController = async (req, res) => {
+    try {
+        const { customerId } = req.params;
+        const salesFound = await getSalesByCustomerIdService(customerId, req.prisma);
+        res.status(200).json(salesFound);
+    } catch (error) {
+        console.error("(sales.controller.js): Error getting sales by customer ID:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 }
 

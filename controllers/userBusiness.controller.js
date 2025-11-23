@@ -1,46 +1,21 @@
-import { createUserBusiness, getUserBusinessById } from '../services/userBusinessService.js'
-import { createUserBusinessDB } from '../services/businessDB/usersServices.js'
-import { getUserById } from '../services/usersService.js'
+import { createUserBusinessService, getUserBusinessById } from '../services/userBusinessService.js';
 
 export const createUserBusinessController = async (req, res) => {
     try {
-        const { userBusinessUserId, userBusinessBusinessId, userBusinessRole } = req.body;
-
-        const data = {
-            userBusinessUserId,
-            userBusinessBusinessId,
-            userBusinessRole
-        }
-        const userfound = await getUserById(userBusinessUserId)
-
-        // created relation user_business in general table
-        const userBusiness = await createUserBusiness(data)
-
-        //created user in business table
-
-        const userBusinessDB = {
-            userId: userfound.userId,
-            userFirstName: userfound.userFirstName,
-            userLastName: userfound.userLastName,
-            userEmail: userfound.userEmail,
-            userLastConnection: userfound.userLastConnection,
-            userCodePhoneNumber: userfound.userCodePhoneNumber,
-            userPhoneNumber: userfound.userPhoneNumber,
-            userDocumentType: userfound.userDocumentType,
-            userDocumentNumber: userfound.userDocumentNumber,
-            createdAt: userfound.createdAt,
-            updatedAt: userfound.updatedAt,
-            userRole: "ADMIN"
-        }
-
-        const user = await createUserBusinessDB(userBusinessDB, req.prisma)
-
-        res.status(201).json(userBusiness, user)
+        const { userBusinessBusinessId, userBusinessRole, } = req.body;
+        const userBusinessUserId = req.user.payload.id;
+        //register relation user and business at generalDB/userBusiness
+        const newUserBusiness = await createUserBusinessService({ userBusinessUserId, userBusinessBusinessId, userBusinessRole })
+        if (!newUserBusiness) {
+            res.status(400).json({ error: 'Failed to create user-business relationship.' })
+            throw new Error('Failed to create user-business relationship.')
+        };
+        res.status(201).json(newUserBusiness);
     } catch (error) {
         console.error('>>>>>> (userBusiness.controller.js) Error creating userbusiness:', error)
         res.status(500).json({ error: 'Internal server error' })
     }
-}
+};
 
 export const getUserBusinessByIdController = async (req, res) => {
     try {

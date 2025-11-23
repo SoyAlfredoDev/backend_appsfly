@@ -232,3 +232,15 @@ export const countSalesService = async (prisma) => {
         throw error;
     }
 };
+
+export const getSalesByCustomerIdService = async (customerId, prisma) => {
+    try {
+        const sales = await prisma.sale.findMany({
+            where: { saleCustomerId: customerId }
+        });
+        return sales;
+    } catch (error) {
+        console.error("(salesServices.js): Error getting sales by customer ID:", error);
+        throw error;
+    }
+}

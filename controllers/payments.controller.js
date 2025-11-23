@@ -1,4 +1,5 @@
 import { createPaymentService, getPaymentsService, getPaymentBySaleIdService, sumPaymentsByPaymentMethodsService } from '../services/paymentsService.js';
+import { getSalesByCustomerIdService } from '../services/salesServices.js'
 
 export const createPaymentController = async (req, res) => {
     try {
@@ -57,3 +58,33 @@ export const getSumPaymentsByPaymentMethodsController = async (req, res) => {
     }
 };
 
+export const getPaymentByCustomerIdController = async (req, res) => {
+    try {
+        const { customerId } = req.params;
+
+        // 1. Obtener las ventas del cliente
+        const salesByCustomer = await getSalesByCustomerIdService(customerId, req.prisma);
+
+        if (!salesByCustomer || salesByCustomer.length === 0) {
+            return res.status(404).json({ message: "No sales found for this customer" });
+        }
+
+        // 2. Obtener pagos por cada venta (PROMESAS)
+        const paymentPromises = salesByCustomer.map(sale =>
+            getPaymentBySaleIdService(sale.saleId, req.prisma)
+        );
+
+        // 3. Esperar todas las promesas
+        const paymentsBySale = await Promise.all(paymentPromises);
+
+        // 4. Flatten (por si cada venta tiene varios pagos)
+        const allPayments = paymentsBySale.flat();
+
+        // 5. Enviar respuesta
+        return res.status(200).json(allPayments);
+
+    } catch (error) {
+        console.error("(payment.controller.js): Error getting payment by customerId:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};

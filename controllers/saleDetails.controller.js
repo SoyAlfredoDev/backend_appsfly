@@ -92,4 +92,5 @@ export const getSaleDetailController = async (req, res) => {
             error: error.message
         });
     }
-}
+};
+

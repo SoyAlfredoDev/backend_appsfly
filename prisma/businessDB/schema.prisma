@@ -9,7 +9,7 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE001")
+    url      = env("DATABASE_URL")
 }
 
 model User {
@@ -18,10 +18,10 @@ model User {
     userLastName        String
     userEmail           String    @unique
     userLastConnection  DateTime?
-    userCodePhoneNumber String
-    userPhoneNumber     String
-    userDocumentType    String
-    userDocumentNumber  String
+    userCodePhoneNumber String?
+    userPhoneNumber     String?
+    userDocumentType    String?
+    userDocumentNumber  String?
     userRole            Role
     createdAt           DateTime  @default(now())
     updatedAt           DateTime  @updatedAt

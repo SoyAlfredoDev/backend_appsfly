@@ -1,4 +1,5 @@
-import { createUserGuest, userGuestExists, userGuestUpdateAccept, getUserGuests } from '../services/userGuestService.js'
+import { createUserGuest, userGuestExists, userGuestResponseService, getUserGuests } from '../services/userGuestService.js'
+import { registerUserBusinessAtBusinessDB } from '../controllers/businessDB/user.controller.js'
 
 export const createUserGuestController = async (req, res) => {
     try {
@@ -13,7 +14,6 @@ export const createUserGuestController = async (req, res) => {
             userGuestUserId: userId,
             userGuestStatus
         }
-        console.log(">>>> userGuest.controller.js:  Creating user guest:", data)
         const userGuest = await createUserGuest(data)
         return res.status(201).json(userGuest)
     } catch (error) {
@@ -33,10 +33,20 @@ export const userGuestExistsController = async (req, res) => {
     }
 };
 
-export const userGuestUpdateAcceptController = async (req, res) => {
+export const userGuestResponseController = async (req, res) => {
     try {
-        const { userGuestId } = req.params;
-        const userGuest = await userGuestUpdateAccept(userGuestId);
+        const { userGuestId, response, userGuestRole } = req.body;
+        const userId = req.user.payload.id;
+        const userGuestResponse = response;
+        const userGuest = await userGuestResponseService(userGuestId, userGuestResponse);
+        if (response === 'ACCEPTED') {
+            try {
+                const user = await registerUserBusinessAtBusinessDB(userId, userGuest.userGuestBusinessId, userGuestRole);
+                userGuest.registeredUserBusiness = user;
+            } catch (error) {
+                console.error(">>>> userGuest.controller.js:  Error registering user at business DB:", error);
+            }
+        }
         return res.status(200).json(userGuest);
     } catch (error) {
         console.error(">>>> userGuest.controller.js:  Error updating user guest:", error);

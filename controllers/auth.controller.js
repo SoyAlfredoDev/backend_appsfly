@@ -1,7 +1,9 @@
 import bcrypt from 'bcryptjs';
+import jwt from "jsonwebtoken";
 import { createUser, getUserByEmail } from '../services/usersService.js';
 import { createAccessToken } from '../libs/jwt.js';
 import validateRut from '../libs/validateRut.js';
+import { TOKEN_SECRET } from '../config.js';
 
 import dotenv from 'dotenv';
 
@@ -82,45 +84,16 @@ export const login = async (req, res) => {
         if (!user) return res.status(400).json({
             message: 'user not found'
         });
-
         const isMatch = await bcrypt.compare(userPassword, user.userPassword);
         if (!isMatch) return res.status(400).json({
             message: 'Incorrect username or password'
         });
-
-        const token = await createAccessToken({ id: user.userId })
-
+        const token = await createAccessToken({ id: user.userId });
         res.cookie('token', token, {
             httpOnly: true,
             secure: isProduction,
             sameSite: isProduction ? "none" : "lax"
         });
-
-
-        /*
-        // para desarrollo
-         res.cookie('token', token, {
-             httpOnly: true,
-             secure: false,   // OK en localhost
-             sameSite: "lax"  // ✅ permite cookies en el mismo dominio y puerto distinto
-         });
- 
-          para producción
-                 res.cookie('token', token, {
-           httpOnly: true,
-           secure: true,    // obligatorio en HTTPS
-           sameSite: "none" // necesario si frontend/backend en dominios diferentes
-         });*/
-
-        //secure: false,
-        // false Permite HTTP y HTTPS
-        // true solo HTTPS
-
-        // sameSite:
-        // "strict" → solo mismo dominio (más seguro)
-        // "lax" → mismo dominio, ignora fetch/POST externos
-        // "none" → permite cross-site (usar con secure:true)
-
         res.status(201).json({
             message: 'User login successfully',
             user: {
@@ -135,7 +108,6 @@ export const login = async (req, res) => {
                 userDocumentNumber: user.userDocumentNumber
             }
         });
-
     } catch (error) {
         console.error("(auth.controller.js): Error logging user:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -149,3 +121,14 @@ export const logout = (req, res) => {
     req.prisma = null
     return res.status(200).json({ message: 'Logout successful' });
 };
+
+export const verifyAuthController = async (req, res) => {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "No token" });
+
+    jwt.verify(token, TOKEN_SECRET, (err, decoded) => {
+        if (err) return res.status(401).json({ message: "Invalid token" });
+        // Retornar ID para poder cargar datos del usuario
+        return res.json({ ok: true, id: decoded.payload.id });
+    });
+}

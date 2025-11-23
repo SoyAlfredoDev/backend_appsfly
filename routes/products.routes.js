@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createProductController, getProductsController } from "../controllers/product.controller.js";
+
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
 

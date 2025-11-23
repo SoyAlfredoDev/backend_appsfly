@@ -1,8 +1,9 @@
-//npx prisma migrate dev --schema=prisma/generalDB/schema.prisma --name init_general
+//npx prisma migrate dev --schema=prisma/generalDB/schema.prisma --name UserGuestID
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../../src/generated/general"
+  provider      = "prisma-client-js"
+  output        = "../../src/generated/general"
+  binaryTargets = ["native", "windows", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -11,20 +12,23 @@ datasource db {
 }
 
 model User {
-  userId              String         @id
+  userId              String    @id @default(uuid())
   userFirstName       String
   userLastName        String
-  userEmail           String         @unique
+  userEmail           String    @unique
   userPassword        String
   userLastConnection  DateTime?
   userCodePhoneNumber String
   userPhoneNumber     String
   userDocumentType    String
   userDocumentNumber  String
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
-  UserBusiness        UserBusiness[]
-  userGuest           UserGuest[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relations
+  UserBusiness UserBusiness[]
+  UserGuest    UserGuest[]
+  businesses   Business[]
 }
 
 model Business {
@@ -39,35 +43,69 @@ model Business {
   businessCountry            String
   businessCodeWhatsappNumber String?
   businessWhatsappNumber     String?
+  businessConnectionDB       String?
   businessEntity             BusinessEntity
   businessStatus             BusinessStatus
+  businessProcess            Json?
+  createdByUserId            String?
+  createdBy                  User?          @relation(fields: [createdByUserId], references: [userId])
   createdAt                  DateTime       @default(now())
   updatedAt                  DateTime       @updatedAt
-  userGuest                  UserGuest[]
-  userBusiness               UserBusiness[]
+
+  // Relaciones
+  UserGuest     UserGuest[]
+  UserBusiness  UserBusiness[]
+  subscriptions Subscription[]
 }
 
 model UserBusiness {
-  UserBusinessId String   @id
-  userId         String
-  businessId     String
-  role           Role
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  User           User     @relation(fields: [userId], references: [userId])
-  Business       Business @relation(fields: [businessId], references: [businessId])
-  customersId    String?
+  userBusinessUserId     String
+  userBusinessBusinessId String
+  userBusinessRole       Role
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  User                   User     @relation(fields: [userBusinessUserId], references: [userId])
+  Business               Business @relation(fields: [userBusinessBusinessId], references: [businessId])
+
+  @@id([userBusinessUserId, userBusinessBusinessId])
 }
 
 model UserGuest {
-  UserGuestId         String   @id
-  UserGuestUserId     String
-  UserGuestBusinessId String
-  UserGuestRole       String
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  User                User     @relation(fields: [UserGuestUserId], references: [userId])
-  Business            Business @relation(fields: [UserGuestBusinessId], references: [businessId])
+  userGuestId         String          @id
+  userGuestEmail      String
+  userGuestUserId     String
+  userGuestBusinessId String
+  userGuestRole       Role
+  userGuestStatus     UserGuestStatus
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  User     User     @relation(fields: [userGuestUserId], references: [userId])
+  Business Business @relation(fields: [userGuestBusinessId], references: [businessId])
+}
+
+model Plan {
+  planId       String   @id
+  planName     String
+  planFeatures Json
+  planPrice    Float
+  planDuration Int // Duración del plan en meses
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  subscriptionId         String   @id
+  subscriptionBusinessId String
+  subscriptionPlanId     String
+  subscriptionStartDate  DateTime
+  subscriptionEndDate    DateTime
+  status                 String
+  plan                   Plan     @relation(fields: [subscriptionPlanId], references: [planId])
+  business               Business @relation(fields: [subscriptionBusinessId], references: [businessId])
 }
 
 enum Role {
@@ -86,4 +124,11 @@ enum BusinessStatus {
 enum BusinessEntity {
   INDIVIDUAL
   COMPANY
+}
+
+enum UserGuestStatus {
+  PENDIENT
+  ACCEPTED
+  REJECTED
+  DELETED
 }

@@ -16,7 +16,6 @@ export const deleteCloudinaryImageService = async (publicId) => {
             throw new Error('No publicId provided for deletion.');
         }
         const result = await cloudinary.uploader.destroy(publicId);
-        console.log(`>>>>> cloudinaryService ✅ Successfully deleted Cloudinary file: ${publicId}`);
         return result;
     } catch (error) {
         console.error(`>>>>> cloudinaryService ❌ Error deleting Cloudinary file: ${publicId}`, error);

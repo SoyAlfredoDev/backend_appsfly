@@ -1,4 +1,5 @@
-//npx prisma migrate dev --schema=prisma/businessDB/schema.prisma --name init_business
+// npx prisma migrate dev --schema=prisma/businessDB/schema.prisma --name init_business
+// npx prisma generate --schema ./prisma/businessDB/schema.prisma
 
 generator client {
   provider      = "prisma-client-js"
@@ -8,7 +9,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE001")
+  url      = env("DATABASE003")
 }
 
 model User {
@@ -17,24 +18,26 @@ model User {
   userLastName        String
   userEmail           String    @unique
   userLastConnection  DateTime?
-  userCodePhoneNumber String
-  userPhoneNumber     String
-  userDocumentType    String
-  userDocumentNumber  String
+  userCodePhoneNumber String?
+  userPhoneNumber     String?
+  userDocumentType    String?
+  userDocumentNumber  String?
   userRole            Role
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
   // Relaciones
-  customers   Customer[]
-  Product     Product[]
-  Service     Service[]
-  Category    Category[]
-  Sale        Sale[]
-  Payment     Payment[]
-  SaleDetail  SaleDetail[]
-  CashExpense CashExpense[]
-  DailySales  DailySales[]
+  customers    Customer[]
+  Product      Product[]
+  Service      Service[]
+  Category     Category[]
+  Sale         Sale[]
+  Payment      Payment[]
+  SaleDetail   SaleDetail[]
+  CashExpense  CashExpense[]
+  DailySales   DailySales[]
+  Transactions Transactions[]
+  Expense      Expense[]
 }
 
 model Customer {
@@ -111,6 +114,7 @@ model Sale {
   salePendingAmount Int
   createdByUserId   String
   saleComment       String?
+  saleNumber        String?
   user              User         @relation(fields: [createdByUserId], references: [userId])
   customer          Customer     @relation(fields: [saleCustomerId], references: [customerId])
   createdAt         DateTime     @default(now())
@@ -164,7 +168,7 @@ model CashExpense {
 
 model DailySales {
   dailySalesId            String   @id
-  dailySalesDay           DateTime
+  dailySalesDay           String
   dailySalesTotalSales    Int?
   dailySalesNumberOfSales Int?
   dailySalesTotalIncome   Int?
@@ -175,9 +179,34 @@ model DailySales {
   user                    User     @relation(fields: [createdByUserId], references: [userId])
 }
 
+model Transactions {
+  transactionId          String   @id @default(uuid())
+  transactionType        String?
+  transactionMethod      String?
+  transactionTable       String?
+  transactionRecordId    String?
+  transactionOldValue    Json?
+  transactionNewValue    Json?
+  transactionDescription String?
+  createdByUserId        String
+  createdAt              DateTime @default(now())
+  user                   User     @relation(fields: [createdByUserId], references: [userId])
+}
+
 enum Role {
   ADMIN
   USER
+}
+
+model Expense {
+  expenseId            String   @id
+  expenseDescription   String?
+  expensePaymentMethod String?
+  expenseImageUrl      String?
+  expenseAmount        Int?
+  createdByUserId      String
+  createdAt            DateTime @default(now())
+  user                 User     @relation(fields: [createdByUserId], references: [userId])
 }
 
 enum ProductStatus {

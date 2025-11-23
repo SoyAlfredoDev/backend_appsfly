@@ -25,9 +25,11 @@ model User {
     createdAt           DateTime  @default(now())
     updatedAt           DateTime  @updatedAt
 
-    // Relaciones
-    UserBusiness UserBusiness[]
-    UserGuest    UserGuest[]
+    // Relations
+    UserBusiness  UserBusiness[]
+    UserGuest     UserGuest[]
+    businesses    Business[]
+    subscriptions Subscription[]
 }
 
 model Business {
@@ -42,14 +44,19 @@ model Business {
     businessCountry            String
     businessCodeWhatsappNumber String?
     businessWhatsappNumber     String?
+    businessConnectionDB       String?
     businessEntity             BusinessEntity
     businessStatus             BusinessStatus
+    businessProcess            Json?
+    createdByUserId            String?
+    createdBy                  User?          @relation(fields: [createdByUserId], references: [userId])
     createdAt                  DateTime       @default(now())
     updatedAt                  DateTime       @updatedAt
 
     // Relaciones
-    UserGuest    UserGuest[]
-    UserBusiness UserBusiness[]
+    UserGuest     UserGuest[]
+    UserBusiness  UserBusiness[]
+    subscriptions Subscription[]
 }
 
 model UserBusiness {
@@ -78,6 +85,38 @@ model UserGuest {
     Business Business @relation(fields: [userGuestBusinessId], references: [businessId])
 }
 
+model Plan {
+    planId       String   @id
+    planName     String
+    planFeatures Json
+    planPrice    Float
+    planDuration Int // Duración del plan en meses
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+
+    // Relations
+    subscriptions Subscription[]
+}
+
+model Subscription {
+    subscriptionId            String             @id
+    subscriptionBusinessId    String
+    subscriptionPlanId        String
+    subscriptionStartDate     DateTime
+    subscriptionDuration      Int
+    subscriptionEndDate       DateTime
+    subscriptionStatus        SubscriptionStatus
+    subscriptionAmount        Float
+    subscriptionPaymentMethod String
+    subscriptionPlanFeatures  Json
+    createdByUserId           String
+    createdAt                 DateTime           @default(now())
+    updatedAt                 DateTime           @updatedAt
+    createdBy                 User               @relation(fields: [createdByUserId], references: [userId])
+    plan                      Plan               @relation(fields: [subscriptionPlanId], references: [planId])
+    business                  Business           @relation(fields: [subscriptionBusinessId], references: [businessId])
+}
+
 enum Role {
     ADMIN
     USER
@@ -101,4 +140,12 @@ enum UserGuestStatus {
     ACCEPTED
     REJECTED
     DELETED
+}
+
+enum SubscriptionStatus {
+    ACTIVE
+    INACTIVE
+    CANCELLED
+    EXPIRED
+    PENDIENT
 }

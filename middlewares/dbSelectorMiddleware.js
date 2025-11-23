@@ -1,20 +1,21 @@
-// middlewares/dbMiddleware.js
+// middlewares/dbSelectorMiddleware.js
 import { getPrismaForBusiness } from "../db.js";
 
-export function dbSelectorMiddleware(req, res, next) {
-  // 👇 de dónde obtienes el negocio:
-  // puede ser de un header, un query param, un JWT, o un subdominio
-  const business = 'negocio1' //req.headers["x-business"];
-
-  if (!business) {
-    return res.status(400).json({ error: "Falta el negocio en la petición" });
-  }
-
+export async function dbSelectorMiddleware(req, res, next) {
   try {
-    // 👇 aquí asignamos Prisma con la DB correcta
-    req.prisma = getPrismaForBusiness(business);
+    const userId = req.user?.payload?.id;
+    if (!userId) {
+      return res.status(400).json({ error: "Falta el userId en la petición" });
+    }
+    // Asigna el Prisma correspondiente al negocio del usuario
+    const prisma = await getPrismaForBusiness(userId);
+    if (!prisma) {
+      return res.status(500).json({ error: "No se pudo asignar la base de datos" });
+    }
+    req.prisma = prisma;
     next();
-  } catch (err) {
-    return res.status(400).json({ error: err.message });
+  } catch (error) {
+    console.error("(dbSelectorMiddleware): Error asignando Prisma:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 }

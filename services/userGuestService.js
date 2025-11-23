@@ -37,14 +37,14 @@ export const userGuestExists = async (email) => {
     }
 };
 
-export const userGuestUpdateAccept = async (userGuestId) => {
+export const userGuestResponseService = async (userGuestId, userGuestStatus) => {
     try {
         return await general.userGuest.update({
             where: {
-                userGuestId: userGuestId
+                userGuestId
             },
             data: {
-                userGuestStatus: 'ACCEPTED'
+                userGuestStatus
             }
         });
     } catch (error) {

@@ -108,3 +108,16 @@ export const getSaleDetailByDate = async (startDate, endDate, prisma) => {
         throw error;
     }
 };
+
+export const getSaleDetailByCustomerIdService = async (customerId, prisma) => {
+    try {
+        const sales = await prisma.saleDetail.findMany({
+            where: { saleCustomerId: customerId }
+        });
+        return sales;
+    } catch (error) {
+        console.error("(saleDetailsServices.js): Error getting sales by customer ID:", error);
+        throw error;
+    }
+}
+

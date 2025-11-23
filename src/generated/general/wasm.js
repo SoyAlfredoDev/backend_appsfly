@@ -5,13 +5,28 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const {
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+  PrismaClientRustPanicError,
+  PrismaClientInitializationError,
+  PrismaClientValidationError,
+  getPrismaClient,
+  sqltag,
+  empty,
+  join,
+  raw,
+  skip,
   Decimal,
+  Debug,
   objectEnumValues,
   makeStrictEnum,
+  Extensions,
+  warnOnce,
+  defineDmmfProperty,
   Public,
   getRuntime,
-  skip
-} = require('./runtime/index-browser.js')
+  createParam,
+} = require('./runtime/wasm-engine-edge.js')
 
 
 const Prisma = {}
@@ -20,79 +35,35 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.15.0
- * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
+ * Prisma Client JS version: 6.18.0
+ * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
  */
 Prisma.prismaVersion = {
-  client: "6.15.0",
-  engine: "85179d7826409ee107a6ba334b5e305ae3fba9fb"
+  client: "6.18.0",
+  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
 }
 
-Prisma.PrismaClientKnownRequestError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientKnownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)};
-Prisma.PrismaClientUnknownRequestError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientUnknownRequestError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientRustPanicError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientRustPanicError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientInitializationError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientInitializationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.PrismaClientValidationError = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`PrismaClientValidationError is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
+Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError
+Prisma.PrismaClientRustPanicError = PrismaClientRustPanicError
+Prisma.PrismaClientInitializationError = PrismaClientInitializationError
+Prisma.PrismaClientValidationError = PrismaClientValidationError
 Prisma.Decimal = Decimal
 
 /**
  * Re-export of sql-template-tag
  */
-Prisma.sql = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`sqltag is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.empty = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`empty is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.join = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`join is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.raw = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`raw is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.sql = sqltag
+Prisma.empty = empty
+Prisma.join = join
+Prisma.raw = raw
 Prisma.validator = Public.validator
 
 /**
 * Extensions
 */
-Prisma.getExtensionContext = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`Extensions.getExtensionContext is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
-Prisma.defineExtension = () => {
-  const runtimeName = getRuntime().prettyName;
-  throw new Error(`Extensions.defineExtension is unable to run in this browser environment, or has been bundled for the browser (running in ${runtimeName}).
-In case this error is unexpected for you, please report it in https://pris.ly/prisma-prisma-bug-report`,
-)}
+Prisma.getExtensionContext = Extensions.getExtensionContext
+Prisma.defineExtension = Extensions.defineExtension
 
 /**
  * Shorthand utilities for JSON filtering
@@ -109,10 +80,11 @@ Prisma.NullTypes = {
 
 
 
+
+
 /**
  * Enums
  */
-
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
@@ -147,8 +119,11 @@ exports.Prisma.BusinessScalarFieldEnum = {
   businessCountry: 'businessCountry',
   businessCodeWhatsappNumber: 'businessCodeWhatsappNumber',
   businessWhatsappNumber: 'businessWhatsappNumber',
+  businessConnectionDB: 'businessConnectionDB',
   businessEntity: 'businessEntity',
   businessStatus: 'businessStatus',
+  businessProcess: 'businessProcess',
+  createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -172,9 +147,44 @@ exports.Prisma.UserGuestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PlanScalarFieldEnum = {
+  planId: 'planId',
+  planName: 'planName',
+  planFeatures: 'planFeatures',
+  planPrice: 'planPrice',
+  planDuration: 'planDuration',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  subscriptionId: 'subscriptionId',
+  subscriptionBusinessId: 'subscriptionBusinessId',
+  subscriptionPlanId: 'subscriptionPlanId',
+  subscriptionStartDate: 'subscriptionStartDate',
+  subscriptionDuration: 'subscriptionDuration',
+  subscriptionEndDate: 'subscriptionEndDate',
+  subscriptionStatus: 'subscriptionStatus',
+  subscriptionAmount: 'subscriptionAmount',
+  subscriptionPaymentMethod: 'subscriptionPaymentMethod',
+  subscriptionPlanFeatures: 'subscriptionPlanFeatures',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -186,9 +196,16 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.BusinessEntity = exports.$Enums.BusinessEntity = {
-  INDIVIDUAL: 'INDIVIDUAL',
-  COMPANY: 'COMPANY'
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+exports.Role = exports.$Enums.Role = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+  GUEST: 'GUEST'
 };
 
 exports.BusinessStatus = exports.$Enums.BusinessStatus = {
@@ -198,10 +215,9 @@ exports.BusinessStatus = exports.$Enums.BusinessStatus = {
   PENDING: 'PENDING'
 };
 
-exports.Role = exports.$Enums.Role = {
-  ADMIN: 'ADMIN',
-  USER: 'USER',
-  GUEST: 'GUEST'
+exports.BusinessEntity = exports.$Enums.BusinessEntity = {
+  INDIVIDUAL: 'INDIVIDUAL',
+  COMPANY: 'COMPANY'
 };
 
 exports.UserGuestStatus = exports.$Enums.UserGuestStatus = {
@@ -211,40 +227,106 @@ exports.UserGuestStatus = exports.$Enums.UserGuestStatus = {
   DELETED: 'DELETED'
 };
 
+exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  PENDIENT: 'PENDIENT'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Business: 'Business',
   UserBusiness: 'UserBusiness',
-  UserGuest: 'UserGuest'
+  UserGuest: 'UserGuest',
+  Plan: 'Plan',
+  Subscription: 'Subscription'
 };
-
 /**
- * This is a stub Prisma Client that will error at runtime if called.
+ * Create the Client
  */
-class PrismaClient {
-  constructor() {
-    return new Proxy(this, {
-      get(target, prop) {
-        let message
-        const runtime = getRuntime()
-        if (runtime.isEdge) {
-          message = `PrismaClient is not configured to run in ${runtime.prettyName}. In order to run Prisma Client on edge runtime, either:
-- Use Prisma Accelerate: https://pris.ly/d/accelerate
-- Use Driver Adapters: https://pris.ly/d/driver-adapters
-`;
-        } else {
-          message = 'PrismaClient is unable to run in this browser environment, or has been bundled for the browser (running in `' + runtime.prettyName + '`).'
-        }
-
-        message += `
-If this is unexpected, please open an issue: https://pris.ly/prisma-prisma-bug-report`
-
-        throw new Error(message)
+const config = {
+  "generator": {
+    "name": "client",
+    "provider": {
+      "fromEnvVar": null,
+      "value": "prisma-client-js"
+    },
+    "output": {
+      "value": "C:\\Users\\Alfredo  Hurtado\\Desktop\\mis-apps\\appsfly\\backend\\src\\generated\\general",
+      "fromEnvVar": null
+    },
+    "config": {
+      "engineType": "library"
+    },
+    "binaryTargets": [
+      {
+        "fromEnvVar": null,
+        "value": "windows",
+        "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "windows"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
-    })
+    ],
+    "previewFeatures": [],
+    "sourceFilePath": "C:\\Users\\Alfredo  Hurtado\\Desktop\\mis-apps\\appsfly\\backend\\prisma\\generalDB\\schema.prisma",
+    "isCustomOutput": true
+  },
+  "relativeEnvPaths": {
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../.env"
+  },
+  "relativePath": "../../../prisma/generalDB",
+  "clientVersion": "6.18.0",
+  "engineVersion": "34b5a692b7bd79939a9a2c3ef97d816e749cda2f",
+  "datasourceNames": [
+    "db"
+  ],
+  "activeProvider": "postgresql",
+  "inlineDatasources": {
+    "db": {
+      "url": {
+        "fromEnvVar": "DATABASE_GENERAL_URL",
+        "value": null
+      }
+    }
+  },
+  "inlineSchema": "//npx prisma migrate dev --schema=prisma/generalDB/schema.prisma --name UserGuestID\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../../src/generated/general\"\n  binaryTargets = [\"native\", \"windows\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_GENERAL_URL\")\n}\n\nmodel User {\n  userId              String    @id @default(uuid())\n  userFirstName       String\n  userLastName        String\n  userEmail           String    @unique\n  userPassword        String\n  userLastConnection  DateTime?\n  userCodePhoneNumber String\n  userPhoneNumber     String\n  userDocumentType    String\n  userDocumentNumber  String\n  createdAt           DateTime  @default(now())\n  updatedAt           DateTime  @updatedAt\n\n  // Relations\n  UserBusiness  UserBusiness[]\n  UserGuest     UserGuest[]\n  businesses    Business[]\n  subscriptions Subscription[]\n}\n\nmodel Business {\n  businessId                 String         @id\n  businessName               String\n  businessType               String\n  businessDocumentType       String\n  businessDocumentNumber     String\n  businessEmail              String\n  businessPhoneNumber        String\n  businessCodePhoneNumber    String\n  businessCountry            String\n  businessCodeWhatsappNumber String?\n  businessWhatsappNumber     String?\n  businessConnectionDB       String?\n  businessEntity             BusinessEntity\n  businessStatus             BusinessStatus\n  businessProcess            Json?\n  createdByUserId            String?\n  createdBy                  User?          @relation(fields: [createdByUserId], references: [userId])\n  createdAt                  DateTime       @default(now())\n  updatedAt                  DateTime       @updatedAt\n\n  // Relaciones\n  UserGuest     UserGuest[]\n  UserBusiness  UserBusiness[]\n  subscriptions Subscription[]\n}\n\nmodel UserBusiness {\n  userBusinessUserId     String\n  userBusinessBusinessId String\n  userBusinessRole       Role\n  createdAt              DateTime @default(now())\n  updatedAt              DateTime @updatedAt\n  User                   User     @relation(fields: [userBusinessUserId], references: [userId])\n  Business               Business @relation(fields: [userBusinessBusinessId], references: [businessId])\n\n  @@id([userBusinessUserId, userBusinessBusinessId])\n}\n\nmodel UserGuest {\n  userGuestId         String          @id\n  userGuestEmail      String\n  userGuestUserId     String\n  userGuestBusinessId String\n  userGuestRole       Role\n  userGuestStatus     UserGuestStatus\n  createdAt           DateTime        @default(now())\n  updatedAt           DateTime        @updatedAt\n\n  User     User     @relation(fields: [userGuestUserId], references: [userId])\n  Business Business @relation(fields: [userGuestBusinessId], references: [businessId])\n}\n\nmodel Plan {\n  planId       String   @id\n  planName     String\n  planFeatures Json\n  planPrice    Float\n  planDuration Int // Duración del plan en meses\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n\n  // Relations\n  subscriptions Subscription[]\n}\n\nmodel Subscription {\n  subscriptionId            String             @id\n  subscriptionBusinessId    String\n  subscriptionPlanId        String\n  subscriptionStartDate     DateTime\n  subscriptionDuration      Int\n  subscriptionEndDate       DateTime\n  subscriptionStatus        SubscriptionStatus\n  subscriptionAmount        Float\n  subscriptionPaymentMethod String\n  subscriptionPlanFeatures  Json\n  createdByUserId           String\n  createdAt                 DateTime           @default(now())\n  updatedAt                 DateTime           @updatedAt\n  createdBy                 User               @relation(fields: [createdByUserId], references: [userId])\n  plan                      Plan               @relation(fields: [subscriptionPlanId], references: [planId])\n  business                  Business           @relation(fields: [subscriptionBusinessId], references: [businessId])\n}\n\nenum Role {\n  ADMIN\n  USER\n  GUEST\n}\n\nenum BusinessStatus {\n  ACTIVE\n  INACTIVE\n  SUSPENDED\n  PENDING\n}\n\nenum BusinessEntity {\n  INDIVIDUAL\n  COMPANY\n}\n\nenum UserGuestStatus {\n  PENDIENT\n  ACCEPTED\n  REJECTED\n  DELETED\n}\n\nenum SubscriptionStatus {\n  ACTIVE\n  INACTIVE\n  CANCELLED\n  EXPIRED\n  PENDIENT\n}\n",
+  "inlineSchemaHash": "53e91f03a8a0a452be9db39bc9c01a840ac0daa0710fbb58a030714891182ee8",
+  "copyEngine": true
+}
+config.dirname = '/'
+
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userFirstName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userLastName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userPassword\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userLastConnection\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userCodePhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userPhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userDocumentType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userDocumentNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"UserBusiness\",\"kind\":\"object\",\"type\":\"UserBusiness\",\"relationName\":\"UserToUserBusiness\"},{\"name\":\"UserGuest\",\"kind\":\"object\",\"type\":\"UserGuest\",\"relationName\":\"UserToUserGuest\"},{\"name\":\"businesses\",\"kind\":\"object\",\"type\":\"Business\",\"relationName\":\"BusinessToUser\"},{\"name\":\"subscriptions\",\"kind\":\"object\",\"type\":\"Subscription\",\"relationName\":\"SubscriptionToUser\"}],\"dbName\":null},\"Business\":{\"fields\":[{\"name\":\"businessId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessDocumentType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessDocumentNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessPhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessCodePhoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessCountry\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessCodeWhatsappNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessWhatsappNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessConnectionDB\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessEntity\",\"kind\":\"enum\",\"type\":\"BusinessEntity\"},{\"name\":\"businessStatus\",\"kind\":\"enum\",\"type\":\"BusinessStatus\"},{\"name\":\"businessProcess\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdBy\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"BusinessToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"UserGuest\",\"kind\":\"object\",\"type\":\"UserGuest\",\"relationName\":\"BusinessToUserGuest\"},{\"name\":\"UserBusiness\",\"kind\":\"object\",\"type\":\"UserBusiness\",\"relationName\":\"BusinessToUserBusiness\"},{\"name\":\"subscriptions\",\"kind\":\"object\",\"type\":\"Subscription\",\"relationName\":\"BusinessToSubscription\"}],\"dbName\":null},\"UserBusiness\":{\"fields\":[{\"name\":\"userBusinessUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userBusinessBusinessId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userBusinessRole\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"User\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToUserBusiness\"},{\"name\":\"Business\",\"kind\":\"object\",\"type\":\"Business\",\"relationName\":\"BusinessToUserBusiness\"}],\"dbName\":null},\"UserGuest\":{\"fields\":[{\"name\":\"userGuestId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userGuestEmail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userGuestUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userGuestBusinessId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userGuestRole\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"userGuestStatus\",\"kind\":\"enum\",\"type\":\"UserGuestStatus\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"User\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToUserGuest\"},{\"name\":\"Business\",\"kind\":\"object\",\"type\":\"Business\",\"relationName\":\"BusinessToUserGuest\"}],\"dbName\":null},\"Plan\":{\"fields\":[{\"name\":\"planId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"planName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"planFeatures\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"planPrice\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"planDuration\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"subscriptions\",\"kind\":\"object\",\"type\":\"Subscription\",\"relationName\":\"PlanToSubscription\"}],\"dbName\":null},\"Subscription\":{\"fields\":[{\"name\":\"subscriptionId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subscriptionBusinessId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subscriptionPlanId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subscriptionStartDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"subscriptionDuration\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"subscriptionEndDate\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"subscriptionStatus\",\"kind\":\"enum\",\"type\":\"SubscriptionStatus\"},{\"name\":\"subscriptionAmount\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"subscriptionPaymentMethod\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"subscriptionPlanFeatures\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"createdByUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdBy\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SubscriptionToUser\"},{\"name\":\"plan\",\"kind\":\"object\",\"type\":\"Plan\",\"relationName\":\"PlanToSubscription\"},{\"name\":\"business\",\"kind\":\"object\",\"type\":\"Business\",\"relationName\":\"BusinessToSubscription\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
+config.engineWasm = {
+  getRuntime: async () => require('./query_engine_bg.js'),
+  getQueryEngineWasmModule: async () => {
+    const loader = (await import('#wasm-engine-loader')).default
+    const engine = (await loader).default
+    return engine
   }
 }
+config.compilerWasm = undefined
 
+config.injectableEdgeEnv = () => ({
+  parsed: {
+    DATABASE_GENERAL_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_GENERAL_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_GENERAL_URL || undefined
+  }
+})
+
+if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
+  Debug.enable(typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined)
+}
+
+const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
-
 Object.assign(exports, Prisma)
+

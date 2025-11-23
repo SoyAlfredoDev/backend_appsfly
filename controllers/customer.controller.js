@@ -1,4 +1,6 @@
-import { createCustomer, getCustomers, getCustomersByRut } from '../services/customersService.js'
+import { createCustomer, getCustomers, getCustomersByRut, deleteCustomerByIdService, getCustomerByIdService } from '../services/customersService.js'
+import { getSalesByCustomerIdService } from '../services/salesServices.js'
+import { getSaleDetailByCustomerIdService } from '../services/saleDetailsService.js'
 
 export const createCustomerController = async (req, res) => {
     try {
@@ -68,10 +70,42 @@ export const validateRutExists = async (req, res) => {
         } else {
             exists = false
         }
-        console.log(exists, rutFound)
+
         return res.status(200).json({ exists: exists });
     } catch (error) {
         console.error("(customer.controller.js): error validating if the rut exists:", error);
         res.status(500).json({ error: "Error validating RUT" });
+    }
+};
+
+export const deleteCustomerByIdController = async (req, res) => {
+    try {
+        const { customerId } = req.params;
+        const customerHasSales = await getSalesByCustomerIdService(customerId, req.prisma);
+        const customerHasSaleDetails = await getSaleDetailByCustomerIdService(customerId, req.prisma);
+        if (!customerHasSales.length > 0 || !customerHasSaleDetails.length > 0) {
+            await deleteCustomerByIdService(customerId, req.prisma);
+            res.status(200).json({ message: "Customer deleted successfully" });
+        } else {
+            res.status(400).json({ message: "Cannot delete customer with existing sales" });
+        }
+    } catch (error) {
+        console.error("(customer.controller.js): Error deleting customer by ID:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const getCustomerByIdController = async (req, res) => {
+    try {
+        const { customerId } = req.params;
+        const customer = await getCustomerByIdService(customerId, req.prisma);
+        if (customer) {
+            res.status(200).json(customer);
+        } else {
+            res.status(404).json({ message: "Customer not found" });
+        }
+    } catch (error) {
+        console.error("(customer.controller.js): Error getting customer by ID:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 };

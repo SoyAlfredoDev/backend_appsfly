@@ -38,3 +38,27 @@ export const getCustomersByRut = async (rut, prisma) => {
     }
 };
 
+
+// Delete a customer by ID
+export const deleteCustomerByIdService = async (id, prisma) => {
+    try {
+        return await prisma.customer.delete({
+            where: { customerId: id }
+        });
+    } catch (error) {
+        console.error("(customersService.js): Error deleting customer by ID:", error);
+        throw error;
+    }
+};
+
+// Get a customer by ID
+export const getCustomerByIdService = async (id, prisma) => {
+    try {
+        return await prisma.customer.findUnique({
+            where: { customerId: id }
+        });
+    } catch (error) {
+        console.error("(customersService.js): Error getting customer by ID:", error);
+        throw error;
+    }
+};

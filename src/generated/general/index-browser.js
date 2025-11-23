@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.15.0
- * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
+ * Prisma Client JS version: 6.18.0
+ * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
  */
 Prisma.prismaVersion = {
-  client: "6.15.0",
-  engine: "85179d7826409ee107a6ba334b5e305ae3fba9fb"
+  client: "6.18.0",
+  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -147,8 +147,11 @@ exports.Prisma.BusinessScalarFieldEnum = {
   businessCountry: 'businessCountry',
   businessCodeWhatsappNumber: 'businessCodeWhatsappNumber',
   businessWhatsappNumber: 'businessWhatsappNumber',
+  businessConnectionDB: 'businessConnectionDB',
   businessEntity: 'businessEntity',
   businessStatus: 'businessStatus',
+  businessProcess: 'businessProcess',
+  createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -172,9 +175,44 @@ exports.Prisma.UserGuestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PlanScalarFieldEnum = {
+  planId: 'planId',
+  planName: 'planName',
+  planFeatures: 'planFeatures',
+  planPrice: 'planPrice',
+  planDuration: 'planDuration',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  subscriptionId: 'subscriptionId',
+  subscriptionBusinessId: 'subscriptionBusinessId',
+  subscriptionPlanId: 'subscriptionPlanId',
+  subscriptionStartDate: 'subscriptionStartDate',
+  subscriptionDuration: 'subscriptionDuration',
+  subscriptionEndDate: 'subscriptionEndDate',
+  subscriptionStatus: 'subscriptionStatus',
+  subscriptionAmount: 'subscriptionAmount',
+  subscriptionPaymentMethod: 'subscriptionPaymentMethod',
+  subscriptionPlanFeatures: 'subscriptionPlanFeatures',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -185,6 +223,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.BusinessEntity = exports.$Enums.BusinessEntity = {
   INDIVIDUAL: 'INDIVIDUAL',
@@ -211,11 +255,21 @@ exports.UserGuestStatus = exports.$Enums.UserGuestStatus = {
   DELETED: 'DELETED'
 };
 
+exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  PENDIENT: 'PENDIENT'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Business: 'Business',
   UserBusiness: 'UserBusiness',
-  UserGuest: 'UserGuest'
+  UserGuest: 'UserGuest',
+  Plan: 'Plan',
+  Subscription: 'Subscription'
 };
 
 /**

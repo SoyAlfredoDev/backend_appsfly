@@ -19,6 +19,7 @@ import dailySalesRoutes from "./routes/dailySales.routes.js";
 import transactionsRoutes from "./routes/transactions.routes.js";
 import expensesRoutes from "./routes/expenses.routes.js";
 import utilsRoutes from "./routes/utils.routes.js";
+import subscriptionsRoutes from "./routes/subscriptions.routes.js";
 
 import dotenv from 'dotenv';
 
@@ -56,5 +57,6 @@ app.use('/api', dailySalesRoutes);
 app.use('/api', transactionsRoutes);
 app.use('/api', expensesRoutes);
 app.use('/api', utilsRoutes);
+app.use('/api', subscriptionsRoutes);
 
 export default app;
