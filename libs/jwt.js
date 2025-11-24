@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
-import { TOKEN_SECRET } from "../config.js";
-
+import dotenv from 'dotenv';
+dotenv.config();
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 export function createAccessToken(payload) {
     return new Promise((resolve, reject) => {
         jwt.sign(

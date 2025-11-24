@@ -3,13 +3,12 @@ import jwt from "jsonwebtoken";
 import { createUser, getUserByEmail } from '../services/usersService.js';
 import { createAccessToken } from '../libs/jwt.js';
 import validateRut from '../libs/validateRut.js';
-import { TOKEN_SECRET } from '../config.js';
 
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV === "production";
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 export const register = async (req, res) => {
     try {
@@ -51,13 +50,9 @@ export const register = async (req, res) => {
         };
         const user = await createUser(data);
         const token = await createAccessToken({ id: user.id })
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production", // solo https en prod
-            sameSite: "none" // 🔑 necesario para cross-site
-        });
         res.status(201).json({
             message: 'User registered successfully',
+            token,
             user: {
                 userId: user.userId,
                 userFirstName: user.userFirstName,
@@ -89,13 +84,10 @@ export const login = async (req, res) => {
             message: 'Incorrect username or password'
         });
         const token = await createAccessToken({ id: user.userId });
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: isProduction,
-            sameSite: isProduction ? "none" : "lax"
-        });
+
         res.status(201).json({
             message: 'User login successfully',
+            token,
             user: {
                 userId: user.userId,
                 userFirstName: user.userFirstName,
@@ -123,7 +115,7 @@ export const logout = (req, res) => {
 };
 
 export const verifyAuthController = async (req, res) => {
-    const token = req.cookies.token;
+    const token = req.headers['authorization']?.split(' ')[1];
     if (!token) return res.status(401).json({ message: "No token" });
 
     jwt.verify(token, TOKEN_SECRET, (err, decoded) => {
