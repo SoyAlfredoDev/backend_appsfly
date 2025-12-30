@@ -1,4 +1,4 @@
-import { createCustomer, getCustomers, getCustomersByRut, deleteCustomerByIdService, getCustomerByIdService } from '../services/customersService.js'
+import { createCustomer, getCustomers, getCustomersByRut, deleteCustomerByIdService, getCustomerByIdService, updateCustomer } from '../services/customersService.js'
 import { getSalesByCustomerIdService } from '../services/salesServices.js'
 import { getSaleDetailByCustomerIdService } from '../services/saleDetailsService.js'
 
@@ -106,6 +106,45 @@ export const getCustomerByIdController = async (req, res) => {
         }
     } catch (error) {
         console.error("(customer.controller.js): Error getting customer by ID:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const updateCustomerController = async (req, res) => {
+    try {
+        const { customerId } = req.params;
+        const {
+            customerFirstName,
+            customerLastName,
+            customerEmail,
+            customerCodePhoneNumber,
+            customerPhoneNumber,
+            customerDocumentType,
+            customerDocumentNumber,
+            customerComment
+        } = req.body;
+
+        const formatString = (str) => str?.trim()?.toLowerCase() || null;
+
+        const data = {
+            customerFirstName: formatString(customerFirstName),
+            customerLastName: formatString(customerLastName),
+            customerEmail: formatString(customerEmail),
+            customerCodePhoneNumber,
+            customerPhoneNumber,
+            customerDocumentType,
+            customerDocumentNumber,
+            customerComment
+        };
+
+        const updatedCustomer = await updateCustomer(customerId, data, req.prisma);
+        res.status(200).json({
+            message: 'Customer updated successfully',
+            customer: updatedCustomer
+        });
+
+    } catch (error) {
+        console.error("(customer.controller.js): Error updating customer:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 };

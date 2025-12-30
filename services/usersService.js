@@ -65,3 +65,36 @@ export const validateUserRutExists = async (rut) => {
     }
 }
 
+export const updateUserConfirmEmail = async (id) => {
+    try {
+        const user = await general.user.update({
+            where: {
+                userId: id
+            },
+            data: {
+                userConfirmEmail: true
+            }
+        });
+        return user;
+    } catch (error) {
+        console.error("(usersService.js): Error updating user confirm email:", error);
+        throw error;
+    }
+}
+
+export const updateUserPassword = async (id, newPassword) => {
+    try {
+        const user = await general.user.update({
+            where: {
+                userId: id
+            },
+            data: {
+                userPassword: newPassword
+            }
+        });
+        return user;
+    } catch (error) {
+        console.error("(usersService.js): Error updating user password:", error);
+        throw error;
+    }
+}

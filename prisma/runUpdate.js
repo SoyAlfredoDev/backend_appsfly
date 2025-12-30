@@ -5,6 +5,7 @@ import path from "path";
 
 const execAsync = promisify(exec);
 
+
 // Directorio de este archivo
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,19 +20,19 @@ async function runUpdate() {
 
     try {
         const businesses = await getBusinessService();
-
+       
         for (const b of businesses) {
             const connection = b.businessConnectionDB;
 
             if (!connection) {
                 updateStatus.push({
-                    businessId: b.id,
+                    businessId: b.businessId,
                     status: "⚠ No DB Connection Found"
                 });
                 continue;
             }
 
-            console.log(`🔄 Ejecutando migraciones para Business ID: ${b.id}`);
+            //console.log(`🔄 Ejecutando migraciones para Business ID: ${b.businessId}`);
 
             try {
                 const command = `npx prisma migrate deploy --schema "${SCHEMA_PATH}"`;
@@ -47,16 +48,16 @@ async function runUpdate() {
                 if (stderr) console.log(stderr); // stderr NO siempre es error
 
                 updateStatus.push({
-                    businessId: b.id,
+                    businessId: b.businessId,
                     status: "✅ Success"
                 });
 
             } catch (error) {
-                console.error(`❌ Error migrando la DB del negocio ${b.id}`);
+                console.error(`❌ Error migrando la DB del negocio ${b.businessId}`);
                 console.error(error);
 
                 updateStatus.push({
-                    businessId: b.id,
+                    businessId: b.businessId,
                     status: "❌ Failed",
                     error: error.message
                 });

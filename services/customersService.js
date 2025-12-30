@@ -62,3 +62,17 @@ export const getCustomerByIdService = async (id, prisma) => {
         throw error;
     }
 };
+
+// Update a customer
+export const updateCustomer = async (id, data, prisma) => {
+    try {
+        const res = await prisma.customer.update({
+            where: { customerId: id },
+            data
+        });
+        return res;
+    } catch (error) {
+        console.error("(customersService.js): Error updating customer:", error);
+        throw error;
+    }
+};

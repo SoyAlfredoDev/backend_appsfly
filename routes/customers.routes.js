@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createCustomerController, getCustomerController, validateRutExists, deleteCustomerByIdController, getCustomerByIdController } from "../controllers/customer.controller.js";
+import { createCustomerController, getCustomerController, validateRutExists, deleteCustomerByIdController, getCustomerByIdController, updateCustomerController } from "../controllers/customer.controller.js";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js"
 
@@ -10,5 +10,6 @@ router.get('/customers', authRequired, dbSelectorMiddleware, getCustomerControll
 router.get('/customers/:customerId', authRequired, dbSelectorMiddleware, getCustomerByIdController);
 router.get('/customers/validateRutExists/:rut', authRequired, dbSelectorMiddleware, validateRutExists);
 router.delete('/customers/:customerId', authRequired, dbSelectorMiddleware, deleteCustomerByIdController);
+router.put('/customers/:customerId', authRequired, dbSelectorMiddleware, updateCustomerController);
 
 export default router;

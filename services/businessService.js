@@ -45,3 +45,15 @@ export const getConnectionDBServicio = async (businessId) => {
         throw error;
     }
 };
+
+export const getBusinessByIdService = async (businessId) => {
+    try {
+        const res = await general.business.findUnique({
+            where: { businessId }
+        });
+        return res ? res : null;
+    } catch (error) {
+        console.error("Error getting business by ID:", error);
+        throw error;
+    }
+};

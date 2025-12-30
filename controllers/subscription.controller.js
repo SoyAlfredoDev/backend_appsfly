@@ -3,7 +3,6 @@ import { getPlanById } from '../services/planService.js';
 
 export const checkActiveSubscription = async (req, res) => {
     const businessId = req.params.businessId;
-
     try {
         const subscription = await getSubscriptionsByBusinessIdService(businessId);
         if (!subscription) {

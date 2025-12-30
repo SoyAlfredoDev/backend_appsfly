@@ -125,6 +125,7 @@ exports.Prisma.UserScalarFieldEnum = {
   userFirstName: 'userFirstName',
   userLastName: 'userLastName',
   userEmail: 'userEmail',
+  userConfirmEmail: 'userConfirmEmail',
   userPassword: 'userPassword',
   userLastConnection: 'userLastConnection',
   userCodePhoneNumber: 'userCodePhoneNumber',
@@ -201,6 +202,38 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TicketScalarFieldEnum = {
+  ticketId: 'ticketId',
+  ticketNumber: 'ticketNumber',
+  ticketSubject: 'ticketSubject',
+  ticketType: 'ticketType',
+  ticketStatus: 'ticketStatus',
+  ticketAssociatedTo: 'ticketAssociatedTo',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TicketDetailScalarFieldEnum = {
+  ticketDetailId: 'ticketDetailId',
+  ticketDetailNumber: 'ticketDetailNumber',
+  ticketId: 'ticketId',
+  ticketDetailContent: 'ticketDetailContent',
+  ticketDetailImage: 'ticketDetailImage',
+  ticketAssociatedTo: 'ticketAssociatedTo',
+  createdByUserId: 'createdByUserId',
+  ticketDetailOrigin: 'ticketDetailOrigin',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NewsletterSubscriberScalarFieldEnum = {
+  newsletterSubscriberId: 'newsletterSubscriberId',
+  email: 'email',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -263,13 +296,34 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
   PENDIENT: 'PENDIENT'
 };
 
+exports.TicketType = exports.$Enums.TicketType = {
+  SUPPORT: 'SUPPORT',
+  SUGGESTION: 'SUGGESTION',
+  REQUEST: 'REQUEST'
+};
+
+exports.TicketStatus = exports.$Enums.TicketStatus = {
+  RESOLVED: 'RESOLVED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PENDING: 'PENDING',
+  URGENT: 'URGENT'
+};
+
+exports.TicketDetailOrigin = exports.$Enums.TicketDetailOrigin = {
+  CUSTOMER: 'CUSTOMER',
+  APPSFLY: 'APPSFLY'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Business: 'Business',
   UserBusiness: 'UserBusiness',
   UserGuest: 'UserGuest',
   Plan: 'Plan',
-  Subscription: 'Subscription'
+  Subscription: 'Subscription',
+  Ticket: 'Ticket',
+  TicketDetail: 'TicketDetail',
+  newsletterSubscriber: 'newsletterSubscriber'
 };
 
 /**

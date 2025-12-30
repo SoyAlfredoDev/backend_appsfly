@@ -1,4 +1,4 @@
-import { createDailySaleService, getDailySalesService } from '../services/dailySalesService.js';
+import { createDailySaleService, getDailySalesService, getDailySaleByDateService, getDailySaleByIdService } from '../services/dailySalesService.js';
 import { getSalesByDate } from '../services/salesServices.js';
 import { getPaymentByDateService } from '../services/paymentsService.js';
 import { getSaleDetailByDate } from '../services/saleDetailsService.js';
@@ -7,6 +7,15 @@ export const createDailySaleController = async (req, res) => {
     try {
         const { dailySalesDay, dailySalesId } = req.body;
         const { prisma, user } = req;
+
+        // 1. VALIDACIÓN: Verificar si ya existe un cierre para esa fecha
+        const existingSale = await getDailySaleByDateService(dailySalesDay, prisma);
+        if (existingSale) {
+            return res.status(400).json({ 
+                message: "Ya existe un Cierre Diario para esta fecha.",
+                type: "DUPLICATE_DATE"
+            });
+        }
 
         // Ejecuta consultas en paralelo
         const [salesCount, payments, saleDetails] = await Promise.all([
@@ -74,6 +83,26 @@ export const getDailySalesController = async (req, res) => {
         console.error("Error getting daily sales:", error);
         return res.status(500).json({
             message: "Error getting daily sales",
+            error: error.message,
+        });
+    }
+};
+
+export const getDailySaleByIdController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { prisma } = req;
+        const dailySale = await getDailySaleByIdService(id, prisma);
+        
+        if (!dailySale) {
+            return res.status(404).json({ message: "Cierre diario no encontrado" });
+        }
+        
+        return res.status(200).json(dailySale);
+    } catch (error) {
+        console.error("Error getting daily sale by id:", error);
+        return res.status(500).json({
+            message: "Error getting daily sale by id",
             error: error.message,
         });
     }

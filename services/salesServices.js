@@ -140,7 +140,6 @@ export const getMonthlySales = async (month, year, prisma) => {
     try {
         const startDate = new Date(year, month - 1, 1);
         const endDate = new Date(year, month, 1);
-
         const total = await prisma.sale.aggregate({
             _sum: {
                 saleTotal: true,
@@ -152,7 +151,6 @@ export const getMonthlySales = async (month, year, prisma) => {
                 },
             },
         });
-
         const pendint = await prisma.sale.aggregate({
             _sum: {
                 salePendingAmount: true,
@@ -164,12 +162,10 @@ export const getMonthlySales = async (month, year, prisma) => {
                 },
             },
         });
-
         const data = {
             saleTotal: total._sum.saleTotal || 0,
             salePendingAmount: pendint._sum.salePendingAmount || 0
         }
-
         return data
 
     } catch (error) {
@@ -243,4 +239,32 @@ export const getSalesByCustomerIdService = async (customerId, prisma) => {
         console.error("(salesServices.js): Error getting sales by customer ID:", error);
         throw error;
     }
-}
+};
+
+export const countSalesMonthService = async (month, year, prisma) => {
+    try {
+        // Validate input
+        if (!month || !year) {
+            throw new Error("Month and year are required");
+        }
+
+        // Build date range in UTC to avoid timezone issues
+        const startDate = new Date(Date.UTC(year, month - 1, 1));
+        const endDate = new Date(Date.UTC(year, month, 1));
+
+        const count = await prisma.sale.count({
+            where: {
+                createdAt: {
+                    gte: startDate,
+                    lt: endDate,
+                },
+            },
+        });
+
+        return count;
+
+    } catch (error) {
+        console.error("(salesServices.js): Error counting sales:", error);
+        throw error;
+    }
+};

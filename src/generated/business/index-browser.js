@@ -272,6 +272,48 @@ exports.Prisma.ExpenseScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ProviderScalarFieldEnum = {
+  providerId: 'providerId',
+  providerName: 'providerName',
+  providerDocumentType: 'providerDocumentType',
+  providerDocumentNumber: 'providerDocumentNumber',
+  providerAddress: 'providerAddress',
+  providerCodePhoneNumber: 'providerCodePhoneNumber',
+  providerPhoneNumber: 'providerPhoneNumber',
+  providerEmail: 'providerEmail',
+  providerComment: 'providerComment',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PurchaseScalarFieldEnum = {
+  purchaseId: 'purchaseId',
+  purchaseNumber: 'purchaseNumber',
+  purchaseRealNumber: 'purchaseRealNumber',
+  purchaseProviderId: 'purchaseProviderId',
+  purchaseTotal: 'purchaseTotal',
+  purchaseStatus: 'purchaseStatus',
+  purchaseComment: 'purchaseComment',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PurchaseDetailScalarFieldEnum = {
+  purchaseDetailId: 'purchaseDetailId',
+  purchaseId: 'purchaseId',
+  purchaseDetailProductId: 'purchaseDetailProductId',
+  purchaseDetailServiceId: 'purchaseDetailServiceId',
+  purchaseDetailQuantity: 'purchaseDetailQuantity',
+  purchaseDetailPrice: 'purchaseDetailPrice',
+  purchaseDetailTotal: 'purchaseDetailTotal',
+  purchaseDetailType: 'purchaseDetailType',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -344,7 +386,10 @@ exports.Prisma.ModelName = {
   CashExpense: 'CashExpense',
   DailySales: 'DailySales',
   Transactions: 'Transactions',
-  Expense: 'Expense'
+  Expense: 'Expense',
+  Provider: 'Provider',
+  Purchase: 'Purchase',
+  PurchaseDetail: 'PurchaseDetail'
 };
 
 /**

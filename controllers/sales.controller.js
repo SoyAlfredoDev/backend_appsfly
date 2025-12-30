@@ -1,4 +1,4 @@
-import { createSale, getSaleById, getSales, getMonthlySales, getDaySales, getSalesByCustomerIdService } from '../services/salesServices.js';
+import { createSale, getSaleById, getSales, getMonthlySales, getDaySales, getSalesByCustomerIdService, countSalesMonthService } from '../services/salesServices.js';
 import defineSaleNumber from '../libs/defineSaleNumber.js';
 
 export const createSaleController = async (req, res) => {
@@ -65,7 +65,6 @@ export const getMonthlySalescontroller = async (req, res) => {
 };
 
 export const getMonthlySalesNowController = async (req, res) => {
-
     try {
         const month = new Date().getMonth() + 1; // Months are zero-based
         const year = new Date().getFullYear();
@@ -97,7 +96,17 @@ export const getSalesByCustomerIdController = async (req, res) => {
         console.error("(sales.controller.js): Error getting sales by customer ID:", error);
         res.status(500).json({ message: "Internal server error" });
     }
-}
+};
+
+export const countSalesMonthController = async (req, res) => {
+    try {
+        const { month, year } = req.params;
+        res.status(200).json(await countSalesMonthService(Number(month), Number(year), req.prisma));
+    } catch (error) {
+        console.error("(sales.controller.js): Error counting sales:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 
 
 

@@ -11,3 +11,13 @@ export const getPlanById = async (planId) => {
         throw error;
     }
 };
+
+export const getAllPlansService = async () => {
+    try {
+        const plans = await general.plan.findMany();
+        return plans;
+    } catch (error) {
+        console.error("(service/planService.js): Error fetching all plans:", error);
+        throw error;
+    }
+};

@@ -1,4 +1,4 @@
-import { createBusinessService, updateBusinessByIdService, getBusinessService } from "../services/businessService.js";
+import { createBusinessService, updateBusinessByIdService, getBusinessService, getBusinessByIdService } from "../services/businessService.js";
 import { createNeonDatabaseService, getConnectionStringAndTest } from "../services/neonDataBaseService.js";
 import { registerUserBusinessServiceBusinessDB } from '../services/businessDB/userBusiness.js';
 import { createUserBusinessService } from '../services/userBusinessService.js';
@@ -172,7 +172,6 @@ export const getBusinessController = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
-
 export const getConnectionDBController = async (req, res) => {
     try {
         const { businessId } = req.params;
@@ -181,5 +180,26 @@ export const getConnectionDBController = async (req, res) => {
     } catch (error) {
         console.error("Error in getConnectionDBController:", error);
         res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+export const getBusinessByIdController = async (req, res) => {
+    try {
+        const { businessId } = req.params;
+        const business = await getBusinessByIdService(businessId);
+        res.status(200).json(business);
+    } catch (error) {
+        console.error("Error in getBusinessByIdController:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+export const countBusinessController = async (req, res) => {
+    try {
+        const business = await getBusinessService();
+        res.status(200).json(business.length);
+
+    } catch (error) {
+        console.log(error)
+
     }
 }

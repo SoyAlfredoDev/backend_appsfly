@@ -1,10 +1,8 @@
-import { createProduct, getProducts } from "../services/productsService.js";
-
+import { createProduct, getProducts, getProductWithAnalytics } from "../services/productsService.js";
 
 // Create a product
 export const createProductController = async (req, res) => {
     try {
-
         // >>>>>>>>>>>>> sku no repetido validar
         const {
             name,
@@ -50,7 +48,6 @@ export const createProductController = async (req, res) => {
     }
 };
 
-
 // Get all products
 export const getProductsController = async (req, res) => {
     try {
@@ -60,4 +57,17 @@ export const getProductsController = async (req, res) => {
         console.error("(products.controller.js): Error getting products:", error);
         res.status(500).json({ message: "Internal server error" });
     }
+}
+
+export const getProductViewController = async(req, res)=>{
+    try {
+        const {id}= req.params;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const product = await getProductWithAnalytics(id, req.prisma, page, limit);   
+        res.status(200).json(product)     
+    } catch (error) {
+        console.error("(products.controller.js): Error getting Product View, error");
+        res.status(500).json({ message: "Internal server error" });
+    }   
 }

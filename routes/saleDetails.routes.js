@@ -7,6 +7,6 @@ import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
 const router = Router();
 router.get('/saleDetails', authRequired, dbSelectorMiddleware, getSaleDetailController);
 router.post('/saleDetails', authRequired, dbSelectorMiddleware, createSaleDetailController);
-router.get('/saleDetails/:id', authRequired, dbSelectorMiddleware, getSaleDetailByIdcontroller)
+router.get('/saleDetails/:id', authRequired, dbSelectorMiddleware, getSaleDetailByIdcontroller);
 
 export default router;  
