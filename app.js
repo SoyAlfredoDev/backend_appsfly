@@ -26,9 +26,8 @@ import emailRoutes from "./routes/email.routes.js";
 import newsletterRoutes from "./routes/newsletter.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import planRoutes from "./routes/plan.routes.js";
-import purchaseRoutes from "./routes/purchase.routes.js";
 import providersRoutes from "./routes/providers.routes.js";
-import purchasesRoutes from "./routes/purchasesRoutes.js";
+import purchasesRoutes from "./routes/purchases.routes.js";
 
 import dotenv from 'dotenv';
 
@@ -59,7 +58,6 @@ app.use('/api', categoriesRoutes);
 app.use('/api', servicesRoutes);
 app.use('/api', saleDetailsRoutes);
 app.use('/api', salesRoutes);
-app.use('/api/purchases', purchasesRoutes);
 app.use('/api', paymentsRoutes);
 app.use('/api', businessRoutes);
 app.use('/api', userBusinessRoutes);
@@ -75,7 +73,7 @@ app.use('/api', emailRoutes);
 app.use('/api', newsletterRoutes);
 app.use('/api', adminRoutes);
 app.use('/api', planRoutes);
-app.use('/api', purchaseRoutes);
+app.use('/api', purchasesRoutes);
 app.use('/api', providersRoutes);
 
 export default app;
