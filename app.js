@@ -35,20 +35,37 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const appEnv = process.env.APP_ENV || process.env.NODE_ENV || "development";
-const isProduction = appEnv === "production";
+/** En Vercel, NODE_ENV suele ser production aunque APP_ENV no esté definido. */
+const isProduction =
+  appEnv === "production" ||
+  process.env.NODE_ENV === "production" ||
+  process.env.VERCEL === "1";
 
 const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
-console.log(">>>>> ENVIRONMENT:", isProduction ? "Production" : "Development");
+console.log(">>>>> ENVIRONMENT:", isProduction ? "Production" : "Development", {
+  appEnv,
+  nodeEnv: process.env.NODE_ENV,
+  vercel: process.env.VERCEL,
+});
 
 const productionOrigins = [
   "https://appsfly.app",
   "https://frontend-appsfly.vercel.app",
   "https://www.appsfly.app",
   "https://appsfly.netlify.app",
+  "https://api.appsfly.app",
 ];
+
+const isVercelPreviewOrigin = (origin) =>
+  /^https:\/\/frontend-appsfly(-[a-z0-9-]+)?\.vercel\.app$/i.test(origin);
+
+const isAllowedProductionOrigin = (origin) =>
+  !origin ||
+  productionOrigins.includes(origin) ||
+  isVercelPreviewOrigin(origin);
 
 const isLocalDevOrigin = (origin) =>
   /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
@@ -56,9 +73,15 @@ const isLocalDevOrigin = (origin) =>
 app.use(
   cors({
     origin: isProduction
-      ? productionOrigins
+      ? (origin, callback) => {
+          if (isAllowedProductionOrigin(origin)) {
+            callback(null, origin || productionOrigins[1]);
+          } else {
+            callback(new Error(`CORS bloqueado para origen: ${origin}`));
+          }
+        }
       : (origin, callback) => {
-          if (!origin || isLocalDevOrigin(origin)) {
+          if (!origin || isLocalDevOrigin(origin) || isAllowedProductionOrigin(origin)) {
             callback(null, origin || "http://localhost:5173");
           } else {
             callback(new Error(`CORS bloqueado para origen: ${origin}`));
@@ -67,7 +90,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Accept"],
-    optionsSuccessStatus: 200,
+    optionsSuccessStatus: 204,
   }),
 );
 
