@@ -13,6 +13,7 @@ import {
 
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { pendingDailyClosureMiddleware } from "../middlewares/pendingDailyClosureMiddleware.js";
 
 const router = Router();
 
@@ -41,6 +42,6 @@ router.get("/sales", authRequired, dbSelectorMiddleware, getSalesController);
 router.get("/sales/:id", authRequired, dbSelectorMiddleware, getSaleByIdController);
 
 // 7. Create sale
-router.post("/sales", authRequired, dbSelectorMiddleware, createSaleController);
+router.post("/sales", authRequired, dbSelectorMiddleware, pendingDailyClosureMiddleware, createSaleController);
 
 export default router;

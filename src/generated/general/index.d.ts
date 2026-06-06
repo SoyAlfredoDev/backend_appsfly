@@ -436,8 +436,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.18.0
-   * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
+   * Prisma Client JS version: 6.19.2
+   * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
    */
   export type PrismaVersion = {
     client: string
@@ -6725,8 +6725,11 @@ export namespace Prisma {
   export type PlanMinAggregateOutputType = {
     planId: string | null
     planName: string | null
+    planDescription: string | null
     planPrice: number | null
     planDuration: number | null
+    planCurrency: string | null
+    planActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6734,8 +6737,11 @@ export namespace Prisma {
   export type PlanMaxAggregateOutputType = {
     planId: string | null
     planName: string | null
+    planDescription: string | null
     planPrice: number | null
     planDuration: number | null
+    planCurrency: string | null
+    planActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6743,9 +6749,12 @@ export namespace Prisma {
   export type PlanCountAggregateOutputType = {
     planId: number
     planName: number
+    planDescription: number
     planFeatures: number
     planPrice: number
     planDuration: number
+    planCurrency: number
+    planActive: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6765,8 +6774,11 @@ export namespace Prisma {
   export type PlanMinAggregateInputType = {
     planId?: true
     planName?: true
+    planDescription?: true
     planPrice?: true
     planDuration?: true
+    planCurrency?: true
+    planActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6774,8 +6786,11 @@ export namespace Prisma {
   export type PlanMaxAggregateInputType = {
     planId?: true
     planName?: true
+    planDescription?: true
     planPrice?: true
     planDuration?: true
+    planCurrency?: true
+    planActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6783,9 +6798,12 @@ export namespace Prisma {
   export type PlanCountAggregateInputType = {
     planId?: true
     planName?: true
+    planDescription?: true
     planFeatures?: true
     planPrice?: true
     planDuration?: true
+    planCurrency?: true
+    planActive?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6880,9 +6898,12 @@ export namespace Prisma {
   export type PlanGroupByOutputType = {
     planId: string
     planName: string
+    planDescription: string | null
     planFeatures: JsonValue
     planPrice: number
     planDuration: number
+    planCurrency: string
+    planActive: boolean
     createdAt: Date
     updatedAt: Date
     _count: PlanCountAggregateOutputType | null
@@ -6909,9 +6930,12 @@ export namespace Prisma {
   export type PlanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     planId?: boolean
     planName?: boolean
+    planDescription?: boolean
     planFeatures?: boolean
     planPrice?: boolean
     planDuration?: boolean
+    planCurrency?: boolean
+    planActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     subscriptions?: boolean | Plan$subscriptionsArgs<ExtArgs>
@@ -6921,9 +6945,12 @@ export namespace Prisma {
   export type PlanSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     planId?: boolean
     planName?: boolean
+    planDescription?: boolean
     planFeatures?: boolean
     planPrice?: boolean
     planDuration?: boolean
+    planCurrency?: boolean
+    planActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["plan"]>
@@ -6931,9 +6958,12 @@ export namespace Prisma {
   export type PlanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     planId?: boolean
     planName?: boolean
+    planDescription?: boolean
     planFeatures?: boolean
     planPrice?: boolean
     planDuration?: boolean
+    planCurrency?: boolean
+    planActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["plan"]>
@@ -6941,14 +6971,17 @@ export namespace Prisma {
   export type PlanSelectScalar = {
     planId?: boolean
     planName?: boolean
+    planDescription?: boolean
     planFeatures?: boolean
     planPrice?: boolean
     planDuration?: boolean
+    planCurrency?: boolean
+    planActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"planId" | "planName" | "planFeatures" | "planPrice" | "planDuration" | "createdAt" | "updatedAt", ExtArgs["result"]["plan"]>
+  export type PlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"planId" | "planName" | "planDescription" | "planFeatures" | "planPrice" | "planDuration" | "planCurrency" | "planActive" | "createdAt" | "updatedAt", ExtArgs["result"]["plan"]>
   export type PlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     subscriptions?: boolean | Plan$subscriptionsArgs<ExtArgs>
     _count?: boolean | PlanCountOutputTypeDefaultArgs<ExtArgs>
@@ -6964,9 +6997,12 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       planId: string
       planName: string
+      planDescription: string | null
       planFeatures: Prisma.JsonValue
       planPrice: number
       planDuration: number
+      planCurrency: string
+      planActive: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["plan"]>
@@ -7395,9 +7431,12 @@ export namespace Prisma {
   interface PlanFieldRefs {
     readonly planId: FieldRef<"Plan", 'String'>
     readonly planName: FieldRef<"Plan", 'String'>
+    readonly planDescription: FieldRef<"Plan", 'String'>
     readonly planFeatures: FieldRef<"Plan", 'Json'>
     readonly planPrice: FieldRef<"Plan", 'Float'>
     readonly planDuration: FieldRef<"Plan", 'Int'>
+    readonly planCurrency: FieldRef<"Plan", 'String'>
+    readonly planActive: FieldRef<"Plan", 'Boolean'>
     readonly createdAt: FieldRef<"Plan", 'DateTime'>
     readonly updatedAt: FieldRef<"Plan", 'DateTime'>
   }
@@ -12368,9 +12407,12 @@ export namespace Prisma {
   export const PlanScalarFieldEnum: {
     planId: 'planId',
     planName: 'planName',
+    planDescription: 'planDescription',
     planFeatures: 'planFeatures',
     planPrice: 'planPrice',
     planDuration: 'planDuration',
+    planCurrency: 'planCurrency',
+    planActive: 'planActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13060,9 +13102,12 @@ export namespace Prisma {
     NOT?: PlanWhereInput | PlanWhereInput[]
     planId?: StringFilter<"Plan"> | string
     planName?: StringFilter<"Plan"> | string
+    planDescription?: StringNullableFilter<"Plan"> | string | null
     planFeatures?: JsonFilter<"Plan">
     planPrice?: FloatFilter<"Plan"> | number
     planDuration?: IntFilter<"Plan"> | number
+    planCurrency?: StringFilter<"Plan"> | string
+    planActive?: BoolFilter<"Plan"> | boolean
     createdAt?: DateTimeFilter<"Plan"> | Date | string
     updatedAt?: DateTimeFilter<"Plan"> | Date | string
     subscriptions?: SubscriptionListRelationFilter
@@ -13071,9 +13116,12 @@ export namespace Prisma {
   export type PlanOrderByWithRelationInput = {
     planId?: SortOrder
     planName?: SortOrder
+    planDescription?: SortOrderInput | SortOrder
     planFeatures?: SortOrder
     planPrice?: SortOrder
     planDuration?: SortOrder
+    planCurrency?: SortOrder
+    planActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     subscriptions?: SubscriptionOrderByRelationAggregateInput
@@ -13085,9 +13133,12 @@ export namespace Prisma {
     OR?: PlanWhereInput[]
     NOT?: PlanWhereInput | PlanWhereInput[]
     planName?: StringFilter<"Plan"> | string
+    planDescription?: StringNullableFilter<"Plan"> | string | null
     planFeatures?: JsonFilter<"Plan">
     planPrice?: FloatFilter<"Plan"> | number
     planDuration?: IntFilter<"Plan"> | number
+    planCurrency?: StringFilter<"Plan"> | string
+    planActive?: BoolFilter<"Plan"> | boolean
     createdAt?: DateTimeFilter<"Plan"> | Date | string
     updatedAt?: DateTimeFilter<"Plan"> | Date | string
     subscriptions?: SubscriptionListRelationFilter
@@ -13096,9 +13147,12 @@ export namespace Prisma {
   export type PlanOrderByWithAggregationInput = {
     planId?: SortOrder
     planName?: SortOrder
+    planDescription?: SortOrderInput | SortOrder
     planFeatures?: SortOrder
     planPrice?: SortOrder
     planDuration?: SortOrder
+    planCurrency?: SortOrder
+    planActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PlanCountOrderByAggregateInput
@@ -13114,9 +13168,12 @@ export namespace Prisma {
     NOT?: PlanScalarWhereWithAggregatesInput | PlanScalarWhereWithAggregatesInput[]
     planId?: StringWithAggregatesFilter<"Plan"> | string
     planName?: StringWithAggregatesFilter<"Plan"> | string
+    planDescription?: StringNullableWithAggregatesFilter<"Plan"> | string | null
     planFeatures?: JsonWithAggregatesFilter<"Plan">
     planPrice?: FloatWithAggregatesFilter<"Plan"> | number
     planDuration?: IntWithAggregatesFilter<"Plan"> | number
+    planCurrency?: StringWithAggregatesFilter<"Plan"> | string
+    planActive?: BoolWithAggregatesFilter<"Plan"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Plan"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Plan"> | Date | string
   }
@@ -13858,9 +13915,12 @@ export namespace Prisma {
   export type PlanCreateInput = {
     planId: string
     planName: string
+    planDescription?: string | null
     planFeatures: JsonNullValueInput | InputJsonValue
     planPrice: number
     planDuration: number
+    planCurrency?: string
+    planActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptions?: SubscriptionCreateNestedManyWithoutPlanInput
@@ -13869,9 +13929,12 @@ export namespace Prisma {
   export type PlanUncheckedCreateInput = {
     planId: string
     planName: string
+    planDescription?: string | null
     planFeatures: JsonNullValueInput | InputJsonValue
     planPrice: number
     planDuration: number
+    planCurrency?: string
+    planActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutPlanInput
@@ -13880,9 +13943,12 @@ export namespace Prisma {
   export type PlanUpdateInput = {
     planId?: StringFieldUpdateOperationsInput | string
     planName?: StringFieldUpdateOperationsInput | string
+    planDescription?: NullableStringFieldUpdateOperationsInput | string | null
     planFeatures?: JsonNullValueInput | InputJsonValue
     planPrice?: FloatFieldUpdateOperationsInput | number
     planDuration?: IntFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    planActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: SubscriptionUpdateManyWithoutPlanNestedInput
@@ -13891,9 +13957,12 @@ export namespace Prisma {
   export type PlanUncheckedUpdateInput = {
     planId?: StringFieldUpdateOperationsInput | string
     planName?: StringFieldUpdateOperationsInput | string
+    planDescription?: NullableStringFieldUpdateOperationsInput | string | null
     planFeatures?: JsonNullValueInput | InputJsonValue
     planPrice?: FloatFieldUpdateOperationsInput | number
     planDuration?: IntFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    planActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
@@ -13902,9 +13971,12 @@ export namespace Prisma {
   export type PlanCreateManyInput = {
     planId: string
     planName: string
+    planDescription?: string | null
     planFeatures: JsonNullValueInput | InputJsonValue
     planPrice: number
     planDuration: number
+    planCurrency?: string
+    planActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13912,9 +13984,12 @@ export namespace Prisma {
   export type PlanUpdateManyMutationInput = {
     planId?: StringFieldUpdateOperationsInput | string
     planName?: StringFieldUpdateOperationsInput | string
+    planDescription?: NullableStringFieldUpdateOperationsInput | string | null
     planFeatures?: JsonNullValueInput | InputJsonValue
     planPrice?: FloatFieldUpdateOperationsInput | number
     planDuration?: IntFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    planActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13922,9 +13997,12 @@ export namespace Prisma {
   export type PlanUncheckedUpdateManyInput = {
     planId?: StringFieldUpdateOperationsInput | string
     planName?: StringFieldUpdateOperationsInput | string
+    planDescription?: NullableStringFieldUpdateOperationsInput | string | null
     planFeatures?: JsonNullValueInput | InputJsonValue
     planPrice?: FloatFieldUpdateOperationsInput | number
     planDuration?: IntFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    planActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14808,9 +14886,12 @@ export namespace Prisma {
   export type PlanCountOrderByAggregateInput = {
     planId?: SortOrder
     planName?: SortOrder
+    planDescription?: SortOrder
     planFeatures?: SortOrder
     planPrice?: SortOrder
     planDuration?: SortOrder
+    planCurrency?: SortOrder
+    planActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14823,8 +14904,11 @@ export namespace Prisma {
   export type PlanMaxOrderByAggregateInput = {
     planId?: SortOrder
     planName?: SortOrder
+    planDescription?: SortOrder
     planPrice?: SortOrder
     planDuration?: SortOrder
+    planCurrency?: SortOrder
+    planActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14832,8 +14916,11 @@ export namespace Prisma {
   export type PlanMinOrderByAggregateInput = {
     planId?: SortOrder
     planName?: SortOrder
+    planDescription?: SortOrder
     planPrice?: SortOrder
     planDuration?: SortOrder
+    planCurrency?: SortOrder
+    planActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -17395,9 +17482,12 @@ export namespace Prisma {
   export type PlanCreateWithoutSubscriptionsInput = {
     planId: string
     planName: string
+    planDescription?: string | null
     planFeatures: JsonNullValueInput | InputJsonValue
     planPrice: number
     planDuration: number
+    planCurrency?: string
+    planActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17405,9 +17495,12 @@ export namespace Prisma {
   export type PlanUncheckedCreateWithoutSubscriptionsInput = {
     planId: string
     planName: string
+    planDescription?: string | null
     planFeatures: JsonNullValueInput | InputJsonValue
     planPrice: number
     planDuration: number
+    planCurrency?: string
+    planActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17535,9 +17628,12 @@ export namespace Prisma {
   export type PlanUpdateWithoutSubscriptionsInput = {
     planId?: StringFieldUpdateOperationsInput | string
     planName?: StringFieldUpdateOperationsInput | string
+    planDescription?: NullableStringFieldUpdateOperationsInput | string | null
     planFeatures?: JsonNullValueInput | InputJsonValue
     planPrice?: FloatFieldUpdateOperationsInput | number
     planDuration?: IntFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    planActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17545,9 +17641,12 @@ export namespace Prisma {
   export type PlanUncheckedUpdateWithoutSubscriptionsInput = {
     planId?: StringFieldUpdateOperationsInput | string
     planName?: StringFieldUpdateOperationsInput | string
+    planDescription?: NullableStringFieldUpdateOperationsInput | string | null
     planFeatures?: JsonNullValueInput | InputJsonValue
     planPrice?: FloatFieldUpdateOperationsInput | number
     planDuration?: IntFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    planActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

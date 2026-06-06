@@ -21,6 +21,25 @@ export const createSubscriptionController = async (req, res) => {
         const userId = req.user.payload.id;
 
         const planSelected = await getPlanById(subscriptionPlanId);
+        if (!planSelected) {
+            return res.status(404).json({ message: 'Plan not found.' });
+        }
+
+        if (planSelected.planActive === false) {
+            return res.status(403).json({
+                message: 'Este plan no está disponible para nuevas contrataciones.',
+            });
+        }
+
+        const existingSubscriptions = await getSubscriptionsByBusinessIdService(subscriptionBusinessId);
+        const hasHistory = Array.isArray(existingSubscriptions) && existingSubscriptions.length > 0;
+
+        if (subscriptionPlanId === 'P001' && hasHistory) {
+            return res.status(403).json({
+                message: 'La promoción de prueba gratuita no está disponible para negocios con historial de suscripción.',
+            });
+        }
+
         const subscriptionDuration = planSelected.planDuration;
         const subscriptionAmount = planSelected.planPrice;
         const subscriptionPlanFeatures = planSelected.planFeatures;

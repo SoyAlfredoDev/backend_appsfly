@@ -16,6 +16,7 @@ model User {
   userFirstName       String
   userLastName        String
   userEmail           String    @unique
+  userConfirmEmail    Boolean   @default(false)
   userPassword        String
   userLastConnection  DateTime?
   userCodePhoneNumber String
@@ -26,9 +27,12 @@ model User {
   updatedAt           DateTime  @updatedAt
 
   // Relations
-  UserBusiness UserBusiness[]
-  UserGuest    UserGuest[]
-  businesses   Business[]
+  UserBusiness  UserBusiness[]
+  UserGuest     UserGuest[]
+  businesses    Business[]
+  subscriptions Subscription[]
+  tickets       Ticket[]
+  ticketDetails TicketDetail[]
 }
 
 model Business {
@@ -85,27 +89,74 @@ model UserGuest {
 }
 
 model Plan {
-  planId       String   @id
-  planName     String
-  planFeatures Json
-  planPrice    Float
-  planDuration Int // Duración del plan en meses
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  planId          String   @id
+  planName        String
+  planDescription String?
+  planFeatures    Json
+  planPrice       Float
+  planDuration    Int // Duración del plan en meses
+  planCurrency    String   @default("CLP")
+  planActive      Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   // Relations
   subscriptions Subscription[]
 }
 
 model Subscription {
-  subscriptionId         String   @id
-  subscriptionBusinessId String
-  subscriptionPlanId     String
-  subscriptionStartDate  DateTime
-  subscriptionEndDate    DateTime
-  status                 String
-  plan                   Plan     @relation(fields: [subscriptionPlanId], references: [planId])
-  business               Business @relation(fields: [subscriptionBusinessId], references: [businessId])
+  subscriptionId            String             @id
+  subscriptionBusinessId    String
+  subscriptionPlanId        String
+  subscriptionStartDate     DateTime
+  subscriptionDuration      Int
+  subscriptionEndDate       DateTime
+  subscriptionStatus        SubscriptionStatus
+  subscriptionAmount        Float
+  subscriptionPaymentMethod String
+  subscriptionPlanFeatures  Json
+  createdByUserId           String
+  createdAt                 DateTime           @default(now())
+  updatedAt                 DateTime           @updatedAt
+  createdBy                 User               @relation(fields: [createdByUserId], references: [userId])
+  plan                      Plan               @relation(fields: [subscriptionPlanId], references: [planId])
+  business                  Business           @relation(fields: [subscriptionBusinessId], references: [businessId])
+}
+
+model Ticket {
+  ticketId           String         @id @default(uuid())
+  ticketNumber       String?
+  ticketSubject      String?
+  ticketType         TicketType
+  ticketStatus       TicketStatus
+  ticketAssociatedTo String[]
+  createdByUserId    String
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  ticketDetails      TicketDetail[]
+  createdBy          User           @relation(fields: [createdByUserId], references: [userId])
+}
+
+model TicketDetail {
+  ticketDetailId      String             @id @default(uuid())
+  ticketDetailNumber  String?
+  ticketId            String
+  ticketDetailContent String
+  ticketDetailImage   String[]
+  ticketAssociatedTo  String[]
+  createdByUserId     String
+  ticketDetailOrigin  TicketDetailOrigin
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  createdBy           User               @relation(fields: [createdByUserId], references: [userId])
+  Ticket              Ticket             @relation(fields: [ticketId], references: [ticketId])
+}
+
+model newsletterSubscriber {
+  newsletterSubscriberId String   @id @default(uuid())
+  email                  String
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 }
 
 enum Role {
@@ -131,4 +182,30 @@ enum UserGuestStatus {
   ACCEPTED
   REJECTED
   DELETED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELLED
+  EXPIRED
+  PENDIENT
+}
+
+enum TicketStatus {
+  RESOLVED
+  IN_PROGRESS
+  PENDING
+  URGENT
+}
+
+enum TicketType {
+  SUPPORT
+  SUGGESTION
+  REQUEST
+}
+
+enum TicketDetailOrigin {
+  CUSTOMER
+  APPSFLY
 }

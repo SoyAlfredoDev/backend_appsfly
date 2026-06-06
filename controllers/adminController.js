@@ -8,3 +8,34 @@ export const getDashboardKpis = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const getAdminSubscriptions = async (req, res) => {
+    try {
+        const subscriptions = await adminService.getSubscriptions();
+        res.json(subscriptions);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getAdminBusinesses = async (req, res) => {
+    try {
+        const businesses = await adminService.getBusinesses();
+        res.json(businesses);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getAdminBusinessById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const detail = await adminService.getBusinessDetail(id);
+        if (!detail) {
+            return res.status(404).json({ message: "Negocio no encontrado." });
+        }
+        res.json(detail);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

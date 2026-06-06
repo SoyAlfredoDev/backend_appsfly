@@ -2,7 +2,7 @@ import { getAllPlansService } from '../services/planService.js';
 
 export const getPlans = async (req, res) => {
     try {
-        const plans = await getAllPlansService();
+        const plans = await getAllPlansService({ activeOnly: true });
         return res.json(plans);
     } catch (error) {
         console.error("(controllers/plan.controller.js): Error getting plans:", error);

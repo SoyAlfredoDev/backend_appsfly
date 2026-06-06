@@ -30,14 +30,37 @@ export const getTicketsService = async () => {
     }
 }
 
+const ticketInclude = {
+    createdBy: true,
+    ticketDetails: {
+        include: { createdBy: true },
+        orderBy: { createdAt: 'asc' },
+    },
+};
+
 export const getTicketByIdService = async (id) => {
     try {
         const res = await general.ticket.findUnique({
-            where: { ticketId: id }
+            where: { ticketId: id },
+            include: ticketInclude,
         });
         return res;
     } catch (error) {
         console.error("(ticketService.js): Error getting ticket by ID:", error);
         throw error;
     }
-}
+};
+
+export const updateTicketStatusService = async (id, ticketStatus) => {
+    try {
+        const res = await general.ticket.update({
+            where: { ticketId: id },
+            data: { ticketStatus },
+            include: ticketInclude,
+        });
+        return res;
+    } catch (error) {
+        console.error("(ticketService.js): Error updating ticket status:", error);
+        throw error;
+    }
+};

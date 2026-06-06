@@ -173,7 +173,7 @@ model CashExpense {
 
 model DailySales {
     dailySalesId            String   @id
-    dailySalesDay           String
+    dailySalesDay           String   @unique
     dailySalesTotalSales    Int?
     dailySalesNumberOfSales Int?
     dailySalesTotalIncome   Int?

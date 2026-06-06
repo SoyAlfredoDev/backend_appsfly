@@ -28,12 +28,14 @@ import adminRoutes from "./routes/admin.routes.js";
 import planRoutes from "./routes/plan.routes.js";
 import providersRoutes from "./routes/providers.routes.js";
 import purchasesRoutes from "./routes/purchases.routes.js";
+import reportsRoutes from "./routes/reports.routes.js";
 
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV === "production";
+const appEnv = process.env.APP_ENV || process.env.NODE_ENV || "development";
+const isProduction = appEnv === "production";
 
 const app = express();
 
@@ -41,11 +43,29 @@ app.use(cookieParser());
 app.use(express.json());
 console.log(">>>>> ENVIRONMENT:", isProduction ? "Production" : "Development");
 
+const productionOrigins = [
+  "https://appsfly.app",
+  "https://www.appsfly.app",
+  "https://appsfly.netlify.app",
+];
+
+const isLocalDevOrigin = (origin) =>
+  /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+
 app.use(cors({
   origin: isProduction
-    ? "https://appsfly.netlify.app"   // producción
-    : "http://localhost:5173",        // desarrollo
-  credentials: true                   // permite cookies
+    ? productionOrigins
+    : (origin, callback) => {
+        if (!origin || isLocalDevOrigin(origin)) {
+          callback(null, origin || "http://localhost:5173");
+        } else {
+          callback(new Error(`CORS bloqueado para origen: ${origin}`));
+        }
+      },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  optionsSuccessStatus: 200
 }));
 
 app.use(morgan('dev'));
@@ -75,5 +95,6 @@ app.use('/api', adminRoutes);
 app.use('/api', planRoutes);
 app.use('/api', purchasesRoutes);
 app.use('/api', providersRoutes);
+app.use('/api', reportsRoutes);
 
 export default app;

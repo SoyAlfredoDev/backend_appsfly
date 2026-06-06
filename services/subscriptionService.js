@@ -34,3 +34,31 @@ export const getAllSubscriptionsService = async () => {
         throw error;
     }
 };
+
+export const getAdminSubscriptionsService = async () => {
+    try {
+        return await general.subscription.findMany({
+            include: {
+                business: {
+                    select: {
+                        businessId: true,
+                        businessName: true,
+                        businessStatus: true,
+                    },
+                },
+                plan: {
+                    select: {
+                        planId: true,
+                        planName: true,
+                        planPrice: true,
+                        planDuration: true,
+                    },
+                },
+            },
+            orderBy: { subscriptionEndDate: "asc" },
+        });
+    } catch (error) {
+        console.error("(subscriptionService.js): Error getting admin subscriptions:", error);
+        throw error;
+    }
+};

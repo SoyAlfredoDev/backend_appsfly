@@ -6,6 +6,24 @@ import { getUserBusinessById } from './services/userBusinessService.js';
 // Cache de instancias Prisma por businessId
 const prismaClients = {};
 
+export async function getPrismaForBusinessId(businessId) {
+    try {
+        if (prismaClients[businessId]) {
+            return prismaClients[businessId];
+        }
+        const url = await getConnectionDBServicio(businessId);
+        if (!url) return null;
+        const client = new prismaBusiness({
+            datasources: { db: { url } },
+        });
+        prismaClients[businessId] = client;
+        return client;
+    } catch (error) {
+        console.error("(getPrismaForBusinessId):", error);
+        return null;
+    }
+}
+
 // Crea o reutiliza PrismaClient para un negocio
 export async function getPrismaForBusiness(userId) {
     try {

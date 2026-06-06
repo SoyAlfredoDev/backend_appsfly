@@ -57,3 +57,88 @@ export const getBusinessByIdService = async (businessId) => {
         throw error;
     }
 };
+
+export const getAdminBusinessByIdService = async (businessId) => {
+    try {
+        return await general.business.findUnique({
+            where: { businessId },
+            include: {
+                createdBy: {
+                    select: {
+                        userId: true,
+                        userFirstName: true,
+                        userLastName: true,
+                        userEmail: true,
+                        userPhoneNumber: true,
+                        userCodePhoneNumber: true,
+                    },
+                },
+                UserBusiness: {
+                    include: {
+                        User: {
+                            select: {
+                                userId: true,
+                                userFirstName: true,
+                                userLastName: true,
+                                userEmail: true,
+                                userPhoneNumber: true,
+                                userCodePhoneNumber: true,
+                                userLastConnection: true,
+                            },
+                        },
+                    },
+                },
+                subscriptions: {
+                    include: {
+                        plan: {
+                            select: {
+                                planId: true,
+                                planName: true,
+                                planPrice: true,
+                                planDuration: true,
+                            },
+                        },
+                    },
+                    orderBy: { subscriptionEndDate: "desc" },
+                },
+            },
+        });
+    } catch (error) {
+        console.error("(businessService.js): Error getting admin business by id:", error);
+        throw error;
+    }
+};
+
+export const getAdminBusinessesService = async () => {
+    try {
+        return await general.business.findMany({
+            include: {
+                _count: { select: { UserBusiness: true } },
+                UserBusiness: {
+                    include: {
+                        User: {
+                            select: {
+                                userId: true,
+                                userFirstName: true,
+                                userLastName: true,
+                                userEmail: true,
+                            },
+                        },
+                    },
+                },
+                subscriptions: {
+                    include: {
+                        plan: {
+                            select: { planId: true, planName: true },
+                        },
+                    },
+                    orderBy: { subscriptionEndDate: "desc" },
+                },
+            },
+            orderBy: { createdAt: "desc" },
+        });
+    } catch (error) {
+        console.error("(businessService.js): Error getting admin businesses:", error);
+        throw error;
+    }
+};
