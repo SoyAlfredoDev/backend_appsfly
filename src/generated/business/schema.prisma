@@ -53,6 +53,10 @@ model Customer {
   customerDocumentType    String?
   customerDocumentNumber  String?
   customerComment         String?
+  /**
+   * Foto de perfil — URL Cloudinary (opcional)
+   */
+  customerImageUrl        String?
   createdAt               DateTime     @default(now())
   updatedAt               DateTime     @updatedAt
   createdByUserId         String
@@ -119,6 +123,10 @@ model Sale {
   salePendingAmount Int
   createdByUserId   String
   saleComment       String?
+  /**
+   * Comprobante / respaldo visual — URL Cloudinary (opcional)
+   */
+  saleImageUrl      String?
   saleNumber        String?
   user              User         @relation(fields: [createdByUserId], references: [userId])
   customer          Customer     @relation(fields: [saleCustomerId], references: [customerId])
@@ -173,7 +181,7 @@ model CashExpense {
 
 model DailySales {
   dailySalesId            String   @id
-  dailySalesDay           String
+  dailySalesDay           String   @unique
   dailySalesTotalSales    Int?
   dailySalesNumberOfSales Int?
   dailySalesTotalIncome   Int?

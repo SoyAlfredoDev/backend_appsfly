@@ -12,6 +12,7 @@ router.get('/admin/businesses', authRequired, superAdminRequired, adminControlle
 router.get('/admin/businesses/:id', authRequired, superAdminRequired, adminController.getAdminBusinessById);
 router.get('/admin/users', authRequired, superAdminRequired, adminController.getAdminUsers);
 router.get('/admin/payments', authRequired, superAdminRequired, adminController.getAdminPayments);
+router.get('/admin/subscription-cancellations', authRequired, superAdminRequired, adminController.getAdminSubscriptionCancellations);
 
 router.get('/admin/plans', authRequired, superAdminRequired, adminPlanController.getAdminPlans);
 router.post('/admin/plans', authRequired, superAdminRequired, adminPlanController.createAdminPlan);

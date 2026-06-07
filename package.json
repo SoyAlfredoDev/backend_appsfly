@@ -8,7 +8,8 @@
     "postinstall": "prisma generate --schema=prisma/businessDB/schema.prisma && prisma generate --schema=prisma/generalDB/schema.prisma",
     "migrate:deploy": "prisma migrate deploy --schema=prisma/businessDB/schema.prisma && prisma migrate deploy --schema=prisma/generalDB/schema.prisma",
     "cleanup:daily-sales": "node scripts/cleanupDailySalesDuplicates.js",
-    "cleanup:daily-sales:dry-run": "node scripts/cleanupDailySalesDuplicates.js --dry-run"
+    "cleanup:daily-sales:dry-run": "node scripts/cleanupDailySalesDuplicates.js --dry-run",
+    "seed:plans": "node scripts/seedPlans.js"
   },
   "type": "module",
   "keywords": [],

@@ -1,10 +1,11 @@
 import { createCustomer, getCustomers, getCustomersByRut, deleteCustomerByIdService, getCustomerByIdService, updateCustomer } from '../services/customersService.js'
 import { getSalesByCustomerIdService } from '../services/salesServices.js'
 import { getSaleDetailByCustomerIdService } from '../services/saleDetailsService.js'
+import { deleteCloudinaryImageByUrl, deleteCloudinaryImageIfReplaced } from '../services/cloudinaryService.js'
 
 export const createCustomerController = async (req, res) => {
     try {
-        const { id,
+        const {
             customerFirstName,
             customerLastName,
             customerEmail,
@@ -13,10 +14,15 @@ export const createCustomerController = async (req, res) => {
             customerDocumentType,
             customerDocumentNumber,
             customerComment,
+            customerImageUrl,
             createdByUserId
         } = req.body
 
         const formatString = (str) => str?.trim()?.toLowerCase() || null;
+        const formatOptionalUrl = (url) => {
+            const trimmed = url?.trim();
+            return trimmed || null;
+        };
 
         const data = {
             customerFirstName: formatString(customerFirstName),
@@ -27,6 +33,7 @@ export const createCustomerController = async (req, res) => {
             customerDocumentType,
             customerDocumentNumber,
             customerComment,
+            customerImageUrl: formatOptionalUrl(customerImageUrl),
             createdByUserId
         };
 
@@ -81,14 +88,24 @@ export const validateRutExists = async (req, res) => {
 export const deleteCustomerByIdController = async (req, res) => {
     try {
         const { customerId } = req.params;
+        const customer = await getCustomerByIdService(customerId, req.prisma);
+        if (!customer) {
+            return res.status(404).json({ message: "Customer not found" });
+        }
+
         const customerHasSales = await getSalesByCustomerIdService(customerId, req.prisma);
         const customerHasSaleDetails = await getSaleDetailByCustomerIdService(customerId, req.prisma);
-        if (!customerHasSales.length > 0 || !customerHasSaleDetails.length > 0) {
-            await deleteCustomerByIdService(customerId, req.prisma);
-            res.status(200).json({ message: "Customer deleted successfully" });
-        } else {
-            res.status(400).json({ message: "Cannot delete customer with existing sales" });
+        if (customerHasSales.length > 0 || customerHasSaleDetails.length > 0) {
+            return res.status(400).json({ message: "Cannot delete customer with existing sales" });
         }
+
+        await deleteCustomerByIdService(customerId, req.prisma);
+
+        if (customer.customerImageUrl) {
+            await deleteCloudinaryImageByUrl(customer.customerImageUrl);
+        }
+
+        res.status(200).json({ message: "Customer deleted successfully" });
     } catch (error) {
         console.error("(customer.controller.js): Error deleting customer by ID:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -121,10 +138,15 @@ export const updateCustomerController = async (req, res) => {
             customerPhoneNumber,
             customerDocumentType,
             customerDocumentNumber,
-            customerComment
+            customerComment,
+            customerImageUrl,
         } = req.body;
 
         const formatString = (str) => str?.trim()?.toLowerCase() || null;
+        const formatOptionalUrl = (url) => {
+            const trimmed = url?.trim();
+            return trimmed || null;
+        };
 
         const data = {
             customerFirstName: formatString(customerFirstName),
@@ -134,10 +156,17 @@ export const updateCustomerController = async (req, res) => {
             customerPhoneNumber,
             customerDocumentType,
             customerDocumentNumber,
-            customerComment
+            customerComment,
+            customerImageUrl: formatOptionalUrl(customerImageUrl),
         };
 
+        const existingCustomer = await getCustomerByIdService(customerId, req.prisma);
+        if (!existingCustomer) {
+            return res.status(404).json({ message: "Customer not found" });
+        }
+
         const updatedCustomer = await updateCustomer(customerId, data, req.prisma);
+        await deleteCloudinaryImageIfReplaced(existingCustomer.customerImageUrl, data.customerImageUrl);
         res.status(200).json({
             message: 'Customer updated successfully',
             customer: updatedCustomer

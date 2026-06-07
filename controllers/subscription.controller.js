@@ -8,8 +8,12 @@ import {
     processPaymentBrickSubmission,
     FREE_TRIAL_PLAN_ID,
 } from "../services/subscriptionPaymentService.js";
+import {
+    getBusinessBillingStatus,
+    cancelBusinessSubscriptionRenewal,
+} from "../services/mercadopago/mpSubscriptionBillingService.js";
 import { createSubscriptionService } from "../services/subscriptionService.js";
-import { getMercadoPagoPayment, mapMercadoPagoStatus } from "../services/mercadopago/index.js";
+import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
 import { PrismaClient as PrismaGeneral } from "../src/generated/general/index.js";
 
 const general = new PrismaGeneral();
@@ -113,6 +117,29 @@ export const createSubscriptionController = async (req, res) => {
             createdByUserId: userId,
         });
 
+        const [business, plan, user] = await Promise.all([
+            general.business.findUnique({ where: { businessId: subscriptionBusinessId } }),
+            general.plan.findUnique({ where: { planId: subscriptionPlanId } }),
+            general.user.findUnique({
+                where: { userId },
+                select: { userFirstName: true, userLastName: true, userEmail: true },
+            }),
+        ]);
+
+        setImmediate(() => {
+            sendDualSubscriptionPaymentEmails({
+                user,
+                business,
+                plan,
+                amount: 0,
+                currency: plan?.planCurrency || "CLP",
+                paymentMethod: "PROMO_FREE_TRIAL",
+                transactionId: subscriptionPaymentId,
+                subscriptionEndDate: subscription.subscriptionEndDate,
+                eventType: "promo_free_trial.created",
+            }).catch((err) => console.error("[subscription] Error enviando correos promo:", err.message));
+        });
+
         return res.status(201).json({
             subscription,
             payment: {
@@ -211,51 +238,6 @@ export const confirmSubscriptionPaymentController = async (req, res) => {
     }
 };
 
-export const mercadoPagoWebhookController = async (req, res) => {
-    try {
-        const topic = req.query.topic || req.query.type || req.body?.type;
-        const paymentId =
-            req.query["data.id"]
-            || req.body?.data?.id
-            || req.body?.id;
-
-        if (!paymentId) {
-            return res.status(200).json({ received: true, ignored: true });
-        }
-
-        if (topic && !["payment", "merchant_order"].includes(String(topic))) {
-            return res.status(200).json({ received: true, ignored: true });
-        }
-
-        const mpPayment = await getMercadoPagoPayment(paymentId);
-        const externalReference = mpPayment.external_reference;
-
-        if (!externalReference) {
-            return res.status(200).json({ received: true, ignored: true });
-        }
-
-        if (mapMercadoPagoStatus(mpPayment.status) === "APPROVED") {
-            await finalizeMercadoPagoPayment({
-                subscriptionPaymentId: String(externalReference),
-                mpPaymentId: String(paymentId),
-            });
-        } else {
-            await general.subscriptionPayment.updateMany({
-                where: { subscriptionPaymentId: String(externalReference) },
-                data: {
-                    status: mapMercadoPagoStatus(mpPayment.status),
-                    mpPaymentId: String(paymentId),
-                },
-            });
-        }
-
-        return res.status(200).json({ received: true });
-    } catch (error) {
-        console.error("Mercado Pago webhook error:", error);
-        return res.status(500).json({ message: error.message || "Webhook error" });
-    }
-};
-
 export const getSubscriptionPaymentStatusController = async (req, res) => {
     try {
         const { paymentId } = req.params;
@@ -276,5 +258,57 @@ export const getSubscriptionPaymentStatusController = async (req, res) => {
     } catch (error) {
         console.error("Error fetching payment status:", error);
         return res.status(500).json({ message: error.message || "Error al consultar pago." });
+    }
+};
+
+export const getBusinessBillingController = async (req, res) => {
+    try {
+        const { businessId } = req.params;
+        const userId = req.user.payload.id;
+
+        const link = await general.userBusiness.findFirst({
+            where: { userBusinessUserId: userId, userBusinessBusinessId: businessId },
+        });
+        if (!link) {
+            return res.status(403).json({ message: "No tienes acceso a este negocio." });
+        }
+
+        const billing = await getBusinessBillingStatus(businessId);
+        return res.status(200).json(billing);
+    } catch (error) {
+        console.error("Error fetching billing status:", error);
+        return res.status(500).json({ message: error.message || "Error al consultar facturación." });
+    }
+};
+
+export const cancelBusinessSubscriptionController = async (req, res) => {
+    try {
+        const { businessId } = req.params;
+        const userId = req.user.payload.id;
+        const { confirmationPhrase, cancelReason } = req.body ?? {};
+
+        const result = await cancelBusinessSubscriptionRenewal({
+            businessId,
+            userId,
+            confirmationPhrase,
+            cancelReason,
+            auditContext: {
+                ip: req.ip || req.headers["x-forwarded-for"]?.split(",")[0]?.trim(),
+                userAgent: req.headers["user-agent"],
+            },
+        });
+        const billing = await getBusinessBillingStatus(businessId);
+
+        return res.status(200).json({
+            message: result.alreadyCancelled
+                ? "La suscripción recurrente ya estaba cancelada."
+                : "Suscripción cancelada. Mantendrás acceso hasta la fecha de vencimiento. No habrá más cobros mensuales.",
+            ...result,
+            billing,
+        });
+    } catch (error) {
+        console.error("Error cancelling subscription:", error);
+        const status = error.statusCode || 500;
+        return res.status(status).json({ message: error.message || "Error al cancelar suscripción." });
     }
 };

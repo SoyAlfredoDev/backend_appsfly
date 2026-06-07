@@ -1,4 +1,7 @@
-import * as adminService from '../services/adminService.js';
+import * as adminService from "../services/adminService.js";
+import {
+    getAdminSubscriptionCancellations as fetchAdminSubscriptionCancellations,
+} from "../services/mercadopago/mpSubscriptionBillingService.js";
 
 export const getDashboardKpis = async (req, res) => {
     try {
@@ -53,6 +56,16 @@ export const getAdminPayments = async (req, res) => {
     try {
         const data = await adminService.getSubscriptionPayments();
         res.json(data);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getAdminSubscriptionCancellations = async (req, res) => {
+    try {
+        const limit = req.query.limit;
+        const records = await fetchAdminSubscriptionCancellations({ limit });
+        res.json({ cancellations: records, total: records.length });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -7,7 +7,10 @@ import {
   sumExpensesByPaymentMethod,
   sumExpenseByMonthService,
 } from "../services/expensesService.js";
-import { deleteExpenseImageController } from "./cloudinary.control.js";
+import {
+  deleteCloudinaryImageByUrl,
+  deleteCloudinaryImageIfReplaced,
+} from "../services/cloudinaryService.js";
 
 export const createExpenseController = async (req, res) => {
   try {
@@ -87,10 +90,17 @@ export const updateExpenseController = async (req, res) => {
       expenseImageUrl,
       expenseAmount,
     };
-    const expense = await updateExpenseService(id, data, req.prisma);
-    if (!expense) {
+
+    const existingExpense = await getExpenseByIdService(id, req.prisma);
+    if (!existingExpense) {
       return res.status(404).json({ error: "Expense not found" });
     }
+
+    const expense = await updateExpenseService(id, data, req.prisma);
+    await deleteCloudinaryImageIfReplaced(
+      existingExpense.expenseImageUrl,
+      expenseImageUrl,
+    );
     return res.status(200).json(expense);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -101,12 +111,14 @@ export const deleteExpenseController = async (req, res) => {
   try {
     const { id } = req.params;
     const expense = await deleteExpenseService(id, req.prisma);
-    if (expense.expenseImageUrl) {
-      await deleteExpenseImageController(expense.expenseImageUrl);
-    }
     if (!expense) {
       return res.status(404).json({ error: "Expense not found" });
     }
+
+    if (expense.expenseImageUrl) {
+      await deleteCloudinaryImageByUrl(expense.expenseImageUrl);
+    }
+
     return res.status(204).send();
   } catch (error) {
     return res.status(500).json({ error: error.message });

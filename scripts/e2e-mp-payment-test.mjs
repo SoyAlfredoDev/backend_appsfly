@@ -11,7 +11,6 @@ dotenv.config();
 const prisma = new PrismaClient();
 const API = process.env.BACKEND_URL || "http://localhost:3000";
 const MP_TOKEN = process.env.MERCADO_PAGO_ACCESS_TOKEN?.trim();
-const MP_PUBLIC_KEY = process.env.MERCADO_PAGO_PUBLIC_KEY?.trim();
 
 const SANDBOX_CARD = {
     card_number: "5031753573450604",
@@ -131,8 +130,8 @@ async function main() {
 
     const forceExpire = process.argv.includes("--force-expire");
 
-    if (!MP_TOKEN || !MP_PUBLIC_KEY) {
-        throw new Error("Faltan MERCADO_PAGO_ACCESS_TOKEN o MERCADO_PAGO_PUBLIC_KEY en backend/.env");
+    if (!MP_TOKEN) {
+        throw new Error("Falta MERCADO_PAGO_ACCESS_TOKEN en backend/.env");
     }
 
     const ctx = await findTestContext({ forceExpire });

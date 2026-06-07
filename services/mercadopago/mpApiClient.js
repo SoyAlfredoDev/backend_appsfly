@@ -1,8 +1,9 @@
-const MP_API_BASE = "https://api.mercadopago.com";
+import {
+    getMercadoPagoAccessToken,
+    isMercadoPagoBackendConfigured,
+} from "../../config/mercadopagoEnv.js";
 
-function getMercadoPagoAccessToken() {
-    return process.env.MERCADO_PAGO_ACCESS_TOKEN?.trim() || null;
-}
+const MP_API_BASE = "https://api.mercadopago.com";
 
 function isLocalhostUrl(url) {
     return /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/i.test(String(url || ""));
@@ -68,11 +69,11 @@ function getWebhookBaseUrl() {
 }
 
 function buildWebhookUrl() {
-    return `${getWebhookBaseUrl()}/api/subscriptions/mercadopago/webhook`;
+    return `${getWebhookBaseUrl()}/api/webhooks/mercadopago`;
 }
 
 export function isMercadoPagoConfigured() {
-    return Boolean(getMercadoPagoAccessToken());
+    return isMercadoPagoBackendConfigured();
 }
 
 export async function createMercadoPagoPreference({
@@ -217,4 +218,131 @@ export async function createMercadoPagoPaymentFromBrick({
     return data;
 }
 
-export { getFrontendBaseUrl, getBackendBaseUrl };
+/**
+ * Crea suscripción recurrente mensual (preapproval) con tarjeta tokenizada del Brick.
+ * @see https://www.mercadopago.cl/developers/es/reference/subscriptions/_preapproval/post
+ */
+export async function createMercadoPagoPreapproval({
+    reason,
+    externalReference,
+    payerEmail,
+    cardTokenId,
+    amount,
+    currency = "CLP",
+}) {
+    const token = getMercadoPagoAccessToken();
+    if (!token) {
+        throw new Error("Mercado Pago no está configurado.");
+    }
+
+    const backUrl = `${getPreferenceFrontendBaseUrl()}/subscription/payment/return?status=success`;
+
+    const payload = {
+        reason,
+        external_reference: externalReference,
+        payer_email: payerEmail,
+        card_token_id: cardTokenId,
+        auto_recurring: {
+            frequency: 1,
+            frequency_type: "months",
+            transaction_amount: Number(amount),
+            currency_id: currency,
+        },
+        back_url: backUrl,
+        status: "authorized",
+    };
+
+    const response = await fetch(`${MP_API_BASE}/preapproval`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        console.error("[mercadopago/mpApiClient] preapproval create error:", data);
+        throw new Error(
+            data?.message
+            || data?.cause?.[0]?.description
+            || "No se pudo crear la suscripción recurrente en Mercado Pago.",
+        );
+    }
+
+    return data;
+}
+
+/** Cancela o pausa una suscripción recurrente en Mercado Pago. */
+export async function updateMercadoPagoPreapproval(preapprovalId, { status }) {
+    const token = getMercadoPagoAccessToken();
+    if (!token) {
+        throw new Error("Mercado Pago no está configurado.");
+    }
+
+    const response = await fetch(`${MP_API_BASE}/preapproval/${preapprovalId}`, {
+        method: "PUT",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        console.error("[mercadopago/mpApiClient] preapproval update error:", data);
+        throw new Error(data?.message || "No se pudo actualizar la suscripción en Mercado Pago.");
+    }
+
+    return data;
+}
+
+export function mapMercadoPagoPreapprovalStatus(mpStatus) {
+    const normalized = String(mpStatus || "").toLowerCase();
+    if (normalized === "authorized") return "AUTHORIZED";
+    if (["cancelled", "canceled"].includes(normalized)) return "CANCELLED";
+    if (normalized === "paused") return "PAUSED";
+    return "PENDING";
+}
+
+export async function getMercadoPagoPreapproval(preapprovalId) {
+    const token = getMercadoPagoAccessToken();
+    if (!token) {
+        throw new Error("Mercado Pago no está configurado.");
+    }
+
+    const response = await fetch(`${MP_API_BASE}/preapproval/${preapprovalId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        console.error("[mercadopago/mpApiClient] preapproval fetch error:", data);
+        throw new Error(data?.message || "No se pudo consultar la suscripción en Mercado Pago.");
+    }
+
+    return data;
+}
+
+export async function getMercadoPagoAuthorizedPayment(authorizedPaymentId) {
+    const token = getMercadoPagoAccessToken();
+    if (!token) {
+        throw new Error("Mercado Pago no está configurado.");
+    }
+
+    const response = await fetch(`${MP_API_BASE}/authorized_payments/${authorizedPaymentId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        console.error("[mercadopago/mpApiClient] authorized_payment fetch error:", data);
+        throw new Error(data?.message || "No se pudo consultar el cobro recurrente en Mercado Pago.");
+    }
+
+    return data;
+}
+
+export { getFrontendBaseUrl, getBackendBaseUrl, buildWebhookUrl };

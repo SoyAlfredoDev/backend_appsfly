@@ -5,14 +5,19 @@
 import dotenv from "dotenv";
 import { randomUUID } from "crypto";
 import { chromium } from "playwright";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 import { PrismaClient } from "../src/generated/general/index.js";
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const frontendRoot = join(__dirname, "../../frontend");
+
 dotenv.config();
+dotenv.config({ path: join(frontendRoot, ".env") });
 
 const prisma = new PrismaClient();
 const API = process.env.BACKEND_URL || "http://localhost:3000";
-const MP_PUBLIC_KEY = process.env.MERCADO_PAGO_PUBLIC_KEY?.trim()
-    || process.env.VITE_MERCADO_PAGO_PUBLIC_KEY?.trim();
+const MP_PUBLIC_KEY = process.env.VITE_MERCADO_PAGO_PUBLIC_KEY?.trim() ?? "";
 
 const SANDBOX_CARD = {
     cardNumber: "5031753573450604",

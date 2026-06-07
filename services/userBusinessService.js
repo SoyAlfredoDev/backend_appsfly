@@ -28,3 +28,52 @@ export const getUserBusinessById = async (userId) => {
     }
 };
 
+/** Miembros activos de un negocio (GeneralDB UserBusiness + User). */
+export const getBusinessMembersService = async (businessId) => {
+    try {
+        const rows = await general.userBusiness.findMany({
+            where: { userBusinessBusinessId: businessId },
+            include: {
+                User: {
+                    select: {
+                        userId: true,
+                        userFirstName: true,
+                        userLastName: true,
+                        userEmail: true,
+                        userCodePhoneNumber: true,
+                        userPhoneNumber: true,
+                        userDocumentType: true,
+                        userDocumentNumber: true,
+                    },
+                },
+            },
+            orderBy: { createdAt: "asc" },
+        });
+
+        return rows.map((row) => ({
+            userId: row.User.userId,
+            userFirstName: row.User.userFirstName,
+            userLastName: row.User.userLastName,
+            userEmail: row.User.userEmail,
+            userRole: row.userBusinessRole,
+            userCodePhoneNumber: row.User.userCodePhoneNumber,
+            userPhoneNumber: row.User.userPhoneNumber,
+            userDocumentType: row.User.userDocumentType,
+            userDocumentNumber: row.User.userDocumentNumber,
+            joinedAt: row.createdAt,
+        }));
+    } catch (error) {
+        console.error("(userBusinessService.js): Error getting business members:", error);
+        throw error;
+    }
+};
+
+export const assertUserBelongsToBusiness = async (userId, businessId) => {
+    return general.userBusiness.findFirst({
+        where: {
+            userBusinessUserId: userId,
+            userBusinessBusinessId: businessId,
+        },
+    });
+};
+

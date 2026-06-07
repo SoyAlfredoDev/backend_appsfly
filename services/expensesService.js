@@ -97,9 +97,8 @@ export const getExpensesByMonthService = async (month, year, prisma) => {
 // Legacy alias kept for sum endpoint reuse
 export const getExpenseByIdService = async (id, prisma) => {
   try {
-    // Retrieves a single expense record based on its unique ID
     const res = await prisma.expense.findUnique({
-      where: { id: id }, // Uses findUnique to get a single record by ID
+      where: { expenseId: id },
     });
     return res;
   } catch (error) {
@@ -114,9 +113,8 @@ export const getExpenseByIdService = async (id, prisma) => {
 // 4. UPDATE Expense
 export const updateExpenseService = async (id, data, prisma) => {
   try {
-    // Finds the expense by ID and updates its data
     const res = await prisma.expense.update({
-      where: { id: id },
+      where: { expenseId: id },
       data: data,
     });
     return res;

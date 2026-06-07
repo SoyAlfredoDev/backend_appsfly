@@ -202,8 +202,32 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   subscriptionPaymentMethod: 'subscriptionPaymentMethod',
   subscriptionPlanFeatures: 'subscriptionPlanFeatures',
   createdByUserId: 'createdByUserId',
+  mpPreapprovalId: 'mpPreapprovalId',
+  mpPreapprovalStatus: 'mpPreapprovalStatus',
+  autoRenewEnabled: 'autoRenewEnabled',
+  subscriptionCancelledAt: 'subscriptionCancelledAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SubscriptionCancellationScalarFieldEnum = {
+  subscriptionCancellationId: 'subscriptionCancellationId',
+  subscriptionId: 'subscriptionId',
+  subscriptionBusinessId: 'subscriptionBusinessId',
+  subscriptionPlanId: 'subscriptionPlanId',
+  cancelledByUserId: 'cancelledByUserId',
+  mpPreapprovalId: 'mpPreapprovalId',
+  planName: 'planName',
+  planAmount: 'planAmount',
+  planCurrency: 'planCurrency',
+  accessValidUntil: 'accessValidUntil',
+  confirmationPhrase: 'confirmationPhrase',
+  cancelReason: 'cancelReason',
+  source: 'source',
+  requestIp: 'requestIp',
+  requestUserAgent: 'requestUserAgent',
+  mpResponseSnapshot: 'mpResponseSnapshot',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SubscriptionPaymentScalarFieldEnum = {
@@ -354,6 +378,7 @@ exports.Prisma.ModelName = {
   UserGuest: 'UserGuest',
   Plan: 'Plan',
   Subscription: 'Subscription',
+  SubscriptionCancellation: 'SubscriptionCancellation',
   SubscriptionPayment: 'SubscriptionPayment',
   Ticket: 'Ticket',
   TicketDetail: 'TicketDetail',

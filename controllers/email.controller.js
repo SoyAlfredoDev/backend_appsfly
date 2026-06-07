@@ -1,4 +1,4 @@
-import { sendEmail } from '../services/emailService.js';
+import { sendEmail } from '../emails/core/sendEmail.js';
 
 export const sendEmailController = async (req, res) => {
     try {

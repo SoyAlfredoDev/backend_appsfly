@@ -27,13 +27,14 @@ model User {
   updatedAt           DateTime  @updatedAt
 
   // Relations
-  UserBusiness         UserBusiness[]
-  UserGuest            UserGuest[]
-  businesses           Business[]
-  subscriptions        Subscription[]
-  subscriptionPayments SubscriptionPayment[]
-  tickets              Ticket[]
-  ticketDetails        TicketDetail[]
+  UserBusiness              UserBusiness[]
+  UserGuest                 UserGuest[]
+  businesses                Business[]
+  subscriptions             Subscription[]
+  subscriptionPayments      SubscriptionPayment[]
+  subscriptionCancellations SubscriptionCancellation[]
+  tickets                   Ticket[]
+  ticketDetails             TicketDetail[]
 }
 
 model Business {
@@ -58,10 +59,11 @@ model Business {
   updatedAt                  DateTime       @updatedAt
 
   // Relaciones
-  UserGuest            UserGuest[]
-  UserBusiness         UserBusiness[]
-  subscriptions        Subscription[]
-  subscriptionPayments SubscriptionPayment[]
+  UserGuest                 UserGuest[]
+  UserBusiness              UserBusiness[]
+  subscriptions             Subscription[]
+  subscriptionPayments      SubscriptionPayment[]
+  subscriptionCancellations SubscriptionCancellation[]
 }
 
 model UserBusiness {
@@ -108,7 +110,7 @@ model Plan {
 }
 
 model Subscription {
-  subscriptionId            String                @id
+  subscriptionId            String                     @id
   subscriptionBusinessId    String
   subscriptionPlanId        String
   subscriptionStartDate     DateTime
@@ -119,12 +121,58 @@ model Subscription {
   subscriptionPaymentMethod String
   subscriptionPlanFeatures  Json
   createdByUserId           String
-  createdAt                 DateTime              @default(now())
-  updatedAt                 DateTime              @updatedAt
-  createdBy                 User                  @relation(fields: [createdByUserId], references: [userId])
-  plan                      Plan                  @relation(fields: [subscriptionPlanId], references: [planId])
-  business                  Business              @relation(fields: [subscriptionBusinessId], references: [businessId])
+  /**
+   * Suscripción recurrente Mercado Pago (preapproval)
+   */
+  mpPreapprovalId           String?                    @unique
+  mpPreapprovalStatus       String?
+  autoRenewEnabled          Boolean                    @default(true)
+  /**
+   * Fecha en que el cliente solicitó la baja (acceso hasta subscriptionEndDate)
+   */
+  subscriptionCancelledAt   DateTime?
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+  createdBy                 User                       @relation(fields: [createdByUserId], references: [userId])
+  plan                      Plan                       @relation(fields: [subscriptionPlanId], references: [planId])
+  business                  Business                   @relation(fields: [subscriptionBusinessId], references: [businessId])
   payments                  SubscriptionPayment[]
+  cancellations             SubscriptionCancellation[]
+}
+
+/**
+ * Registro inmutable de bajas — auditoría y resolución de reclamos (estilo cancel_at_period_end).
+ */
+model SubscriptionCancellation {
+  subscriptionCancellationId String   @id @default(uuid())
+  subscriptionId             String
+  subscriptionBusinessId     String
+  subscriptionPlanId         String
+  cancelledByUserId          String
+  mpPreapprovalId            String?
+  planName                   String
+  planAmount                 Float
+  planCurrency               String   @default("CLP")
+  /**
+   * Hasta cuándo conserva acceso tras la baja
+   */
+  accessValidUntil           DateTime
+  confirmationPhrase         String
+  cancelReason               String?
+  source                     String   @default("PROFILE_SELF_SERVICE")
+  requestIp                  String?
+  requestUserAgent           String?
+  mpResponseSnapshot         Json?
+  createdAt                  DateTime @default(now())
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [subscriptionId])
+  business     Business     @relation(fields: [subscriptionBusinessId], references: [businessId])
+  cancelledBy  User         @relation(fields: [cancelledByUserId], references: [userId])
+
+  @@index([subscriptionBusinessId])
+  @@index([subscriptionId])
+  @@index([cancelledByUserId])
+  @@index([createdAt])
 }
 
 model SubscriptionPayment {

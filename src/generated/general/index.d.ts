@@ -44,6 +44,11 @@ export type Plan = $Result.DefaultSelection<Prisma.$PlanPayload>
  */
 export type Subscription = $Result.DefaultSelection<Prisma.$SubscriptionPayload>
 /**
+ * Model SubscriptionCancellation
+ * * Registro inmutable de bajas — auditoría y resolución de reclamos (estilo cancel_at_period_end).
+ */
+export type SubscriptionCancellation = $Result.DefaultSelection<Prisma.$SubscriptionCancellationPayload>
+/**
  * Model SubscriptionPayment
  * 
  */
@@ -378,6 +383,16 @@ export class PrismaClient<
     * ```
     */
   get subscription(): Prisma.SubscriptionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.subscriptionCancellation`: Exposes CRUD operations for the **SubscriptionCancellation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SubscriptionCancellations
+    * const subscriptionCancellations = await prisma.subscriptionCancellation.findMany()
+    * ```
+    */
+  get subscriptionCancellation(): Prisma.SubscriptionCancellationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.subscriptionPayment`: Exposes CRUD operations for the **SubscriptionPayment** model.
@@ -865,6 +880,7 @@ export namespace Prisma {
     UserGuest: 'UserGuest',
     Plan: 'Plan',
     Subscription: 'Subscription',
+    SubscriptionCancellation: 'SubscriptionCancellation',
     SubscriptionPayment: 'SubscriptionPayment',
     Ticket: 'Ticket',
     TicketDetail: 'TicketDetail',
@@ -887,7 +903,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "business" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber"
+      modelProps: "user" | "business" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1335,6 +1351,80 @@ export namespace Prisma {
           }
         }
       }
+      SubscriptionCancellation: {
+        payload: Prisma.$SubscriptionCancellationPayload<ExtArgs>
+        fields: Prisma.SubscriptionCancellationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SubscriptionCancellationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SubscriptionCancellationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload>
+          }
+          findFirst: {
+            args: Prisma.SubscriptionCancellationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SubscriptionCancellationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload>
+          }
+          findMany: {
+            args: Prisma.SubscriptionCancellationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload>[]
+          }
+          create: {
+            args: Prisma.SubscriptionCancellationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload>
+          }
+          createMany: {
+            args: Prisma.SubscriptionCancellationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SubscriptionCancellationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload>[]
+          }
+          delete: {
+            args: Prisma.SubscriptionCancellationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload>
+          }
+          update: {
+            args: Prisma.SubscriptionCancellationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload>
+          }
+          deleteMany: {
+            args: Prisma.SubscriptionCancellationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SubscriptionCancellationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SubscriptionCancellationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload>[]
+          }
+          upsert: {
+            args: Prisma.SubscriptionCancellationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SubscriptionCancellationPayload>
+          }
+          aggregate: {
+            args: Prisma.SubscriptionCancellationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSubscriptionCancellation>
+          }
+          groupBy: {
+            args: Prisma.SubscriptionCancellationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SubscriptionCancellationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SubscriptionCancellationCountArgs<ExtArgs>
+            result: $Utils.Optional<SubscriptionCancellationCountAggregateOutputType> | number
+          }
+        }
+      }
       SubscriptionPayment: {
         payload: Prisma.$SubscriptionPaymentPayload<ExtArgs>
         fields: Prisma.SubscriptionPaymentFieldRefs
@@ -1733,6 +1823,7 @@ export namespace Prisma {
     userGuest?: UserGuestOmit
     plan?: PlanOmit
     subscription?: SubscriptionOmit
+    subscriptionCancellation?: SubscriptionCancellationOmit
     subscriptionPayment?: SubscriptionPaymentOmit
     ticket?: TicketOmit
     ticketDetail?: TicketDetailOmit
@@ -1822,6 +1913,7 @@ export namespace Prisma {
     businesses: number
     subscriptions: number
     subscriptionPayments: number
+    subscriptionCancellations: number
     tickets: number
     ticketDetails: number
   }
@@ -1832,6 +1924,7 @@ export namespace Prisma {
     businesses?: boolean | UserCountOutputTypeCountBusinessesArgs
     subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
     subscriptionPayments?: boolean | UserCountOutputTypeCountSubscriptionPaymentsArgs
+    subscriptionCancellations?: boolean | UserCountOutputTypeCountSubscriptionCancellationsArgs
     tickets?: boolean | UserCountOutputTypeCountTicketsArgs
     ticketDetails?: boolean | UserCountOutputTypeCountTicketDetailsArgs
   }
@@ -1885,6 +1978,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountSubscriptionCancellationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionCancellationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountTicketsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TicketWhereInput
   }
@@ -1906,6 +2006,7 @@ export namespace Prisma {
     UserBusiness: number
     subscriptions: number
     subscriptionPayments: number
+    subscriptionCancellations: number
   }
 
   export type BusinessCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1913,6 +2014,7 @@ export namespace Prisma {
     UserBusiness?: boolean | BusinessCountOutputTypeCountUserBusinessArgs
     subscriptions?: boolean | BusinessCountOutputTypeCountSubscriptionsArgs
     subscriptionPayments?: boolean | BusinessCountOutputTypeCountSubscriptionPaymentsArgs
+    subscriptionCancellations?: boolean | BusinessCountOutputTypeCountSubscriptionCancellationsArgs
   }
 
   // Custom InputTypes
@@ -1952,6 +2054,13 @@ export namespace Prisma {
    */
   export type BusinessCountOutputTypeCountSubscriptionPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SubscriptionPaymentWhereInput
+  }
+
+  /**
+   * BusinessCountOutputType without action
+   */
+  export type BusinessCountOutputTypeCountSubscriptionCancellationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionCancellationWhereInput
   }
 
 
@@ -2001,10 +2110,12 @@ export namespace Prisma {
 
   export type SubscriptionCountOutputType = {
     payments: number
+    cancellations: number
   }
 
   export type SubscriptionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     payments?: boolean | SubscriptionCountOutputTypeCountPaymentsArgs
+    cancellations?: boolean | SubscriptionCountOutputTypeCountCancellationsArgs
   }
 
   // Custom InputTypes
@@ -2023,6 +2134,13 @@ export namespace Prisma {
    */
   export type SubscriptionCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SubscriptionPaymentWhereInput
+  }
+
+  /**
+   * SubscriptionCountOutputType without action
+   */
+  export type SubscriptionCountOutputTypeCountCancellationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionCancellationWhereInput
   }
 
 
@@ -2294,6 +2412,7 @@ export namespace Prisma {
     businesses?: boolean | User$businessesArgs<ExtArgs>
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     subscriptionPayments?: boolean | User$subscriptionPaymentsArgs<ExtArgs>
+    subscriptionCancellations?: boolean | User$subscriptionCancellationsArgs<ExtArgs>
     tickets?: boolean | User$ticketsArgs<ExtArgs>
     ticketDetails?: boolean | User$ticketDetailsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2354,6 +2473,7 @@ export namespace Prisma {
     businesses?: boolean | User$businessesArgs<ExtArgs>
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     subscriptionPayments?: boolean | User$subscriptionPaymentsArgs<ExtArgs>
+    subscriptionCancellations?: boolean | User$subscriptionCancellationsArgs<ExtArgs>
     tickets?: boolean | User$ticketsArgs<ExtArgs>
     ticketDetails?: boolean | User$ticketDetailsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2369,6 +2489,7 @@ export namespace Prisma {
       businesses: Prisma.$BusinessPayload<ExtArgs>[]
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       subscriptionPayments: Prisma.$SubscriptionPaymentPayload<ExtArgs>[]
+      subscriptionCancellations: Prisma.$SubscriptionCancellationPayload<ExtArgs>[]
       tickets: Prisma.$TicketPayload<ExtArgs>[]
       ticketDetails: Prisma.$TicketDetailPayload<ExtArgs>[]
     }
@@ -2785,6 +2906,7 @@ export namespace Prisma {
     businesses<T extends User$businessesArgs<ExtArgs> = {}>(args?: Subset<T, User$businessesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscriptions<T extends User$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscriptionPayments<T extends User$subscriptionPaymentsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subscriptionCancellations<T extends User$subscriptionCancellationsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionCancellationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tickets<T extends User$ticketsArgs<ExtArgs> = {}>(args?: Subset<T, User$ticketsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ticketDetails<T extends User$ticketDetailsArgs<ExtArgs> = {}>(args?: Subset<T, User$ticketDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -3337,6 +3459,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.subscriptionCancellations
+   */
+  export type User$subscriptionCancellationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    where?: SubscriptionCancellationWhereInput
+    orderBy?: SubscriptionCancellationOrderByWithRelationInput | SubscriptionCancellationOrderByWithRelationInput[]
+    cursor?: SubscriptionCancellationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubscriptionCancellationScalarFieldEnum | SubscriptionCancellationScalarFieldEnum[]
+  }
+
+  /**
    * User.tickets
    */
   export type User$ticketsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3672,6 +3818,7 @@ export namespace Prisma {
     UserBusiness?: boolean | Business$UserBusinessArgs<ExtArgs>
     subscriptions?: boolean | Business$subscriptionsArgs<ExtArgs>
     subscriptionPayments?: boolean | Business$subscriptionPaymentsArgs<ExtArgs>
+    subscriptionCancellations?: boolean | Business$subscriptionCancellationsArgs<ExtArgs>
     _count?: boolean | BusinessCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["business"]>
 
@@ -3747,6 +3894,7 @@ export namespace Prisma {
     UserBusiness?: boolean | Business$UserBusinessArgs<ExtArgs>
     subscriptions?: boolean | Business$subscriptionsArgs<ExtArgs>
     subscriptionPayments?: boolean | Business$subscriptionPaymentsArgs<ExtArgs>
+    subscriptionCancellations?: boolean | Business$subscriptionCancellationsArgs<ExtArgs>
     _count?: boolean | BusinessCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BusinessIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3764,6 +3912,7 @@ export namespace Prisma {
       UserBusiness: Prisma.$UserBusinessPayload<ExtArgs>[]
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       subscriptionPayments: Prisma.$SubscriptionPaymentPayload<ExtArgs>[]
+      subscriptionCancellations: Prisma.$SubscriptionCancellationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       businessId: string
@@ -4183,6 +4332,7 @@ export namespace Prisma {
     UserBusiness<T extends Business$UserBusinessArgs<ExtArgs> = {}>(args?: Subset<T, Business$UserBusinessArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserBusinessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscriptions<T extends Business$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Business$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscriptionPayments<T extends Business$subscriptionPaymentsArgs<ExtArgs> = {}>(args?: Subset<T, Business$subscriptionPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subscriptionCancellations<T extends Business$subscriptionCancellationsArgs<ExtArgs> = {}>(args?: Subset<T, Business$subscriptionCancellationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4738,6 +4888,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SubscriptionPaymentScalarFieldEnum | SubscriptionPaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Business.subscriptionCancellations
+   */
+  export type Business$subscriptionCancellationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    where?: SubscriptionCancellationWhereInput
+    orderBy?: SubscriptionCancellationOrderByWithRelationInput | SubscriptionCancellationOrderByWithRelationInput[]
+    cursor?: SubscriptionCancellationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubscriptionCancellationScalarFieldEnum | SubscriptionCancellationScalarFieldEnum[]
   }
 
   /**
@@ -8160,6 +8334,10 @@ export namespace Prisma {
     subscriptionAmount: number | null
     subscriptionPaymentMethod: string | null
     createdByUserId: string | null
+    mpPreapprovalId: string | null
+    mpPreapprovalStatus: string | null
+    autoRenewEnabled: boolean | null
+    subscriptionCancelledAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8175,6 +8353,10 @@ export namespace Prisma {
     subscriptionAmount: number | null
     subscriptionPaymentMethod: string | null
     createdByUserId: string | null
+    mpPreapprovalId: string | null
+    mpPreapprovalStatus: string | null
+    autoRenewEnabled: boolean | null
+    subscriptionCancelledAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -8191,6 +8373,10 @@ export namespace Prisma {
     subscriptionPaymentMethod: number
     subscriptionPlanFeatures: number
     createdByUserId: number
+    mpPreapprovalId: number
+    mpPreapprovalStatus: number
+    autoRenewEnabled: number
+    subscriptionCancelledAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -8218,6 +8404,10 @@ export namespace Prisma {
     subscriptionAmount?: true
     subscriptionPaymentMethod?: true
     createdByUserId?: true
+    mpPreapprovalId?: true
+    mpPreapprovalStatus?: true
+    autoRenewEnabled?: true
+    subscriptionCancelledAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8233,6 +8423,10 @@ export namespace Prisma {
     subscriptionAmount?: true
     subscriptionPaymentMethod?: true
     createdByUserId?: true
+    mpPreapprovalId?: true
+    mpPreapprovalStatus?: true
+    autoRenewEnabled?: true
+    subscriptionCancelledAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -8249,6 +8443,10 @@ export namespace Prisma {
     subscriptionPaymentMethod?: true
     subscriptionPlanFeatures?: true
     createdByUserId?: true
+    mpPreapprovalId?: true
+    mpPreapprovalStatus?: true
+    autoRenewEnabled?: true
+    subscriptionCancelledAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -8352,6 +8550,10 @@ export namespace Prisma {
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonValue
     createdByUserId: string
+    mpPreapprovalId: string | null
+    mpPreapprovalStatus: string | null
+    autoRenewEnabled: boolean
+    subscriptionCancelledAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: SubscriptionCountAggregateOutputType | null
@@ -8387,12 +8589,17 @@ export namespace Prisma {
     subscriptionPaymentMethod?: boolean
     subscriptionPlanFeatures?: boolean
     createdByUserId?: boolean
+    mpPreapprovalId?: boolean
+    mpPreapprovalStatus?: boolean
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     plan?: boolean | PlanDefaultArgs<ExtArgs>
     business?: boolean | BusinessDefaultArgs<ExtArgs>
     payments?: boolean | Subscription$paymentsArgs<ExtArgs>
+    cancellations?: boolean | Subscription$cancellationsArgs<ExtArgs>
     _count?: boolean | SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscription"]>
 
@@ -8408,6 +8615,10 @@ export namespace Prisma {
     subscriptionPaymentMethod?: boolean
     subscriptionPlanFeatures?: boolean
     createdByUserId?: boolean
+    mpPreapprovalId?: boolean
+    mpPreapprovalStatus?: boolean
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
@@ -8427,6 +8638,10 @@ export namespace Prisma {
     subscriptionPaymentMethod?: boolean
     subscriptionPlanFeatures?: boolean
     createdByUserId?: boolean
+    mpPreapprovalId?: boolean
+    mpPreapprovalStatus?: boolean
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
@@ -8446,16 +8661,21 @@ export namespace Prisma {
     subscriptionPaymentMethod?: boolean
     subscriptionPlanFeatures?: boolean
     createdByUserId?: boolean
+    mpPreapprovalId?: boolean
+    mpPreapprovalStatus?: boolean
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"subscriptionId" | "subscriptionBusinessId" | "subscriptionPlanId" | "subscriptionStartDate" | "subscriptionDuration" | "subscriptionEndDate" | "subscriptionStatus" | "subscriptionAmount" | "subscriptionPaymentMethod" | "subscriptionPlanFeatures" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"subscriptionId" | "subscriptionBusinessId" | "subscriptionPlanId" | "subscriptionStartDate" | "subscriptionDuration" | "subscriptionEndDate" | "subscriptionStatus" | "subscriptionAmount" | "subscriptionPaymentMethod" | "subscriptionPlanFeatures" | "createdByUserId" | "mpPreapprovalId" | "mpPreapprovalStatus" | "autoRenewEnabled" | "subscriptionCancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
   export type SubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     plan?: boolean | PlanDefaultArgs<ExtArgs>
     business?: boolean | BusinessDefaultArgs<ExtArgs>
     payments?: boolean | Subscription$paymentsArgs<ExtArgs>
+    cancellations?: boolean | Subscription$cancellationsArgs<ExtArgs>
     _count?: boolean | SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SubscriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8476,6 +8696,7 @@ export namespace Prisma {
       plan: Prisma.$PlanPayload<ExtArgs>
       business: Prisma.$BusinessPayload<ExtArgs>
       payments: Prisma.$SubscriptionPaymentPayload<ExtArgs>[]
+      cancellations: Prisma.$SubscriptionCancellationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       subscriptionId: string
@@ -8489,6 +8710,16 @@ export namespace Prisma {
       subscriptionPaymentMethod: string
       subscriptionPlanFeatures: Prisma.JsonValue
       createdByUserId: string
+      /**
+       * * Suscripción recurrente Mercado Pago (preapproval)
+       */
+      mpPreapprovalId: string | null
+      mpPreapprovalStatus: string | null
+      autoRenewEnabled: boolean
+      /**
+       * * Fecha en que el cliente solicitó la baja (acceso hasta subscriptionEndDate)
+       */
+      subscriptionCancelledAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["subscription"]>
@@ -8889,6 +9120,7 @@ export namespace Prisma {
     plan<T extends PlanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlanDefaultArgs<ExtArgs>>): Prisma__PlanClient<$Result.GetResult<Prisma.$PlanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     business<T extends BusinessDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BusinessDefaultArgs<ExtArgs>>): Prisma__BusinessClient<$Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     payments<T extends Subscription$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Subscription$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cancellations<T extends Subscription$cancellationsArgs<ExtArgs> = {}>(args?: Subset<T, Subscription$cancellationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8929,6 +9161,10 @@ export namespace Prisma {
     readonly subscriptionPaymentMethod: FieldRef<"Subscription", 'String'>
     readonly subscriptionPlanFeatures: FieldRef<"Subscription", 'Json'>
     readonly createdByUserId: FieldRef<"Subscription", 'String'>
+    readonly mpPreapprovalId: FieldRef<"Subscription", 'String'>
+    readonly mpPreapprovalStatus: FieldRef<"Subscription", 'String'>
+    readonly autoRenewEnabled: FieldRef<"Subscription", 'Boolean'>
+    readonly subscriptionCancelledAt: FieldRef<"Subscription", 'DateTime'>
     readonly createdAt: FieldRef<"Subscription", 'DateTime'>
     readonly updatedAt: FieldRef<"Subscription", 'DateTime'>
   }
@@ -9351,6 +9587,30 @@ export namespace Prisma {
   }
 
   /**
+   * Subscription.cancellations
+   */
+  export type Subscription$cancellationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    where?: SubscriptionCancellationWhereInput
+    orderBy?: SubscriptionCancellationOrderByWithRelationInput | SubscriptionCancellationOrderByWithRelationInput[]
+    cursor?: SubscriptionCancellationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SubscriptionCancellationScalarFieldEnum | SubscriptionCancellationScalarFieldEnum[]
+  }
+
+  /**
    * Subscription without action
    */
   export type SubscriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9366,6 +9626,1269 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: SubscriptionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SubscriptionCancellation
+   */
+
+  export type AggregateSubscriptionCancellation = {
+    _count: SubscriptionCancellationCountAggregateOutputType | null
+    _avg: SubscriptionCancellationAvgAggregateOutputType | null
+    _sum: SubscriptionCancellationSumAggregateOutputType | null
+    _min: SubscriptionCancellationMinAggregateOutputType | null
+    _max: SubscriptionCancellationMaxAggregateOutputType | null
+  }
+
+  export type SubscriptionCancellationAvgAggregateOutputType = {
+    planAmount: number | null
+  }
+
+  export type SubscriptionCancellationSumAggregateOutputType = {
+    planAmount: number | null
+  }
+
+  export type SubscriptionCancellationMinAggregateOutputType = {
+    subscriptionCancellationId: string | null
+    subscriptionId: string | null
+    subscriptionBusinessId: string | null
+    subscriptionPlanId: string | null
+    cancelledByUserId: string | null
+    mpPreapprovalId: string | null
+    planName: string | null
+    planAmount: number | null
+    planCurrency: string | null
+    accessValidUntil: Date | null
+    confirmationPhrase: string | null
+    cancelReason: string | null
+    source: string | null
+    requestIp: string | null
+    requestUserAgent: string | null
+    createdAt: Date | null
+  }
+
+  export type SubscriptionCancellationMaxAggregateOutputType = {
+    subscriptionCancellationId: string | null
+    subscriptionId: string | null
+    subscriptionBusinessId: string | null
+    subscriptionPlanId: string | null
+    cancelledByUserId: string | null
+    mpPreapprovalId: string | null
+    planName: string | null
+    planAmount: number | null
+    planCurrency: string | null
+    accessValidUntil: Date | null
+    confirmationPhrase: string | null
+    cancelReason: string | null
+    source: string | null
+    requestIp: string | null
+    requestUserAgent: string | null
+    createdAt: Date | null
+  }
+
+  export type SubscriptionCancellationCountAggregateOutputType = {
+    subscriptionCancellationId: number
+    subscriptionId: number
+    subscriptionBusinessId: number
+    subscriptionPlanId: number
+    cancelledByUserId: number
+    mpPreapprovalId: number
+    planName: number
+    planAmount: number
+    planCurrency: number
+    accessValidUntil: number
+    confirmationPhrase: number
+    cancelReason: number
+    source: number
+    requestIp: number
+    requestUserAgent: number
+    mpResponseSnapshot: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SubscriptionCancellationAvgAggregateInputType = {
+    planAmount?: true
+  }
+
+  export type SubscriptionCancellationSumAggregateInputType = {
+    planAmount?: true
+  }
+
+  export type SubscriptionCancellationMinAggregateInputType = {
+    subscriptionCancellationId?: true
+    subscriptionId?: true
+    subscriptionBusinessId?: true
+    subscriptionPlanId?: true
+    cancelledByUserId?: true
+    mpPreapprovalId?: true
+    planName?: true
+    planAmount?: true
+    planCurrency?: true
+    accessValidUntil?: true
+    confirmationPhrase?: true
+    cancelReason?: true
+    source?: true
+    requestIp?: true
+    requestUserAgent?: true
+    createdAt?: true
+  }
+
+  export type SubscriptionCancellationMaxAggregateInputType = {
+    subscriptionCancellationId?: true
+    subscriptionId?: true
+    subscriptionBusinessId?: true
+    subscriptionPlanId?: true
+    cancelledByUserId?: true
+    mpPreapprovalId?: true
+    planName?: true
+    planAmount?: true
+    planCurrency?: true
+    accessValidUntil?: true
+    confirmationPhrase?: true
+    cancelReason?: true
+    source?: true
+    requestIp?: true
+    requestUserAgent?: true
+    createdAt?: true
+  }
+
+  export type SubscriptionCancellationCountAggregateInputType = {
+    subscriptionCancellationId?: true
+    subscriptionId?: true
+    subscriptionBusinessId?: true
+    subscriptionPlanId?: true
+    cancelledByUserId?: true
+    mpPreapprovalId?: true
+    planName?: true
+    planAmount?: true
+    planCurrency?: true
+    accessValidUntil?: true
+    confirmationPhrase?: true
+    cancelReason?: true
+    source?: true
+    requestIp?: true
+    requestUserAgent?: true
+    mpResponseSnapshot?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SubscriptionCancellationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubscriptionCancellation to aggregate.
+     */
+    where?: SubscriptionCancellationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubscriptionCancellations to fetch.
+     */
+    orderBy?: SubscriptionCancellationOrderByWithRelationInput | SubscriptionCancellationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SubscriptionCancellationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubscriptionCancellations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubscriptionCancellations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SubscriptionCancellations
+    **/
+    _count?: true | SubscriptionCancellationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SubscriptionCancellationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SubscriptionCancellationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SubscriptionCancellationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SubscriptionCancellationMaxAggregateInputType
+  }
+
+  export type GetSubscriptionCancellationAggregateType<T extends SubscriptionCancellationAggregateArgs> = {
+        [P in keyof T & keyof AggregateSubscriptionCancellation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSubscriptionCancellation[P]>
+      : GetScalarType<T[P], AggregateSubscriptionCancellation[P]>
+  }
+
+
+
+
+  export type SubscriptionCancellationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SubscriptionCancellationWhereInput
+    orderBy?: SubscriptionCancellationOrderByWithAggregationInput | SubscriptionCancellationOrderByWithAggregationInput[]
+    by: SubscriptionCancellationScalarFieldEnum[] | SubscriptionCancellationScalarFieldEnum
+    having?: SubscriptionCancellationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SubscriptionCancellationCountAggregateInputType | true
+    _avg?: SubscriptionCancellationAvgAggregateInputType
+    _sum?: SubscriptionCancellationSumAggregateInputType
+    _min?: SubscriptionCancellationMinAggregateInputType
+    _max?: SubscriptionCancellationMaxAggregateInputType
+  }
+
+  export type SubscriptionCancellationGroupByOutputType = {
+    subscriptionCancellationId: string
+    subscriptionId: string
+    subscriptionBusinessId: string
+    subscriptionPlanId: string
+    cancelledByUserId: string
+    mpPreapprovalId: string | null
+    planName: string
+    planAmount: number
+    planCurrency: string
+    accessValidUntil: Date
+    confirmationPhrase: string
+    cancelReason: string | null
+    source: string
+    requestIp: string | null
+    requestUserAgent: string | null
+    mpResponseSnapshot: JsonValue | null
+    createdAt: Date
+    _count: SubscriptionCancellationCountAggregateOutputType | null
+    _avg: SubscriptionCancellationAvgAggregateOutputType | null
+    _sum: SubscriptionCancellationSumAggregateOutputType | null
+    _min: SubscriptionCancellationMinAggregateOutputType | null
+    _max: SubscriptionCancellationMaxAggregateOutputType | null
+  }
+
+  type GetSubscriptionCancellationGroupByPayload<T extends SubscriptionCancellationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SubscriptionCancellationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SubscriptionCancellationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SubscriptionCancellationGroupByOutputType[P]>
+            : GetScalarType<T[P], SubscriptionCancellationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SubscriptionCancellationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    subscriptionCancellationId?: boolean
+    subscriptionId?: boolean
+    subscriptionBusinessId?: boolean
+    subscriptionPlanId?: boolean
+    cancelledByUserId?: boolean
+    mpPreapprovalId?: boolean
+    planName?: boolean
+    planAmount?: boolean
+    planCurrency?: boolean
+    accessValidUntil?: boolean
+    confirmationPhrase?: boolean
+    cancelReason?: boolean
+    source?: boolean
+    requestIp?: boolean
+    requestUserAgent?: boolean
+    mpResponseSnapshot?: boolean
+    createdAt?: boolean
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subscriptionCancellation"]>
+
+  export type SubscriptionCancellationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    subscriptionCancellationId?: boolean
+    subscriptionId?: boolean
+    subscriptionBusinessId?: boolean
+    subscriptionPlanId?: boolean
+    cancelledByUserId?: boolean
+    mpPreapprovalId?: boolean
+    planName?: boolean
+    planAmount?: boolean
+    planCurrency?: boolean
+    accessValidUntil?: boolean
+    confirmationPhrase?: boolean
+    cancelReason?: boolean
+    source?: boolean
+    requestIp?: boolean
+    requestUserAgent?: boolean
+    mpResponseSnapshot?: boolean
+    createdAt?: boolean
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subscriptionCancellation"]>
+
+  export type SubscriptionCancellationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    subscriptionCancellationId?: boolean
+    subscriptionId?: boolean
+    subscriptionBusinessId?: boolean
+    subscriptionPlanId?: boolean
+    cancelledByUserId?: boolean
+    mpPreapprovalId?: boolean
+    planName?: boolean
+    planAmount?: boolean
+    planCurrency?: boolean
+    accessValidUntil?: boolean
+    confirmationPhrase?: boolean
+    cancelReason?: boolean
+    source?: boolean
+    requestIp?: boolean
+    requestUserAgent?: boolean
+    mpResponseSnapshot?: boolean
+    createdAt?: boolean
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["subscriptionCancellation"]>
+
+  export type SubscriptionCancellationSelectScalar = {
+    subscriptionCancellationId?: boolean
+    subscriptionId?: boolean
+    subscriptionBusinessId?: boolean
+    subscriptionPlanId?: boolean
+    cancelledByUserId?: boolean
+    mpPreapprovalId?: boolean
+    planName?: boolean
+    planAmount?: boolean
+    planCurrency?: boolean
+    accessValidUntil?: boolean
+    confirmationPhrase?: boolean
+    cancelReason?: boolean
+    source?: boolean
+    requestIp?: boolean
+    requestUserAgent?: boolean
+    mpResponseSnapshot?: boolean
+    createdAt?: boolean
+  }
+
+  export type SubscriptionCancellationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"subscriptionCancellationId" | "subscriptionId" | "subscriptionBusinessId" | "subscriptionPlanId" | "cancelledByUserId" | "mpPreapprovalId" | "planName" | "planAmount" | "planCurrency" | "accessValidUntil" | "confirmationPhrase" | "cancelReason" | "source" | "requestIp" | "requestUserAgent" | "mpResponseSnapshot" | "createdAt", ExtArgs["result"]["subscriptionCancellation"]>
+  export type SubscriptionCancellationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SubscriptionCancellationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SubscriptionCancellationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    subscription?: boolean | SubscriptionDefaultArgs<ExtArgs>
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SubscriptionCancellationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SubscriptionCancellation"
+    objects: {
+      subscription: Prisma.$SubscriptionPayload<ExtArgs>
+      business: Prisma.$BusinessPayload<ExtArgs>
+      cancelledBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      subscriptionCancellationId: string
+      subscriptionId: string
+      subscriptionBusinessId: string
+      subscriptionPlanId: string
+      cancelledByUserId: string
+      mpPreapprovalId: string | null
+      planName: string
+      planAmount: number
+      planCurrency: string
+      /**
+       * * Hasta cuándo conserva acceso tras la baja
+       */
+      accessValidUntil: Date
+      confirmationPhrase: string
+      cancelReason: string | null
+      source: string
+      requestIp: string | null
+      requestUserAgent: string | null
+      mpResponseSnapshot: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["subscriptionCancellation"]>
+    composites: {}
+  }
+
+  type SubscriptionCancellationGetPayload<S extends boolean | null | undefined | SubscriptionCancellationDefaultArgs> = $Result.GetResult<Prisma.$SubscriptionCancellationPayload, S>
+
+  type SubscriptionCancellationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SubscriptionCancellationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SubscriptionCancellationCountAggregateInputType | true
+    }
+
+  export interface SubscriptionCancellationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SubscriptionCancellation'], meta: { name: 'SubscriptionCancellation' } }
+    /**
+     * Find zero or one SubscriptionCancellation that matches the filter.
+     * @param {SubscriptionCancellationFindUniqueArgs} args - Arguments to find a SubscriptionCancellation
+     * @example
+     * // Get one SubscriptionCancellation
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SubscriptionCancellationFindUniqueArgs>(args: SelectSubset<T, SubscriptionCancellationFindUniqueArgs<ExtArgs>>): Prisma__SubscriptionCancellationClient<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SubscriptionCancellation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SubscriptionCancellationFindUniqueOrThrowArgs} args - Arguments to find a SubscriptionCancellation
+     * @example
+     * // Get one SubscriptionCancellation
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SubscriptionCancellationFindUniqueOrThrowArgs>(args: SelectSubset<T, SubscriptionCancellationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SubscriptionCancellationClient<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubscriptionCancellation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionCancellationFindFirstArgs} args - Arguments to find a SubscriptionCancellation
+     * @example
+     * // Get one SubscriptionCancellation
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SubscriptionCancellationFindFirstArgs>(args?: SelectSubset<T, SubscriptionCancellationFindFirstArgs<ExtArgs>>): Prisma__SubscriptionCancellationClient<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SubscriptionCancellation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionCancellationFindFirstOrThrowArgs} args - Arguments to find a SubscriptionCancellation
+     * @example
+     * // Get one SubscriptionCancellation
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SubscriptionCancellationFindFirstOrThrowArgs>(args?: SelectSubset<T, SubscriptionCancellationFindFirstOrThrowArgs<ExtArgs>>): Prisma__SubscriptionCancellationClient<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SubscriptionCancellations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionCancellationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SubscriptionCancellations
+     * const subscriptionCancellations = await prisma.subscriptionCancellation.findMany()
+     * 
+     * // Get first 10 SubscriptionCancellations
+     * const subscriptionCancellations = await prisma.subscriptionCancellation.findMany({ take: 10 })
+     * 
+     * // Only select the `subscriptionCancellationId`
+     * const subscriptionCancellationWithSubscriptionCancellationIdOnly = await prisma.subscriptionCancellation.findMany({ select: { subscriptionCancellationId: true } })
+     * 
+     */
+    findMany<T extends SubscriptionCancellationFindManyArgs>(args?: SelectSubset<T, SubscriptionCancellationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SubscriptionCancellation.
+     * @param {SubscriptionCancellationCreateArgs} args - Arguments to create a SubscriptionCancellation.
+     * @example
+     * // Create one SubscriptionCancellation
+     * const SubscriptionCancellation = await prisma.subscriptionCancellation.create({
+     *   data: {
+     *     // ... data to create a SubscriptionCancellation
+     *   }
+     * })
+     * 
+     */
+    create<T extends SubscriptionCancellationCreateArgs>(args: SelectSubset<T, SubscriptionCancellationCreateArgs<ExtArgs>>): Prisma__SubscriptionCancellationClient<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SubscriptionCancellations.
+     * @param {SubscriptionCancellationCreateManyArgs} args - Arguments to create many SubscriptionCancellations.
+     * @example
+     * // Create many SubscriptionCancellations
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SubscriptionCancellationCreateManyArgs>(args?: SelectSubset<T, SubscriptionCancellationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SubscriptionCancellations and returns the data saved in the database.
+     * @param {SubscriptionCancellationCreateManyAndReturnArgs} args - Arguments to create many SubscriptionCancellations.
+     * @example
+     * // Create many SubscriptionCancellations
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SubscriptionCancellations and only return the `subscriptionCancellationId`
+     * const subscriptionCancellationWithSubscriptionCancellationIdOnly = await prisma.subscriptionCancellation.createManyAndReturn({
+     *   select: { subscriptionCancellationId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SubscriptionCancellationCreateManyAndReturnArgs>(args?: SelectSubset<T, SubscriptionCancellationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SubscriptionCancellation.
+     * @param {SubscriptionCancellationDeleteArgs} args - Arguments to delete one SubscriptionCancellation.
+     * @example
+     * // Delete one SubscriptionCancellation
+     * const SubscriptionCancellation = await prisma.subscriptionCancellation.delete({
+     *   where: {
+     *     // ... filter to delete one SubscriptionCancellation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SubscriptionCancellationDeleteArgs>(args: SelectSubset<T, SubscriptionCancellationDeleteArgs<ExtArgs>>): Prisma__SubscriptionCancellationClient<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SubscriptionCancellation.
+     * @param {SubscriptionCancellationUpdateArgs} args - Arguments to update one SubscriptionCancellation.
+     * @example
+     * // Update one SubscriptionCancellation
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SubscriptionCancellationUpdateArgs>(args: SelectSubset<T, SubscriptionCancellationUpdateArgs<ExtArgs>>): Prisma__SubscriptionCancellationClient<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SubscriptionCancellations.
+     * @param {SubscriptionCancellationDeleteManyArgs} args - Arguments to filter SubscriptionCancellations to delete.
+     * @example
+     * // Delete a few SubscriptionCancellations
+     * const { count } = await prisma.subscriptionCancellation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SubscriptionCancellationDeleteManyArgs>(args?: SelectSubset<T, SubscriptionCancellationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubscriptionCancellations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionCancellationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SubscriptionCancellations
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SubscriptionCancellationUpdateManyArgs>(args: SelectSubset<T, SubscriptionCancellationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SubscriptionCancellations and returns the data updated in the database.
+     * @param {SubscriptionCancellationUpdateManyAndReturnArgs} args - Arguments to update many SubscriptionCancellations.
+     * @example
+     * // Update many SubscriptionCancellations
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SubscriptionCancellations and only return the `subscriptionCancellationId`
+     * const subscriptionCancellationWithSubscriptionCancellationIdOnly = await prisma.subscriptionCancellation.updateManyAndReturn({
+     *   select: { subscriptionCancellationId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SubscriptionCancellationUpdateManyAndReturnArgs>(args: SelectSubset<T, SubscriptionCancellationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SubscriptionCancellation.
+     * @param {SubscriptionCancellationUpsertArgs} args - Arguments to update or create a SubscriptionCancellation.
+     * @example
+     * // Update or create a SubscriptionCancellation
+     * const subscriptionCancellation = await prisma.subscriptionCancellation.upsert({
+     *   create: {
+     *     // ... data to create a SubscriptionCancellation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SubscriptionCancellation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SubscriptionCancellationUpsertArgs>(args: SelectSubset<T, SubscriptionCancellationUpsertArgs<ExtArgs>>): Prisma__SubscriptionCancellationClient<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SubscriptionCancellations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionCancellationCountArgs} args - Arguments to filter SubscriptionCancellations to count.
+     * @example
+     * // Count the number of SubscriptionCancellations
+     * const count = await prisma.subscriptionCancellation.count({
+     *   where: {
+     *     // ... the filter for the SubscriptionCancellations we want to count
+     *   }
+     * })
+    **/
+    count<T extends SubscriptionCancellationCountArgs>(
+      args?: Subset<T, SubscriptionCancellationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SubscriptionCancellationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SubscriptionCancellation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionCancellationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SubscriptionCancellationAggregateArgs>(args: Subset<T, SubscriptionCancellationAggregateArgs>): Prisma.PrismaPromise<GetSubscriptionCancellationAggregateType<T>>
+
+    /**
+     * Group by SubscriptionCancellation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SubscriptionCancellationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SubscriptionCancellationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SubscriptionCancellationGroupByArgs['orderBy'] }
+        : { orderBy?: SubscriptionCancellationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SubscriptionCancellationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubscriptionCancellationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SubscriptionCancellation model
+   */
+  readonly fields: SubscriptionCancellationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SubscriptionCancellation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SubscriptionCancellationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    subscription<T extends SubscriptionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SubscriptionDefaultArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    business<T extends BusinessDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BusinessDefaultArgs<ExtArgs>>): Prisma__BusinessClient<$Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cancelledBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SubscriptionCancellation model
+   */
+  interface SubscriptionCancellationFieldRefs {
+    readonly subscriptionCancellationId: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly subscriptionId: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly subscriptionBusinessId: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly subscriptionPlanId: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly cancelledByUserId: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly mpPreapprovalId: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly planName: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly planAmount: FieldRef<"SubscriptionCancellation", 'Float'>
+    readonly planCurrency: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly accessValidUntil: FieldRef<"SubscriptionCancellation", 'DateTime'>
+    readonly confirmationPhrase: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly cancelReason: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly source: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly requestIp: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly requestUserAgent: FieldRef<"SubscriptionCancellation", 'String'>
+    readonly mpResponseSnapshot: FieldRef<"SubscriptionCancellation", 'Json'>
+    readonly createdAt: FieldRef<"SubscriptionCancellation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SubscriptionCancellation findUnique
+   */
+  export type SubscriptionCancellationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    /**
+     * Filter, which SubscriptionCancellation to fetch.
+     */
+    where: SubscriptionCancellationWhereUniqueInput
+  }
+
+  /**
+   * SubscriptionCancellation findUniqueOrThrow
+   */
+  export type SubscriptionCancellationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    /**
+     * Filter, which SubscriptionCancellation to fetch.
+     */
+    where: SubscriptionCancellationWhereUniqueInput
+  }
+
+  /**
+   * SubscriptionCancellation findFirst
+   */
+  export type SubscriptionCancellationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    /**
+     * Filter, which SubscriptionCancellation to fetch.
+     */
+    where?: SubscriptionCancellationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubscriptionCancellations to fetch.
+     */
+    orderBy?: SubscriptionCancellationOrderByWithRelationInput | SubscriptionCancellationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubscriptionCancellations.
+     */
+    cursor?: SubscriptionCancellationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubscriptionCancellations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubscriptionCancellations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubscriptionCancellations.
+     */
+    distinct?: SubscriptionCancellationScalarFieldEnum | SubscriptionCancellationScalarFieldEnum[]
+  }
+
+  /**
+   * SubscriptionCancellation findFirstOrThrow
+   */
+  export type SubscriptionCancellationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    /**
+     * Filter, which SubscriptionCancellation to fetch.
+     */
+    where?: SubscriptionCancellationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubscriptionCancellations to fetch.
+     */
+    orderBy?: SubscriptionCancellationOrderByWithRelationInput | SubscriptionCancellationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SubscriptionCancellations.
+     */
+    cursor?: SubscriptionCancellationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubscriptionCancellations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubscriptionCancellations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SubscriptionCancellations.
+     */
+    distinct?: SubscriptionCancellationScalarFieldEnum | SubscriptionCancellationScalarFieldEnum[]
+  }
+
+  /**
+   * SubscriptionCancellation findMany
+   */
+  export type SubscriptionCancellationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    /**
+     * Filter, which SubscriptionCancellations to fetch.
+     */
+    where?: SubscriptionCancellationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SubscriptionCancellations to fetch.
+     */
+    orderBy?: SubscriptionCancellationOrderByWithRelationInput | SubscriptionCancellationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SubscriptionCancellations.
+     */
+    cursor?: SubscriptionCancellationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SubscriptionCancellations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SubscriptionCancellations.
+     */
+    skip?: number
+    distinct?: SubscriptionCancellationScalarFieldEnum | SubscriptionCancellationScalarFieldEnum[]
+  }
+
+  /**
+   * SubscriptionCancellation create
+   */
+  export type SubscriptionCancellationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SubscriptionCancellation.
+     */
+    data: XOR<SubscriptionCancellationCreateInput, SubscriptionCancellationUncheckedCreateInput>
+  }
+
+  /**
+   * SubscriptionCancellation createMany
+   */
+  export type SubscriptionCancellationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SubscriptionCancellations.
+     */
+    data: SubscriptionCancellationCreateManyInput | SubscriptionCancellationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SubscriptionCancellation createManyAndReturn
+   */
+  export type SubscriptionCancellationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * The data used to create many SubscriptionCancellations.
+     */
+    data: SubscriptionCancellationCreateManyInput | SubscriptionCancellationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubscriptionCancellation update
+   */
+  export type SubscriptionCancellationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SubscriptionCancellation.
+     */
+    data: XOR<SubscriptionCancellationUpdateInput, SubscriptionCancellationUncheckedUpdateInput>
+    /**
+     * Choose, which SubscriptionCancellation to update.
+     */
+    where: SubscriptionCancellationWhereUniqueInput
+  }
+
+  /**
+   * SubscriptionCancellation updateMany
+   */
+  export type SubscriptionCancellationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SubscriptionCancellations.
+     */
+    data: XOR<SubscriptionCancellationUpdateManyMutationInput, SubscriptionCancellationUncheckedUpdateManyInput>
+    /**
+     * Filter which SubscriptionCancellations to update
+     */
+    where?: SubscriptionCancellationWhereInput
+    /**
+     * Limit how many SubscriptionCancellations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubscriptionCancellation updateManyAndReturn
+   */
+  export type SubscriptionCancellationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * The data used to update SubscriptionCancellations.
+     */
+    data: XOR<SubscriptionCancellationUpdateManyMutationInput, SubscriptionCancellationUncheckedUpdateManyInput>
+    /**
+     * Filter which SubscriptionCancellations to update
+     */
+    where?: SubscriptionCancellationWhereInput
+    /**
+     * Limit how many SubscriptionCancellations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SubscriptionCancellation upsert
+   */
+  export type SubscriptionCancellationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SubscriptionCancellation to update in case it exists.
+     */
+    where: SubscriptionCancellationWhereUniqueInput
+    /**
+     * In case the SubscriptionCancellation found by the `where` argument doesn't exist, create a new SubscriptionCancellation with this data.
+     */
+    create: XOR<SubscriptionCancellationCreateInput, SubscriptionCancellationUncheckedCreateInput>
+    /**
+     * In case the SubscriptionCancellation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SubscriptionCancellationUpdateInput, SubscriptionCancellationUncheckedUpdateInput>
+  }
+
+  /**
+   * SubscriptionCancellation delete
+   */
+  export type SubscriptionCancellationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
+    /**
+     * Filter which SubscriptionCancellation to delete.
+     */
+    where: SubscriptionCancellationWhereUniqueInput
+  }
+
+  /**
+   * SubscriptionCancellation deleteMany
+   */
+  export type SubscriptionCancellationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SubscriptionCancellations to delete
+     */
+    where?: SubscriptionCancellationWhereInput
+    /**
+     * Limit how many SubscriptionCancellations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SubscriptionCancellation without action
+   */
+  export type SubscriptionCancellationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCancellation
+     */
+    select?: SubscriptionCancellationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubscriptionCancellation
+     */
+    omit?: SubscriptionCancellationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionCancellationInclude<ExtArgs> | null
   }
 
 
@@ -13981,11 +15504,38 @@ export namespace Prisma {
     subscriptionPaymentMethod: 'subscriptionPaymentMethod',
     subscriptionPlanFeatures: 'subscriptionPlanFeatures',
     createdByUserId: 'createdByUserId',
+    mpPreapprovalId: 'mpPreapprovalId',
+    mpPreapprovalStatus: 'mpPreapprovalStatus',
+    autoRenewEnabled: 'autoRenewEnabled',
+    subscriptionCancelledAt: 'subscriptionCancelledAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+  export const SubscriptionCancellationScalarFieldEnum: {
+    subscriptionCancellationId: 'subscriptionCancellationId',
+    subscriptionId: 'subscriptionId',
+    subscriptionBusinessId: 'subscriptionBusinessId',
+    subscriptionPlanId: 'subscriptionPlanId',
+    cancelledByUserId: 'cancelledByUserId',
+    mpPreapprovalId: 'mpPreapprovalId',
+    planName: 'planName',
+    planAmount: 'planAmount',
+    planCurrency: 'planCurrency',
+    accessValidUntil: 'accessValidUntil',
+    confirmationPhrase: 'confirmationPhrase',
+    cancelReason: 'cancelReason',
+    source: 'source',
+    requestIp: 'requestIp',
+    requestUserAgent: 'requestUserAgent',
+    mpResponseSnapshot: 'mpResponseSnapshot',
+    createdAt: 'createdAt'
+  };
+
+  export type SubscriptionCancellationScalarFieldEnum = (typeof SubscriptionCancellationScalarFieldEnum)[keyof typeof SubscriptionCancellationScalarFieldEnum]
 
 
   export const SubscriptionPaymentScalarFieldEnum: {
@@ -14345,6 +15895,7 @@ export namespace Prisma {
     businesses?: BusinessListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
     subscriptionPayments?: SubscriptionPaymentListRelationFilter
+    subscriptionCancellations?: SubscriptionCancellationListRelationFilter
     tickets?: TicketListRelationFilter
     ticketDetails?: TicketDetailListRelationFilter
   }
@@ -14368,6 +15919,7 @@ export namespace Prisma {
     businesses?: BusinessOrderByRelationAggregateInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     subscriptionPayments?: SubscriptionPaymentOrderByRelationAggregateInput
+    subscriptionCancellations?: SubscriptionCancellationOrderByRelationAggregateInput
     tickets?: TicketOrderByRelationAggregateInput
     ticketDetails?: TicketDetailOrderByRelationAggregateInput
   }
@@ -14394,6 +15946,7 @@ export namespace Prisma {
     businesses?: BusinessListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
     subscriptionPayments?: SubscriptionPaymentListRelationFilter
+    subscriptionCancellations?: SubscriptionCancellationListRelationFilter
     tickets?: TicketListRelationFilter
     ticketDetails?: TicketDetailListRelationFilter
   }, "userId" | "userEmail">
@@ -14463,6 +16016,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
     subscriptionPayments?: SubscriptionPaymentListRelationFilter
+    subscriptionCancellations?: SubscriptionCancellationListRelationFilter
   }
 
   export type BusinessOrderByWithRelationInput = {
@@ -14489,6 +16043,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessOrderByRelationAggregateInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     subscriptionPayments?: SubscriptionPaymentOrderByRelationAggregateInput
+    subscriptionCancellations?: SubscriptionCancellationOrderByRelationAggregateInput
   }
 
   export type BusinessWhereUniqueInput = Prisma.AtLeast<{
@@ -14518,6 +16073,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessListRelationFilter
     subscriptions?: SubscriptionListRelationFilter
     subscriptionPayments?: SubscriptionPaymentListRelationFilter
+    subscriptionCancellations?: SubscriptionCancellationListRelationFilter
   }, "businessId">
 
   export type BusinessOrderByWithAggregationInput = {
@@ -14800,12 +16356,17 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFilter<"Subscription"> | string
     subscriptionPlanFeatures?: JsonFilter<"Subscription">
     createdByUserId?: StringFilter<"Subscription"> | string
+    mpPreapprovalId?: StringNullableFilter<"Subscription"> | string | null
+    mpPreapprovalStatus?: StringNullableFilter<"Subscription"> | string | null
+    autoRenewEnabled?: BoolFilter<"Subscription"> | boolean
+    subscriptionCancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     plan?: XOR<PlanScalarRelationFilter, PlanWhereInput>
     business?: XOR<BusinessScalarRelationFilter, BusinessWhereInput>
     payments?: SubscriptionPaymentListRelationFilter
+    cancellations?: SubscriptionCancellationListRelationFilter
   }
 
   export type SubscriptionOrderByWithRelationInput = {
@@ -14820,16 +16381,22 @@ export namespace Prisma {
     subscriptionPaymentMethod?: SortOrder
     subscriptionPlanFeatures?: SortOrder
     createdByUserId?: SortOrder
+    mpPreapprovalId?: SortOrderInput | SortOrder
+    mpPreapprovalStatus?: SortOrderInput | SortOrder
+    autoRenewEnabled?: SortOrder
+    subscriptionCancelledAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdBy?: UserOrderByWithRelationInput
     plan?: PlanOrderByWithRelationInput
     business?: BusinessOrderByWithRelationInput
     payments?: SubscriptionPaymentOrderByRelationAggregateInput
+    cancellations?: SubscriptionCancellationOrderByRelationAggregateInput
   }
 
   export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
     subscriptionId?: string
+    mpPreapprovalId?: string
     AND?: SubscriptionWhereInput | SubscriptionWhereInput[]
     OR?: SubscriptionWhereInput[]
     NOT?: SubscriptionWhereInput | SubscriptionWhereInput[]
@@ -14843,13 +16410,17 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFilter<"Subscription"> | string
     subscriptionPlanFeatures?: JsonFilter<"Subscription">
     createdByUserId?: StringFilter<"Subscription"> | string
+    mpPreapprovalStatus?: StringNullableFilter<"Subscription"> | string | null
+    autoRenewEnabled?: BoolFilter<"Subscription"> | boolean
+    subscriptionCancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     plan?: XOR<PlanScalarRelationFilter, PlanWhereInput>
     business?: XOR<BusinessScalarRelationFilter, BusinessWhereInput>
     payments?: SubscriptionPaymentListRelationFilter
-  }, "subscriptionId">
+    cancellations?: SubscriptionCancellationListRelationFilter
+  }, "subscriptionId" | "mpPreapprovalId">
 
   export type SubscriptionOrderByWithAggregationInput = {
     subscriptionId?: SortOrder
@@ -14863,6 +16434,10 @@ export namespace Prisma {
     subscriptionPaymentMethod?: SortOrder
     subscriptionPlanFeatures?: SortOrder
     createdByUserId?: SortOrder
+    mpPreapprovalId?: SortOrderInput | SortOrder
+    mpPreapprovalStatus?: SortOrderInput | SortOrder
+    autoRenewEnabled?: SortOrder
+    subscriptionCancelledAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SubscriptionCountOrderByAggregateInput
@@ -14887,8 +16462,135 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringWithAggregatesFilter<"Subscription"> | string
     subscriptionPlanFeatures?: JsonWithAggregatesFilter<"Subscription">
     createdByUserId?: StringWithAggregatesFilter<"Subscription"> | string
+    mpPreapprovalId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
+    mpPreapprovalStatus?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
+    autoRenewEnabled?: BoolWithAggregatesFilter<"Subscription"> | boolean
+    subscriptionCancelledAt?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
+  }
+
+  export type SubscriptionCancellationWhereInput = {
+    AND?: SubscriptionCancellationWhereInput | SubscriptionCancellationWhereInput[]
+    OR?: SubscriptionCancellationWhereInput[]
+    NOT?: SubscriptionCancellationWhereInput | SubscriptionCancellationWhereInput[]
+    subscriptionCancellationId?: StringFilter<"SubscriptionCancellation"> | string
+    subscriptionId?: StringFilter<"SubscriptionCancellation"> | string
+    subscriptionBusinessId?: StringFilter<"SubscriptionCancellation"> | string
+    subscriptionPlanId?: StringFilter<"SubscriptionCancellation"> | string
+    cancelledByUserId?: StringFilter<"SubscriptionCancellation"> | string
+    mpPreapprovalId?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    planName?: StringFilter<"SubscriptionCancellation"> | string
+    planAmount?: FloatFilter<"SubscriptionCancellation"> | number
+    planCurrency?: StringFilter<"SubscriptionCancellation"> | string
+    accessValidUntil?: DateTimeFilter<"SubscriptionCancellation"> | Date | string
+    confirmationPhrase?: StringFilter<"SubscriptionCancellation"> | string
+    cancelReason?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    source?: StringFilter<"SubscriptionCancellation"> | string
+    requestIp?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    requestUserAgent?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    mpResponseSnapshot?: JsonNullableFilter<"SubscriptionCancellation">
+    createdAt?: DateTimeFilter<"SubscriptionCancellation"> | Date | string
+    subscription?: XOR<SubscriptionScalarRelationFilter, SubscriptionWhereInput>
+    business?: XOR<BusinessScalarRelationFilter, BusinessWhereInput>
+    cancelledBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SubscriptionCancellationOrderByWithRelationInput = {
+    subscriptionCancellationId?: SortOrder
+    subscriptionId?: SortOrder
+    subscriptionBusinessId?: SortOrder
+    subscriptionPlanId?: SortOrder
+    cancelledByUserId?: SortOrder
+    mpPreapprovalId?: SortOrderInput | SortOrder
+    planName?: SortOrder
+    planAmount?: SortOrder
+    planCurrency?: SortOrder
+    accessValidUntil?: SortOrder
+    confirmationPhrase?: SortOrder
+    cancelReason?: SortOrderInput | SortOrder
+    source?: SortOrder
+    requestIp?: SortOrderInput | SortOrder
+    requestUserAgent?: SortOrderInput | SortOrder
+    mpResponseSnapshot?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    subscription?: SubscriptionOrderByWithRelationInput
+    business?: BusinessOrderByWithRelationInput
+    cancelledBy?: UserOrderByWithRelationInput
+  }
+
+  export type SubscriptionCancellationWhereUniqueInput = Prisma.AtLeast<{
+    subscriptionCancellationId?: string
+    AND?: SubscriptionCancellationWhereInput | SubscriptionCancellationWhereInput[]
+    OR?: SubscriptionCancellationWhereInput[]
+    NOT?: SubscriptionCancellationWhereInput | SubscriptionCancellationWhereInput[]
+    subscriptionId?: StringFilter<"SubscriptionCancellation"> | string
+    subscriptionBusinessId?: StringFilter<"SubscriptionCancellation"> | string
+    subscriptionPlanId?: StringFilter<"SubscriptionCancellation"> | string
+    cancelledByUserId?: StringFilter<"SubscriptionCancellation"> | string
+    mpPreapprovalId?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    planName?: StringFilter<"SubscriptionCancellation"> | string
+    planAmount?: FloatFilter<"SubscriptionCancellation"> | number
+    planCurrency?: StringFilter<"SubscriptionCancellation"> | string
+    accessValidUntil?: DateTimeFilter<"SubscriptionCancellation"> | Date | string
+    confirmationPhrase?: StringFilter<"SubscriptionCancellation"> | string
+    cancelReason?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    source?: StringFilter<"SubscriptionCancellation"> | string
+    requestIp?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    requestUserAgent?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    mpResponseSnapshot?: JsonNullableFilter<"SubscriptionCancellation">
+    createdAt?: DateTimeFilter<"SubscriptionCancellation"> | Date | string
+    subscription?: XOR<SubscriptionScalarRelationFilter, SubscriptionWhereInput>
+    business?: XOR<BusinessScalarRelationFilter, BusinessWhereInput>
+    cancelledBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "subscriptionCancellationId">
+
+  export type SubscriptionCancellationOrderByWithAggregationInput = {
+    subscriptionCancellationId?: SortOrder
+    subscriptionId?: SortOrder
+    subscriptionBusinessId?: SortOrder
+    subscriptionPlanId?: SortOrder
+    cancelledByUserId?: SortOrder
+    mpPreapprovalId?: SortOrderInput | SortOrder
+    planName?: SortOrder
+    planAmount?: SortOrder
+    planCurrency?: SortOrder
+    accessValidUntil?: SortOrder
+    confirmationPhrase?: SortOrder
+    cancelReason?: SortOrderInput | SortOrder
+    source?: SortOrder
+    requestIp?: SortOrderInput | SortOrder
+    requestUserAgent?: SortOrderInput | SortOrder
+    mpResponseSnapshot?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: SubscriptionCancellationCountOrderByAggregateInput
+    _avg?: SubscriptionCancellationAvgOrderByAggregateInput
+    _max?: SubscriptionCancellationMaxOrderByAggregateInput
+    _min?: SubscriptionCancellationMinOrderByAggregateInput
+    _sum?: SubscriptionCancellationSumOrderByAggregateInput
+  }
+
+  export type SubscriptionCancellationScalarWhereWithAggregatesInput = {
+    AND?: SubscriptionCancellationScalarWhereWithAggregatesInput | SubscriptionCancellationScalarWhereWithAggregatesInput[]
+    OR?: SubscriptionCancellationScalarWhereWithAggregatesInput[]
+    NOT?: SubscriptionCancellationScalarWhereWithAggregatesInput | SubscriptionCancellationScalarWhereWithAggregatesInput[]
+    subscriptionCancellationId?: StringWithAggregatesFilter<"SubscriptionCancellation"> | string
+    subscriptionId?: StringWithAggregatesFilter<"SubscriptionCancellation"> | string
+    subscriptionBusinessId?: StringWithAggregatesFilter<"SubscriptionCancellation"> | string
+    subscriptionPlanId?: StringWithAggregatesFilter<"SubscriptionCancellation"> | string
+    cancelledByUserId?: StringWithAggregatesFilter<"SubscriptionCancellation"> | string
+    mpPreapprovalId?: StringNullableWithAggregatesFilter<"SubscriptionCancellation"> | string | null
+    planName?: StringWithAggregatesFilter<"SubscriptionCancellation"> | string
+    planAmount?: FloatWithAggregatesFilter<"SubscriptionCancellation"> | number
+    planCurrency?: StringWithAggregatesFilter<"SubscriptionCancellation"> | string
+    accessValidUntil?: DateTimeWithAggregatesFilter<"SubscriptionCancellation"> | Date | string
+    confirmationPhrase?: StringWithAggregatesFilter<"SubscriptionCancellation"> | string
+    cancelReason?: StringNullableWithAggregatesFilter<"SubscriptionCancellation"> | string | null
+    source?: StringWithAggregatesFilter<"SubscriptionCancellation"> | string
+    requestIp?: StringNullableWithAggregatesFilter<"SubscriptionCancellation"> | string | null
+    requestUserAgent?: StringNullableWithAggregatesFilter<"SubscriptionCancellation"> | string | null
+    mpResponseSnapshot?: JsonNullableWithAggregatesFilter<"SubscriptionCancellation">
+    createdAt?: DateTimeWithAggregatesFilter<"SubscriptionCancellation"> | Date | string
   }
 
   export type SubscriptionPaymentWhereInput = {
@@ -15234,6 +16936,7 @@ export namespace Prisma {
     businesses?: BusinessCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
   }
@@ -15257,6 +16960,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -15280,6 +16984,7 @@ export namespace Prisma {
     businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
   }
@@ -15303,6 +17008,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -15378,6 +17084,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateInput = {
@@ -15403,6 +17110,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessUpdateInput = {
@@ -15428,6 +17136,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateInput = {
@@ -15453,6 +17162,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
   }
 
   export type BusinessCreateManyInput = {
@@ -15754,12 +17464,17 @@ export namespace Prisma {
     subscriptionAmount: number
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutSubscriptionsInput
     plan: PlanCreateNestedOneWithoutSubscriptionsInput
     business: BusinessCreateNestedOneWithoutSubscriptionsInput
     payments?: SubscriptionPaymentCreateNestedManyWithoutSubscriptionInput
+    cancellations?: SubscriptionCancellationCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateInput = {
@@ -15774,9 +17489,14 @@ export namespace Prisma {
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
     createdByUserId: string
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     payments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutSubscriptionInput
+    cancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUpdateInput = {
@@ -15788,12 +17508,17 @@ export namespace Prisma {
     subscriptionAmount?: FloatFieldUpdateOperationsInput | number
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
     plan?: PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
     business?: BusinessUpdateOneRequiredWithoutSubscriptionsNestedInput
     payments?: SubscriptionPaymentUpdateManyWithoutSubscriptionNestedInput
+    cancellations?: SubscriptionCancellationUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateInput = {
@@ -15808,9 +17533,14 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payments?: SubscriptionPaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+    cancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionCreateManyInput = {
@@ -15825,6 +17555,10 @@ export namespace Prisma {
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
     createdByUserId: string
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15838,6 +17572,10 @@ export namespace Prisma {
     subscriptionAmount?: FloatFieldUpdateOperationsInput | number
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15854,8 +17592,149 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCancellationCreateInput = {
+    subscriptionCancellationId?: string
+    subscriptionPlanId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    subscription: SubscriptionCreateNestedOneWithoutCancellationsInput
+    business: BusinessCreateNestedOneWithoutSubscriptionCancellationsInput
+    cancelledBy: UserCreateNestedOneWithoutSubscriptionCancellationsInput
+  }
+
+  export type SubscriptionCancellationUncheckedCreateInput = {
+    subscriptionCancellationId?: string
+    subscriptionId: string
+    subscriptionBusinessId: string
+    subscriptionPlanId: string
+    cancelledByUserId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type SubscriptionCancellationUpdateInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscription?: SubscriptionUpdateOneRequiredWithoutCancellationsNestedInput
+    business?: BusinessUpdateOneRequiredWithoutSubscriptionCancellationsNestedInput
+    cancelledBy?: UserUpdateOneRequiredWithoutSubscriptionCancellationsNestedInput
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    subscriptionBusinessId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCancellationCreateManyInput = {
+    subscriptionCancellationId?: string
+    subscriptionId: string
+    subscriptionBusinessId: string
+    subscriptionPlanId: string
+    cancelledByUserId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type SubscriptionCancellationUpdateManyMutationInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateManyInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    subscriptionBusinessId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SubscriptionPaymentCreateInput = {
@@ -16277,6 +18156,12 @@ export namespace Prisma {
     none?: SubscriptionPaymentWhereInput
   }
 
+  export type SubscriptionCancellationListRelationFilter = {
+    every?: SubscriptionCancellationWhereInput
+    some?: SubscriptionCancellationWhereInput
+    none?: SubscriptionCancellationWhereInput
+  }
+
   export type TicketListRelationFilter = {
     every?: TicketWhereInput
     some?: TicketWhereInput
@@ -16311,6 +18196,10 @@ export namespace Prisma {
   }
 
   export type SubscriptionPaymentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SubscriptionCancellationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16886,6 +18775,10 @@ export namespace Prisma {
     subscriptionPaymentMethod?: SortOrder
     subscriptionPlanFeatures?: SortOrder
     createdByUserId?: SortOrder
+    mpPreapprovalId?: SortOrder
+    mpPreapprovalStatus?: SortOrder
+    autoRenewEnabled?: SortOrder
+    subscriptionCancelledAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16906,6 +18799,10 @@ export namespace Prisma {
     subscriptionAmount?: SortOrder
     subscriptionPaymentMethod?: SortOrder
     createdByUserId?: SortOrder
+    mpPreapprovalId?: SortOrder
+    mpPreapprovalStatus?: SortOrder
+    autoRenewEnabled?: SortOrder
+    subscriptionCancelledAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16921,6 +18818,10 @@ export namespace Prisma {
     subscriptionAmount?: SortOrder
     subscriptionPaymentMethod?: SortOrder
     createdByUserId?: SortOrder
+    mpPreapprovalId?: SortOrder
+    mpPreapprovalStatus?: SortOrder
+    autoRenewEnabled?: SortOrder
+    subscriptionCancelledAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16938,6 +18839,77 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
     _max?: NestedEnumSubscriptionStatusFilter<$PrismaModel>
+  }
+
+  export type SubscriptionScalarRelationFilter = {
+    is?: SubscriptionWhereInput
+    isNot?: SubscriptionWhereInput
+  }
+
+  export type SubscriptionCancellationCountOrderByAggregateInput = {
+    subscriptionCancellationId?: SortOrder
+    subscriptionId?: SortOrder
+    subscriptionBusinessId?: SortOrder
+    subscriptionPlanId?: SortOrder
+    cancelledByUserId?: SortOrder
+    mpPreapprovalId?: SortOrder
+    planName?: SortOrder
+    planAmount?: SortOrder
+    planCurrency?: SortOrder
+    accessValidUntil?: SortOrder
+    confirmationPhrase?: SortOrder
+    cancelReason?: SortOrder
+    source?: SortOrder
+    requestIp?: SortOrder
+    requestUserAgent?: SortOrder
+    mpResponseSnapshot?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SubscriptionCancellationAvgOrderByAggregateInput = {
+    planAmount?: SortOrder
+  }
+
+  export type SubscriptionCancellationMaxOrderByAggregateInput = {
+    subscriptionCancellationId?: SortOrder
+    subscriptionId?: SortOrder
+    subscriptionBusinessId?: SortOrder
+    subscriptionPlanId?: SortOrder
+    cancelledByUserId?: SortOrder
+    mpPreapprovalId?: SortOrder
+    planName?: SortOrder
+    planAmount?: SortOrder
+    planCurrency?: SortOrder
+    accessValidUntil?: SortOrder
+    confirmationPhrase?: SortOrder
+    cancelReason?: SortOrder
+    source?: SortOrder
+    requestIp?: SortOrder
+    requestUserAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SubscriptionCancellationMinOrderByAggregateInput = {
+    subscriptionCancellationId?: SortOrder
+    subscriptionId?: SortOrder
+    subscriptionBusinessId?: SortOrder
+    subscriptionPlanId?: SortOrder
+    cancelledByUserId?: SortOrder
+    mpPreapprovalId?: SortOrder
+    planName?: SortOrder
+    planAmount?: SortOrder
+    planCurrency?: SortOrder
+    accessValidUntil?: SortOrder
+    confirmationPhrase?: SortOrder
+    cancelReason?: SortOrder
+    source?: SortOrder
+    requestIp?: SortOrder
+    requestUserAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SubscriptionCancellationSumOrderByAggregateInput = {
+    planAmount?: SortOrder
   }
 
   export type EnumSubscriptionPaymentMethodFilter<$PrismaModel = never> = {
@@ -17228,6 +19200,13 @@ export namespace Prisma {
     connect?: SubscriptionPaymentWhereUniqueInput | SubscriptionPaymentWhereUniqueInput[]
   }
 
+  export type SubscriptionCancellationCreateNestedManyWithoutCancelledByInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutCancelledByInput, SubscriptionCancellationUncheckedCreateWithoutCancelledByInput> | SubscriptionCancellationCreateWithoutCancelledByInput[] | SubscriptionCancellationUncheckedCreateWithoutCancelledByInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutCancelledByInput | SubscriptionCancellationCreateOrConnectWithoutCancelledByInput[]
+    createMany?: SubscriptionCancellationCreateManyCancelledByInputEnvelope
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+  }
+
   export type TicketCreateNestedManyWithoutCreatedByInput = {
     create?: XOR<TicketCreateWithoutCreatedByInput, TicketUncheckedCreateWithoutCreatedByInput> | TicketCreateWithoutCreatedByInput[] | TicketUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: TicketCreateOrConnectWithoutCreatedByInput | TicketCreateOrConnectWithoutCreatedByInput[]
@@ -17275,6 +19254,13 @@ export namespace Prisma {
     connectOrCreate?: SubscriptionPaymentCreateOrConnectWithoutCreatedByInput | SubscriptionPaymentCreateOrConnectWithoutCreatedByInput[]
     createMany?: SubscriptionPaymentCreateManyCreatedByInputEnvelope
     connect?: SubscriptionPaymentWhereUniqueInput | SubscriptionPaymentWhereUniqueInput[]
+  }
+
+  export type SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutCancelledByInput, SubscriptionCancellationUncheckedCreateWithoutCancelledByInput> | SubscriptionCancellationCreateWithoutCancelledByInput[] | SubscriptionCancellationUncheckedCreateWithoutCancelledByInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutCancelledByInput | SubscriptionCancellationCreateOrConnectWithoutCancelledByInput[]
+    createMany?: SubscriptionCancellationCreateManyCancelledByInputEnvelope
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
   }
 
   export type TicketUncheckedCreateNestedManyWithoutCreatedByInput = {
@@ -17377,6 +19363,20 @@ export namespace Prisma {
     deleteMany?: SubscriptionPaymentScalarWhereInput | SubscriptionPaymentScalarWhereInput[]
   }
 
+  export type SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutCancelledByInput, SubscriptionCancellationUncheckedCreateWithoutCancelledByInput> | SubscriptionCancellationCreateWithoutCancelledByInput[] | SubscriptionCancellationUncheckedCreateWithoutCancelledByInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutCancelledByInput | SubscriptionCancellationCreateOrConnectWithoutCancelledByInput[]
+    upsert?: SubscriptionCancellationUpsertWithWhereUniqueWithoutCancelledByInput | SubscriptionCancellationUpsertWithWhereUniqueWithoutCancelledByInput[]
+    createMany?: SubscriptionCancellationCreateManyCancelledByInputEnvelope
+    set?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    disconnect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    delete?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    update?: SubscriptionCancellationUpdateWithWhereUniqueWithoutCancelledByInput | SubscriptionCancellationUpdateWithWhereUniqueWithoutCancelledByInput[]
+    updateMany?: SubscriptionCancellationUpdateManyWithWhereWithoutCancelledByInput | SubscriptionCancellationUpdateManyWithWhereWithoutCancelledByInput[]
+    deleteMany?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
+  }
+
   export type TicketUpdateManyWithoutCreatedByNestedInput = {
     create?: XOR<TicketCreateWithoutCreatedByInput, TicketUncheckedCreateWithoutCreatedByInput> | TicketCreateWithoutCreatedByInput[] | TicketUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: TicketCreateOrConnectWithoutCreatedByInput | TicketCreateOrConnectWithoutCreatedByInput[]
@@ -17475,6 +19475,20 @@ export namespace Prisma {
     deleteMany?: SubscriptionPaymentScalarWhereInput | SubscriptionPaymentScalarWhereInput[]
   }
 
+  export type SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutCancelledByInput, SubscriptionCancellationUncheckedCreateWithoutCancelledByInput> | SubscriptionCancellationCreateWithoutCancelledByInput[] | SubscriptionCancellationUncheckedCreateWithoutCancelledByInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutCancelledByInput | SubscriptionCancellationCreateOrConnectWithoutCancelledByInput[]
+    upsert?: SubscriptionCancellationUpsertWithWhereUniqueWithoutCancelledByInput | SubscriptionCancellationUpsertWithWhereUniqueWithoutCancelledByInput[]
+    createMany?: SubscriptionCancellationCreateManyCancelledByInputEnvelope
+    set?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    disconnect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    delete?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    update?: SubscriptionCancellationUpdateWithWhereUniqueWithoutCancelledByInput | SubscriptionCancellationUpdateWithWhereUniqueWithoutCancelledByInput[]
+    updateMany?: SubscriptionCancellationUpdateManyWithWhereWithoutCancelledByInput | SubscriptionCancellationUpdateManyWithWhereWithoutCancelledByInput[]
+    deleteMany?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
+  }
+
   export type TicketUncheckedUpdateManyWithoutCreatedByNestedInput = {
     create?: XOR<TicketCreateWithoutCreatedByInput, TicketUncheckedCreateWithoutCreatedByInput> | TicketCreateWithoutCreatedByInput[] | TicketUncheckedCreateWithoutCreatedByInput[]
     connectOrCreate?: TicketCreateOrConnectWithoutCreatedByInput | TicketCreateOrConnectWithoutCreatedByInput[]
@@ -17537,6 +19551,13 @@ export namespace Prisma {
     connect?: SubscriptionPaymentWhereUniqueInput | SubscriptionPaymentWhereUniqueInput[]
   }
 
+  export type SubscriptionCancellationCreateNestedManyWithoutBusinessInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutBusinessInput, SubscriptionCancellationUncheckedCreateWithoutBusinessInput> | SubscriptionCancellationCreateWithoutBusinessInput[] | SubscriptionCancellationUncheckedCreateWithoutBusinessInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutBusinessInput | SubscriptionCancellationCreateOrConnectWithoutBusinessInput[]
+    createMany?: SubscriptionCancellationCreateManyBusinessInputEnvelope
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+  }
+
   export type UserGuestUncheckedCreateNestedManyWithoutBusinessInput = {
     create?: XOR<UserGuestCreateWithoutBusinessInput, UserGuestUncheckedCreateWithoutBusinessInput> | UserGuestCreateWithoutBusinessInput[] | UserGuestUncheckedCreateWithoutBusinessInput[]
     connectOrCreate?: UserGuestCreateOrConnectWithoutBusinessInput | UserGuestCreateOrConnectWithoutBusinessInput[]
@@ -17563,6 +19584,13 @@ export namespace Prisma {
     connectOrCreate?: SubscriptionPaymentCreateOrConnectWithoutBusinessInput | SubscriptionPaymentCreateOrConnectWithoutBusinessInput[]
     createMany?: SubscriptionPaymentCreateManyBusinessInputEnvelope
     connect?: SubscriptionPaymentWhereUniqueInput | SubscriptionPaymentWhereUniqueInput[]
+  }
+
+  export type SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutBusinessInput, SubscriptionCancellationUncheckedCreateWithoutBusinessInput> | SubscriptionCancellationCreateWithoutBusinessInput[] | SubscriptionCancellationUncheckedCreateWithoutBusinessInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutBusinessInput | SubscriptionCancellationCreateOrConnectWithoutBusinessInput[]
+    createMany?: SubscriptionCancellationCreateManyBusinessInputEnvelope
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -17643,6 +19671,20 @@ export namespace Prisma {
     deleteMany?: SubscriptionPaymentScalarWhereInput | SubscriptionPaymentScalarWhereInput[]
   }
 
+  export type SubscriptionCancellationUpdateManyWithoutBusinessNestedInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutBusinessInput, SubscriptionCancellationUncheckedCreateWithoutBusinessInput> | SubscriptionCancellationCreateWithoutBusinessInput[] | SubscriptionCancellationUncheckedCreateWithoutBusinessInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutBusinessInput | SubscriptionCancellationCreateOrConnectWithoutBusinessInput[]
+    upsert?: SubscriptionCancellationUpsertWithWhereUniqueWithoutBusinessInput | SubscriptionCancellationUpsertWithWhereUniqueWithoutBusinessInput[]
+    createMany?: SubscriptionCancellationCreateManyBusinessInputEnvelope
+    set?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    disconnect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    delete?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    update?: SubscriptionCancellationUpdateWithWhereUniqueWithoutBusinessInput | SubscriptionCancellationUpdateWithWhereUniqueWithoutBusinessInput[]
+    updateMany?: SubscriptionCancellationUpdateManyWithWhereWithoutBusinessInput | SubscriptionCancellationUpdateManyWithWhereWithoutBusinessInput[]
+    deleteMany?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
+  }
+
   export type UserGuestUncheckedUpdateManyWithoutBusinessNestedInput = {
     create?: XOR<UserGuestCreateWithoutBusinessInput, UserGuestUncheckedCreateWithoutBusinessInput> | UserGuestCreateWithoutBusinessInput[] | UserGuestUncheckedCreateWithoutBusinessInput[]
     connectOrCreate?: UserGuestCreateOrConnectWithoutBusinessInput | UserGuestCreateOrConnectWithoutBusinessInput[]
@@ -17697,6 +19739,20 @@ export namespace Prisma {
     update?: SubscriptionPaymentUpdateWithWhereUniqueWithoutBusinessInput | SubscriptionPaymentUpdateWithWhereUniqueWithoutBusinessInput[]
     updateMany?: SubscriptionPaymentUpdateManyWithWhereWithoutBusinessInput | SubscriptionPaymentUpdateManyWithWhereWithoutBusinessInput[]
     deleteMany?: SubscriptionPaymentScalarWhereInput | SubscriptionPaymentScalarWhereInput[]
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutBusinessInput, SubscriptionCancellationUncheckedCreateWithoutBusinessInput> | SubscriptionCancellationCreateWithoutBusinessInput[] | SubscriptionCancellationUncheckedCreateWithoutBusinessInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutBusinessInput | SubscriptionCancellationCreateOrConnectWithoutBusinessInput[]
+    upsert?: SubscriptionCancellationUpsertWithWhereUniqueWithoutBusinessInput | SubscriptionCancellationUpsertWithWhereUniqueWithoutBusinessInput[]
+    createMany?: SubscriptionCancellationCreateManyBusinessInputEnvelope
+    set?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    disconnect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    delete?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    update?: SubscriptionCancellationUpdateWithWhereUniqueWithoutBusinessInput | SubscriptionCancellationUpdateWithWhereUniqueWithoutBusinessInput[]
+    updateMany?: SubscriptionCancellationUpdateManyWithWhereWithoutBusinessInput | SubscriptionCancellationUpdateManyWithWhereWithoutBusinessInput[]
+    deleteMany?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutUserBusinessInput = {
@@ -17888,11 +19944,25 @@ export namespace Prisma {
     connect?: SubscriptionPaymentWhereUniqueInput | SubscriptionPaymentWhereUniqueInput[]
   }
 
+  export type SubscriptionCancellationCreateNestedManyWithoutSubscriptionInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutSubscriptionInput, SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput> | SubscriptionCancellationCreateWithoutSubscriptionInput[] | SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutSubscriptionInput | SubscriptionCancellationCreateOrConnectWithoutSubscriptionInput[]
+    createMany?: SubscriptionCancellationCreateManySubscriptionInputEnvelope
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+  }
+
   export type SubscriptionPaymentUncheckedCreateNestedManyWithoutSubscriptionInput = {
     create?: XOR<SubscriptionPaymentCreateWithoutSubscriptionInput, SubscriptionPaymentUncheckedCreateWithoutSubscriptionInput> | SubscriptionPaymentCreateWithoutSubscriptionInput[] | SubscriptionPaymentUncheckedCreateWithoutSubscriptionInput[]
     connectOrCreate?: SubscriptionPaymentCreateOrConnectWithoutSubscriptionInput | SubscriptionPaymentCreateOrConnectWithoutSubscriptionInput[]
     createMany?: SubscriptionPaymentCreateManySubscriptionInputEnvelope
     connect?: SubscriptionPaymentWhereUniqueInput | SubscriptionPaymentWhereUniqueInput[]
+  }
+
+  export type SubscriptionCancellationUncheckedCreateNestedManyWithoutSubscriptionInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutSubscriptionInput, SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput> | SubscriptionCancellationCreateWithoutSubscriptionInput[] | SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutSubscriptionInput | SubscriptionCancellationCreateOrConnectWithoutSubscriptionInput[]
+    createMany?: SubscriptionCancellationCreateManySubscriptionInputEnvelope
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
   }
 
   export type EnumSubscriptionStatusFieldUpdateOperationsInput = {
@@ -17937,6 +20007,20 @@ export namespace Prisma {
     deleteMany?: SubscriptionPaymentScalarWhereInput | SubscriptionPaymentScalarWhereInput[]
   }
 
+  export type SubscriptionCancellationUpdateManyWithoutSubscriptionNestedInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutSubscriptionInput, SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput> | SubscriptionCancellationCreateWithoutSubscriptionInput[] | SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutSubscriptionInput | SubscriptionCancellationCreateOrConnectWithoutSubscriptionInput[]
+    upsert?: SubscriptionCancellationUpsertWithWhereUniqueWithoutSubscriptionInput | SubscriptionCancellationUpsertWithWhereUniqueWithoutSubscriptionInput[]
+    createMany?: SubscriptionCancellationCreateManySubscriptionInputEnvelope
+    set?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    disconnect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    delete?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    update?: SubscriptionCancellationUpdateWithWhereUniqueWithoutSubscriptionInput | SubscriptionCancellationUpdateWithWhereUniqueWithoutSubscriptionInput[]
+    updateMany?: SubscriptionCancellationUpdateManyWithWhereWithoutSubscriptionInput | SubscriptionCancellationUpdateManyWithWhereWithoutSubscriptionInput[]
+    deleteMany?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
+  }
+
   export type SubscriptionPaymentUncheckedUpdateManyWithoutSubscriptionNestedInput = {
     create?: XOR<SubscriptionPaymentCreateWithoutSubscriptionInput, SubscriptionPaymentUncheckedCreateWithoutSubscriptionInput> | SubscriptionPaymentCreateWithoutSubscriptionInput[] | SubscriptionPaymentUncheckedCreateWithoutSubscriptionInput[]
     connectOrCreate?: SubscriptionPaymentCreateOrConnectWithoutSubscriptionInput | SubscriptionPaymentCreateOrConnectWithoutSubscriptionInput[]
@@ -17949,6 +20033,62 @@ export namespace Prisma {
     update?: SubscriptionPaymentUpdateWithWhereUniqueWithoutSubscriptionInput | SubscriptionPaymentUpdateWithWhereUniqueWithoutSubscriptionInput[]
     updateMany?: SubscriptionPaymentUpdateManyWithWhereWithoutSubscriptionInput | SubscriptionPaymentUpdateManyWithWhereWithoutSubscriptionInput[]
     deleteMany?: SubscriptionPaymentScalarWhereInput | SubscriptionPaymentScalarWhereInput[]
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateManyWithoutSubscriptionNestedInput = {
+    create?: XOR<SubscriptionCancellationCreateWithoutSubscriptionInput, SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput> | SubscriptionCancellationCreateWithoutSubscriptionInput[] | SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutSubscriptionInput | SubscriptionCancellationCreateOrConnectWithoutSubscriptionInput[]
+    upsert?: SubscriptionCancellationUpsertWithWhereUniqueWithoutSubscriptionInput | SubscriptionCancellationUpsertWithWhereUniqueWithoutSubscriptionInput[]
+    createMany?: SubscriptionCancellationCreateManySubscriptionInputEnvelope
+    set?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    disconnect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    delete?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+    update?: SubscriptionCancellationUpdateWithWhereUniqueWithoutSubscriptionInput | SubscriptionCancellationUpdateWithWhereUniqueWithoutSubscriptionInput[]
+    updateMany?: SubscriptionCancellationUpdateManyWithWhereWithoutSubscriptionInput | SubscriptionCancellationUpdateManyWithWhereWithoutSubscriptionInput[]
+    deleteMany?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
+  }
+
+  export type SubscriptionCreateNestedOneWithoutCancellationsInput = {
+    create?: XOR<SubscriptionCreateWithoutCancellationsInput, SubscriptionUncheckedCreateWithoutCancellationsInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutCancellationsInput
+    connect?: SubscriptionWhereUniqueInput
+  }
+
+  export type BusinessCreateNestedOneWithoutSubscriptionCancellationsInput = {
+    create?: XOR<BusinessCreateWithoutSubscriptionCancellationsInput, BusinessUncheckedCreateWithoutSubscriptionCancellationsInput>
+    connectOrCreate?: BusinessCreateOrConnectWithoutSubscriptionCancellationsInput
+    connect?: BusinessWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSubscriptionCancellationsInput = {
+    create?: XOR<UserCreateWithoutSubscriptionCancellationsInput, UserUncheckedCreateWithoutSubscriptionCancellationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubscriptionCancellationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SubscriptionUpdateOneRequiredWithoutCancellationsNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutCancellationsInput, SubscriptionUncheckedCreateWithoutCancellationsInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutCancellationsInput
+    upsert?: SubscriptionUpsertWithoutCancellationsInput
+    connect?: SubscriptionWhereUniqueInput
+    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutCancellationsInput, SubscriptionUpdateWithoutCancellationsInput>, SubscriptionUncheckedUpdateWithoutCancellationsInput>
+  }
+
+  export type BusinessUpdateOneRequiredWithoutSubscriptionCancellationsNestedInput = {
+    create?: XOR<BusinessCreateWithoutSubscriptionCancellationsInput, BusinessUncheckedCreateWithoutSubscriptionCancellationsInput>
+    connectOrCreate?: BusinessCreateOrConnectWithoutSubscriptionCancellationsInput
+    upsert?: BusinessUpsertWithoutSubscriptionCancellationsInput
+    connect?: BusinessWhereUniqueInput
+    update?: XOR<XOR<BusinessUpdateToOneWithWhereWithoutSubscriptionCancellationsInput, BusinessUpdateWithoutSubscriptionCancellationsInput>, BusinessUncheckedUpdateWithoutSubscriptionCancellationsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutSubscriptionCancellationsNestedInput = {
+    create?: XOR<UserCreateWithoutSubscriptionCancellationsInput, UserUncheckedCreateWithoutSubscriptionCancellationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubscriptionCancellationsInput
+    upsert?: UserUpsertWithoutSubscriptionCancellationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubscriptionCancellationsInput, UserUpdateWithoutSubscriptionCancellationsInput>, UserUncheckedUpdateWithoutSubscriptionCancellationsInput>
   }
 
   export type SubscriptionCreateNestedOneWithoutPaymentsInput = {
@@ -18622,6 +20762,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutCreatedByInput = {
@@ -18646,6 +20787,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutCreatedByInput = {
@@ -18667,11 +20809,16 @@ export namespace Prisma {
     subscriptionAmount: number
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     plan: PlanCreateNestedOneWithoutSubscriptionsInput
     business: BusinessCreateNestedOneWithoutSubscriptionsInput
     payments?: SubscriptionPaymentCreateNestedManyWithoutSubscriptionInput
+    cancellations?: SubscriptionCancellationCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateWithoutCreatedByInput = {
@@ -18685,9 +20832,14 @@ export namespace Prisma {
     subscriptionAmount: number
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     payments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutSubscriptionInput
+    cancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionCreateOrConnectWithoutCreatedByInput = {
@@ -18741,6 +20893,54 @@ export namespace Prisma {
 
   export type SubscriptionPaymentCreateManyCreatedByInputEnvelope = {
     data: SubscriptionPaymentCreateManyCreatedByInput | SubscriptionPaymentCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SubscriptionCancellationCreateWithoutCancelledByInput = {
+    subscriptionCancellationId?: string
+    subscriptionPlanId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    subscription: SubscriptionCreateNestedOneWithoutCancellationsInput
+    business: BusinessCreateNestedOneWithoutSubscriptionCancellationsInput
+  }
+
+  export type SubscriptionCancellationUncheckedCreateWithoutCancelledByInput = {
+    subscriptionCancellationId?: string
+    subscriptionId: string
+    subscriptionBusinessId: string
+    subscriptionPlanId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type SubscriptionCancellationCreateOrConnectWithoutCancelledByInput = {
+    where: SubscriptionCancellationWhereUniqueInput
+    create: XOR<SubscriptionCancellationCreateWithoutCancelledByInput, SubscriptionCancellationUncheckedCreateWithoutCancelledByInput>
+  }
+
+  export type SubscriptionCancellationCreateManyCancelledByInputEnvelope = {
+    data: SubscriptionCancellationCreateManyCancelledByInput | SubscriptionCancellationCreateManyCancelledByInput[]
     skipDuplicates?: boolean
   }
 
@@ -18940,6 +21140,10 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFilter<"Subscription"> | string
     subscriptionPlanFeatures?: JsonFilter<"Subscription">
     createdByUserId?: StringFilter<"Subscription"> | string
+    mpPreapprovalId?: StringNullableFilter<"Subscription"> | string | null
+    mpPreapprovalStatus?: StringNullableFilter<"Subscription"> | string | null
+    autoRenewEnabled?: BoolFilter<"Subscription"> | boolean
+    subscriptionCancelledAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
   }
@@ -18979,6 +21183,45 @@ export namespace Prisma {
     createdByUserId?: StringFilter<"SubscriptionPayment"> | string
     createdAt?: DateTimeFilter<"SubscriptionPayment"> | Date | string
     updatedAt?: DateTimeFilter<"SubscriptionPayment"> | Date | string
+  }
+
+  export type SubscriptionCancellationUpsertWithWhereUniqueWithoutCancelledByInput = {
+    where: SubscriptionCancellationWhereUniqueInput
+    update: XOR<SubscriptionCancellationUpdateWithoutCancelledByInput, SubscriptionCancellationUncheckedUpdateWithoutCancelledByInput>
+    create: XOR<SubscriptionCancellationCreateWithoutCancelledByInput, SubscriptionCancellationUncheckedCreateWithoutCancelledByInput>
+  }
+
+  export type SubscriptionCancellationUpdateWithWhereUniqueWithoutCancelledByInput = {
+    where: SubscriptionCancellationWhereUniqueInput
+    data: XOR<SubscriptionCancellationUpdateWithoutCancelledByInput, SubscriptionCancellationUncheckedUpdateWithoutCancelledByInput>
+  }
+
+  export type SubscriptionCancellationUpdateManyWithWhereWithoutCancelledByInput = {
+    where: SubscriptionCancellationScalarWhereInput
+    data: XOR<SubscriptionCancellationUpdateManyMutationInput, SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByInput>
+  }
+
+  export type SubscriptionCancellationScalarWhereInput = {
+    AND?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
+    OR?: SubscriptionCancellationScalarWhereInput[]
+    NOT?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
+    subscriptionCancellationId?: StringFilter<"SubscriptionCancellation"> | string
+    subscriptionId?: StringFilter<"SubscriptionCancellation"> | string
+    subscriptionBusinessId?: StringFilter<"SubscriptionCancellation"> | string
+    subscriptionPlanId?: StringFilter<"SubscriptionCancellation"> | string
+    cancelledByUserId?: StringFilter<"SubscriptionCancellation"> | string
+    mpPreapprovalId?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    planName?: StringFilter<"SubscriptionCancellation"> | string
+    planAmount?: FloatFilter<"SubscriptionCancellation"> | number
+    planCurrency?: StringFilter<"SubscriptionCancellation"> | string
+    accessValidUntil?: DateTimeFilter<"SubscriptionCancellation"> | Date | string
+    confirmationPhrase?: StringFilter<"SubscriptionCancellation"> | string
+    cancelReason?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    source?: StringFilter<"SubscriptionCancellation"> | string
+    requestIp?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    requestUserAgent?: StringNullableFilter<"SubscriptionCancellation"> | string | null
+    mpResponseSnapshot?: JsonNullableFilter<"SubscriptionCancellation">
+    createdAt?: DateTimeFilter<"SubscriptionCancellation"> | Date | string
   }
 
   export type TicketUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -19062,6 +21305,7 @@ export namespace Prisma {
     UserGuest?: UserGuestCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
   }
@@ -19084,6 +21328,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -19156,11 +21401,16 @@ export namespace Prisma {
     subscriptionAmount: number
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutSubscriptionsInput
     plan: PlanCreateNestedOneWithoutSubscriptionsInput
     payments?: SubscriptionPaymentCreateNestedManyWithoutSubscriptionInput
+    cancellations?: SubscriptionCancellationCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateWithoutBusinessInput = {
@@ -19174,9 +21424,14 @@ export namespace Prisma {
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
     createdByUserId: string
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     payments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutSubscriptionInput
+    cancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionCreateOrConnectWithoutBusinessInput = {
@@ -19233,6 +21488,54 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SubscriptionCancellationCreateWithoutBusinessInput = {
+    subscriptionCancellationId?: string
+    subscriptionPlanId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    subscription: SubscriptionCreateNestedOneWithoutCancellationsInput
+    cancelledBy: UserCreateNestedOneWithoutSubscriptionCancellationsInput
+  }
+
+  export type SubscriptionCancellationUncheckedCreateWithoutBusinessInput = {
+    subscriptionCancellationId?: string
+    subscriptionId: string
+    subscriptionPlanId: string
+    cancelledByUserId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type SubscriptionCancellationCreateOrConnectWithoutBusinessInput = {
+    where: SubscriptionCancellationWhereUniqueInput
+    create: XOR<SubscriptionCancellationCreateWithoutBusinessInput, SubscriptionCancellationUncheckedCreateWithoutBusinessInput>
+  }
+
+  export type SubscriptionCancellationCreateManyBusinessInputEnvelope = {
+    data: SubscriptionCancellationCreateManyBusinessInput | SubscriptionCancellationCreateManyBusinessInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutBusinessesInput = {
     update: XOR<UserUpdateWithoutBusinessesInput, UserUncheckedUpdateWithoutBusinessesInput>
     create: XOR<UserCreateWithoutBusinessesInput, UserUncheckedCreateWithoutBusinessesInput>
@@ -19262,6 +21565,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
   }
@@ -19284,6 +21588,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -19352,6 +21657,22 @@ export namespace Prisma {
     data: XOR<SubscriptionPaymentUpdateManyMutationInput, SubscriptionPaymentUncheckedUpdateManyWithoutBusinessInput>
   }
 
+  export type SubscriptionCancellationUpsertWithWhereUniqueWithoutBusinessInput = {
+    where: SubscriptionCancellationWhereUniqueInput
+    update: XOR<SubscriptionCancellationUpdateWithoutBusinessInput, SubscriptionCancellationUncheckedUpdateWithoutBusinessInput>
+    create: XOR<SubscriptionCancellationCreateWithoutBusinessInput, SubscriptionCancellationUncheckedCreateWithoutBusinessInput>
+  }
+
+  export type SubscriptionCancellationUpdateWithWhereUniqueWithoutBusinessInput = {
+    where: SubscriptionCancellationWhereUniqueInput
+    data: XOR<SubscriptionCancellationUpdateWithoutBusinessInput, SubscriptionCancellationUncheckedUpdateWithoutBusinessInput>
+  }
+
+  export type SubscriptionCancellationUpdateManyWithWhereWithoutBusinessInput = {
+    where: SubscriptionCancellationScalarWhereInput
+    data: XOR<SubscriptionCancellationUpdateManyMutationInput, SubscriptionCancellationUncheckedUpdateManyWithoutBusinessInput>
+  }
+
   export type UserCreateWithoutUserBusinessInput = {
     userId?: string
     userFirstName: string
@@ -19370,6 +21691,7 @@ export namespace Prisma {
     businesses?: BusinessCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
   }
@@ -19392,6 +21714,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -19423,6 +21746,7 @@ export namespace Prisma {
     UserGuest?: UserGuestCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutUserBusinessInput = {
@@ -19447,6 +21771,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutUserBusinessInput = {
@@ -19483,6 +21808,7 @@ export namespace Prisma {
     businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
   }
@@ -19505,6 +21831,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -19542,6 +21869,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutUserBusinessInput = {
@@ -19566,6 +21894,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
   }
 
   export type UserCreateWithoutUserGuestInput = {
@@ -19586,6 +21915,7 @@ export namespace Prisma {
     businesses?: BusinessCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
   }
@@ -19608,6 +21938,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -19639,6 +21970,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutUserGuestInput = {
@@ -19663,6 +21995,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutUserGuestInput = {
@@ -19699,6 +22032,7 @@ export namespace Prisma {
     businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
   }
@@ -19721,6 +22055,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -19758,6 +22093,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutUserGuestInput = {
@@ -19782,6 +22118,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
   }
 
   export type SubscriptionCreateWithoutPlanInput = {
@@ -19793,11 +22130,16 @@ export namespace Prisma {
     subscriptionAmount: number
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutSubscriptionsInput
     business: BusinessCreateNestedOneWithoutSubscriptionsInput
     payments?: SubscriptionPaymentCreateNestedManyWithoutSubscriptionInput
+    cancellations?: SubscriptionCancellationCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateWithoutPlanInput = {
@@ -19811,9 +22153,14 @@ export namespace Prisma {
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
     createdByUserId: string
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     payments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutSubscriptionInput
+    cancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionCreateOrConnectWithoutPlanInput = {
@@ -19920,6 +22267,7 @@ export namespace Prisma {
     UserGuest?: UserGuestCreateNestedManyWithoutUserInput
     businesses?: BusinessCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
   }
@@ -19942,6 +22290,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedCreateNestedManyWithoutUserInput
     businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -20006,6 +22355,7 @@ export namespace Prisma {
     UserGuest?: UserGuestCreateNestedManyWithoutBusinessInput
     UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutSubscriptionsInput = {
@@ -20030,6 +22380,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedCreateNestedManyWithoutBusinessInput
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutSubscriptionsInput = {
@@ -20081,6 +22432,54 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SubscriptionCancellationCreateWithoutSubscriptionInput = {
+    subscriptionCancellationId?: string
+    subscriptionPlanId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    business: BusinessCreateNestedOneWithoutSubscriptionCancellationsInput
+    cancelledBy: UserCreateNestedOneWithoutSubscriptionCancellationsInput
+  }
+
+  export type SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput = {
+    subscriptionCancellationId?: string
+    subscriptionBusinessId: string
+    subscriptionPlanId: string
+    cancelledByUserId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type SubscriptionCancellationCreateOrConnectWithoutSubscriptionInput = {
+    where: SubscriptionCancellationWhereUniqueInput
+    create: XOR<SubscriptionCancellationCreateWithoutSubscriptionInput, SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput>
+  }
+
+  export type SubscriptionCancellationCreateManySubscriptionInputEnvelope = {
+    data: SubscriptionCancellationCreateManySubscriptionInput | SubscriptionCancellationCreateManySubscriptionInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutSubscriptionsInput = {
     update: XOR<UserUpdateWithoutSubscriptionsInput, UserUncheckedUpdateWithoutSubscriptionsInput>
     create: XOR<UserCreateWithoutSubscriptionsInput, UserUncheckedCreateWithoutSubscriptionsInput>
@@ -20110,6 +22509,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUpdateManyWithoutUserNestedInput
     businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
   }
@@ -20132,6 +22532,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedUpdateManyWithoutUserNestedInput
     businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -20208,6 +22609,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUpdateManyWithoutBusinessNestedInput
     UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutSubscriptionsInput = {
@@ -20232,6 +22634,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedUpdateManyWithoutBusinessNestedInput
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
   }
 
   export type SubscriptionPaymentUpsertWithWhereUniqueWithoutSubscriptionInput = {
@@ -20250,6 +22653,346 @@ export namespace Prisma {
     data: XOR<SubscriptionPaymentUpdateManyMutationInput, SubscriptionPaymentUncheckedUpdateManyWithoutSubscriptionInput>
   }
 
+  export type SubscriptionCancellationUpsertWithWhereUniqueWithoutSubscriptionInput = {
+    where: SubscriptionCancellationWhereUniqueInput
+    update: XOR<SubscriptionCancellationUpdateWithoutSubscriptionInput, SubscriptionCancellationUncheckedUpdateWithoutSubscriptionInput>
+    create: XOR<SubscriptionCancellationCreateWithoutSubscriptionInput, SubscriptionCancellationUncheckedCreateWithoutSubscriptionInput>
+  }
+
+  export type SubscriptionCancellationUpdateWithWhereUniqueWithoutSubscriptionInput = {
+    where: SubscriptionCancellationWhereUniqueInput
+    data: XOR<SubscriptionCancellationUpdateWithoutSubscriptionInput, SubscriptionCancellationUncheckedUpdateWithoutSubscriptionInput>
+  }
+
+  export type SubscriptionCancellationUpdateManyWithWhereWithoutSubscriptionInput = {
+    where: SubscriptionCancellationScalarWhereInput
+    data: XOR<SubscriptionCancellationUpdateManyMutationInput, SubscriptionCancellationUncheckedUpdateManyWithoutSubscriptionInput>
+  }
+
+  export type SubscriptionCreateWithoutCancellationsInput = {
+    subscriptionId: string
+    subscriptionStartDate: Date | string
+    subscriptionDuration: number
+    subscriptionEndDate: Date | string
+    subscriptionStatus: $Enums.SubscriptionStatus
+    subscriptionAmount: number
+    subscriptionPaymentMethod: string
+    subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutSubscriptionsInput
+    plan: PlanCreateNestedOneWithoutSubscriptionsInput
+    business: BusinessCreateNestedOneWithoutSubscriptionsInput
+    payments?: SubscriptionPaymentCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionUncheckedCreateWithoutCancellationsInput = {
+    subscriptionId: string
+    subscriptionBusinessId: string
+    subscriptionPlanId: string
+    subscriptionStartDate: Date | string
+    subscriptionDuration: number
+    subscriptionEndDate: Date | string
+    subscriptionStatus: $Enums.SubscriptionStatus
+    subscriptionAmount: number
+    subscriptionPaymentMethod: string
+    subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
+    createdByUserId: string
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutSubscriptionInput
+  }
+
+  export type SubscriptionCreateOrConnectWithoutCancellationsInput = {
+    where: SubscriptionWhereUniqueInput
+    create: XOR<SubscriptionCreateWithoutCancellationsInput, SubscriptionUncheckedCreateWithoutCancellationsInput>
+  }
+
+  export type BusinessCreateWithoutSubscriptionCancellationsInput = {
+    businessId: string
+    businessName: string
+    businessType: string
+    businessDocumentType: string
+    businessDocumentNumber: string
+    businessEmail: string
+    businessPhoneNumber: string
+    businessCodePhoneNumber: string
+    businessCountry: string
+    businessCodeWhatsappNumber?: string | null
+    businessWhatsappNumber?: string | null
+    businessConnectionDB?: string | null
+    businessEntity: $Enums.BusinessEntity
+    businessStatus: $Enums.BusinessStatus
+    businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutBusinessesInput
+    UserGuest?: UserGuestCreateNestedManyWithoutBusinessInput
+    UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
+    subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
+  }
+
+  export type BusinessUncheckedCreateWithoutSubscriptionCancellationsInput = {
+    businessId: string
+    businessName: string
+    businessType: string
+    businessDocumentType: string
+    businessDocumentNumber: string
+    businessEmail: string
+    businessPhoneNumber: string
+    businessCodePhoneNumber: string
+    businessCountry: string
+    businessCodeWhatsappNumber?: string | null
+    businessWhatsappNumber?: string | null
+    businessConnectionDB?: string | null
+    businessEntity: $Enums.BusinessEntity
+    businessStatus: $Enums.BusinessStatus
+    businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    UserGuest?: UserGuestUncheckedCreateNestedManyWithoutBusinessInput
+    UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
+  }
+
+  export type BusinessCreateOrConnectWithoutSubscriptionCancellationsInput = {
+    where: BusinessWhereUniqueInput
+    create: XOR<BusinessCreateWithoutSubscriptionCancellationsInput, BusinessUncheckedCreateWithoutSubscriptionCancellationsInput>
+  }
+
+  export type UserCreateWithoutSubscriptionCancellationsInput = {
+    userId?: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userConfirmEmail?: boolean
+    userPassword: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
+    UserGuest?: UserGuestCreateNestedManyWithoutUserInput
+    businesses?: BusinessCreateNestedManyWithoutCreatedByInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
+    subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    tickets?: TicketCreateNestedManyWithoutCreatedByInput
+    ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutSubscriptionCancellationsInput = {
+    userId?: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userConfirmEmail?: boolean
+    userPassword: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
+    UserGuest?: UserGuestUncheckedCreateNestedManyWithoutUserInput
+    businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutSubscriptionCancellationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSubscriptionCancellationsInput, UserUncheckedCreateWithoutSubscriptionCancellationsInput>
+  }
+
+  export type SubscriptionUpsertWithoutCancellationsInput = {
+    update: XOR<SubscriptionUpdateWithoutCancellationsInput, SubscriptionUncheckedUpdateWithoutCancellationsInput>
+    create: XOR<SubscriptionCreateWithoutCancellationsInput, SubscriptionUncheckedCreateWithoutCancellationsInput>
+    where?: SubscriptionWhereInput
+  }
+
+  export type SubscriptionUpdateToOneWithWhereWithoutCancellationsInput = {
+    where?: SubscriptionWhereInput
+    data: XOR<SubscriptionUpdateWithoutCancellationsInput, SubscriptionUncheckedUpdateWithoutCancellationsInput>
+  }
+
+  export type SubscriptionUpdateWithoutCancellationsInput = {
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    subscriptionStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptionDuration?: IntFieldUpdateOperationsInput | number
+    subscriptionEndDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptionStatus?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    subscriptionAmount?: FloatFieldUpdateOperationsInput | number
+    subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+    plan?: PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
+    business?: BusinessUpdateOneRequiredWithoutSubscriptionsNestedInput
+    payments?: SubscriptionPaymentUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateWithoutCancellationsInput = {
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    subscriptionBusinessId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    subscriptionStartDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptionDuration?: IntFieldUpdateOperationsInput | number
+    subscriptionEndDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriptionStatus?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    subscriptionAmount?: FloatFieldUpdateOperationsInput | number
+    subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: SubscriptionPaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+  }
+
+  export type BusinessUpsertWithoutSubscriptionCancellationsInput = {
+    update: XOR<BusinessUpdateWithoutSubscriptionCancellationsInput, BusinessUncheckedUpdateWithoutSubscriptionCancellationsInput>
+    create: XOR<BusinessCreateWithoutSubscriptionCancellationsInput, BusinessUncheckedCreateWithoutSubscriptionCancellationsInput>
+    where?: BusinessWhereInput
+  }
+
+  export type BusinessUpdateToOneWithWhereWithoutSubscriptionCancellationsInput = {
+    where?: BusinessWhereInput
+    data: XOR<BusinessUpdateWithoutSubscriptionCancellationsInput, BusinessUncheckedUpdateWithoutSubscriptionCancellationsInput>
+  }
+
+  export type BusinessUpdateWithoutSubscriptionCancellationsInput = {
+    businessId?: StringFieldUpdateOperationsInput | string
+    businessName?: StringFieldUpdateOperationsInput | string
+    businessType?: StringFieldUpdateOperationsInput | string
+    businessDocumentType?: StringFieldUpdateOperationsInput | string
+    businessDocumentNumber?: StringFieldUpdateOperationsInput | string
+    businessEmail?: StringFieldUpdateOperationsInput | string
+    businessPhoneNumber?: StringFieldUpdateOperationsInput | string
+    businessCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    businessCountry?: StringFieldUpdateOperationsInput | string
+    businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
+    businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
+    businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutBusinessesNestedInput
+    UserGuest?: UserGuestUpdateManyWithoutBusinessNestedInput
+    UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
+    subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
+  }
+
+  export type BusinessUncheckedUpdateWithoutSubscriptionCancellationsInput = {
+    businessId?: StringFieldUpdateOperationsInput | string
+    businessName?: StringFieldUpdateOperationsInput | string
+    businessType?: StringFieldUpdateOperationsInput | string
+    businessDocumentType?: StringFieldUpdateOperationsInput | string
+    businessDocumentNumber?: StringFieldUpdateOperationsInput | string
+    businessEmail?: StringFieldUpdateOperationsInput | string
+    businessPhoneNumber?: StringFieldUpdateOperationsInput | string
+    businessCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    businessCountry?: StringFieldUpdateOperationsInput | string
+    businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
+    businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
+    businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserGuest?: UserGuestUncheckedUpdateManyWithoutBusinessNestedInput
+    UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
+  }
+
+  export type UserUpsertWithoutSubscriptionCancellationsInput = {
+    update: XOR<UserUpdateWithoutSubscriptionCancellationsInput, UserUncheckedUpdateWithoutSubscriptionCancellationsInput>
+    create: XOR<UserCreateWithoutSubscriptionCancellationsInput, UserUncheckedCreateWithoutSubscriptionCancellationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSubscriptionCancellationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSubscriptionCancellationsInput, UserUncheckedUpdateWithoutSubscriptionCancellationsInput>
+  }
+
+  export type UserUpdateWithoutSubscriptionCancellationsInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userConfirmEmail?: BoolFieldUpdateOperationsInput | boolean
+    userPassword?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
+    UserGuest?: UserGuestUpdateManyWithoutUserNestedInput
+    businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
+    subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    tickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSubscriptionCancellationsInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userConfirmEmail?: BoolFieldUpdateOperationsInput | boolean
+    userPassword?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
+    UserGuest?: UserGuestUncheckedUpdateManyWithoutUserNestedInput
+    businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
   export type SubscriptionCreateWithoutPaymentsInput = {
     subscriptionId: string
     subscriptionStartDate: Date | string
@@ -20259,11 +23002,16 @@ export namespace Prisma {
     subscriptionAmount: number
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutSubscriptionsInput
     plan: PlanCreateNestedOneWithoutSubscriptionsInput
     business: BusinessCreateNestedOneWithoutSubscriptionsInput
+    cancellations?: SubscriptionCancellationCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateWithoutPaymentsInput = {
@@ -20278,8 +23026,13 @@ export namespace Prisma {
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
     createdByUserId: string
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    cancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionCreateOrConnectWithoutPaymentsInput = {
@@ -20309,6 +23062,7 @@ export namespace Prisma {
     UserGuest?: UserGuestCreateNestedManyWithoutBusinessInput
     UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutSubscriptionPaymentsInput = {
@@ -20333,6 +23087,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedCreateNestedManyWithoutBusinessInput
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutSubscriptionPaymentsInput = {
@@ -20391,6 +23146,7 @@ export namespace Prisma {
     UserGuest?: UserGuestCreateNestedManyWithoutUserInput
     businesses?: BusinessCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
   }
@@ -20413,6 +23169,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedCreateNestedManyWithoutUserInput
     businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -20442,11 +23199,16 @@ export namespace Prisma {
     subscriptionAmount?: FloatFieldUpdateOperationsInput | number
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
     plan?: PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
     business?: BusinessUpdateOneRequiredWithoutSubscriptionsNestedInput
+    cancellations?: SubscriptionCancellationUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateWithoutPaymentsInput = {
@@ -20461,8 +23223,13 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type BusinessUpsertWithoutSubscriptionPaymentsInput = {
@@ -20498,6 +23265,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUpdateManyWithoutBusinessNestedInput
     UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutSubscriptionPaymentsInput = {
@@ -20522,6 +23290,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedUpdateManyWithoutBusinessNestedInput
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
   }
 
   export type PlanUpsertWithoutSubscriptionPaymentsInput = {
@@ -20592,6 +23361,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUpdateManyWithoutUserNestedInput
     businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
   }
@@ -20614,6 +23384,7 @@ export namespace Prisma {
     UserGuest?: UserGuestUncheckedUpdateManyWithoutUserNestedInput
     businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -20671,6 +23442,7 @@ export namespace Prisma {
     businesses?: BusinessCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
   }
 
@@ -20693,6 +23465,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
@@ -20747,6 +23520,7 @@ export namespace Prisma {
     businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -20769,6 +23543,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -20791,6 +23566,7 @@ export namespace Prisma {
     businesses?: BusinessCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
   }
 
@@ -20813,6 +23589,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
@@ -20880,6 +23657,7 @@ export namespace Prisma {
     businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -20902,6 +23680,7 @@ export namespace Prisma {
     businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -20988,6 +23767,10 @@ export namespace Prisma {
     subscriptionAmount: number
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21007,6 +23790,25 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type SubscriptionCancellationCreateManyCancelledByInput = {
+    subscriptionCancellationId?: string
+    subscriptionId: string
+    subscriptionBusinessId: string
+    subscriptionPlanId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
   }
 
   export type TicketCreateManyCreatedByInput = {
@@ -21105,6 +23907,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutCreatedByInput = {
@@ -21129,6 +23932,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateManyWithoutCreatedByInput = {
@@ -21160,11 +23964,16 @@ export namespace Prisma {
     subscriptionAmount?: FloatFieldUpdateOperationsInput | number
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     plan?: PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
     business?: BusinessUpdateOneRequiredWithoutSubscriptionsNestedInput
     payments?: SubscriptionPaymentUpdateManyWithoutSubscriptionNestedInput
+    cancellations?: SubscriptionCancellationUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateWithoutCreatedByInput = {
@@ -21178,9 +23987,14 @@ export namespace Prisma {
     subscriptionAmount?: FloatFieldUpdateOperationsInput | number
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payments?: SubscriptionPaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+    cancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateManyWithoutCreatedByInput = {
@@ -21194,6 +24008,10 @@ export namespace Prisma {
     subscriptionAmount?: FloatFieldUpdateOperationsInput | number
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21247,6 +24065,63 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCancellationUpdateWithoutCancelledByInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscription?: SubscriptionUpdateOneRequiredWithoutCancellationsNestedInput
+    business?: BusinessUpdateOneRequiredWithoutSubscriptionCancellationsNestedInput
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateWithoutCancelledByInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    subscriptionBusinessId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    subscriptionBusinessId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TicketUpdateWithoutCreatedByInput = {
@@ -21348,6 +24223,10 @@ export namespace Prisma {
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
     createdByUserId: string
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21367,6 +24246,25 @@ export namespace Prisma {
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type SubscriptionCancellationCreateManyBusinessInput = {
+    subscriptionCancellationId?: string
+    subscriptionId: string
+    subscriptionPlanId: string
+    cancelledByUserId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
   }
 
   export type UserGuestUpdateWithoutBusinessInput = {
@@ -21429,11 +24327,16 @@ export namespace Prisma {
     subscriptionAmount?: FloatFieldUpdateOperationsInput | number
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
     plan?: PlanUpdateOneRequiredWithoutSubscriptionsNestedInput
     payments?: SubscriptionPaymentUpdateManyWithoutSubscriptionNestedInput
+    cancellations?: SubscriptionCancellationUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateWithoutBusinessInput = {
@@ -21447,9 +24350,14 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payments?: SubscriptionPaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+    cancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateManyWithoutBusinessInput = {
@@ -21463,6 +24371,10 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21518,6 +24430,63 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SubscriptionCancellationUpdateWithoutBusinessInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscription?: SubscriptionUpdateOneRequiredWithoutCancellationsNestedInput
+    cancelledBy?: UserUpdateOneRequiredWithoutSubscriptionCancellationsNestedInput
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateWithoutBusinessInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateManyWithoutBusinessInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SubscriptionCreateManyPlanInput = {
     subscriptionId: string
     subscriptionBusinessId: string
@@ -21529,6 +24498,10 @@ export namespace Prisma {
     subscriptionPaymentMethod: string
     subscriptionPlanFeatures: JsonNullValueInput | InputJsonValue
     createdByUserId: string
+    mpPreapprovalId?: string | null
+    mpPreapprovalStatus?: string | null
+    autoRenewEnabled?: boolean
+    subscriptionCancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -21559,11 +24532,16 @@ export namespace Prisma {
     subscriptionAmount?: FloatFieldUpdateOperationsInput | number
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
     business?: BusinessUpdateOneRequiredWithoutSubscriptionsNestedInput
     payments?: SubscriptionPaymentUpdateManyWithoutSubscriptionNestedInput
+    cancellations?: SubscriptionCancellationUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateWithoutPlanInput = {
@@ -21577,9 +24555,14 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payments?: SubscriptionPaymentUncheckedUpdateManyWithoutSubscriptionNestedInput
+    cancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateManyWithoutPlanInput = {
@@ -21593,6 +24576,10 @@ export namespace Prisma {
     subscriptionPaymentMethod?: StringFieldUpdateOperationsInput | string
     subscriptionPlanFeatures?: JsonNullValueInput | InputJsonValue
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    mpPreapprovalStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    autoRenewEnabled?: BoolFieldUpdateOperationsInput | boolean
+    subscriptionCancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21665,6 +24652,25 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type SubscriptionCancellationCreateManySubscriptionInput = {
+    subscriptionCancellationId?: string
+    subscriptionBusinessId: string
+    subscriptionPlanId: string
+    cancelledByUserId: string
+    mpPreapprovalId?: string | null
+    planName: string
+    planAmount: number
+    planCurrency?: string
+    accessValidUntil: Date | string
+    confirmationPhrase: string
+    cancelReason?: string | null
+    source?: string
+    requestIp?: string | null
+    requestUserAgent?: string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
   export type SubscriptionPaymentUpdateWithoutSubscriptionInput = {
     subscriptionPaymentId?: StringFieldUpdateOperationsInput | string
     amount?: FloatFieldUpdateOperationsInput | number
@@ -21714,6 +24720,63 @@ export namespace Prisma {
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCancellationUpdateWithoutSubscriptionInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    business?: BusinessUpdateOneRequiredWithoutSubscriptionCancellationsNestedInput
+    cancelledBy?: UserUpdateOneRequiredWithoutSubscriptionCancellationsNestedInput
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateWithoutSubscriptionInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionBusinessId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SubscriptionCancellationUncheckedUpdateManyWithoutSubscriptionInput = {
+    subscriptionCancellationId?: StringFieldUpdateOperationsInput | string
+    subscriptionBusinessId?: StringFieldUpdateOperationsInput | string
+    subscriptionPlanId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: StringFieldUpdateOperationsInput | string
+    mpPreapprovalId?: NullableStringFieldUpdateOperationsInput | string | null
+    planName?: StringFieldUpdateOperationsInput | string
+    planAmount?: FloatFieldUpdateOperationsInput | number
+    planCurrency?: StringFieldUpdateOperationsInput | string
+    accessValidUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    confirmationPhrase?: StringFieldUpdateOperationsInput | string
+    cancelReason?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    requestIp?: NullableStringFieldUpdateOperationsInput | string | null
+    requestUserAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    mpResponseSnapshot?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TicketDetailCreateManyTicketInput = {

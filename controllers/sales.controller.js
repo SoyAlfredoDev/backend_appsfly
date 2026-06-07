@@ -3,9 +3,14 @@ import defineSaleNumber from '../libs/defineSaleNumber.js';
 
 export const createSaleController = async (req, res) => {
     try {
-        const { saleId, saleCustomerId, saleTotal, saleTotalPayments, saleComment } = req.body;
+        const { saleId, saleCustomerId, saleTotal, saleTotalPayments, saleComment, saleImageUrl } = req.body;
         const userId = req.user.payload.id
         const numberSale = await defineSaleNumber(req.prisma);
+
+        const formatOptionalUrl = (url) => {
+            const trimmed = url?.trim();
+            return trimmed || null;
+        };
 
         const data = {
             saleId,
@@ -15,9 +20,8 @@ export const createSaleController = async (req, res) => {
             saleTotal: Number(saleTotal),
             saleTotalPayments: Number(saleTotalPayments),
             salePendingAmount: (Number(saleTotal) - Number(saleTotalPayments)),
-            saleComment
-
-
+            saleComment,
+            saleImageUrl: formatOptionalUrl(saleImageUrl),
         };
         const sale = await createSale(data, req.prisma);
         res.status(201).json({

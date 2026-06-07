@@ -146,6 +146,7 @@ exports.Prisma.CustomerScalarFieldEnum = {
   customerDocumentType: 'customerDocumentType',
   customerDocumentNumber: 'customerDocumentNumber',
   customerComment: 'customerComment',
+  customerImageUrl: 'customerImageUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdByUserId: 'createdByUserId'
@@ -198,6 +199,7 @@ exports.Prisma.SaleScalarFieldEnum = {
   salePendingAmount: 'salePendingAmount',
   createdByUserId: 'createdByUserId',
   saleComment: 'saleComment',
+  saleImageUrl: 'saleImageUrl',
   saleNumber: 'saleNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

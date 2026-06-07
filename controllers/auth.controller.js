@@ -33,7 +33,7 @@ export const register = async (req, res) => {
     }
 
     if (userPassword !== userPasswordConfirmation) {
-      return res.rr(400).json({ error: 2, message: "Passwords do not match" });
+      return res.status(400).json({ error: 2, message: "Passwords do not match" });
     }
 
     let rutFormatted;
@@ -55,7 +55,7 @@ export const register = async (req, res) => {
       userDocumentNumber: rutFormatted || userDocumentNumber,
     };
     const user = await createUser(data);
-    const token = await createAccessToken({ id: user.id });
+    const token = await createAccessToken({ id: user.userId });
     res.status(201).json({
       message: "User registered successfully",
       token,
@@ -133,8 +133,8 @@ export const verifyAuthController = async (req, res) => {
   });
 };
 
-import { sendEmail } from "../services/emailService.js";
-import { passwordResetTemplate } from "../emails-models/passwordResetTemplate.js";
+import { sendEmail } from "../emails/core/sendEmail.js";
+import { passwordResetTemplate } from "../emails/users/auth/passwordReset.template.js";
 import { updateUserPassword } from "../services/usersService.js";
 
 //send email with link for reset password
