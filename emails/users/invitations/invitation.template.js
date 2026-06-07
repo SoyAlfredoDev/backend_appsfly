@@ -49,7 +49,7 @@ export function invitationEmailTemplate({
       </table>
 
       <p class="email-body-text" style="margin:0 0 24px;font-size:15px;line-height:1.65;color:#374151;font-family:Arial,Helvetica,sans-serif;">
-        Crea tu cuenta o inicia sesión con este correo. Luego verás la invitación en tu panel para aceptarla y acceder al negocio.
+        Usa el botón siguiente para crear tu cuenta. Tu correo ya vendrá completado en el formulario; debes registrarte con el mismo email al que llegó esta invitación.
       </p>
 
       ${primaryButton(actionUrl, "Crear cuenta o iniciar sesión")}
@@ -81,7 +81,7 @@ ${inviterName || "Un administrador"} te invitó a colaborar en ${businessName ||
 
 Rol asignado: ${roleLabel}
 
-Crea tu cuenta o inicia sesión con este correo y acepta la invitación desde tu panel:
+Crea tu cuenta con el enlace siguiente (tu correo ya estará en el formulario):
 ${actionUrl}
 
 Si no esperabas esta invitación, ignora este mensaje.

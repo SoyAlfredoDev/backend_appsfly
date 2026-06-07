@@ -8,11 +8,13 @@ import {
     getMyPendingInvitesController,
     deleteUserGuestController,
     resendUserGuestController,
+    getInvitePreviewController,
 } from "../controllers/userGuest.controller.js";
 import { authRequired } from "../middlewares/auth.middleware.js";
 
 const userGuestRouter = Router();
 
+userGuestRouter.get("/userGuest/invite/:userGuestId/preview", getInvitePreviewController);
 userGuestRouter.post("/userGuest", authRequired, createUserGuestController);
 userGuestRouter.get("/userGuest/pending/me", authRequired, getMyPendingInvitesController);
 userGuestRouter.get("/userGuest/exists/:email", authRequired, userGuestExistsController);

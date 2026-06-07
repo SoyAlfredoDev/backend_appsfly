@@ -5,7 +5,8 @@ import {
     getUserByIdController,
     userIsSuperAdminController,
     updateUserConfirmEmailController,
-    countUsersController
+    countUsersController,
+    sendUserConfirmEmailController,
 } from "../controllers/user.controller.js";
 import { getUsersControllerBusinessDB } from "../controllers/businessDB/user.controller.js";
 import { authRequired } from "../middlewares/auth.middleware.js";
@@ -28,6 +29,7 @@ router.get('/db/users', authRequired, dbSelectorMiddleware, getUsersControllerBu
 router.get('/users/count', authRequired, countUsersController);
 
 // --- 2. Rutas Dinámicas (Con :id) ---
+router.post('/users/:id/send-confirm-email', authRequired, sendUserConfirmEmailController);
 router.put('/users/:id/confirm-email', updateUserConfirmEmailController);
 
 // Esta ruta "comodín" debe ir al final de los GETs para no interceptar otras rutas

@@ -31,6 +31,15 @@ export {
 export { passwordResetTemplate } from "./users/auth/passwordReset.template.js";
 
 export {
+    buildConfirmEmailUrl,
+    confirmEmailTemplate,
+    confirmEmailText,
+    confirmEmailSubject,
+} from "./users/auth/confirmEmail.template.js";
+
+export { sendConfirmEmail } from "./dispatchers/confirmEmail.dispatcher.js";
+
+export {
     invitationEmailTemplate,
     invitationEmailText,
     invitationEmailSubject,

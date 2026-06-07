@@ -16,6 +16,14 @@ import { getUserById } from "../services/usersService.js";
 import { sendUserInvitationEmail } from "../emails/dispatchers/invitation.dispatcher.js";
 import { getFrontendBaseUrl } from "../emails/shared/layout.js";
 
+export function buildInvitationRegisterUrl(userGuestId, email) {
+    const params = new URLSearchParams({
+        invite: userGuestId,
+        email: String(email || "").trim().toLowerCase(),
+    });
+    return `${getFrontendBaseUrl()}/register?${params.toString()}`;
+}
+
 async function loadInviterContext(userId) {
     const user = await getUserById(userId);
     if (!user) return null;
@@ -29,9 +37,30 @@ async function dispatchInvitationEmail(invite, inviterName) {
         businessName: invite.Business?.businessName,
         inviterName,
         role: invite.userGuestRole,
-        registerUrl: `${getFrontendBaseUrl()}/register`,
+        registerUrl: buildInvitationRegisterUrl(invite.userGuestId, invite.userGuestEmail),
     });
 }
+
+export const getInvitePreviewController = async (req, res) => {
+    try {
+        const { userGuestId } = req.params;
+        const invite = await getUserGuestById(userGuestId);
+
+        if (!invite || invite.userGuestStatus !== "PENDIENT") {
+            return res.status(404).json({ message: "Invitación no válida o expirada." });
+        }
+
+        return res.status(200).json({
+            userGuestId: invite.userGuestId,
+            userGuestEmail: invite.userGuestEmail,
+            businessName: invite.Business?.businessName ?? null,
+            role: invite.userGuestRole,
+        });
+    } catch (error) {
+        console.error(">>>> userGuest.controller.js: Error getting invite preview:", error);
+        return res.status(500).json({ message: "Error interno al validar la invitación." });
+    }
+};
 
 export const createUserGuestController = async (req, res) => {
     try {

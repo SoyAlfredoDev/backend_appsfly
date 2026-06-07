@@ -1,8 +1,10 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { createUser, getUserByEmail } from "../services/usersService.js";
+import { getUserGuestById } from "../services/userGuestService.js";
 import { createAccessToken } from "../libs/jwt.js";
 import validateRut from "../libs/validateRut.js";
+import { sendConfirmEmail } from "../emails/dispatchers/confirmEmail.dispatcher.js";
 
 import dotenv from "dotenv";
 
@@ -23,9 +25,25 @@ export const register = async (req, res) => {
       userPhoneNumber,
       userDocumentType,
       userDocumentNumber,
+      userGuestId,
     } = req.body;
 
-    const existingUser = await getUserByEmail(userEmail.trim().toLowerCase());
+    const normalizedEmail = userEmail.trim().toLowerCase();
+
+    if (userGuestId) {
+      const invite = await getUserGuestById(userGuestId);
+      if (!invite || invite.userGuestStatus !== "PENDIENT") {
+        return res.status(400).json({ error: 3, message: "Invitación no válida o expirada." });
+      }
+      if (invite.userGuestEmail.toLowerCase() !== normalizedEmail) {
+        return res.status(400).json({
+          error: 4,
+          message: "El correo debe coincidir con el de la invitación.",
+        });
+      }
+    }
+
+    const existingUser = await getUserByEmail(normalizedEmail);
     if (existingUser) {
       return res
         .status(400)
@@ -47,7 +65,7 @@ export const register = async (req, res) => {
       userId,
       userFirstName: userFirstName.trim().toLowerCase(),
       userLastName: userLastName.trim().toLowerCase(),
-      userEmail: userEmail.trim().toLowerCase(),
+      userEmail: normalizedEmail,
       userPassword: hashedPassword,
       userCodePhoneNumber,
       userPhoneNumber,
@@ -56,9 +74,24 @@ export const register = async (req, res) => {
     };
     const user = await createUser(data);
     const token = await createAccessToken({ id: user.userId });
+
+    let emailSent = false;
+    try {
+        await sendConfirmEmail({
+            to: user.userEmail,
+            userId: user.userId,
+            firstName: user.userFirstName,
+            lastName: user.userLastName,
+        });
+        emailSent = true;
+    } catch (emailError) {
+        console.error("(auth.controller.js): Error sending confirm email:", emailError.message);
+    }
+
     res.status(201).json({
       message: "User registered successfully",
       token,
+      emailSent,
       user: {
         userId: user.userId,
         userFirstName: user.userFirstName,
@@ -135,6 +168,7 @@ export const verifyAuthController = async (req, res) => {
 
 import { sendEmail } from "../emails/core/sendEmail.js";
 import { passwordResetTemplate } from "../emails/users/auth/passwordReset.template.js";
+import { getFrontendBaseUrl } from "../emails/shared/layout.js";
 import { updateUserPassword } from "../services/usersService.js";
 
 //send email with link for reset password
@@ -155,11 +189,7 @@ export const forgotPassword = async (req, res) => {
       expiresIn: "15m",
     });
 
-    const frontendUrl =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:5173"
-        : process.env.FRONTEND_URL_PRODUCTION;
-    const resetUrl = `${frontendUrl}/reset-password/${token}`;
+    const resetUrl = `${getFrontendBaseUrl()}/reset-password/${token}`;
 
     await sendEmail({
       to: user.userEmail,
