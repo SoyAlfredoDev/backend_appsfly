@@ -27,12 +27,13 @@ model User {
   updatedAt           DateTime  @updatedAt
 
   // Relations
-  UserBusiness  UserBusiness[]
-  UserGuest     UserGuest[]
-  businesses    Business[]
-  subscriptions Subscription[]
-  tickets       Ticket[]
-  ticketDetails TicketDetail[]
+  UserBusiness         UserBusiness[]
+  UserGuest            UserGuest[]
+  businesses           Business[]
+  subscriptions        Subscription[]
+  subscriptionPayments SubscriptionPayment[]
+  tickets              Ticket[]
+  ticketDetails        TicketDetail[]
 }
 
 model Business {
@@ -57,9 +58,10 @@ model Business {
   updatedAt                  DateTime       @updatedAt
 
   // Relaciones
-  UserGuest     UserGuest[]
-  UserBusiness  UserBusiness[]
-  subscriptions Subscription[]
+  UserGuest            UserGuest[]
+  UserBusiness         UserBusiness[]
+  subscriptions        Subscription[]
+  subscriptionPayments SubscriptionPayment[]
 }
 
 model UserBusiness {
@@ -101,11 +103,12 @@ model Plan {
   updatedAt       DateTime @updatedAt
 
   // Relations
-  subscriptions Subscription[]
+  subscriptions        Subscription[]
+  subscriptionPayments SubscriptionPayment[]
 }
 
 model Subscription {
-  subscriptionId            String             @id
+  subscriptionId            String                @id
   subscriptionBusinessId    String
   subscriptionPlanId        String
   subscriptionStartDate     DateTime
@@ -116,11 +119,39 @@ model Subscription {
   subscriptionPaymentMethod String
   subscriptionPlanFeatures  Json
   createdByUserId           String
-  createdAt                 DateTime           @default(now())
-  updatedAt                 DateTime           @updatedAt
-  createdBy                 User               @relation(fields: [createdByUserId], references: [userId])
-  plan                      Plan               @relation(fields: [subscriptionPlanId], references: [planId])
-  business                  Business           @relation(fields: [subscriptionBusinessId], references: [businessId])
+  createdAt                 DateTime              @default(now())
+  updatedAt                 DateTime              @updatedAt
+  createdBy                 User                  @relation(fields: [createdByUserId], references: [userId])
+  plan                      Plan                  @relation(fields: [subscriptionPlanId], references: [planId])
+  business                  Business              @relation(fields: [subscriptionBusinessId], references: [businessId])
+  payments                  SubscriptionPayment[]
+}
+
+model SubscriptionPayment {
+  subscriptionPaymentId  String                    @id @default(uuid())
+  subscriptionId         String?
+  subscriptionBusinessId String
+  subscriptionPlanId     String
+  amount                 Float
+  currency               String                    @default("CLP")
+  paymentMethod          SubscriptionPaymentMethod
+  status                 SubscriptionPaymentStatus
+  externalReference      String?
+  mpPreferenceId         String?
+  mpPaymentId            String?
+  metadata               Json?
+  createdByUserId        String
+  createdAt              DateTime                  @default(now())
+  updatedAt              DateTime                  @updatedAt
+
+  subscription Subscription? @relation(fields: [subscriptionId], references: [subscriptionId])
+  business     Business      @relation(fields: [subscriptionBusinessId], references: [businessId])
+  plan         Plan          @relation(fields: [subscriptionPlanId], references: [planId])
+  createdBy    User          @relation(fields: [createdByUserId], references: [userId])
+
+  @@index([subscriptionBusinessId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model Ticket {
@@ -190,6 +221,17 @@ enum SubscriptionStatus {
   CANCELLED
   EXPIRED
   PENDIENT
+}
+
+enum SubscriptionPaymentMethod {
+  MERCADO_PAGO
+  PROMO_FREE_TRIAL
+}
+
+enum SubscriptionPaymentStatus {
+  APPROVED
+  PENDING
+  REJECTED
 }
 
 enum TicketStatus {

@@ -2,6 +2,8 @@ import { PrismaClient as PrismaGeneral } from '../src/generated/general/index.js
 import { getAdminSubscriptionsService } from './subscriptionService.js'
 import { getAdminBusinessesService, getAdminBusinessByIdService } from './businessService.js'
 import { getPrismaForBusinessId } from '../db.js'
+import userSuperAdmin from '../superAdmin.js'
+import { getAdminSubscriptionPayments as fetchAdminSubscriptionPayments } from './subscriptionPaymentService.js'
 
 const general = new PrismaGeneral()
 
@@ -116,6 +118,59 @@ export const getBusinesses = async () => {
         return await getAdminBusinessesService();
     } catch (error) {
         console.error("(adminService.js): Error getting businesses:", error);
+        throw error;
+    }
+};
+
+export const getUsers = async () => {
+    try {
+        const users = await general.user.findMany({
+            select: {
+                userId: true,
+                userFirstName: true,
+                userLastName: true,
+                userEmail: true,
+                userConfirmEmail: true,
+                userLastConnection: true,
+                userCodePhoneNumber: true,
+                userPhoneNumber: true,
+                createdAt: true,
+                UserBusiness: {
+                    select: {
+                        userBusinessRole: true,
+                        Business: {
+                            select: {
+                                businessId: true,
+                                businessName: true,
+                            },
+                        },
+                    },
+                },
+            },
+            orderBy: { createdAt: 'desc' },
+        });
+
+        return users.map((user) => ({
+            userId: user.userId,
+            userFirstName: user.userFirstName,
+            userLastName: user.userLastName,
+            userEmail: user.userEmail,
+            userConfirmEmail: user.userConfirmEmail,
+            userLastConnection: user.userLastConnection,
+            userPhone:
+                user.userCodePhoneNumber && user.userPhoneNumber
+                    ? `${user.userCodePhoneNumber} ${user.userPhoneNumber}`
+                    : user.userPhoneNumber || null,
+            createdAt: user.createdAt,
+            isSuperAdmin: userSuperAdmin.includes(user.userId),
+            businesses: user.UserBusiness.map((link) => ({
+                businessId: link.Business.businessId,
+                businessName: link.Business.businessName,
+                role: link.userBusinessRole,
+            })),
+        }));
+    } catch (error) {
+        console.error("(adminService.js): Error getting users:", error);
         throw error;
     }
 };
@@ -236,4 +291,8 @@ export const getBusinessDetail = async (businessId) => {
         business,
         tenant,
     };
+};
+
+export const getSubscriptionPayments = async () => {
+    return fetchAdminSubscriptionPayments();
 };

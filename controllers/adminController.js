@@ -39,3 +39,21 @@ export const getAdminBusinessById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const getAdminUsers = async (req, res) => {
+    try {
+        const users = await adminService.getUsers();
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getAdminPayments = async (req, res) => {
+    try {
+        const data = await adminService.getSubscriptionPayments();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

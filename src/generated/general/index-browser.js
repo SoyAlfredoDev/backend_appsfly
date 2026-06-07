@@ -206,6 +206,24 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SubscriptionPaymentScalarFieldEnum = {
+  subscriptionPaymentId: 'subscriptionPaymentId',
+  subscriptionId: 'subscriptionId',
+  subscriptionBusinessId: 'subscriptionBusinessId',
+  subscriptionPlanId: 'subscriptionPlanId',
+  amount: 'amount',
+  currency: 'currency',
+  paymentMethod: 'paymentMethod',
+  status: 'status',
+  externalReference: 'externalReference',
+  mpPreferenceId: 'mpPreferenceId',
+  mpPaymentId: 'mpPaymentId',
+  metadata: 'metadata',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.TicketScalarFieldEnum = {
   ticketId: 'ticketId',
   ticketNumber: 'ticketNumber',
@@ -300,6 +318,17 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
   PENDIENT: 'PENDIENT'
 };
 
+exports.SubscriptionPaymentMethod = exports.$Enums.SubscriptionPaymentMethod = {
+  MERCADO_PAGO: 'MERCADO_PAGO',
+  PROMO_FREE_TRIAL: 'PROMO_FREE_TRIAL'
+};
+
+exports.SubscriptionPaymentStatus = exports.$Enums.SubscriptionPaymentStatus = {
+  APPROVED: 'APPROVED',
+  PENDING: 'PENDING',
+  REJECTED: 'REJECTED'
+};
+
 exports.TicketType = exports.$Enums.TicketType = {
   SUPPORT: 'SUPPORT',
   SUGGESTION: 'SUGGESTION',
@@ -325,6 +354,7 @@ exports.Prisma.ModelName = {
   UserGuest: 'UserGuest',
   Plan: 'Plan',
   Subscription: 'Subscription',
+  SubscriptionPayment: 'SubscriptionPayment',
   Ticket: 'Ticket',
   TicketDetail: 'TicketDetail',
   newsletterSubscriber: 'newsletterSubscriber'

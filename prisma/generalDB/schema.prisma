@@ -31,6 +31,7 @@ model User {
     UserGuest     UserGuest[]
     businesses    Business[]
     subscriptions Subscription[]
+    subscriptionPayments SubscriptionPayment[]
     tickets       Ticket[]
     ticketDetails TicketDetail[]
 
@@ -61,6 +62,7 @@ model Business {
     UserGuest     UserGuest[]
     UserBusiness  UserBusiness[]
     subscriptions Subscription[]
+    subscriptionPayments SubscriptionPayment[]
 }
 
 model UserBusiness {
@@ -103,6 +105,7 @@ model Plan {
 
     // Relations
     subscriptions Subscription[]
+    subscriptionPayments SubscriptionPayment[]
 }
 
 model Subscription {
@@ -122,6 +125,34 @@ model Subscription {
     createdBy                 User               @relation(fields: [createdByUserId], references: [userId])
     plan                      Plan               @relation(fields: [subscriptionPlanId], references: [planId])
     business                  Business           @relation(fields: [subscriptionBusinessId], references: [businessId])
+    payments                  SubscriptionPayment[]
+}
+
+model SubscriptionPayment {
+    subscriptionPaymentId  String                    @id @default(uuid())
+    subscriptionId         String?
+    subscriptionBusinessId String
+    subscriptionPlanId     String
+    amount                 Float
+    currency               String                    @default("CLP")
+    paymentMethod          SubscriptionPaymentMethod
+    status                 SubscriptionPaymentStatus
+    externalReference      String?
+    mpPreferenceId         String?
+    mpPaymentId            String?
+    metadata               Json?
+    createdByUserId        String
+    createdAt              DateTime                  @default(now())
+    updatedAt              DateTime                  @updatedAt
+
+    subscription Subscription? @relation(fields: [subscriptionId], references: [subscriptionId])
+    business     Business      @relation(fields: [subscriptionBusinessId], references: [businessId])
+    plan         Plan          @relation(fields: [subscriptionPlanId], references: [planId])
+    createdBy    User          @relation(fields: [createdByUserId], references: [userId])
+
+    @@index([subscriptionBusinessId])
+    @@index([status])
+    @@index([createdAt])
 }
 
 model Ticket {
@@ -191,6 +222,17 @@ enum SubscriptionStatus {
     CANCELLED
     EXPIRED
     PENDIENT
+}
+
+enum SubscriptionPaymentMethod {
+    MERCADO_PAGO
+    PROMO_FREE_TRIAL
+}
+
+enum SubscriptionPaymentStatus {
+    APPROVED
+    PENDING
+    REJECTED
 }
 
 enum TicketStatus {
