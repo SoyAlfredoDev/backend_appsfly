@@ -30,6 +30,8 @@ import planRoutes from "./routes/plan.routes.js";
 import providersRoutes from "./routes/providers.routes.js";
 import purchasesRoutes from "./routes/purchases.routes.js";
 import reportsRoutes from "./routes/reports.routes.js";
+import inventoryRoutes from "./routes/inventory.routes.js";
+import asmrCampaignRoutes from "./routes/asmrCampaign.routes.js";
 
 import dotenv from "dotenv";
 
@@ -124,5 +126,7 @@ app.use("/api", planRoutes);
 app.use("/api", purchasesRoutes);
 app.use("/api", providersRoutes);
 app.use("/api", reportsRoutes);
+app.use("/api", inventoryRoutes);
+app.use("/api", asmrCampaignRoutes);
 
 export default app;

@@ -4,6 +4,9 @@ import {
     getPurchasesController,
     getPurchaseByIdController,
     createPurchaseController,
+    createPurchaseCompleteController,
+    updatePurchaseController,
+    cancelPurchaseController,
     getMonthlyPurchasesController,
     getDayPurchasesController,
     getMonthlyPurchasesNowController,
@@ -37,10 +40,19 @@ router.get("/purchases/day/:day/:month/:year", authRequired, dbSelectorMiddlewar
 // 5. Main list of purchases
 router.get("/purchases", authRequired, dbSelectorMiddleware, getPurchasesController);
 
-// 6. Get purchase by ID
+// 6. Create purchase with details + inventory (recommended)
+router.post("/purchases/complete", authRequired, dbSelectorMiddleware, createPurchaseCompleteController);
+
+// 7. Create purchase (header only — legacy)
+router.post("/purchases", authRequired, dbSelectorMiddleware, createPurchaseController);
+
+// 8. Get purchase by ID
 router.get("/purchases/:id", authRequired, dbSelectorMiddleware, getPurchaseByIdController);
 
-// 7. Create purchase
-router.post("/purchases", authRequired, dbSelectorMiddleware, createPurchaseController);
+// 9. Update purchase header
+router.put("/purchases/:id", authRequired, dbSelectorMiddleware, updatePurchaseController);
+
+// 10. Cancel purchase + reverse inventory
+router.post("/purchases/:id/cancel", authRequired, dbSelectorMiddleware, cancelPurchaseController);
 
 export default router;

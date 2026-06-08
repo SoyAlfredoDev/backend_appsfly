@@ -29,6 +29,16 @@ export type Customer = $Result.DefaultSelection<Prisma.$CustomerPayload>
  */
 export type Product = $Result.DefaultSelection<Prisma.$ProductPayload>
 /**
+ * Model ProductStock
+ * 
+ */
+export type ProductStock = $Result.DefaultSelection<Prisma.$ProductStockPayload>
+/**
+ * Model InventoryMovement
+ * 
+ */
+export type InventoryMovement = $Result.DefaultSelection<Prisma.$InventoryMovementPayload>
+/**
  * Model Service
  * 
  */
@@ -68,6 +78,11 @@ export type DailySales = $Result.DefaultSelection<Prisma.$DailySalesPayload>
  * 
  */
 export type Transactions = $Result.DefaultSelection<Prisma.$TransactionsPayload>
+/**
+ * Model AsmrCampaign
+ * 
+ */
+export type AsmrCampaign = $Result.DefaultSelection<Prisma.$AsmrCampaignPayload>
 /**
  * Model Expense
  * 
@@ -142,6 +157,31 @@ export const UsageContext: {
 
 export type UsageContext = (typeof UsageContext)[keyof typeof UsageContext]
 
+
+export const InventoryMovementType: {
+  VENTA: 'VENTA',
+  COMPRA: 'COMPRA',
+  AJUSTE_MANUAL: 'AJUSTE_MANUAL',
+  MERMA: 'MERMA',
+  DEVOLUCION: 'DEVOLUCION',
+  ANULACION_VENTA: 'ANULACION_VENTA',
+  ANULACION_COMPRA: 'ANULACION_COMPRA'
+};
+
+export type InventoryMovementType = (typeof InventoryMovementType)[keyof typeof InventoryMovementType]
+
+
+export const InventoryReferenceType: {
+  SALE: 'SALE',
+  SALE_DETAIL: 'SALE_DETAIL',
+  PURCHASE: 'PURCHASE',
+  PURCHASE_DETAIL: 'PURCHASE_DETAIL',
+  MANUAL: 'MANUAL',
+  NONE: 'NONE'
+};
+
+export type InventoryReferenceType = (typeof InventoryReferenceType)[keyof typeof InventoryReferenceType]
+
 }
 
 export type Role = $Enums.Role
@@ -163,6 +203,14 @@ export const ServiceUnit: typeof $Enums.ServiceUnit
 export type UsageContext = $Enums.UsageContext
 
 export const UsageContext: typeof $Enums.UsageContext
+
+export type InventoryMovementType = $Enums.InventoryMovementType
+
+export const InventoryMovementType: typeof $Enums.InventoryMovementType
+
+export type InventoryReferenceType = $Enums.InventoryReferenceType
+
+export const InventoryReferenceType: typeof $Enums.InventoryReferenceType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -313,6 +361,26 @@ export class PrismaClient<
   get product(): Prisma.ProductDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.productStock`: Exposes CRUD operations for the **ProductStock** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProductStocks
+    * const productStocks = await prisma.productStock.findMany()
+    * ```
+    */
+  get productStock(): Prisma.ProductStockDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.inventoryMovement`: Exposes CRUD operations for the **InventoryMovement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InventoryMovements
+    * const inventoryMovements = await prisma.inventoryMovement.findMany()
+    * ```
+    */
+  get inventoryMovement(): Prisma.InventoryMovementDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.service`: Exposes CRUD operations for the **Service** model.
     * Example usage:
     * ```ts
@@ -391,6 +459,16 @@ export class PrismaClient<
     * ```
     */
   get transactions(): Prisma.TransactionsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.asmrCampaign`: Exposes CRUD operations for the **AsmrCampaign** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AsmrCampaigns
+    * const asmrCampaigns = await prisma.asmrCampaign.findMany()
+    * ```
+    */
+  get asmrCampaign(): Prisma.AsmrCampaignDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.expense`: Exposes CRUD operations for the **Expense** model.
@@ -875,6 +953,8 @@ export namespace Prisma {
     User: 'User',
     Customer: 'Customer',
     Product: 'Product',
+    ProductStock: 'ProductStock',
+    InventoryMovement: 'InventoryMovement',
     Service: 'Service',
     Category: 'Category',
     Sale: 'Sale',
@@ -883,6 +963,7 @@ export namespace Prisma {
     CashExpense: 'CashExpense',
     DailySales: 'DailySales',
     Transactions: 'Transactions',
+    AsmrCampaign: 'AsmrCampaign',
     Expense: 'Expense',
     Provider: 'Provider',
     Purchase: 'Purchase',
@@ -905,7 +986,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "customer" | "product" | "service" | "category" | "sale" | "saleDetail" | "payment" | "cashExpense" | "dailySales" | "transactions" | "expense" | "provider" | "purchase" | "purchaseDetail"
+      modelProps: "user" | "customer" | "product" | "productStock" | "inventoryMovement" | "service" | "category" | "sale" | "saleDetail" | "payment" | "cashExpense" | "dailySales" | "transactions" | "asmrCampaign" | "expense" | "provider" | "purchase" | "purchaseDetail"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1128,6 +1209,154 @@ export namespace Prisma {
           count: {
             args: Prisma.ProductCountArgs<ExtArgs>
             result: $Utils.Optional<ProductCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProductStock: {
+        payload: Prisma.$ProductStockPayload<ExtArgs>
+        fields: Prisma.ProductStockFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProductStockFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProductStockFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload>
+          }
+          findFirst: {
+            args: Prisma.ProductStockFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProductStockFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload>
+          }
+          findMany: {
+            args: Prisma.ProductStockFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload>[]
+          }
+          create: {
+            args: Prisma.ProductStockCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload>
+          }
+          createMany: {
+            args: Prisma.ProductStockCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProductStockCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload>[]
+          }
+          delete: {
+            args: Prisma.ProductStockDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload>
+          }
+          update: {
+            args: Prisma.ProductStockUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProductStockDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProductStockUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProductStockUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProductStockUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductStockPayload>
+          }
+          aggregate: {
+            args: Prisma.ProductStockAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProductStock>
+          }
+          groupBy: {
+            args: Prisma.ProductStockGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProductStockGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProductStockCountArgs<ExtArgs>
+            result: $Utils.Optional<ProductStockCountAggregateOutputType> | number
+          }
+        }
+      }
+      InventoryMovement: {
+        payload: Prisma.$InventoryMovementPayload<ExtArgs>
+        fields: Prisma.InventoryMovementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InventoryMovementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InventoryMovementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload>
+          }
+          findFirst: {
+            args: Prisma.InventoryMovementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InventoryMovementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload>
+          }
+          findMany: {
+            args: Prisma.InventoryMovementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload>[]
+          }
+          create: {
+            args: Prisma.InventoryMovementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload>
+          }
+          createMany: {
+            args: Prisma.InventoryMovementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InventoryMovementCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload>[]
+          }
+          delete: {
+            args: Prisma.InventoryMovementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload>
+          }
+          update: {
+            args: Prisma.InventoryMovementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload>
+          }
+          deleteMany: {
+            args: Prisma.InventoryMovementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InventoryMovementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InventoryMovementUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload>[]
+          }
+          upsert: {
+            args: Prisma.InventoryMovementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InventoryMovementPayload>
+          }
+          aggregate: {
+            args: Prisma.InventoryMovementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInventoryMovement>
+          }
+          groupBy: {
+            args: Prisma.InventoryMovementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InventoryMovementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InventoryMovementCountArgs<ExtArgs>
+            result: $Utils.Optional<InventoryMovementCountAggregateOutputType> | number
           }
         }
       }
@@ -1723,6 +1952,80 @@ export namespace Prisma {
           }
         }
       }
+      AsmrCampaign: {
+        payload: Prisma.$AsmrCampaignPayload<ExtArgs>
+        fields: Prisma.AsmrCampaignFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AsmrCampaignFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AsmrCampaignFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload>
+          }
+          findFirst: {
+            args: Prisma.AsmrCampaignFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AsmrCampaignFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload>
+          }
+          findMany: {
+            args: Prisma.AsmrCampaignFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload>[]
+          }
+          create: {
+            args: Prisma.AsmrCampaignCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload>
+          }
+          createMany: {
+            args: Prisma.AsmrCampaignCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AsmrCampaignCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload>[]
+          }
+          delete: {
+            args: Prisma.AsmrCampaignDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload>
+          }
+          update: {
+            args: Prisma.AsmrCampaignUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload>
+          }
+          deleteMany: {
+            args: Prisma.AsmrCampaignDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AsmrCampaignUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AsmrCampaignUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload>[]
+          }
+          upsert: {
+            args: Prisma.AsmrCampaignUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AsmrCampaignPayload>
+          }
+          aggregate: {
+            args: Prisma.AsmrCampaignAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAsmrCampaign>
+          }
+          groupBy: {
+            args: Prisma.AsmrCampaignGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AsmrCampaignGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AsmrCampaignCountArgs<ExtArgs>
+            result: $Utils.Optional<AsmrCampaignCountAggregateOutputType> | number
+          }
+        }
+      }
       Expense: {
         payload: Prisma.$ExpensePayload<ExtArgs>
         fields: Prisma.ExpenseFieldRefs
@@ -2118,6 +2421,8 @@ export namespace Prisma {
     user?: UserOmit
     customer?: CustomerOmit
     product?: ProductOmit
+    productStock?: ProductStockOmit
+    inventoryMovement?: InventoryMovementOmit
     service?: ServiceOmit
     category?: CategoryOmit
     sale?: SaleOmit
@@ -2126,6 +2431,7 @@ export namespace Prisma {
     cashExpense?: CashExpenseOmit
     dailySales?: DailySalesOmit
     transactions?: TransactionsOmit
+    asmrCampaign?: AsmrCampaignOmit
     expense?: ExpenseOmit
     provider?: ProviderOmit
     purchase?: PurchaseOmit
@@ -2218,12 +2524,15 @@ export namespace Prisma {
     Payment: number
     SaleDetail: number
     Purchase: number
+    purchasesCancelled: number
     PurchaseDetail: number
     Provider: number
     CashExpense: number
     DailySales: number
     Transactions: number
     Expense: number
+    InventoryMovement: number
+    AsmrCampaign: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2235,12 +2544,15 @@ export namespace Prisma {
     Payment?: boolean | UserCountOutputTypeCountPaymentArgs
     SaleDetail?: boolean | UserCountOutputTypeCountSaleDetailArgs
     Purchase?: boolean | UserCountOutputTypeCountPurchaseArgs
+    purchasesCancelled?: boolean | UserCountOutputTypeCountPurchasesCancelledArgs
     PurchaseDetail?: boolean | UserCountOutputTypeCountPurchaseDetailArgs
     Provider?: boolean | UserCountOutputTypeCountProviderArgs
     CashExpense?: boolean | UserCountOutputTypeCountCashExpenseArgs
     DailySales?: boolean | UserCountOutputTypeCountDailySalesArgs
     Transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
     Expense?: boolean | UserCountOutputTypeCountExpenseArgs
+    InventoryMovement?: boolean | UserCountOutputTypeCountInventoryMovementArgs
+    AsmrCampaign?: boolean | UserCountOutputTypeCountAsmrCampaignArgs
   }
 
   // Custom InputTypes
@@ -2313,6 +2625,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountPurchasesCancelledArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PurchaseWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountPurchaseDetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PurchaseDetailWhereInput
   }
@@ -2350,6 +2669,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountExpenseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ExpenseWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountInventoryMovementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryMovementWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAsmrCampaignArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AsmrCampaignWhereInput
   }
 
 
@@ -2430,6 +2763,37 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountPurchaseDetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PurchaseDetailWhereInput
+  }
+
+
+  /**
+   * Count Type ProductStockCountOutputType
+   */
+
+  export type ProductStockCountOutputType = {
+    movements: number
+  }
+
+  export type ProductStockCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    movements?: boolean | ProductStockCountOutputTypeCountMovementsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProductStockCountOutputType without action
+   */
+  export type ProductStockCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStockCountOutputType
+     */
+    select?: ProductStockCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProductStockCountOutputType without action
+   */
+  export type ProductStockCountOutputTypeCountMovementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryMovementWhereInput
   }
 
 
@@ -2847,12 +3211,15 @@ export namespace Prisma {
     Payment?: boolean | User$PaymentArgs<ExtArgs>
     SaleDetail?: boolean | User$SaleDetailArgs<ExtArgs>
     Purchase?: boolean | User$PurchaseArgs<ExtArgs>
+    purchasesCancelled?: boolean | User$purchasesCancelledArgs<ExtArgs>
     PurchaseDetail?: boolean | User$PurchaseDetailArgs<ExtArgs>
     Provider?: boolean | User$ProviderArgs<ExtArgs>
     CashExpense?: boolean | User$CashExpenseArgs<ExtArgs>
     DailySales?: boolean | User$DailySalesArgs<ExtArgs>
     Transactions?: boolean | User$TransactionsArgs<ExtArgs>
     Expense?: boolean | User$ExpenseArgs<ExtArgs>
+    InventoryMovement?: boolean | User$InventoryMovementArgs<ExtArgs>
+    AsmrCampaign?: boolean | User$AsmrCampaignArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2911,12 +3278,15 @@ export namespace Prisma {
     Payment?: boolean | User$PaymentArgs<ExtArgs>
     SaleDetail?: boolean | User$SaleDetailArgs<ExtArgs>
     Purchase?: boolean | User$PurchaseArgs<ExtArgs>
+    purchasesCancelled?: boolean | User$purchasesCancelledArgs<ExtArgs>
     PurchaseDetail?: boolean | User$PurchaseDetailArgs<ExtArgs>
     Provider?: boolean | User$ProviderArgs<ExtArgs>
     CashExpense?: boolean | User$CashExpenseArgs<ExtArgs>
     DailySales?: boolean | User$DailySalesArgs<ExtArgs>
     Transactions?: boolean | User$TransactionsArgs<ExtArgs>
     Expense?: boolean | User$ExpenseArgs<ExtArgs>
+    InventoryMovement?: boolean | User$InventoryMovementArgs<ExtArgs>
+    AsmrCampaign?: boolean | User$AsmrCampaignArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2933,12 +3303,15 @@ export namespace Prisma {
       Payment: Prisma.$PaymentPayload<ExtArgs>[]
       SaleDetail: Prisma.$SaleDetailPayload<ExtArgs>[]
       Purchase: Prisma.$PurchasePayload<ExtArgs>[]
+      purchasesCancelled: Prisma.$PurchasePayload<ExtArgs>[]
       PurchaseDetail: Prisma.$PurchaseDetailPayload<ExtArgs>[]
       Provider: Prisma.$ProviderPayload<ExtArgs>[]
       CashExpense: Prisma.$CashExpensePayload<ExtArgs>[]
       DailySales: Prisma.$DailySalesPayload<ExtArgs>[]
       Transactions: Prisma.$TransactionsPayload<ExtArgs>[]
       Expense: Prisma.$ExpensePayload<ExtArgs>[]
+      InventoryMovement: Prisma.$InventoryMovementPayload<ExtArgs>[]
+      AsmrCampaign: Prisma.$AsmrCampaignPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       userId: string
@@ -3355,12 +3728,15 @@ export namespace Prisma {
     Payment<T extends User$PaymentArgs<ExtArgs> = {}>(args?: Subset<T, User$PaymentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     SaleDetail<T extends User$SaleDetailArgs<ExtArgs> = {}>(args?: Subset<T, User$SaleDetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SaleDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Purchase<T extends User$PurchaseArgs<ExtArgs> = {}>(args?: Subset<T, User$PurchaseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    purchasesCancelled<T extends User$purchasesCancelledArgs<ExtArgs> = {}>(args?: Subset<T, User$purchasesCancelledArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     PurchaseDetail<T extends User$PurchaseDetailArgs<ExtArgs> = {}>(args?: Subset<T, User$PurchaseDetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurchaseDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Provider<T extends User$ProviderArgs<ExtArgs> = {}>(args?: Subset<T, User$ProviderArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     CashExpense<T extends User$CashExpenseArgs<ExtArgs> = {}>(args?: Subset<T, User$CashExpenseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CashExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     DailySales<T extends User$DailySalesArgs<ExtArgs> = {}>(args?: Subset<T, User$DailySalesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Transactions<T extends User$TransactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$TransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Expense<T extends User$ExpenseArgs<ExtArgs> = {}>(args?: Subset<T, User$ExpenseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    InventoryMovement<T extends User$InventoryMovementArgs<ExtArgs> = {}>(args?: Subset<T, User$InventoryMovementArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    AsmrCampaign<T extends User$AsmrCampaignArgs<ExtArgs> = {}>(args?: Subset<T, User$AsmrCampaignArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3982,6 +4358,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.purchasesCancelled
+   */
+  export type User$purchasesCancelledArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Purchase
+     */
+    select?: PurchaseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Purchase
+     */
+    omit?: PurchaseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PurchaseInclude<ExtArgs> | null
+    where?: PurchaseWhereInput
+    orderBy?: PurchaseOrderByWithRelationInput | PurchaseOrderByWithRelationInput[]
+    cursor?: PurchaseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PurchaseScalarFieldEnum | PurchaseScalarFieldEnum[]
+  }
+
+  /**
    * User.PurchaseDetail
    */
   export type User$PurchaseDetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4123,6 +4523,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ExpenseScalarFieldEnum | ExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * User.InventoryMovement
+   */
+  export type User$InventoryMovementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    where?: InventoryMovementWhereInput
+    orderBy?: InventoryMovementOrderByWithRelationInput | InventoryMovementOrderByWithRelationInput[]
+    cursor?: InventoryMovementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InventoryMovementScalarFieldEnum | InventoryMovementScalarFieldEnum[]
+  }
+
+  /**
+   * User.AsmrCampaign
+   */
+  export type User$AsmrCampaignArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    where?: AsmrCampaignWhereInput
+    orderBy?: AsmrCampaignOrderByWithRelationInput | AsmrCampaignOrderByWithRelationInput[]
+    cursor?: AsmrCampaignWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AsmrCampaignScalarFieldEnum | AsmrCampaignScalarFieldEnum[]
   }
 
   /**
@@ -5416,6 +5864,7 @@ export namespace Prisma {
     productPriceFixed: boolean | null
     productStatus: $Enums.ProductStatus | null
     productUnit: $Enums.ProductUnit | null
+    productAllowZeroStock: boolean | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5431,6 +5880,7 @@ export namespace Prisma {
     productPriceFixed: boolean | null
     productStatus: $Enums.ProductStatus | null
     productUnit: $Enums.ProductUnit | null
+    productAllowZeroStock: boolean | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -5446,6 +5896,7 @@ export namespace Prisma {
     productPriceFixed: number
     productStatus: number
     productUnit: number
+    productAllowZeroStock: number
     createdByUserId: number
     createdAt: number
     updatedAt: number
@@ -5471,6 +5922,7 @@ export namespace Prisma {
     productPriceFixed?: true
     productStatus?: true
     productUnit?: true
+    productAllowZeroStock?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -5486,6 +5938,7 @@ export namespace Prisma {
     productPriceFixed?: true
     productStatus?: true
     productUnit?: true
+    productAllowZeroStock?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -5501,6 +5954,7 @@ export namespace Prisma {
     productPriceFixed?: true
     productStatus?: true
     productUnit?: true
+    productAllowZeroStock?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -5603,6 +6057,7 @@ export namespace Prisma {
     productPriceFixed: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock: boolean
     createdByUserId: string
     createdAt: Date
     updatedAt: Date
@@ -5637,6 +6092,7 @@ export namespace Prisma {
     productPriceFixed?: boolean
     productStatus?: boolean
     productUnit?: boolean
+    productAllowZeroStock?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5644,6 +6100,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     SaleDetail?: boolean | Product$SaleDetailArgs<ExtArgs>
     PurchaseDetail?: boolean | Product$PurchaseDetailArgs<ExtArgs>
+    productStock?: boolean | Product$productStockArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -5657,6 +6114,7 @@ export namespace Prisma {
     productPriceFixed?: boolean
     productStatus?: boolean
     productUnit?: boolean
+    productAllowZeroStock?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5674,6 +6132,7 @@ export namespace Prisma {
     productPriceFixed?: boolean
     productStatus?: boolean
     productUnit?: boolean
+    productAllowZeroStock?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5691,17 +6150,19 @@ export namespace Prisma {
     productPriceFixed?: boolean
     productStatus?: boolean
     productUnit?: boolean
+    productAllowZeroStock?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"productId" | "productName" | "productDescription" | "productSKU" | "categoryId" | "productPrice" | "productPriceFixed" | "productStatus" | "productUnit" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"productId" | "productName" | "productDescription" | "productSKU" | "categoryId" | "productPrice" | "productPriceFixed" | "productStatus" | "productUnit" | "productAllowZeroStock" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     category?: boolean | CategoryDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     SaleDetail?: boolean | Product$SaleDetailArgs<ExtArgs>
     PurchaseDetail?: boolean | Product$PurchaseDetailArgs<ExtArgs>
+    productStock?: boolean | Product$productStockArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5720,6 +6181,7 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       SaleDetail: Prisma.$SaleDetailPayload<ExtArgs>[]
       PurchaseDetail: Prisma.$PurchaseDetailPayload<ExtArgs>[]
+      productStock: Prisma.$ProductStockPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       productId: string
@@ -5731,6 +6193,10 @@ export namespace Prisma {
       productPriceFixed: boolean | null
       productStatus: $Enums.ProductStatus
       productUnit: $Enums.ProductUnit
+      /**
+       * * Permite vender el producto aunque quantityOnHand sea 0 o negativo
+       */
+      productAllowZeroStock: boolean
       createdByUserId: string
       createdAt: Date
       updatedAt: Date
@@ -6132,6 +6598,7 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     SaleDetail<T extends Product$SaleDetailArgs<ExtArgs> = {}>(args?: Subset<T, Product$SaleDetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SaleDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     PurchaseDetail<T extends Product$PurchaseDetailArgs<ExtArgs> = {}>(args?: Subset<T, Product$PurchaseDetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurchaseDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    productStock<T extends Product$productStockArgs<ExtArgs> = {}>(args?: Subset<T, Product$productStockArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6170,6 +6637,7 @@ export namespace Prisma {
     readonly productPriceFixed: FieldRef<"Product", 'Boolean'>
     readonly productStatus: FieldRef<"Product", 'ProductStatus'>
     readonly productUnit: FieldRef<"Product", 'ProductUnit'>
+    readonly productAllowZeroStock: FieldRef<"Product", 'Boolean'>
     readonly createdByUserId: FieldRef<"Product", 'String'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
@@ -6617,6 +7085,25 @@ export namespace Prisma {
   }
 
   /**
+   * Product.productStock
+   */
+  export type Product$productStockArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    where?: ProductStockWhereInput
+  }
+
+  /**
    * Product without action
    */
   export type ProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6632,6 +7119,2391 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProductInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProductStock
+   */
+
+  export type AggregateProductStock = {
+    _count: ProductStockCountAggregateOutputType | null
+    _avg: ProductStockAvgAggregateOutputType | null
+    _sum: ProductStockSumAggregateOutputType | null
+    _min: ProductStockMinAggregateOutputType | null
+    _max: ProductStockMaxAggregateOutputType | null
+  }
+
+  export type ProductStockAvgAggregateOutputType = {
+    quantityOnHand: number | null
+    reorderPoint: number | null
+    averageUnitCost: number | null
+    version: number | null
+  }
+
+  export type ProductStockSumAggregateOutputType = {
+    quantityOnHand: number | null
+    reorderPoint: number | null
+    averageUnitCost: number | null
+    version: number | null
+  }
+
+  export type ProductStockMinAggregateOutputType = {
+    productId: string | null
+    quantityOnHand: number | null
+    reorderPoint: number | null
+    averageUnitCost: number | null
+    lastMovementAt: Date | null
+    version: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProductStockMaxAggregateOutputType = {
+    productId: string | null
+    quantityOnHand: number | null
+    reorderPoint: number | null
+    averageUnitCost: number | null
+    lastMovementAt: Date | null
+    version: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProductStockCountAggregateOutputType = {
+    productId: number
+    quantityOnHand: number
+    reorderPoint: number
+    averageUnitCost: number
+    lastMovementAt: number
+    version: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProductStockAvgAggregateInputType = {
+    quantityOnHand?: true
+    reorderPoint?: true
+    averageUnitCost?: true
+    version?: true
+  }
+
+  export type ProductStockSumAggregateInputType = {
+    quantityOnHand?: true
+    reorderPoint?: true
+    averageUnitCost?: true
+    version?: true
+  }
+
+  export type ProductStockMinAggregateInputType = {
+    productId?: true
+    quantityOnHand?: true
+    reorderPoint?: true
+    averageUnitCost?: true
+    lastMovementAt?: true
+    version?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProductStockMaxAggregateInputType = {
+    productId?: true
+    quantityOnHand?: true
+    reorderPoint?: true
+    averageUnitCost?: true
+    lastMovementAt?: true
+    version?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProductStockCountAggregateInputType = {
+    productId?: true
+    quantityOnHand?: true
+    reorderPoint?: true
+    averageUnitCost?: true
+    lastMovementAt?: true
+    version?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProductStockAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductStock to aggregate.
+     */
+    where?: ProductStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductStocks to fetch.
+     */
+    orderBy?: ProductStockOrderByWithRelationInput | ProductStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProductStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProductStocks
+    **/
+    _count?: true | ProductStockCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProductStockAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProductStockSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProductStockMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProductStockMaxAggregateInputType
+  }
+
+  export type GetProductStockAggregateType<T extends ProductStockAggregateArgs> = {
+        [P in keyof T & keyof AggregateProductStock]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProductStock[P]>
+      : GetScalarType<T[P], AggregateProductStock[P]>
+  }
+
+
+
+
+  export type ProductStockGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductStockWhereInput
+    orderBy?: ProductStockOrderByWithAggregationInput | ProductStockOrderByWithAggregationInput[]
+    by: ProductStockScalarFieldEnum[] | ProductStockScalarFieldEnum
+    having?: ProductStockScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProductStockCountAggregateInputType | true
+    _avg?: ProductStockAvgAggregateInputType
+    _sum?: ProductStockSumAggregateInputType
+    _min?: ProductStockMinAggregateInputType
+    _max?: ProductStockMaxAggregateInputType
+  }
+
+  export type ProductStockGroupByOutputType = {
+    productId: string
+    quantityOnHand: number
+    reorderPoint: number
+    averageUnitCost: number
+    lastMovementAt: Date | null
+    version: number
+    createdAt: Date
+    updatedAt: Date
+    _count: ProductStockCountAggregateOutputType | null
+    _avg: ProductStockAvgAggregateOutputType | null
+    _sum: ProductStockSumAggregateOutputType | null
+    _min: ProductStockMinAggregateOutputType | null
+    _max: ProductStockMaxAggregateOutputType | null
+  }
+
+  type GetProductStockGroupByPayload<T extends ProductStockGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProductStockGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProductStockGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProductStockGroupByOutputType[P]>
+            : GetScalarType<T[P], ProductStockGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProductStockSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    productId?: boolean
+    quantityOnHand?: boolean
+    reorderPoint?: boolean
+    averageUnitCost?: boolean
+    lastMovementAt?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    movements?: boolean | ProductStock$movementsArgs<ExtArgs>
+    _count?: boolean | ProductStockCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productStock"]>
+
+  export type ProductStockSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    productId?: boolean
+    quantityOnHand?: boolean
+    reorderPoint?: boolean
+    averageUnitCost?: boolean
+    lastMovementAt?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productStock"]>
+
+  export type ProductStockSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    productId?: boolean
+    quantityOnHand?: boolean
+    reorderPoint?: boolean
+    averageUnitCost?: boolean
+    lastMovementAt?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productStock"]>
+
+  export type ProductStockSelectScalar = {
+    productId?: boolean
+    quantityOnHand?: boolean
+    reorderPoint?: boolean
+    averageUnitCost?: boolean
+    lastMovementAt?: boolean
+    version?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProductStockOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"productId" | "quantityOnHand" | "reorderPoint" | "averageUnitCost" | "lastMovementAt" | "version" | "createdAt" | "updatedAt", ExtArgs["result"]["productStock"]>
+  export type ProductStockInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    movements?: boolean | ProductStock$movementsArgs<ExtArgs>
+    _count?: boolean | ProductStockCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ProductStockIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type ProductStockIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $ProductStockPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProductStock"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs>
+      movements: Prisma.$InventoryMovementPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      productId: string
+      quantityOnHand: number
+      reorderPoint: number
+      averageUnitCost: number
+      lastMovementAt: Date | null
+      version: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["productStock"]>
+    composites: {}
+  }
+
+  type ProductStockGetPayload<S extends boolean | null | undefined | ProductStockDefaultArgs> = $Result.GetResult<Prisma.$ProductStockPayload, S>
+
+  type ProductStockCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProductStockFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProductStockCountAggregateInputType | true
+    }
+
+  export interface ProductStockDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProductStock'], meta: { name: 'ProductStock' } }
+    /**
+     * Find zero or one ProductStock that matches the filter.
+     * @param {ProductStockFindUniqueArgs} args - Arguments to find a ProductStock
+     * @example
+     * // Get one ProductStock
+     * const productStock = await prisma.productStock.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProductStockFindUniqueArgs>(args: SelectSubset<T, ProductStockFindUniqueArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProductStock that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProductStockFindUniqueOrThrowArgs} args - Arguments to find a ProductStock
+     * @example
+     * // Get one ProductStock
+     * const productStock = await prisma.productStock.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProductStockFindUniqueOrThrowArgs>(args: SelectSubset<T, ProductStockFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductStock that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductStockFindFirstArgs} args - Arguments to find a ProductStock
+     * @example
+     * // Get one ProductStock
+     * const productStock = await prisma.productStock.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProductStockFindFirstArgs>(args?: SelectSubset<T, ProductStockFindFirstArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductStock that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductStockFindFirstOrThrowArgs} args - Arguments to find a ProductStock
+     * @example
+     * // Get one ProductStock
+     * const productStock = await prisma.productStock.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProductStockFindFirstOrThrowArgs>(args?: SelectSubset<T, ProductStockFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProductStocks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductStockFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProductStocks
+     * const productStocks = await prisma.productStock.findMany()
+     * 
+     * // Get first 10 ProductStocks
+     * const productStocks = await prisma.productStock.findMany({ take: 10 })
+     * 
+     * // Only select the `productId`
+     * const productStockWithProductIdOnly = await prisma.productStock.findMany({ select: { productId: true } })
+     * 
+     */
+    findMany<T extends ProductStockFindManyArgs>(args?: SelectSubset<T, ProductStockFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProductStock.
+     * @param {ProductStockCreateArgs} args - Arguments to create a ProductStock.
+     * @example
+     * // Create one ProductStock
+     * const ProductStock = await prisma.productStock.create({
+     *   data: {
+     *     // ... data to create a ProductStock
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProductStockCreateArgs>(args: SelectSubset<T, ProductStockCreateArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProductStocks.
+     * @param {ProductStockCreateManyArgs} args - Arguments to create many ProductStocks.
+     * @example
+     * // Create many ProductStocks
+     * const productStock = await prisma.productStock.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProductStockCreateManyArgs>(args?: SelectSubset<T, ProductStockCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProductStocks and returns the data saved in the database.
+     * @param {ProductStockCreateManyAndReturnArgs} args - Arguments to create many ProductStocks.
+     * @example
+     * // Create many ProductStocks
+     * const productStock = await prisma.productStock.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProductStocks and only return the `productId`
+     * const productStockWithProductIdOnly = await prisma.productStock.createManyAndReturn({
+     *   select: { productId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProductStockCreateManyAndReturnArgs>(args?: SelectSubset<T, ProductStockCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProductStock.
+     * @param {ProductStockDeleteArgs} args - Arguments to delete one ProductStock.
+     * @example
+     * // Delete one ProductStock
+     * const ProductStock = await prisma.productStock.delete({
+     *   where: {
+     *     // ... filter to delete one ProductStock
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProductStockDeleteArgs>(args: SelectSubset<T, ProductStockDeleteArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProductStock.
+     * @param {ProductStockUpdateArgs} args - Arguments to update one ProductStock.
+     * @example
+     * // Update one ProductStock
+     * const productStock = await prisma.productStock.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProductStockUpdateArgs>(args: SelectSubset<T, ProductStockUpdateArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProductStocks.
+     * @param {ProductStockDeleteManyArgs} args - Arguments to filter ProductStocks to delete.
+     * @example
+     * // Delete a few ProductStocks
+     * const { count } = await prisma.productStock.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProductStockDeleteManyArgs>(args?: SelectSubset<T, ProductStockDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductStocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductStockUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProductStocks
+     * const productStock = await prisma.productStock.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProductStockUpdateManyArgs>(args: SelectSubset<T, ProductStockUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductStocks and returns the data updated in the database.
+     * @param {ProductStockUpdateManyAndReturnArgs} args - Arguments to update many ProductStocks.
+     * @example
+     * // Update many ProductStocks
+     * const productStock = await prisma.productStock.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProductStocks and only return the `productId`
+     * const productStockWithProductIdOnly = await prisma.productStock.updateManyAndReturn({
+     *   select: { productId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProductStockUpdateManyAndReturnArgs>(args: SelectSubset<T, ProductStockUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProductStock.
+     * @param {ProductStockUpsertArgs} args - Arguments to update or create a ProductStock.
+     * @example
+     * // Update or create a ProductStock
+     * const productStock = await prisma.productStock.upsert({
+     *   create: {
+     *     // ... data to create a ProductStock
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProductStock we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProductStockUpsertArgs>(args: SelectSubset<T, ProductStockUpsertArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProductStocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductStockCountArgs} args - Arguments to filter ProductStocks to count.
+     * @example
+     * // Count the number of ProductStocks
+     * const count = await prisma.productStock.count({
+     *   where: {
+     *     // ... the filter for the ProductStocks we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProductStockCountArgs>(
+      args?: Subset<T, ProductStockCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProductStockCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProductStock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductStockAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProductStockAggregateArgs>(args: Subset<T, ProductStockAggregateArgs>): Prisma.PrismaPromise<GetProductStockAggregateType<T>>
+
+    /**
+     * Group by ProductStock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductStockGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProductStockGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProductStockGroupByArgs['orderBy'] }
+        : { orderBy?: ProductStockGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProductStockGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductStockGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProductStock model
+   */
+  readonly fields: ProductStockFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProductStock.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProductStockClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    movements<T extends ProductStock$movementsArgs<ExtArgs> = {}>(args?: Subset<T, ProductStock$movementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProductStock model
+   */
+  interface ProductStockFieldRefs {
+    readonly productId: FieldRef<"ProductStock", 'String'>
+    readonly quantityOnHand: FieldRef<"ProductStock", 'Int'>
+    readonly reorderPoint: FieldRef<"ProductStock", 'Int'>
+    readonly averageUnitCost: FieldRef<"ProductStock", 'Int'>
+    readonly lastMovementAt: FieldRef<"ProductStock", 'DateTime'>
+    readonly version: FieldRef<"ProductStock", 'Int'>
+    readonly createdAt: FieldRef<"ProductStock", 'DateTime'>
+    readonly updatedAt: FieldRef<"ProductStock", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProductStock findUnique
+   */
+  export type ProductStockFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductStock to fetch.
+     */
+    where: ProductStockWhereUniqueInput
+  }
+
+  /**
+   * ProductStock findUniqueOrThrow
+   */
+  export type ProductStockFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductStock to fetch.
+     */
+    where: ProductStockWhereUniqueInput
+  }
+
+  /**
+   * ProductStock findFirst
+   */
+  export type ProductStockFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductStock to fetch.
+     */
+    where?: ProductStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductStocks to fetch.
+     */
+    orderBy?: ProductStockOrderByWithRelationInput | ProductStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductStocks.
+     */
+    cursor?: ProductStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductStocks.
+     */
+    distinct?: ProductStockScalarFieldEnum | ProductStockScalarFieldEnum[]
+  }
+
+  /**
+   * ProductStock findFirstOrThrow
+   */
+  export type ProductStockFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductStock to fetch.
+     */
+    where?: ProductStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductStocks to fetch.
+     */
+    orderBy?: ProductStockOrderByWithRelationInput | ProductStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductStocks.
+     */
+    cursor?: ProductStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductStocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductStocks.
+     */
+    distinct?: ProductStockScalarFieldEnum | ProductStockScalarFieldEnum[]
+  }
+
+  /**
+   * ProductStock findMany
+   */
+  export type ProductStockFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductStocks to fetch.
+     */
+    where?: ProductStockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductStocks to fetch.
+     */
+    orderBy?: ProductStockOrderByWithRelationInput | ProductStockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProductStocks.
+     */
+    cursor?: ProductStockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductStocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductStocks.
+     */
+    skip?: number
+    distinct?: ProductStockScalarFieldEnum | ProductStockScalarFieldEnum[]
+  }
+
+  /**
+   * ProductStock create
+   */
+  export type ProductStockCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProductStock.
+     */
+    data: XOR<ProductStockCreateInput, ProductStockUncheckedCreateInput>
+  }
+
+  /**
+   * ProductStock createMany
+   */
+  export type ProductStockCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProductStocks.
+     */
+    data: ProductStockCreateManyInput | ProductStockCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProductStock createManyAndReturn
+   */
+  export type ProductStockCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProductStocks.
+     */
+    data: ProductStockCreateManyInput | ProductStockCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductStock update
+   */
+  export type ProductStockUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProductStock.
+     */
+    data: XOR<ProductStockUpdateInput, ProductStockUncheckedUpdateInput>
+    /**
+     * Choose, which ProductStock to update.
+     */
+    where: ProductStockWhereUniqueInput
+  }
+
+  /**
+   * ProductStock updateMany
+   */
+  export type ProductStockUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProductStocks.
+     */
+    data: XOR<ProductStockUpdateManyMutationInput, ProductStockUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductStocks to update
+     */
+    where?: ProductStockWhereInput
+    /**
+     * Limit how many ProductStocks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductStock updateManyAndReturn
+   */
+  export type ProductStockUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * The data used to update ProductStocks.
+     */
+    data: XOR<ProductStockUpdateManyMutationInput, ProductStockUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductStocks to update
+     */
+    where?: ProductStockWhereInput
+    /**
+     * Limit how many ProductStocks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductStock upsert
+   */
+  export type ProductStockUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProductStock to update in case it exists.
+     */
+    where: ProductStockWhereUniqueInput
+    /**
+     * In case the ProductStock found by the `where` argument doesn't exist, create a new ProductStock with this data.
+     */
+    create: XOR<ProductStockCreateInput, ProductStockUncheckedCreateInput>
+    /**
+     * In case the ProductStock was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProductStockUpdateInput, ProductStockUncheckedUpdateInput>
+  }
+
+  /**
+   * ProductStock delete
+   */
+  export type ProductStockDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+    /**
+     * Filter which ProductStock to delete.
+     */
+    where: ProductStockWhereUniqueInput
+  }
+
+  /**
+   * ProductStock deleteMany
+   */
+  export type ProductStockDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductStocks to delete
+     */
+    where?: ProductStockWhereInput
+    /**
+     * Limit how many ProductStocks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductStock.movements
+   */
+  export type ProductStock$movementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    where?: InventoryMovementWhereInput
+    orderBy?: InventoryMovementOrderByWithRelationInput | InventoryMovementOrderByWithRelationInput[]
+    cursor?: InventoryMovementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InventoryMovementScalarFieldEnum | InventoryMovementScalarFieldEnum[]
+  }
+
+  /**
+   * ProductStock without action
+   */
+  export type ProductStockDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductStock
+     */
+    select?: ProductStockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductStock
+     */
+    omit?: ProductStockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductStockInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model InventoryMovement
+   */
+
+  export type AggregateInventoryMovement = {
+    _count: InventoryMovementCountAggregateOutputType | null
+    _avg: InventoryMovementAvgAggregateOutputType | null
+    _sum: InventoryMovementSumAggregateOutputType | null
+    _min: InventoryMovementMinAggregateOutputType | null
+    _max: InventoryMovementMaxAggregateOutputType | null
+  }
+
+  export type InventoryMovementAvgAggregateOutputType = {
+    quantityDelta: number | null
+    stockBefore: number | null
+    stockAfter: number | null
+  }
+
+  export type InventoryMovementSumAggregateOutputType = {
+    quantityDelta: number | null
+    stockBefore: number | null
+    stockAfter: number | null
+  }
+
+  export type InventoryMovementMinAggregateOutputType = {
+    movementId: string | null
+    productId: string | null
+    movementType: $Enums.InventoryMovementType | null
+    quantityDelta: number | null
+    stockBefore: number | null
+    stockAfter: number | null
+    referenceType: $Enums.InventoryReferenceType | null
+    referenceId: string | null
+    referenceLabel: string | null
+    reason: string | null
+    notes: string | null
+    createdByUserId: string | null
+    createdAt: Date | null
+  }
+
+  export type InventoryMovementMaxAggregateOutputType = {
+    movementId: string | null
+    productId: string | null
+    movementType: $Enums.InventoryMovementType | null
+    quantityDelta: number | null
+    stockBefore: number | null
+    stockAfter: number | null
+    referenceType: $Enums.InventoryReferenceType | null
+    referenceId: string | null
+    referenceLabel: string | null
+    reason: string | null
+    notes: string | null
+    createdByUserId: string | null
+    createdAt: Date | null
+  }
+
+  export type InventoryMovementCountAggregateOutputType = {
+    movementId: number
+    productId: number
+    movementType: number
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType: number
+    referenceId: number
+    referenceLabel: number
+    reason: number
+    notes: number
+    createdByUserId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type InventoryMovementAvgAggregateInputType = {
+    quantityDelta?: true
+    stockBefore?: true
+    stockAfter?: true
+  }
+
+  export type InventoryMovementSumAggregateInputType = {
+    quantityDelta?: true
+    stockBefore?: true
+    stockAfter?: true
+  }
+
+  export type InventoryMovementMinAggregateInputType = {
+    movementId?: true
+    productId?: true
+    movementType?: true
+    quantityDelta?: true
+    stockBefore?: true
+    stockAfter?: true
+    referenceType?: true
+    referenceId?: true
+    referenceLabel?: true
+    reason?: true
+    notes?: true
+    createdByUserId?: true
+    createdAt?: true
+  }
+
+  export type InventoryMovementMaxAggregateInputType = {
+    movementId?: true
+    productId?: true
+    movementType?: true
+    quantityDelta?: true
+    stockBefore?: true
+    stockAfter?: true
+    referenceType?: true
+    referenceId?: true
+    referenceLabel?: true
+    reason?: true
+    notes?: true
+    createdByUserId?: true
+    createdAt?: true
+  }
+
+  export type InventoryMovementCountAggregateInputType = {
+    movementId?: true
+    productId?: true
+    movementType?: true
+    quantityDelta?: true
+    stockBefore?: true
+    stockAfter?: true
+    referenceType?: true
+    referenceId?: true
+    referenceLabel?: true
+    reason?: true
+    notes?: true
+    createdByUserId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type InventoryMovementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InventoryMovement to aggregate.
+     */
+    where?: InventoryMovementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InventoryMovements to fetch.
+     */
+    orderBy?: InventoryMovementOrderByWithRelationInput | InventoryMovementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InventoryMovementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InventoryMovements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InventoryMovements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned InventoryMovements
+    **/
+    _count?: true | InventoryMovementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InventoryMovementAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InventoryMovementSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InventoryMovementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InventoryMovementMaxAggregateInputType
+  }
+
+  export type GetInventoryMovementAggregateType<T extends InventoryMovementAggregateArgs> = {
+        [P in keyof T & keyof AggregateInventoryMovement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInventoryMovement[P]>
+      : GetScalarType<T[P], AggregateInventoryMovement[P]>
+  }
+
+
+
+
+  export type InventoryMovementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InventoryMovementWhereInput
+    orderBy?: InventoryMovementOrderByWithAggregationInput | InventoryMovementOrderByWithAggregationInput[]
+    by: InventoryMovementScalarFieldEnum[] | InventoryMovementScalarFieldEnum
+    having?: InventoryMovementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InventoryMovementCountAggregateInputType | true
+    _avg?: InventoryMovementAvgAggregateInputType
+    _sum?: InventoryMovementSumAggregateInputType
+    _min?: InventoryMovementMinAggregateInputType
+    _max?: InventoryMovementMaxAggregateInputType
+  }
+
+  export type InventoryMovementGroupByOutputType = {
+    movementId: string
+    productId: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType: $Enums.InventoryReferenceType
+    referenceId: string | null
+    referenceLabel: string | null
+    reason: string | null
+    notes: string | null
+    createdByUserId: string
+    createdAt: Date
+    _count: InventoryMovementCountAggregateOutputType | null
+    _avg: InventoryMovementAvgAggregateOutputType | null
+    _sum: InventoryMovementSumAggregateOutputType | null
+    _min: InventoryMovementMinAggregateOutputType | null
+    _max: InventoryMovementMaxAggregateOutputType | null
+  }
+
+  type GetInventoryMovementGroupByPayload<T extends InventoryMovementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InventoryMovementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InventoryMovementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InventoryMovementGroupByOutputType[P]>
+            : GetScalarType<T[P], InventoryMovementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InventoryMovementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    movementId?: boolean
+    productId?: boolean
+    movementType?: boolean
+    quantityDelta?: boolean
+    stockBefore?: boolean
+    stockAfter?: boolean
+    referenceType?: boolean
+    referenceId?: boolean
+    referenceLabel?: boolean
+    reason?: boolean
+    notes?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    productStock?: boolean | ProductStockDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inventoryMovement"]>
+
+  export type InventoryMovementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    movementId?: boolean
+    productId?: boolean
+    movementType?: boolean
+    quantityDelta?: boolean
+    stockBefore?: boolean
+    stockAfter?: boolean
+    referenceType?: boolean
+    referenceId?: boolean
+    referenceLabel?: boolean
+    reason?: boolean
+    notes?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    productStock?: boolean | ProductStockDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inventoryMovement"]>
+
+  export type InventoryMovementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    movementId?: boolean
+    productId?: boolean
+    movementType?: boolean
+    quantityDelta?: boolean
+    stockBefore?: boolean
+    stockAfter?: boolean
+    referenceType?: boolean
+    referenceId?: boolean
+    referenceLabel?: boolean
+    reason?: boolean
+    notes?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    productStock?: boolean | ProductStockDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["inventoryMovement"]>
+
+  export type InventoryMovementSelectScalar = {
+    movementId?: boolean
+    productId?: boolean
+    movementType?: boolean
+    quantityDelta?: boolean
+    stockBefore?: boolean
+    stockAfter?: boolean
+    referenceType?: boolean
+    referenceId?: boolean
+    referenceLabel?: boolean
+    reason?: boolean
+    notes?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+  }
+
+  export type InventoryMovementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"movementId" | "productId" | "movementType" | "quantityDelta" | "stockBefore" | "stockAfter" | "referenceType" | "referenceId" | "referenceLabel" | "reason" | "notes" | "createdByUserId" | "createdAt", ExtArgs["result"]["inventoryMovement"]>
+  export type InventoryMovementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    productStock?: boolean | ProductStockDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type InventoryMovementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    productStock?: boolean | ProductStockDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type InventoryMovementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    productStock?: boolean | ProductStockDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $InventoryMovementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InventoryMovement"
+    objects: {
+      productStock: Prisma.$ProductStockPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      movementId: string
+      productId: string
+      movementType: $Enums.InventoryMovementType
+      quantityDelta: number
+      stockBefore: number
+      stockAfter: number
+      referenceType: $Enums.InventoryReferenceType
+      referenceId: string | null
+      referenceLabel: string | null
+      reason: string | null
+      notes: string | null
+      createdByUserId: string
+      createdAt: Date
+    }, ExtArgs["result"]["inventoryMovement"]>
+    composites: {}
+  }
+
+  type InventoryMovementGetPayload<S extends boolean | null | undefined | InventoryMovementDefaultArgs> = $Result.GetResult<Prisma.$InventoryMovementPayload, S>
+
+  type InventoryMovementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InventoryMovementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InventoryMovementCountAggregateInputType | true
+    }
+
+  export interface InventoryMovementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InventoryMovement'], meta: { name: 'InventoryMovement' } }
+    /**
+     * Find zero or one InventoryMovement that matches the filter.
+     * @param {InventoryMovementFindUniqueArgs} args - Arguments to find a InventoryMovement
+     * @example
+     * // Get one InventoryMovement
+     * const inventoryMovement = await prisma.inventoryMovement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InventoryMovementFindUniqueArgs>(args: SelectSubset<T, InventoryMovementFindUniqueArgs<ExtArgs>>): Prisma__InventoryMovementClient<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one InventoryMovement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InventoryMovementFindUniqueOrThrowArgs} args - Arguments to find a InventoryMovement
+     * @example
+     * // Get one InventoryMovement
+     * const inventoryMovement = await prisma.inventoryMovement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InventoryMovementFindUniqueOrThrowArgs>(args: SelectSubset<T, InventoryMovementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InventoryMovementClient<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InventoryMovement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryMovementFindFirstArgs} args - Arguments to find a InventoryMovement
+     * @example
+     * // Get one InventoryMovement
+     * const inventoryMovement = await prisma.inventoryMovement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InventoryMovementFindFirstArgs>(args?: SelectSubset<T, InventoryMovementFindFirstArgs<ExtArgs>>): Prisma__InventoryMovementClient<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InventoryMovement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryMovementFindFirstOrThrowArgs} args - Arguments to find a InventoryMovement
+     * @example
+     * // Get one InventoryMovement
+     * const inventoryMovement = await prisma.inventoryMovement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InventoryMovementFindFirstOrThrowArgs>(args?: SelectSubset<T, InventoryMovementFindFirstOrThrowArgs<ExtArgs>>): Prisma__InventoryMovementClient<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more InventoryMovements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryMovementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all InventoryMovements
+     * const inventoryMovements = await prisma.inventoryMovement.findMany()
+     * 
+     * // Get first 10 InventoryMovements
+     * const inventoryMovements = await prisma.inventoryMovement.findMany({ take: 10 })
+     * 
+     * // Only select the `movementId`
+     * const inventoryMovementWithMovementIdOnly = await prisma.inventoryMovement.findMany({ select: { movementId: true } })
+     * 
+     */
+    findMany<T extends InventoryMovementFindManyArgs>(args?: SelectSubset<T, InventoryMovementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a InventoryMovement.
+     * @param {InventoryMovementCreateArgs} args - Arguments to create a InventoryMovement.
+     * @example
+     * // Create one InventoryMovement
+     * const InventoryMovement = await prisma.inventoryMovement.create({
+     *   data: {
+     *     // ... data to create a InventoryMovement
+     *   }
+     * })
+     * 
+     */
+    create<T extends InventoryMovementCreateArgs>(args: SelectSubset<T, InventoryMovementCreateArgs<ExtArgs>>): Prisma__InventoryMovementClient<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many InventoryMovements.
+     * @param {InventoryMovementCreateManyArgs} args - Arguments to create many InventoryMovements.
+     * @example
+     * // Create many InventoryMovements
+     * const inventoryMovement = await prisma.inventoryMovement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InventoryMovementCreateManyArgs>(args?: SelectSubset<T, InventoryMovementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many InventoryMovements and returns the data saved in the database.
+     * @param {InventoryMovementCreateManyAndReturnArgs} args - Arguments to create many InventoryMovements.
+     * @example
+     * // Create many InventoryMovements
+     * const inventoryMovement = await prisma.inventoryMovement.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many InventoryMovements and only return the `movementId`
+     * const inventoryMovementWithMovementIdOnly = await prisma.inventoryMovement.createManyAndReturn({
+     *   select: { movementId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InventoryMovementCreateManyAndReturnArgs>(args?: SelectSubset<T, InventoryMovementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a InventoryMovement.
+     * @param {InventoryMovementDeleteArgs} args - Arguments to delete one InventoryMovement.
+     * @example
+     * // Delete one InventoryMovement
+     * const InventoryMovement = await prisma.inventoryMovement.delete({
+     *   where: {
+     *     // ... filter to delete one InventoryMovement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InventoryMovementDeleteArgs>(args: SelectSubset<T, InventoryMovementDeleteArgs<ExtArgs>>): Prisma__InventoryMovementClient<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one InventoryMovement.
+     * @param {InventoryMovementUpdateArgs} args - Arguments to update one InventoryMovement.
+     * @example
+     * // Update one InventoryMovement
+     * const inventoryMovement = await prisma.inventoryMovement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InventoryMovementUpdateArgs>(args: SelectSubset<T, InventoryMovementUpdateArgs<ExtArgs>>): Prisma__InventoryMovementClient<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more InventoryMovements.
+     * @param {InventoryMovementDeleteManyArgs} args - Arguments to filter InventoryMovements to delete.
+     * @example
+     * // Delete a few InventoryMovements
+     * const { count } = await prisma.inventoryMovement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InventoryMovementDeleteManyArgs>(args?: SelectSubset<T, InventoryMovementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InventoryMovements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryMovementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many InventoryMovements
+     * const inventoryMovement = await prisma.inventoryMovement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InventoryMovementUpdateManyArgs>(args: SelectSubset<T, InventoryMovementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InventoryMovements and returns the data updated in the database.
+     * @param {InventoryMovementUpdateManyAndReturnArgs} args - Arguments to update many InventoryMovements.
+     * @example
+     * // Update many InventoryMovements
+     * const inventoryMovement = await prisma.inventoryMovement.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more InventoryMovements and only return the `movementId`
+     * const inventoryMovementWithMovementIdOnly = await prisma.inventoryMovement.updateManyAndReturn({
+     *   select: { movementId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InventoryMovementUpdateManyAndReturnArgs>(args: SelectSubset<T, InventoryMovementUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one InventoryMovement.
+     * @param {InventoryMovementUpsertArgs} args - Arguments to update or create a InventoryMovement.
+     * @example
+     * // Update or create a InventoryMovement
+     * const inventoryMovement = await prisma.inventoryMovement.upsert({
+     *   create: {
+     *     // ... data to create a InventoryMovement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the InventoryMovement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InventoryMovementUpsertArgs>(args: SelectSubset<T, InventoryMovementUpsertArgs<ExtArgs>>): Prisma__InventoryMovementClient<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of InventoryMovements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryMovementCountArgs} args - Arguments to filter InventoryMovements to count.
+     * @example
+     * // Count the number of InventoryMovements
+     * const count = await prisma.inventoryMovement.count({
+     *   where: {
+     *     // ... the filter for the InventoryMovements we want to count
+     *   }
+     * })
+    **/
+    count<T extends InventoryMovementCountArgs>(
+      args?: Subset<T, InventoryMovementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InventoryMovementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a InventoryMovement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryMovementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InventoryMovementAggregateArgs>(args: Subset<T, InventoryMovementAggregateArgs>): Prisma.PrismaPromise<GetInventoryMovementAggregateType<T>>
+
+    /**
+     * Group by InventoryMovement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InventoryMovementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InventoryMovementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InventoryMovementGroupByArgs['orderBy'] }
+        : { orderBy?: InventoryMovementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InventoryMovementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInventoryMovementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the InventoryMovement model
+   */
+  readonly fields: InventoryMovementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for InventoryMovement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InventoryMovementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    productStock<T extends ProductStockDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductStockDefaultArgs<ExtArgs>>): Prisma__ProductStockClient<$Result.GetResult<Prisma.$ProductStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the InventoryMovement model
+   */
+  interface InventoryMovementFieldRefs {
+    readonly movementId: FieldRef<"InventoryMovement", 'String'>
+    readonly productId: FieldRef<"InventoryMovement", 'String'>
+    readonly movementType: FieldRef<"InventoryMovement", 'InventoryMovementType'>
+    readonly quantityDelta: FieldRef<"InventoryMovement", 'Int'>
+    readonly stockBefore: FieldRef<"InventoryMovement", 'Int'>
+    readonly stockAfter: FieldRef<"InventoryMovement", 'Int'>
+    readonly referenceType: FieldRef<"InventoryMovement", 'InventoryReferenceType'>
+    readonly referenceId: FieldRef<"InventoryMovement", 'String'>
+    readonly referenceLabel: FieldRef<"InventoryMovement", 'String'>
+    readonly reason: FieldRef<"InventoryMovement", 'String'>
+    readonly notes: FieldRef<"InventoryMovement", 'String'>
+    readonly createdByUserId: FieldRef<"InventoryMovement", 'String'>
+    readonly createdAt: FieldRef<"InventoryMovement", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * InventoryMovement findUnique
+   */
+  export type InventoryMovementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryMovement to fetch.
+     */
+    where: InventoryMovementWhereUniqueInput
+  }
+
+  /**
+   * InventoryMovement findUniqueOrThrow
+   */
+  export type InventoryMovementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryMovement to fetch.
+     */
+    where: InventoryMovementWhereUniqueInput
+  }
+
+  /**
+   * InventoryMovement findFirst
+   */
+  export type InventoryMovementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryMovement to fetch.
+     */
+    where?: InventoryMovementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InventoryMovements to fetch.
+     */
+    orderBy?: InventoryMovementOrderByWithRelationInput | InventoryMovementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InventoryMovements.
+     */
+    cursor?: InventoryMovementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InventoryMovements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InventoryMovements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InventoryMovements.
+     */
+    distinct?: InventoryMovementScalarFieldEnum | InventoryMovementScalarFieldEnum[]
+  }
+
+  /**
+   * InventoryMovement findFirstOrThrow
+   */
+  export type InventoryMovementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryMovement to fetch.
+     */
+    where?: InventoryMovementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InventoryMovements to fetch.
+     */
+    orderBy?: InventoryMovementOrderByWithRelationInput | InventoryMovementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InventoryMovements.
+     */
+    cursor?: InventoryMovementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InventoryMovements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InventoryMovements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InventoryMovements.
+     */
+    distinct?: InventoryMovementScalarFieldEnum | InventoryMovementScalarFieldEnum[]
+  }
+
+  /**
+   * InventoryMovement findMany
+   */
+  export type InventoryMovementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    /**
+     * Filter, which InventoryMovements to fetch.
+     */
+    where?: InventoryMovementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InventoryMovements to fetch.
+     */
+    orderBy?: InventoryMovementOrderByWithRelationInput | InventoryMovementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing InventoryMovements.
+     */
+    cursor?: InventoryMovementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InventoryMovements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InventoryMovements.
+     */
+    skip?: number
+    distinct?: InventoryMovementScalarFieldEnum | InventoryMovementScalarFieldEnum[]
+  }
+
+  /**
+   * InventoryMovement create
+   */
+  export type InventoryMovementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    /**
+     * The data needed to create a InventoryMovement.
+     */
+    data: XOR<InventoryMovementCreateInput, InventoryMovementUncheckedCreateInput>
+  }
+
+  /**
+   * InventoryMovement createMany
+   */
+  export type InventoryMovementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many InventoryMovements.
+     */
+    data: InventoryMovementCreateManyInput | InventoryMovementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InventoryMovement createManyAndReturn
+   */
+  export type InventoryMovementCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * The data used to create many InventoryMovements.
+     */
+    data: InventoryMovementCreateManyInput | InventoryMovementCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * InventoryMovement update
+   */
+  export type InventoryMovementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    /**
+     * The data needed to update a InventoryMovement.
+     */
+    data: XOR<InventoryMovementUpdateInput, InventoryMovementUncheckedUpdateInput>
+    /**
+     * Choose, which InventoryMovement to update.
+     */
+    where: InventoryMovementWhereUniqueInput
+  }
+
+  /**
+   * InventoryMovement updateMany
+   */
+  export type InventoryMovementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update InventoryMovements.
+     */
+    data: XOR<InventoryMovementUpdateManyMutationInput, InventoryMovementUncheckedUpdateManyInput>
+    /**
+     * Filter which InventoryMovements to update
+     */
+    where?: InventoryMovementWhereInput
+    /**
+     * Limit how many InventoryMovements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InventoryMovement updateManyAndReturn
+   */
+  export type InventoryMovementUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * The data used to update InventoryMovements.
+     */
+    data: XOR<InventoryMovementUpdateManyMutationInput, InventoryMovementUncheckedUpdateManyInput>
+    /**
+     * Filter which InventoryMovements to update
+     */
+    where?: InventoryMovementWhereInput
+    /**
+     * Limit how many InventoryMovements to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * InventoryMovement upsert
+   */
+  export type InventoryMovementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    /**
+     * The filter to search for the InventoryMovement to update in case it exists.
+     */
+    where: InventoryMovementWhereUniqueInput
+    /**
+     * In case the InventoryMovement found by the `where` argument doesn't exist, create a new InventoryMovement with this data.
+     */
+    create: XOR<InventoryMovementCreateInput, InventoryMovementUncheckedCreateInput>
+    /**
+     * In case the InventoryMovement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InventoryMovementUpdateInput, InventoryMovementUncheckedUpdateInput>
+  }
+
+  /**
+   * InventoryMovement delete
+   */
+  export type InventoryMovementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
+    /**
+     * Filter which InventoryMovement to delete.
+     */
+    where: InventoryMovementWhereUniqueInput
+  }
+
+  /**
+   * InventoryMovement deleteMany
+   */
+  export type InventoryMovementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InventoryMovements to delete
+     */
+    where?: InventoryMovementWhereInput
+    /**
+     * Limit how many InventoryMovements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * InventoryMovement without action
+   */
+  export type InventoryMovementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InventoryMovement
+     */
+    select?: InventoryMovementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InventoryMovement
+     */
+    omit?: InventoryMovementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InventoryMovementInclude<ExtArgs> | null
   }
 
 
@@ -16029,6 +18901,1333 @@ export namespace Prisma {
 
 
   /**
+   * Model AsmrCampaign
+   */
+
+  export type AggregateAsmrCampaign = {
+    _count: AsmrCampaignCountAggregateOutputType | null
+    _avg: AsmrCampaignAvgAggregateOutputType | null
+    _sum: AsmrCampaignSumAggregateOutputType | null
+    _min: AsmrCampaignMinAggregateOutputType | null
+    _max: AsmrCampaignMaxAggregateOutputType | null
+  }
+
+  export type AsmrCampaignAvgAggregateOutputType = {
+    auditMonth: number | null
+    auditYear: number | null
+    sourceMonth: number | null
+    sourceYear: number | null
+    discountPercent: number | null
+    contactsSuccess: number | null
+    universeTotal: number | null
+    excludedRepurchase: number | null
+    eligibleBeforeDedup: number | null
+    eligibleFinal: number | null
+    phonesDeduplicated: number | null
+  }
+
+  export type AsmrCampaignSumAggregateOutputType = {
+    auditMonth: number | null
+    auditYear: number | null
+    sourceMonth: number | null
+    sourceYear: number | null
+    discountPercent: number | null
+    contactsSuccess: number | null
+    universeTotal: number | null
+    excludedRepurchase: number | null
+    eligibleBeforeDedup: number | null
+    eligibleFinal: number | null
+    phonesDeduplicated: number | null
+  }
+
+  export type AsmrCampaignMinAggregateOutputType = {
+    campaignId: string | null
+    campaignName: string | null
+    campaignType: string | null
+    auditMonth: number | null
+    auditYear: number | null
+    sourceMonth: number | null
+    sourceYear: number | null
+    discountPercent: number | null
+    messageSent: string | null
+    contactsSuccess: number | null
+    universeTotal: number | null
+    excludedRepurchase: number | null
+    eligibleBeforeDedup: number | null
+    eligibleFinal: number | null
+    phonesDeduplicated: number | null
+    campaignStatus: string | null
+    createdByUserId: string | null
+    executedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AsmrCampaignMaxAggregateOutputType = {
+    campaignId: string | null
+    campaignName: string | null
+    campaignType: string | null
+    auditMonth: number | null
+    auditYear: number | null
+    sourceMonth: number | null
+    sourceYear: number | null
+    discountPercent: number | null
+    messageSent: string | null
+    contactsSuccess: number | null
+    universeTotal: number | null
+    excludedRepurchase: number | null
+    eligibleBeforeDedup: number | null
+    eligibleFinal: number | null
+    phonesDeduplicated: number | null
+    campaignStatus: string | null
+    createdByUserId: string | null
+    executedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AsmrCampaignCountAggregateOutputType = {
+    campaignId: number
+    campaignName: number
+    campaignType: number
+    auditMonth: number
+    auditYear: number
+    sourceMonth: number
+    sourceYear: number
+    discountPercent: number
+    messageSent: number
+    contactsSuccess: number
+    universeTotal: number
+    excludedRepurchase: number
+    eligibleBeforeDedup: number
+    eligibleFinal: number
+    phonesDeduplicated: number
+    campaignStatus: number
+    createdByUserId: number
+    executedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AsmrCampaignAvgAggregateInputType = {
+    auditMonth?: true
+    auditYear?: true
+    sourceMonth?: true
+    sourceYear?: true
+    discountPercent?: true
+    contactsSuccess?: true
+    universeTotal?: true
+    excludedRepurchase?: true
+    eligibleBeforeDedup?: true
+    eligibleFinal?: true
+    phonesDeduplicated?: true
+  }
+
+  export type AsmrCampaignSumAggregateInputType = {
+    auditMonth?: true
+    auditYear?: true
+    sourceMonth?: true
+    sourceYear?: true
+    discountPercent?: true
+    contactsSuccess?: true
+    universeTotal?: true
+    excludedRepurchase?: true
+    eligibleBeforeDedup?: true
+    eligibleFinal?: true
+    phonesDeduplicated?: true
+  }
+
+  export type AsmrCampaignMinAggregateInputType = {
+    campaignId?: true
+    campaignName?: true
+    campaignType?: true
+    auditMonth?: true
+    auditYear?: true
+    sourceMonth?: true
+    sourceYear?: true
+    discountPercent?: true
+    messageSent?: true
+    contactsSuccess?: true
+    universeTotal?: true
+    excludedRepurchase?: true
+    eligibleBeforeDedup?: true
+    eligibleFinal?: true
+    phonesDeduplicated?: true
+    campaignStatus?: true
+    createdByUserId?: true
+    executedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AsmrCampaignMaxAggregateInputType = {
+    campaignId?: true
+    campaignName?: true
+    campaignType?: true
+    auditMonth?: true
+    auditYear?: true
+    sourceMonth?: true
+    sourceYear?: true
+    discountPercent?: true
+    messageSent?: true
+    contactsSuccess?: true
+    universeTotal?: true
+    excludedRepurchase?: true
+    eligibleBeforeDedup?: true
+    eligibleFinal?: true
+    phonesDeduplicated?: true
+    campaignStatus?: true
+    createdByUserId?: true
+    executedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AsmrCampaignCountAggregateInputType = {
+    campaignId?: true
+    campaignName?: true
+    campaignType?: true
+    auditMonth?: true
+    auditYear?: true
+    sourceMonth?: true
+    sourceYear?: true
+    discountPercent?: true
+    messageSent?: true
+    contactsSuccess?: true
+    universeTotal?: true
+    excludedRepurchase?: true
+    eligibleBeforeDedup?: true
+    eligibleFinal?: true
+    phonesDeduplicated?: true
+    campaignStatus?: true
+    createdByUserId?: true
+    executedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AsmrCampaignAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AsmrCampaign to aggregate.
+     */
+    where?: AsmrCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AsmrCampaigns to fetch.
+     */
+    orderBy?: AsmrCampaignOrderByWithRelationInput | AsmrCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AsmrCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AsmrCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AsmrCampaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AsmrCampaigns
+    **/
+    _count?: true | AsmrCampaignCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AsmrCampaignAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AsmrCampaignSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AsmrCampaignMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AsmrCampaignMaxAggregateInputType
+  }
+
+  export type GetAsmrCampaignAggregateType<T extends AsmrCampaignAggregateArgs> = {
+        [P in keyof T & keyof AggregateAsmrCampaign]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAsmrCampaign[P]>
+      : GetScalarType<T[P], AggregateAsmrCampaign[P]>
+  }
+
+
+
+
+  export type AsmrCampaignGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AsmrCampaignWhereInput
+    orderBy?: AsmrCampaignOrderByWithAggregationInput | AsmrCampaignOrderByWithAggregationInput[]
+    by: AsmrCampaignScalarFieldEnum[] | AsmrCampaignScalarFieldEnum
+    having?: AsmrCampaignScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AsmrCampaignCountAggregateInputType | true
+    _avg?: AsmrCampaignAvgAggregateInputType
+    _sum?: AsmrCampaignSumAggregateInputType
+    _min?: AsmrCampaignMinAggregateInputType
+    _max?: AsmrCampaignMaxAggregateInputType
+  }
+
+  export type AsmrCampaignGroupByOutputType = {
+    campaignId: string
+    campaignName: string
+    campaignType: string
+    auditMonth: number
+    auditYear: number
+    sourceMonth: number
+    sourceYear: number
+    discountPercent: number
+    messageSent: string | null
+    contactsSuccess: number
+    universeTotal: number
+    excludedRepurchase: number
+    eligibleBeforeDedup: number
+    eligibleFinal: number
+    phonesDeduplicated: number
+    campaignStatus: string
+    createdByUserId: string
+    executedAt: Date
+    createdAt: Date
+    updatedAt: Date
+    _count: AsmrCampaignCountAggregateOutputType | null
+    _avg: AsmrCampaignAvgAggregateOutputType | null
+    _sum: AsmrCampaignSumAggregateOutputType | null
+    _min: AsmrCampaignMinAggregateOutputType | null
+    _max: AsmrCampaignMaxAggregateOutputType | null
+  }
+
+  type GetAsmrCampaignGroupByPayload<T extends AsmrCampaignGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AsmrCampaignGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AsmrCampaignGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AsmrCampaignGroupByOutputType[P]>
+            : GetScalarType<T[P], AsmrCampaignGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AsmrCampaignSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    campaignId?: boolean
+    campaignName?: boolean
+    campaignType?: boolean
+    auditMonth?: boolean
+    auditYear?: boolean
+    sourceMonth?: boolean
+    sourceYear?: boolean
+    discountPercent?: boolean
+    messageSent?: boolean
+    contactsSuccess?: boolean
+    universeTotal?: boolean
+    excludedRepurchase?: boolean
+    eligibleBeforeDedup?: boolean
+    eligibleFinal?: boolean
+    phonesDeduplicated?: boolean
+    campaignStatus?: boolean
+    createdByUserId?: boolean
+    executedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["asmrCampaign"]>
+
+  export type AsmrCampaignSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    campaignId?: boolean
+    campaignName?: boolean
+    campaignType?: boolean
+    auditMonth?: boolean
+    auditYear?: boolean
+    sourceMonth?: boolean
+    sourceYear?: boolean
+    discountPercent?: boolean
+    messageSent?: boolean
+    contactsSuccess?: boolean
+    universeTotal?: boolean
+    excludedRepurchase?: boolean
+    eligibleBeforeDedup?: boolean
+    eligibleFinal?: boolean
+    phonesDeduplicated?: boolean
+    campaignStatus?: boolean
+    createdByUserId?: boolean
+    executedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["asmrCampaign"]>
+
+  export type AsmrCampaignSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    campaignId?: boolean
+    campaignName?: boolean
+    campaignType?: boolean
+    auditMonth?: boolean
+    auditYear?: boolean
+    sourceMonth?: boolean
+    sourceYear?: boolean
+    discountPercent?: boolean
+    messageSent?: boolean
+    contactsSuccess?: boolean
+    universeTotal?: boolean
+    excludedRepurchase?: boolean
+    eligibleBeforeDedup?: boolean
+    eligibleFinal?: boolean
+    phonesDeduplicated?: boolean
+    campaignStatus?: boolean
+    createdByUserId?: boolean
+    executedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["asmrCampaign"]>
+
+  export type AsmrCampaignSelectScalar = {
+    campaignId?: boolean
+    campaignName?: boolean
+    campaignType?: boolean
+    auditMonth?: boolean
+    auditYear?: boolean
+    sourceMonth?: boolean
+    sourceYear?: boolean
+    discountPercent?: boolean
+    messageSent?: boolean
+    contactsSuccess?: boolean
+    universeTotal?: boolean
+    excludedRepurchase?: boolean
+    eligibleBeforeDedup?: boolean
+    eligibleFinal?: boolean
+    phonesDeduplicated?: boolean
+    campaignStatus?: boolean
+    createdByUserId?: boolean
+    executedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AsmrCampaignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"campaignId" | "campaignName" | "campaignType" | "auditMonth" | "auditYear" | "sourceMonth" | "sourceYear" | "discountPercent" | "messageSent" | "contactsSuccess" | "universeTotal" | "excludedRepurchase" | "eligibleBeforeDedup" | "eligibleFinal" | "phonesDeduplicated" | "campaignStatus" | "createdByUserId" | "executedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["asmrCampaign"]>
+  export type AsmrCampaignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AsmrCampaignIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AsmrCampaignIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AsmrCampaignPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AsmrCampaign"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      campaignId: string
+      campaignName: string
+      campaignType: string
+      auditMonth: number
+      auditYear: number
+      sourceMonth: number
+      sourceYear: number
+      discountPercent: number
+      messageSent: string | null
+      contactsSuccess: number
+      universeTotal: number
+      excludedRepurchase: number
+      eligibleBeforeDedup: number
+      eligibleFinal: number
+      phonesDeduplicated: number
+      campaignStatus: string
+      createdByUserId: string
+      executedAt: Date
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["asmrCampaign"]>
+    composites: {}
+  }
+
+  type AsmrCampaignGetPayload<S extends boolean | null | undefined | AsmrCampaignDefaultArgs> = $Result.GetResult<Prisma.$AsmrCampaignPayload, S>
+
+  type AsmrCampaignCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AsmrCampaignFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AsmrCampaignCountAggregateInputType | true
+    }
+
+  export interface AsmrCampaignDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AsmrCampaign'], meta: { name: 'AsmrCampaign' } }
+    /**
+     * Find zero or one AsmrCampaign that matches the filter.
+     * @param {AsmrCampaignFindUniqueArgs} args - Arguments to find a AsmrCampaign
+     * @example
+     * // Get one AsmrCampaign
+     * const asmrCampaign = await prisma.asmrCampaign.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AsmrCampaignFindUniqueArgs>(args: SelectSubset<T, AsmrCampaignFindUniqueArgs<ExtArgs>>): Prisma__AsmrCampaignClient<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AsmrCampaign that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AsmrCampaignFindUniqueOrThrowArgs} args - Arguments to find a AsmrCampaign
+     * @example
+     * // Get one AsmrCampaign
+     * const asmrCampaign = await prisma.asmrCampaign.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AsmrCampaignFindUniqueOrThrowArgs>(args: SelectSubset<T, AsmrCampaignFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AsmrCampaignClient<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AsmrCampaign that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AsmrCampaignFindFirstArgs} args - Arguments to find a AsmrCampaign
+     * @example
+     * // Get one AsmrCampaign
+     * const asmrCampaign = await prisma.asmrCampaign.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AsmrCampaignFindFirstArgs>(args?: SelectSubset<T, AsmrCampaignFindFirstArgs<ExtArgs>>): Prisma__AsmrCampaignClient<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AsmrCampaign that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AsmrCampaignFindFirstOrThrowArgs} args - Arguments to find a AsmrCampaign
+     * @example
+     * // Get one AsmrCampaign
+     * const asmrCampaign = await prisma.asmrCampaign.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AsmrCampaignFindFirstOrThrowArgs>(args?: SelectSubset<T, AsmrCampaignFindFirstOrThrowArgs<ExtArgs>>): Prisma__AsmrCampaignClient<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AsmrCampaigns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AsmrCampaignFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AsmrCampaigns
+     * const asmrCampaigns = await prisma.asmrCampaign.findMany()
+     * 
+     * // Get first 10 AsmrCampaigns
+     * const asmrCampaigns = await prisma.asmrCampaign.findMany({ take: 10 })
+     * 
+     * // Only select the `campaignId`
+     * const asmrCampaignWithCampaignIdOnly = await prisma.asmrCampaign.findMany({ select: { campaignId: true } })
+     * 
+     */
+    findMany<T extends AsmrCampaignFindManyArgs>(args?: SelectSubset<T, AsmrCampaignFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AsmrCampaign.
+     * @param {AsmrCampaignCreateArgs} args - Arguments to create a AsmrCampaign.
+     * @example
+     * // Create one AsmrCampaign
+     * const AsmrCampaign = await prisma.asmrCampaign.create({
+     *   data: {
+     *     // ... data to create a AsmrCampaign
+     *   }
+     * })
+     * 
+     */
+    create<T extends AsmrCampaignCreateArgs>(args: SelectSubset<T, AsmrCampaignCreateArgs<ExtArgs>>): Prisma__AsmrCampaignClient<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AsmrCampaigns.
+     * @param {AsmrCampaignCreateManyArgs} args - Arguments to create many AsmrCampaigns.
+     * @example
+     * // Create many AsmrCampaigns
+     * const asmrCampaign = await prisma.asmrCampaign.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AsmrCampaignCreateManyArgs>(args?: SelectSubset<T, AsmrCampaignCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AsmrCampaigns and returns the data saved in the database.
+     * @param {AsmrCampaignCreateManyAndReturnArgs} args - Arguments to create many AsmrCampaigns.
+     * @example
+     * // Create many AsmrCampaigns
+     * const asmrCampaign = await prisma.asmrCampaign.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AsmrCampaigns and only return the `campaignId`
+     * const asmrCampaignWithCampaignIdOnly = await prisma.asmrCampaign.createManyAndReturn({
+     *   select: { campaignId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AsmrCampaignCreateManyAndReturnArgs>(args?: SelectSubset<T, AsmrCampaignCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AsmrCampaign.
+     * @param {AsmrCampaignDeleteArgs} args - Arguments to delete one AsmrCampaign.
+     * @example
+     * // Delete one AsmrCampaign
+     * const AsmrCampaign = await prisma.asmrCampaign.delete({
+     *   where: {
+     *     // ... filter to delete one AsmrCampaign
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AsmrCampaignDeleteArgs>(args: SelectSubset<T, AsmrCampaignDeleteArgs<ExtArgs>>): Prisma__AsmrCampaignClient<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AsmrCampaign.
+     * @param {AsmrCampaignUpdateArgs} args - Arguments to update one AsmrCampaign.
+     * @example
+     * // Update one AsmrCampaign
+     * const asmrCampaign = await prisma.asmrCampaign.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AsmrCampaignUpdateArgs>(args: SelectSubset<T, AsmrCampaignUpdateArgs<ExtArgs>>): Prisma__AsmrCampaignClient<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AsmrCampaigns.
+     * @param {AsmrCampaignDeleteManyArgs} args - Arguments to filter AsmrCampaigns to delete.
+     * @example
+     * // Delete a few AsmrCampaigns
+     * const { count } = await prisma.asmrCampaign.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AsmrCampaignDeleteManyArgs>(args?: SelectSubset<T, AsmrCampaignDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AsmrCampaigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AsmrCampaignUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AsmrCampaigns
+     * const asmrCampaign = await prisma.asmrCampaign.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AsmrCampaignUpdateManyArgs>(args: SelectSubset<T, AsmrCampaignUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AsmrCampaigns and returns the data updated in the database.
+     * @param {AsmrCampaignUpdateManyAndReturnArgs} args - Arguments to update many AsmrCampaigns.
+     * @example
+     * // Update many AsmrCampaigns
+     * const asmrCampaign = await prisma.asmrCampaign.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AsmrCampaigns and only return the `campaignId`
+     * const asmrCampaignWithCampaignIdOnly = await prisma.asmrCampaign.updateManyAndReturn({
+     *   select: { campaignId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AsmrCampaignUpdateManyAndReturnArgs>(args: SelectSubset<T, AsmrCampaignUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AsmrCampaign.
+     * @param {AsmrCampaignUpsertArgs} args - Arguments to update or create a AsmrCampaign.
+     * @example
+     * // Update or create a AsmrCampaign
+     * const asmrCampaign = await prisma.asmrCampaign.upsert({
+     *   create: {
+     *     // ... data to create a AsmrCampaign
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AsmrCampaign we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AsmrCampaignUpsertArgs>(args: SelectSubset<T, AsmrCampaignUpsertArgs<ExtArgs>>): Prisma__AsmrCampaignClient<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AsmrCampaigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AsmrCampaignCountArgs} args - Arguments to filter AsmrCampaigns to count.
+     * @example
+     * // Count the number of AsmrCampaigns
+     * const count = await prisma.asmrCampaign.count({
+     *   where: {
+     *     // ... the filter for the AsmrCampaigns we want to count
+     *   }
+     * })
+    **/
+    count<T extends AsmrCampaignCountArgs>(
+      args?: Subset<T, AsmrCampaignCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AsmrCampaignCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AsmrCampaign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AsmrCampaignAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AsmrCampaignAggregateArgs>(args: Subset<T, AsmrCampaignAggregateArgs>): Prisma.PrismaPromise<GetAsmrCampaignAggregateType<T>>
+
+    /**
+     * Group by AsmrCampaign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AsmrCampaignGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AsmrCampaignGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AsmrCampaignGroupByArgs['orderBy'] }
+        : { orderBy?: AsmrCampaignGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AsmrCampaignGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAsmrCampaignGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AsmrCampaign model
+   */
+  readonly fields: AsmrCampaignFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AsmrCampaign.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AsmrCampaignClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AsmrCampaign model
+   */
+  interface AsmrCampaignFieldRefs {
+    readonly campaignId: FieldRef<"AsmrCampaign", 'String'>
+    readonly campaignName: FieldRef<"AsmrCampaign", 'String'>
+    readonly campaignType: FieldRef<"AsmrCampaign", 'String'>
+    readonly auditMonth: FieldRef<"AsmrCampaign", 'Int'>
+    readonly auditYear: FieldRef<"AsmrCampaign", 'Int'>
+    readonly sourceMonth: FieldRef<"AsmrCampaign", 'Int'>
+    readonly sourceYear: FieldRef<"AsmrCampaign", 'Int'>
+    readonly discountPercent: FieldRef<"AsmrCampaign", 'Int'>
+    readonly messageSent: FieldRef<"AsmrCampaign", 'String'>
+    readonly contactsSuccess: FieldRef<"AsmrCampaign", 'Int'>
+    readonly universeTotal: FieldRef<"AsmrCampaign", 'Int'>
+    readonly excludedRepurchase: FieldRef<"AsmrCampaign", 'Int'>
+    readonly eligibleBeforeDedup: FieldRef<"AsmrCampaign", 'Int'>
+    readonly eligibleFinal: FieldRef<"AsmrCampaign", 'Int'>
+    readonly phonesDeduplicated: FieldRef<"AsmrCampaign", 'Int'>
+    readonly campaignStatus: FieldRef<"AsmrCampaign", 'String'>
+    readonly createdByUserId: FieldRef<"AsmrCampaign", 'String'>
+    readonly executedAt: FieldRef<"AsmrCampaign", 'DateTime'>
+    readonly createdAt: FieldRef<"AsmrCampaign", 'DateTime'>
+    readonly updatedAt: FieldRef<"AsmrCampaign", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AsmrCampaign findUnique
+   */
+  export type AsmrCampaignFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which AsmrCampaign to fetch.
+     */
+    where: AsmrCampaignWhereUniqueInput
+  }
+
+  /**
+   * AsmrCampaign findUniqueOrThrow
+   */
+  export type AsmrCampaignFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which AsmrCampaign to fetch.
+     */
+    where: AsmrCampaignWhereUniqueInput
+  }
+
+  /**
+   * AsmrCampaign findFirst
+   */
+  export type AsmrCampaignFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which AsmrCampaign to fetch.
+     */
+    where?: AsmrCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AsmrCampaigns to fetch.
+     */
+    orderBy?: AsmrCampaignOrderByWithRelationInput | AsmrCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AsmrCampaigns.
+     */
+    cursor?: AsmrCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AsmrCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AsmrCampaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AsmrCampaigns.
+     */
+    distinct?: AsmrCampaignScalarFieldEnum | AsmrCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * AsmrCampaign findFirstOrThrow
+   */
+  export type AsmrCampaignFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which AsmrCampaign to fetch.
+     */
+    where?: AsmrCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AsmrCampaigns to fetch.
+     */
+    orderBy?: AsmrCampaignOrderByWithRelationInput | AsmrCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AsmrCampaigns.
+     */
+    cursor?: AsmrCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AsmrCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AsmrCampaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AsmrCampaigns.
+     */
+    distinct?: AsmrCampaignScalarFieldEnum | AsmrCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * AsmrCampaign findMany
+   */
+  export type AsmrCampaignFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which AsmrCampaigns to fetch.
+     */
+    where?: AsmrCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AsmrCampaigns to fetch.
+     */
+    orderBy?: AsmrCampaignOrderByWithRelationInput | AsmrCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AsmrCampaigns.
+     */
+    cursor?: AsmrCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AsmrCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AsmrCampaigns.
+     */
+    skip?: number
+    distinct?: AsmrCampaignScalarFieldEnum | AsmrCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * AsmrCampaign create
+   */
+  export type AsmrCampaignCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AsmrCampaign.
+     */
+    data: XOR<AsmrCampaignCreateInput, AsmrCampaignUncheckedCreateInput>
+  }
+
+  /**
+   * AsmrCampaign createMany
+   */
+  export type AsmrCampaignCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AsmrCampaigns.
+     */
+    data: AsmrCampaignCreateManyInput | AsmrCampaignCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AsmrCampaign createManyAndReturn
+   */
+  export type AsmrCampaignCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * The data used to create many AsmrCampaigns.
+     */
+    data: AsmrCampaignCreateManyInput | AsmrCampaignCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AsmrCampaign update
+   */
+  export type AsmrCampaignUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AsmrCampaign.
+     */
+    data: XOR<AsmrCampaignUpdateInput, AsmrCampaignUncheckedUpdateInput>
+    /**
+     * Choose, which AsmrCampaign to update.
+     */
+    where: AsmrCampaignWhereUniqueInput
+  }
+
+  /**
+   * AsmrCampaign updateMany
+   */
+  export type AsmrCampaignUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AsmrCampaigns.
+     */
+    data: XOR<AsmrCampaignUpdateManyMutationInput, AsmrCampaignUncheckedUpdateManyInput>
+    /**
+     * Filter which AsmrCampaigns to update
+     */
+    where?: AsmrCampaignWhereInput
+    /**
+     * Limit how many AsmrCampaigns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AsmrCampaign updateManyAndReturn
+   */
+  export type AsmrCampaignUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * The data used to update AsmrCampaigns.
+     */
+    data: XOR<AsmrCampaignUpdateManyMutationInput, AsmrCampaignUncheckedUpdateManyInput>
+    /**
+     * Filter which AsmrCampaigns to update
+     */
+    where?: AsmrCampaignWhereInput
+    /**
+     * Limit how many AsmrCampaigns to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AsmrCampaign upsert
+   */
+  export type AsmrCampaignUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AsmrCampaign to update in case it exists.
+     */
+    where: AsmrCampaignWhereUniqueInput
+    /**
+     * In case the AsmrCampaign found by the `where` argument doesn't exist, create a new AsmrCampaign with this data.
+     */
+    create: XOR<AsmrCampaignCreateInput, AsmrCampaignUncheckedCreateInput>
+    /**
+     * In case the AsmrCampaign was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AsmrCampaignUpdateInput, AsmrCampaignUncheckedUpdateInput>
+  }
+
+  /**
+   * AsmrCampaign delete
+   */
+  export type AsmrCampaignDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+    /**
+     * Filter which AsmrCampaign to delete.
+     */
+    where: AsmrCampaignWhereUniqueInput
+  }
+
+  /**
+   * AsmrCampaign deleteMany
+   */
+  export type AsmrCampaignDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AsmrCampaigns to delete
+     */
+    where?: AsmrCampaignWhereInput
+    /**
+     * Limit how many AsmrCampaigns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AsmrCampaign without action
+   */
+  export type AsmrCampaignDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AsmrCampaign
+     */
+    select?: AsmrCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AsmrCampaign
+     */
+    omit?: AsmrCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AsmrCampaignInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Expense
    */
 
@@ -18354,6 +22553,8 @@ export namespace Prisma {
     purchaseStatus: string | null
     purchaseComment: string | null
     createdByUserId: string | null
+    cancelledByUserId: string | null
+    cancelledAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18367,6 +22568,8 @@ export namespace Prisma {
     purchaseStatus: string | null
     purchaseComment: string | null
     createdByUserId: string | null
+    cancelledByUserId: string | null
+    cancelledAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18380,6 +22583,8 @@ export namespace Prisma {
     purchaseStatus: number
     purchaseComment: number
     createdByUserId: number
+    cancelledByUserId: number
+    cancelledAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -18403,6 +22608,8 @@ export namespace Prisma {
     purchaseStatus?: true
     purchaseComment?: true
     createdByUserId?: true
+    cancelledByUserId?: true
+    cancelledAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -18416,6 +22623,8 @@ export namespace Prisma {
     purchaseStatus?: true
     purchaseComment?: true
     createdByUserId?: true
+    cancelledByUserId?: true
+    cancelledAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -18429,6 +22638,8 @@ export namespace Prisma {
     purchaseStatus?: true
     purchaseComment?: true
     createdByUserId?: true
+    cancelledByUserId?: true
+    cancelledAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -18529,6 +22740,8 @@ export namespace Prisma {
     purchaseStatus: string | null
     purchaseComment: string | null
     createdByUserId: string
+    cancelledByUserId: string | null
+    cancelledAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: PurchaseCountAggregateOutputType | null
@@ -18561,10 +22774,13 @@ export namespace Prisma {
     purchaseStatus?: boolean
     purchaseComment?: boolean
     createdByUserId?: boolean
+    cancelledByUserId?: boolean
+    cancelledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     provider?: boolean | ProviderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | Purchase$cancelledByArgs<ExtArgs>
     PurchaseDetail?: boolean | Purchase$PurchaseDetailArgs<ExtArgs>
     _count?: boolean | PurchaseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["purchase"]>
@@ -18578,10 +22794,13 @@ export namespace Prisma {
     purchaseStatus?: boolean
     purchaseComment?: boolean
     createdByUserId?: boolean
+    cancelledByUserId?: boolean
+    cancelledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     provider?: boolean | ProviderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | Purchase$cancelledByArgs<ExtArgs>
   }, ExtArgs["result"]["purchase"]>
 
   export type PurchaseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -18593,10 +22812,13 @@ export namespace Prisma {
     purchaseStatus?: boolean
     purchaseComment?: boolean
     createdByUserId?: boolean
+    cancelledByUserId?: boolean
+    cancelledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     provider?: boolean | ProviderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | Purchase$cancelledByArgs<ExtArgs>
   }, ExtArgs["result"]["purchase"]>
 
   export type PurchaseSelectScalar = {
@@ -18608,24 +22830,29 @@ export namespace Prisma {
     purchaseStatus?: boolean
     purchaseComment?: boolean
     createdByUserId?: boolean
+    cancelledByUserId?: boolean
+    cancelledAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PurchaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"purchaseId" | "purchaseNumber" | "purchaseRealNumber" | "purchaseProviderId" | "purchaseTotal" | "purchaseStatus" | "purchaseComment" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["purchase"]>
+  export type PurchaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"purchaseId" | "purchaseNumber" | "purchaseRealNumber" | "purchaseProviderId" | "purchaseTotal" | "purchaseStatus" | "purchaseComment" | "createdByUserId" | "cancelledByUserId" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["purchase"]>
   export type PurchaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     provider?: boolean | ProviderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | Purchase$cancelledByArgs<ExtArgs>
     PurchaseDetail?: boolean | Purchase$PurchaseDetailArgs<ExtArgs>
     _count?: boolean | PurchaseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PurchaseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     provider?: boolean | ProviderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | Purchase$cancelledByArgs<ExtArgs>
   }
   export type PurchaseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     provider?: boolean | ProviderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    cancelledBy?: boolean | Purchase$cancelledByArgs<ExtArgs>
   }
 
   export type $PurchasePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18633,6 +22860,7 @@ export namespace Prisma {
     objects: {
       provider: Prisma.$ProviderPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
+      cancelledBy: Prisma.$UserPayload<ExtArgs> | null
       PurchaseDetail: Prisma.$PurchaseDetailPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -18644,6 +22872,8 @@ export namespace Prisma {
       purchaseStatus: string | null
       purchaseComment: string | null
       createdByUserId: string
+      cancelledByUserId: string | null
+      cancelledAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["purchase"]>
@@ -19042,6 +23272,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     provider<T extends ProviderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProviderDefaultArgs<ExtArgs>>): Prisma__ProviderClient<$Result.GetResult<Prisma.$ProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    cancelledBy<T extends Purchase$cancelledByArgs<ExtArgs> = {}>(args?: Subset<T, Purchase$cancelledByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     PurchaseDetail<T extends Purchase$PurchaseDetailArgs<ExtArgs> = {}>(args?: Subset<T, Purchase$PurchaseDetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PurchaseDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -19080,6 +23311,8 @@ export namespace Prisma {
     readonly purchaseStatus: FieldRef<"Purchase", 'String'>
     readonly purchaseComment: FieldRef<"Purchase", 'String'>
     readonly createdByUserId: FieldRef<"Purchase", 'String'>
+    readonly cancelledByUserId: FieldRef<"Purchase", 'String'>
+    readonly cancelledAt: FieldRef<"Purchase", 'DateTime'>
     readonly createdAt: FieldRef<"Purchase", 'DateTime'>
     readonly updatedAt: FieldRef<"Purchase", 'DateTime'>
   }
@@ -19475,6 +23708,25 @@ export namespace Prisma {
      * Limit how many Purchases to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Purchase.cancelledBy
+   */
+  export type Purchase$cancelledByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -20821,12 +25073,46 @@ export namespace Prisma {
     productPriceFixed: 'productPriceFixed',
     productStatus: 'productStatus',
     productUnit: 'productUnit',
+    productAllowZeroStock: 'productAllowZeroStock',
     createdByUserId: 'createdByUserId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+  export const ProductStockScalarFieldEnum: {
+    productId: 'productId',
+    quantityOnHand: 'quantityOnHand',
+    reorderPoint: 'reorderPoint',
+    averageUnitCost: 'averageUnitCost',
+    lastMovementAt: 'lastMovementAt',
+    version: 'version',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProductStockScalarFieldEnum = (typeof ProductStockScalarFieldEnum)[keyof typeof ProductStockScalarFieldEnum]
+
+
+  export const InventoryMovementScalarFieldEnum: {
+    movementId: 'movementId',
+    productId: 'productId',
+    movementType: 'movementType',
+    quantityDelta: 'quantityDelta',
+    stockBefore: 'stockBefore',
+    stockAfter: 'stockAfter',
+    referenceType: 'referenceType',
+    referenceId: 'referenceId',
+    referenceLabel: 'referenceLabel',
+    reason: 'reason',
+    notes: 'notes',
+    createdByUserId: 'createdByUserId',
+    createdAt: 'createdAt'
+  };
+
+  export type InventoryMovementScalarFieldEnum = (typeof InventoryMovementScalarFieldEnum)[keyof typeof InventoryMovementScalarFieldEnum]
 
 
   export const ServiceScalarFieldEnum: {
@@ -20951,6 +25237,32 @@ export namespace Prisma {
   export type TransactionsScalarFieldEnum = (typeof TransactionsScalarFieldEnum)[keyof typeof TransactionsScalarFieldEnum]
 
 
+  export const AsmrCampaignScalarFieldEnum: {
+    campaignId: 'campaignId',
+    campaignName: 'campaignName',
+    campaignType: 'campaignType',
+    auditMonth: 'auditMonth',
+    auditYear: 'auditYear',
+    sourceMonth: 'sourceMonth',
+    sourceYear: 'sourceYear',
+    discountPercent: 'discountPercent',
+    messageSent: 'messageSent',
+    contactsSuccess: 'contactsSuccess',
+    universeTotal: 'universeTotal',
+    excludedRepurchase: 'excludedRepurchase',
+    eligibleBeforeDedup: 'eligibleBeforeDedup',
+    eligibleFinal: 'eligibleFinal',
+    phonesDeduplicated: 'phonesDeduplicated',
+    campaignStatus: 'campaignStatus',
+    createdByUserId: 'createdByUserId',
+    executedAt: 'executedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AsmrCampaignScalarFieldEnum = (typeof AsmrCampaignScalarFieldEnum)[keyof typeof AsmrCampaignScalarFieldEnum]
+
+
   export const ExpenseScalarFieldEnum: {
     expenseId: 'expenseId',
     expenseDescription: 'expenseDescription',
@@ -20991,6 +25303,8 @@ export namespace Prisma {
     purchaseStatus: 'purchaseStatus',
     purchaseComment: 'purchaseComment',
     createdByUserId: 'createdByUserId',
+    cancelledByUserId: 'cancelledByUserId',
+    cancelledAt: 'cancelledAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -21153,6 +25467,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'InventoryMovementType'
+   */
+  export type EnumInventoryMovementTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InventoryMovementType'>
+    
+
+
+  /**
+   * Reference to a field of type 'InventoryMovementType[]'
+   */
+  export type ListEnumInventoryMovementTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InventoryMovementType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'InventoryReferenceType'
+   */
+  export type EnumInventoryReferenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InventoryReferenceType'>
+    
+
+
+  /**
+   * Reference to a field of type 'InventoryReferenceType[]'
+   */
+  export type ListEnumInventoryReferenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InventoryReferenceType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'ServiceUnit'
    */
   export type EnumServiceUnitFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ServiceUnit'>
@@ -21235,12 +25577,15 @@ export namespace Prisma {
     Payment?: PaymentListRelationFilter
     SaleDetail?: SaleDetailListRelationFilter
     Purchase?: PurchaseListRelationFilter
+    purchasesCancelled?: PurchaseListRelationFilter
     PurchaseDetail?: PurchaseDetailListRelationFilter
     Provider?: ProviderListRelationFilter
     CashExpense?: CashExpenseListRelationFilter
     DailySales?: DailySalesListRelationFilter
     Transactions?: TransactionsListRelationFilter
     Expense?: ExpenseListRelationFilter
+    InventoryMovement?: InventoryMovementListRelationFilter
+    AsmrCampaign?: AsmrCampaignListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -21264,12 +25609,15 @@ export namespace Prisma {
     Payment?: PaymentOrderByRelationAggregateInput
     SaleDetail?: SaleDetailOrderByRelationAggregateInput
     Purchase?: PurchaseOrderByRelationAggregateInput
+    purchasesCancelled?: PurchaseOrderByRelationAggregateInput
     PurchaseDetail?: PurchaseDetailOrderByRelationAggregateInput
     Provider?: ProviderOrderByRelationAggregateInput
     CashExpense?: CashExpenseOrderByRelationAggregateInput
     DailySales?: DailySalesOrderByRelationAggregateInput
     Transactions?: TransactionsOrderByRelationAggregateInput
     Expense?: ExpenseOrderByRelationAggregateInput
+    InventoryMovement?: InventoryMovementOrderByRelationAggregateInput
+    AsmrCampaign?: AsmrCampaignOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -21296,12 +25644,15 @@ export namespace Prisma {
     Payment?: PaymentListRelationFilter
     SaleDetail?: SaleDetailListRelationFilter
     Purchase?: PurchaseListRelationFilter
+    purchasesCancelled?: PurchaseListRelationFilter
     PurchaseDetail?: PurchaseDetailListRelationFilter
     Provider?: ProviderListRelationFilter
     CashExpense?: CashExpenseListRelationFilter
     DailySales?: DailySalesListRelationFilter
     Transactions?: TransactionsListRelationFilter
     Expense?: ExpenseListRelationFilter
+    InventoryMovement?: InventoryMovementListRelationFilter
+    AsmrCampaign?: AsmrCampaignListRelationFilter
   }, "userId" | "userEmail">
 
   export type UserOrderByWithAggregationInput = {
@@ -21454,6 +25805,7 @@ export namespace Prisma {
     productPriceFixed?: BoolNullableFilter<"Product"> | boolean | null
     productStatus?: EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
     productUnit?: EnumProductUnitFilter<"Product"> | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFilter<"Product"> | boolean
     createdByUserId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -21461,6 +25813,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     SaleDetail?: SaleDetailListRelationFilter
     PurchaseDetail?: PurchaseDetailListRelationFilter
+    productStock?: XOR<ProductStockNullableScalarRelationFilter, ProductStockWhereInput> | null
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -21473,6 +25826,7 @@ export namespace Prisma {
     productPriceFixed?: SortOrderInput | SortOrder
     productStatus?: SortOrder
     productUnit?: SortOrder
+    productAllowZeroStock?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21480,6 +25834,7 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     SaleDetail?: SaleDetailOrderByRelationAggregateInput
     PurchaseDetail?: PurchaseDetailOrderByRelationAggregateInput
+    productStock?: ProductStockOrderByWithRelationInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -21495,6 +25850,7 @@ export namespace Prisma {
     productPriceFixed?: BoolNullableFilter<"Product"> | boolean | null
     productStatus?: EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
     productUnit?: EnumProductUnitFilter<"Product"> | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFilter<"Product"> | boolean
     createdByUserId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -21502,6 +25858,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     SaleDetail?: SaleDetailListRelationFilter
     PurchaseDetail?: PurchaseDetailListRelationFilter
+    productStock?: XOR<ProductStockNullableScalarRelationFilter, ProductStockWhereInput> | null
   }, "productId" | "productSKU">
 
   export type ProductOrderByWithAggregationInput = {
@@ -21514,6 +25871,7 @@ export namespace Prisma {
     productPriceFixed?: SortOrderInput | SortOrder
     productStatus?: SortOrder
     productUnit?: SortOrder
+    productAllowZeroStock?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -21537,9 +25895,185 @@ export namespace Prisma {
     productPriceFixed?: BoolNullableWithAggregatesFilter<"Product"> | boolean | null
     productStatus?: EnumProductStatusWithAggregatesFilter<"Product"> | $Enums.ProductStatus
     productUnit?: EnumProductUnitWithAggregatesFilter<"Product"> | $Enums.ProductUnit
+    productAllowZeroStock?: BoolWithAggregatesFilter<"Product"> | boolean
     createdByUserId?: StringWithAggregatesFilter<"Product"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+  }
+
+  export type ProductStockWhereInput = {
+    AND?: ProductStockWhereInput | ProductStockWhereInput[]
+    OR?: ProductStockWhereInput[]
+    NOT?: ProductStockWhereInput | ProductStockWhereInput[]
+    productId?: StringFilter<"ProductStock"> | string
+    quantityOnHand?: IntFilter<"ProductStock"> | number
+    reorderPoint?: IntFilter<"ProductStock"> | number
+    averageUnitCost?: IntFilter<"ProductStock"> | number
+    lastMovementAt?: DateTimeNullableFilter<"ProductStock"> | Date | string | null
+    version?: IntFilter<"ProductStock"> | number
+    createdAt?: DateTimeFilter<"ProductStock"> | Date | string
+    updatedAt?: DateTimeFilter<"ProductStock"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    movements?: InventoryMovementListRelationFilter
+  }
+
+  export type ProductStockOrderByWithRelationInput = {
+    productId?: SortOrder
+    quantityOnHand?: SortOrder
+    reorderPoint?: SortOrder
+    averageUnitCost?: SortOrder
+    lastMovementAt?: SortOrderInput | SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    product?: ProductOrderByWithRelationInput
+    movements?: InventoryMovementOrderByRelationAggregateInput
+  }
+
+  export type ProductStockWhereUniqueInput = Prisma.AtLeast<{
+    productId?: string
+    AND?: ProductStockWhereInput | ProductStockWhereInput[]
+    OR?: ProductStockWhereInput[]
+    NOT?: ProductStockWhereInput | ProductStockWhereInput[]
+    quantityOnHand?: IntFilter<"ProductStock"> | number
+    reorderPoint?: IntFilter<"ProductStock"> | number
+    averageUnitCost?: IntFilter<"ProductStock"> | number
+    lastMovementAt?: DateTimeNullableFilter<"ProductStock"> | Date | string | null
+    version?: IntFilter<"ProductStock"> | number
+    createdAt?: DateTimeFilter<"ProductStock"> | Date | string
+    updatedAt?: DateTimeFilter<"ProductStock"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    movements?: InventoryMovementListRelationFilter
+  }, "productId">
+
+  export type ProductStockOrderByWithAggregationInput = {
+    productId?: SortOrder
+    quantityOnHand?: SortOrder
+    reorderPoint?: SortOrder
+    averageUnitCost?: SortOrder
+    lastMovementAt?: SortOrderInput | SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProductStockCountOrderByAggregateInput
+    _avg?: ProductStockAvgOrderByAggregateInput
+    _max?: ProductStockMaxOrderByAggregateInput
+    _min?: ProductStockMinOrderByAggregateInput
+    _sum?: ProductStockSumOrderByAggregateInput
+  }
+
+  export type ProductStockScalarWhereWithAggregatesInput = {
+    AND?: ProductStockScalarWhereWithAggregatesInput | ProductStockScalarWhereWithAggregatesInput[]
+    OR?: ProductStockScalarWhereWithAggregatesInput[]
+    NOT?: ProductStockScalarWhereWithAggregatesInput | ProductStockScalarWhereWithAggregatesInput[]
+    productId?: StringWithAggregatesFilter<"ProductStock"> | string
+    quantityOnHand?: IntWithAggregatesFilter<"ProductStock"> | number
+    reorderPoint?: IntWithAggregatesFilter<"ProductStock"> | number
+    averageUnitCost?: IntWithAggregatesFilter<"ProductStock"> | number
+    lastMovementAt?: DateTimeNullableWithAggregatesFilter<"ProductStock"> | Date | string | null
+    version?: IntWithAggregatesFilter<"ProductStock"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"ProductStock"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ProductStock"> | Date | string
+  }
+
+  export type InventoryMovementWhereInput = {
+    AND?: InventoryMovementWhereInput | InventoryMovementWhereInput[]
+    OR?: InventoryMovementWhereInput[]
+    NOT?: InventoryMovementWhereInput | InventoryMovementWhereInput[]
+    movementId?: StringFilter<"InventoryMovement"> | string
+    productId?: StringFilter<"InventoryMovement"> | string
+    movementType?: EnumInventoryMovementTypeFilter<"InventoryMovement"> | $Enums.InventoryMovementType
+    quantityDelta?: IntFilter<"InventoryMovement"> | number
+    stockBefore?: IntFilter<"InventoryMovement"> | number
+    stockAfter?: IntFilter<"InventoryMovement"> | number
+    referenceType?: EnumInventoryReferenceTypeFilter<"InventoryMovement"> | $Enums.InventoryReferenceType
+    referenceId?: StringNullableFilter<"InventoryMovement"> | string | null
+    referenceLabel?: StringNullableFilter<"InventoryMovement"> | string | null
+    reason?: StringNullableFilter<"InventoryMovement"> | string | null
+    notes?: StringNullableFilter<"InventoryMovement"> | string | null
+    createdByUserId?: StringFilter<"InventoryMovement"> | string
+    createdAt?: DateTimeFilter<"InventoryMovement"> | Date | string
+    productStock?: XOR<ProductStockScalarRelationFilter, ProductStockWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type InventoryMovementOrderByWithRelationInput = {
+    movementId?: SortOrder
+    productId?: SortOrder
+    movementType?: SortOrder
+    quantityDelta?: SortOrder
+    stockBefore?: SortOrder
+    stockAfter?: SortOrder
+    referenceType?: SortOrder
+    referenceId?: SortOrderInput | SortOrder
+    referenceLabel?: SortOrderInput | SortOrder
+    reason?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    productStock?: ProductStockOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type InventoryMovementWhereUniqueInput = Prisma.AtLeast<{
+    movementId?: string
+    AND?: InventoryMovementWhereInput | InventoryMovementWhereInput[]
+    OR?: InventoryMovementWhereInput[]
+    NOT?: InventoryMovementWhereInput | InventoryMovementWhereInput[]
+    productId?: StringFilter<"InventoryMovement"> | string
+    movementType?: EnumInventoryMovementTypeFilter<"InventoryMovement"> | $Enums.InventoryMovementType
+    quantityDelta?: IntFilter<"InventoryMovement"> | number
+    stockBefore?: IntFilter<"InventoryMovement"> | number
+    stockAfter?: IntFilter<"InventoryMovement"> | number
+    referenceType?: EnumInventoryReferenceTypeFilter<"InventoryMovement"> | $Enums.InventoryReferenceType
+    referenceId?: StringNullableFilter<"InventoryMovement"> | string | null
+    referenceLabel?: StringNullableFilter<"InventoryMovement"> | string | null
+    reason?: StringNullableFilter<"InventoryMovement"> | string | null
+    notes?: StringNullableFilter<"InventoryMovement"> | string | null
+    createdByUserId?: StringFilter<"InventoryMovement"> | string
+    createdAt?: DateTimeFilter<"InventoryMovement"> | Date | string
+    productStock?: XOR<ProductStockScalarRelationFilter, ProductStockWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "movementId">
+
+  export type InventoryMovementOrderByWithAggregationInput = {
+    movementId?: SortOrder
+    productId?: SortOrder
+    movementType?: SortOrder
+    quantityDelta?: SortOrder
+    stockBefore?: SortOrder
+    stockAfter?: SortOrder
+    referenceType?: SortOrder
+    referenceId?: SortOrderInput | SortOrder
+    referenceLabel?: SortOrderInput | SortOrder
+    reason?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    _count?: InventoryMovementCountOrderByAggregateInput
+    _avg?: InventoryMovementAvgOrderByAggregateInput
+    _max?: InventoryMovementMaxOrderByAggregateInput
+    _min?: InventoryMovementMinOrderByAggregateInput
+    _sum?: InventoryMovementSumOrderByAggregateInput
+  }
+
+  export type InventoryMovementScalarWhereWithAggregatesInput = {
+    AND?: InventoryMovementScalarWhereWithAggregatesInput | InventoryMovementScalarWhereWithAggregatesInput[]
+    OR?: InventoryMovementScalarWhereWithAggregatesInput[]
+    NOT?: InventoryMovementScalarWhereWithAggregatesInput | InventoryMovementScalarWhereWithAggregatesInput[]
+    movementId?: StringWithAggregatesFilter<"InventoryMovement"> | string
+    productId?: StringWithAggregatesFilter<"InventoryMovement"> | string
+    movementType?: EnumInventoryMovementTypeWithAggregatesFilter<"InventoryMovement"> | $Enums.InventoryMovementType
+    quantityDelta?: IntWithAggregatesFilter<"InventoryMovement"> | number
+    stockBefore?: IntWithAggregatesFilter<"InventoryMovement"> | number
+    stockAfter?: IntWithAggregatesFilter<"InventoryMovement"> | number
+    referenceType?: EnumInventoryReferenceTypeWithAggregatesFilter<"InventoryMovement"> | $Enums.InventoryReferenceType
+    referenceId?: StringNullableWithAggregatesFilter<"InventoryMovement"> | string | null
+    referenceLabel?: StringNullableWithAggregatesFilter<"InventoryMovement"> | string | null
+    reason?: StringNullableWithAggregatesFilter<"InventoryMovement"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"InventoryMovement"> | string | null
+    createdByUserId?: StringWithAggregatesFilter<"InventoryMovement"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"InventoryMovement"> | Date | string
   }
 
   export type ServiceWhereInput = {
@@ -22203,6 +26737,138 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Transactions"> | Date | string
   }
 
+  export type AsmrCampaignWhereInput = {
+    AND?: AsmrCampaignWhereInput | AsmrCampaignWhereInput[]
+    OR?: AsmrCampaignWhereInput[]
+    NOT?: AsmrCampaignWhereInput | AsmrCampaignWhereInput[]
+    campaignId?: StringFilter<"AsmrCampaign"> | string
+    campaignName?: StringFilter<"AsmrCampaign"> | string
+    campaignType?: StringFilter<"AsmrCampaign"> | string
+    auditMonth?: IntFilter<"AsmrCampaign"> | number
+    auditYear?: IntFilter<"AsmrCampaign"> | number
+    sourceMonth?: IntFilter<"AsmrCampaign"> | number
+    sourceYear?: IntFilter<"AsmrCampaign"> | number
+    discountPercent?: IntFilter<"AsmrCampaign"> | number
+    messageSent?: StringNullableFilter<"AsmrCampaign"> | string | null
+    contactsSuccess?: IntFilter<"AsmrCampaign"> | number
+    universeTotal?: IntFilter<"AsmrCampaign"> | number
+    excludedRepurchase?: IntFilter<"AsmrCampaign"> | number
+    eligibleBeforeDedup?: IntFilter<"AsmrCampaign"> | number
+    eligibleFinal?: IntFilter<"AsmrCampaign"> | number
+    phonesDeduplicated?: IntFilter<"AsmrCampaign"> | number
+    campaignStatus?: StringFilter<"AsmrCampaign"> | string
+    createdByUserId?: StringFilter<"AsmrCampaign"> | string
+    executedAt?: DateTimeFilter<"AsmrCampaign"> | Date | string
+    createdAt?: DateTimeFilter<"AsmrCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"AsmrCampaign"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AsmrCampaignOrderByWithRelationInput = {
+    campaignId?: SortOrder
+    campaignName?: SortOrder
+    campaignType?: SortOrder
+    auditMonth?: SortOrder
+    auditYear?: SortOrder
+    sourceMonth?: SortOrder
+    sourceYear?: SortOrder
+    discountPercent?: SortOrder
+    messageSent?: SortOrderInput | SortOrder
+    contactsSuccess?: SortOrder
+    universeTotal?: SortOrder
+    excludedRepurchase?: SortOrder
+    eligibleBeforeDedup?: SortOrder
+    eligibleFinal?: SortOrder
+    phonesDeduplicated?: SortOrder
+    campaignStatus?: SortOrder
+    createdByUserId?: SortOrder
+    executedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AsmrCampaignWhereUniqueInput = Prisma.AtLeast<{
+    campaignId?: string
+    AND?: AsmrCampaignWhereInput | AsmrCampaignWhereInput[]
+    OR?: AsmrCampaignWhereInput[]
+    NOT?: AsmrCampaignWhereInput | AsmrCampaignWhereInput[]
+    campaignName?: StringFilter<"AsmrCampaign"> | string
+    campaignType?: StringFilter<"AsmrCampaign"> | string
+    auditMonth?: IntFilter<"AsmrCampaign"> | number
+    auditYear?: IntFilter<"AsmrCampaign"> | number
+    sourceMonth?: IntFilter<"AsmrCampaign"> | number
+    sourceYear?: IntFilter<"AsmrCampaign"> | number
+    discountPercent?: IntFilter<"AsmrCampaign"> | number
+    messageSent?: StringNullableFilter<"AsmrCampaign"> | string | null
+    contactsSuccess?: IntFilter<"AsmrCampaign"> | number
+    universeTotal?: IntFilter<"AsmrCampaign"> | number
+    excludedRepurchase?: IntFilter<"AsmrCampaign"> | number
+    eligibleBeforeDedup?: IntFilter<"AsmrCampaign"> | number
+    eligibleFinal?: IntFilter<"AsmrCampaign"> | number
+    phonesDeduplicated?: IntFilter<"AsmrCampaign"> | number
+    campaignStatus?: StringFilter<"AsmrCampaign"> | string
+    createdByUserId?: StringFilter<"AsmrCampaign"> | string
+    executedAt?: DateTimeFilter<"AsmrCampaign"> | Date | string
+    createdAt?: DateTimeFilter<"AsmrCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"AsmrCampaign"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "campaignId">
+
+  export type AsmrCampaignOrderByWithAggregationInput = {
+    campaignId?: SortOrder
+    campaignName?: SortOrder
+    campaignType?: SortOrder
+    auditMonth?: SortOrder
+    auditYear?: SortOrder
+    sourceMonth?: SortOrder
+    sourceYear?: SortOrder
+    discountPercent?: SortOrder
+    messageSent?: SortOrderInput | SortOrder
+    contactsSuccess?: SortOrder
+    universeTotal?: SortOrder
+    excludedRepurchase?: SortOrder
+    eligibleBeforeDedup?: SortOrder
+    eligibleFinal?: SortOrder
+    phonesDeduplicated?: SortOrder
+    campaignStatus?: SortOrder
+    createdByUserId?: SortOrder
+    executedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AsmrCampaignCountOrderByAggregateInput
+    _avg?: AsmrCampaignAvgOrderByAggregateInput
+    _max?: AsmrCampaignMaxOrderByAggregateInput
+    _min?: AsmrCampaignMinOrderByAggregateInput
+    _sum?: AsmrCampaignSumOrderByAggregateInput
+  }
+
+  export type AsmrCampaignScalarWhereWithAggregatesInput = {
+    AND?: AsmrCampaignScalarWhereWithAggregatesInput | AsmrCampaignScalarWhereWithAggregatesInput[]
+    OR?: AsmrCampaignScalarWhereWithAggregatesInput[]
+    NOT?: AsmrCampaignScalarWhereWithAggregatesInput | AsmrCampaignScalarWhereWithAggregatesInput[]
+    campaignId?: StringWithAggregatesFilter<"AsmrCampaign"> | string
+    campaignName?: StringWithAggregatesFilter<"AsmrCampaign"> | string
+    campaignType?: StringWithAggregatesFilter<"AsmrCampaign"> | string
+    auditMonth?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    auditYear?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    sourceMonth?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    sourceYear?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    discountPercent?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    messageSent?: StringNullableWithAggregatesFilter<"AsmrCampaign"> | string | null
+    contactsSuccess?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    universeTotal?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    excludedRepurchase?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    eligibleBeforeDedup?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    eligibleFinal?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    phonesDeduplicated?: IntWithAggregatesFilter<"AsmrCampaign"> | number
+    campaignStatus?: StringWithAggregatesFilter<"AsmrCampaign"> | string
+    createdByUserId?: StringWithAggregatesFilter<"AsmrCampaign"> | string
+    executedAt?: DateTimeWithAggregatesFilter<"AsmrCampaign"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"AsmrCampaign"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AsmrCampaign"> | Date | string
+  }
+
   export type ExpenseWhereInput = {
     AND?: ExpenseWhereInput | ExpenseWhereInput[]
     OR?: ExpenseWhereInput[]
@@ -22375,10 +27041,13 @@ export namespace Prisma {
     purchaseStatus?: StringNullableFilter<"Purchase"> | string | null
     purchaseComment?: StringNullableFilter<"Purchase"> | string | null
     createdByUserId?: StringFilter<"Purchase"> | string
+    cancelledByUserId?: StringNullableFilter<"Purchase"> | string | null
+    cancelledAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
     createdAt?: DateTimeFilter<"Purchase"> | Date | string
     updatedAt?: DateTimeFilter<"Purchase"> | Date | string
     provider?: XOR<ProviderScalarRelationFilter, ProviderWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    cancelledBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     PurchaseDetail?: PurchaseDetailListRelationFilter
   }
 
@@ -22391,10 +27060,13 @@ export namespace Prisma {
     purchaseStatus?: SortOrderInput | SortOrder
     purchaseComment?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
+    cancelledByUserId?: SortOrderInput | SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     provider?: ProviderOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
+    cancelledBy?: UserOrderByWithRelationInput
     PurchaseDetail?: PurchaseDetailOrderByRelationAggregateInput
   }
 
@@ -22410,10 +27082,13 @@ export namespace Prisma {
     purchaseStatus?: StringNullableFilter<"Purchase"> | string | null
     purchaseComment?: StringNullableFilter<"Purchase"> | string | null
     createdByUserId?: StringFilter<"Purchase"> | string
+    cancelledByUserId?: StringNullableFilter<"Purchase"> | string | null
+    cancelledAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
     createdAt?: DateTimeFilter<"Purchase"> | Date | string
     updatedAt?: DateTimeFilter<"Purchase"> | Date | string
     provider?: XOR<ProviderScalarRelationFilter, ProviderWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    cancelledBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     PurchaseDetail?: PurchaseDetailListRelationFilter
   }, "purchaseId">
 
@@ -22426,6 +27101,8 @@ export namespace Prisma {
     purchaseStatus?: SortOrderInput | SortOrder
     purchaseComment?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
+    cancelledByUserId?: SortOrderInput | SortOrder
+    cancelledAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PurchaseCountOrderByAggregateInput
@@ -22447,6 +27124,8 @@ export namespace Prisma {
     purchaseStatus?: StringNullableWithAggregatesFilter<"Purchase"> | string | null
     purchaseComment?: StringNullableWithAggregatesFilter<"Purchase"> | string | null
     createdByUserId?: StringWithAggregatesFilter<"Purchase"> | string
+    cancelledByUserId?: StringNullableWithAggregatesFilter<"Purchase"> | string | null
+    cancelledAt?: DateTimeNullableWithAggregatesFilter<"Purchase"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Purchase"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Purchase"> | Date | string
   }
@@ -22568,12 +27247,15 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -22597,12 +27279,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -22626,12 +27311,15 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -22655,12 +27343,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -22836,12 +27527,14 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
     user: UserCreateNestedOneWithoutProductInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutProductInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutProductInput
+    productStock?: ProductStockCreateNestedOneWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -22854,11 +27547,13 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutProductInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutProductInput
+    productStock?: ProductStockUncheckedCreateNestedOneWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -22870,12 +27565,14 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
     user?: UserUpdateOneRequiredWithoutProductNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutProductNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUpdateOneWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -22888,11 +27585,13 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutProductNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUncheckedUpdateOneWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -22905,6 +27604,7 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22919,6 +27619,7 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22933,9 +27634,200 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductStockCreateInput = {
+    quantityOnHand?: number
+    reorderPoint?: number
+    averageUnitCost?: number
+    lastMovementAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutProductStockInput
+    movements?: InventoryMovementCreateNestedManyWithoutProductStockInput
+  }
+
+  export type ProductStockUncheckedCreateInput = {
+    productId: string
+    quantityOnHand?: number
+    reorderPoint?: number
+    averageUnitCost?: number
+    lastMovementAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    movements?: InventoryMovementUncheckedCreateNestedManyWithoutProductStockInput
+  }
+
+  export type ProductStockUpdateInput = {
+    quantityOnHand?: IntFieldUpdateOperationsInput | number
+    reorderPoint?: IntFieldUpdateOperationsInput | number
+    averageUnitCost?: IntFieldUpdateOperationsInput | number
+    lastMovementAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutProductStockNestedInput
+    movements?: InventoryMovementUpdateManyWithoutProductStockNestedInput
+  }
+
+  export type ProductStockUncheckedUpdateInput = {
+    productId?: StringFieldUpdateOperationsInput | string
+    quantityOnHand?: IntFieldUpdateOperationsInput | number
+    reorderPoint?: IntFieldUpdateOperationsInput | number
+    averageUnitCost?: IntFieldUpdateOperationsInput | number
+    lastMovementAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    movements?: InventoryMovementUncheckedUpdateManyWithoutProductStockNestedInput
+  }
+
+  export type ProductStockCreateManyInput = {
+    productId: string
+    quantityOnHand?: number
+    reorderPoint?: number
+    averageUnitCost?: number
+    lastMovementAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductStockUpdateManyMutationInput = {
+    quantityOnHand?: IntFieldUpdateOperationsInput | number
+    reorderPoint?: IntFieldUpdateOperationsInput | number
+    averageUnitCost?: IntFieldUpdateOperationsInput | number
+    lastMovementAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductStockUncheckedUpdateManyInput = {
+    productId?: StringFieldUpdateOperationsInput | string
+    quantityOnHand?: IntFieldUpdateOperationsInput | number
+    reorderPoint?: IntFieldUpdateOperationsInput | number
+    averageUnitCost?: IntFieldUpdateOperationsInput | number
+    lastMovementAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryMovementCreateInput = {
+    movementId?: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType?: $Enums.InventoryReferenceType
+    referenceId?: string | null
+    referenceLabel?: string | null
+    reason?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    productStock: ProductStockCreateNestedOneWithoutMovementsInput
+    user: UserCreateNestedOneWithoutInventoryMovementInput
+  }
+
+  export type InventoryMovementUncheckedCreateInput = {
+    movementId?: string
+    productId: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType?: $Enums.InventoryReferenceType
+    referenceId?: string | null
+    referenceLabel?: string | null
+    reason?: string | null
+    notes?: string | null
+    createdByUserId: string
+    createdAt?: Date | string
+  }
+
+  export type InventoryMovementUpdateInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productStock?: ProductStockUpdateOneRequiredWithoutMovementsNestedInput
+    user?: UserUpdateOneRequiredWithoutInventoryMovementNestedInput
+  }
+
+  export type InventoryMovementUncheckedUpdateInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryMovementCreateManyInput = {
+    movementId?: string
+    productId: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType?: $Enums.InventoryReferenceType
+    referenceId?: string | null
+    referenceLabel?: string | null
+    reason?: string | null
+    notes?: string | null
+    createdByUserId: string
+    createdAt?: Date | string
+  }
+
+  export type InventoryMovementUpdateManyMutationInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryMovementUncheckedUpdateManyInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ServiceCreateInput = {
@@ -23633,6 +28525,166 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AsmrCampaignCreateInput = {
+    campaignId?: string
+    campaignName: string
+    campaignType: string
+    auditMonth: number
+    auditYear: number
+    sourceMonth: number
+    sourceYear: number
+    discountPercent?: number
+    messageSent?: string | null
+    contactsSuccess?: number
+    universeTotal?: number
+    excludedRepurchase?: number
+    eligibleBeforeDedup?: number
+    eligibleFinal?: number
+    phonesDeduplicated?: number
+    campaignStatus?: string
+    executedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutAsmrCampaignInput
+  }
+
+  export type AsmrCampaignUncheckedCreateInput = {
+    campaignId?: string
+    campaignName: string
+    campaignType: string
+    auditMonth: number
+    auditYear: number
+    sourceMonth: number
+    sourceYear: number
+    discountPercent?: number
+    messageSent?: string | null
+    contactsSuccess?: number
+    universeTotal?: number
+    excludedRepurchase?: number
+    eligibleBeforeDedup?: number
+    eligibleFinal?: number
+    phonesDeduplicated?: number
+    campaignStatus?: string
+    createdByUserId: string
+    executedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AsmrCampaignUpdateInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignType?: StringFieldUpdateOperationsInput | string
+    auditMonth?: IntFieldUpdateOperationsInput | number
+    auditYear?: IntFieldUpdateOperationsInput | number
+    sourceMonth?: IntFieldUpdateOperationsInput | number
+    sourceYear?: IntFieldUpdateOperationsInput | number
+    discountPercent?: IntFieldUpdateOperationsInput | number
+    messageSent?: NullableStringFieldUpdateOperationsInput | string | null
+    contactsSuccess?: IntFieldUpdateOperationsInput | number
+    universeTotal?: IntFieldUpdateOperationsInput | number
+    excludedRepurchase?: IntFieldUpdateOperationsInput | number
+    eligibleBeforeDedup?: IntFieldUpdateOperationsInput | number
+    eligibleFinal?: IntFieldUpdateOperationsInput | number
+    phonesDeduplicated?: IntFieldUpdateOperationsInput | number
+    campaignStatus?: StringFieldUpdateOperationsInput | string
+    executedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAsmrCampaignNestedInput
+  }
+
+  export type AsmrCampaignUncheckedUpdateInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignType?: StringFieldUpdateOperationsInput | string
+    auditMonth?: IntFieldUpdateOperationsInput | number
+    auditYear?: IntFieldUpdateOperationsInput | number
+    sourceMonth?: IntFieldUpdateOperationsInput | number
+    sourceYear?: IntFieldUpdateOperationsInput | number
+    discountPercent?: IntFieldUpdateOperationsInput | number
+    messageSent?: NullableStringFieldUpdateOperationsInput | string | null
+    contactsSuccess?: IntFieldUpdateOperationsInput | number
+    universeTotal?: IntFieldUpdateOperationsInput | number
+    excludedRepurchase?: IntFieldUpdateOperationsInput | number
+    eligibleBeforeDedup?: IntFieldUpdateOperationsInput | number
+    eligibleFinal?: IntFieldUpdateOperationsInput | number
+    phonesDeduplicated?: IntFieldUpdateOperationsInput | number
+    campaignStatus?: StringFieldUpdateOperationsInput | string
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    executedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AsmrCampaignCreateManyInput = {
+    campaignId?: string
+    campaignName: string
+    campaignType: string
+    auditMonth: number
+    auditYear: number
+    sourceMonth: number
+    sourceYear: number
+    discountPercent?: number
+    messageSent?: string | null
+    contactsSuccess?: number
+    universeTotal?: number
+    excludedRepurchase?: number
+    eligibleBeforeDedup?: number
+    eligibleFinal?: number
+    phonesDeduplicated?: number
+    campaignStatus?: string
+    createdByUserId: string
+    executedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AsmrCampaignUpdateManyMutationInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignType?: StringFieldUpdateOperationsInput | string
+    auditMonth?: IntFieldUpdateOperationsInput | number
+    auditYear?: IntFieldUpdateOperationsInput | number
+    sourceMonth?: IntFieldUpdateOperationsInput | number
+    sourceYear?: IntFieldUpdateOperationsInput | number
+    discountPercent?: IntFieldUpdateOperationsInput | number
+    messageSent?: NullableStringFieldUpdateOperationsInput | string | null
+    contactsSuccess?: IntFieldUpdateOperationsInput | number
+    universeTotal?: IntFieldUpdateOperationsInput | number
+    excludedRepurchase?: IntFieldUpdateOperationsInput | number
+    eligibleBeforeDedup?: IntFieldUpdateOperationsInput | number
+    eligibleFinal?: IntFieldUpdateOperationsInput | number
+    phonesDeduplicated?: IntFieldUpdateOperationsInput | number
+    campaignStatus?: StringFieldUpdateOperationsInput | string
+    executedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AsmrCampaignUncheckedUpdateManyInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignType?: StringFieldUpdateOperationsInput | string
+    auditMonth?: IntFieldUpdateOperationsInput | number
+    auditYear?: IntFieldUpdateOperationsInput | number
+    sourceMonth?: IntFieldUpdateOperationsInput | number
+    sourceYear?: IntFieldUpdateOperationsInput | number
+    discountPercent?: IntFieldUpdateOperationsInput | number
+    messageSent?: NullableStringFieldUpdateOperationsInput | string | null
+    contactsSuccess?: IntFieldUpdateOperationsInput | number
+    universeTotal?: IntFieldUpdateOperationsInput | number
+    excludedRepurchase?: IntFieldUpdateOperationsInput | number
+    eligibleBeforeDedup?: IntFieldUpdateOperationsInput | number
+    eligibleFinal?: IntFieldUpdateOperationsInput | number
+    phonesDeduplicated?: IntFieldUpdateOperationsInput | number
+    campaignStatus?: StringFieldUpdateOperationsInput | string
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    executedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ExpenseCreateInput = {
     expenseId: string
     expenseDescription?: string | null
@@ -23817,10 +28869,12 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     provider: ProviderCreateNestedOneWithoutPurchaseInput
     user: UserCreateNestedOneWithoutPurchaseInput
+    cancelledBy?: UserCreateNestedOneWithoutPurchasesCancelledInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutPurchaseInput
   }
 
@@ -23833,6 +28887,8 @@ export namespace Prisma {
     purchaseStatus?: string | null
     purchaseComment?: string | null
     createdByUserId: string
+    cancelledByUserId?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutPurchaseInput
@@ -23845,10 +28901,12 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     provider?: ProviderUpdateOneRequiredWithoutPurchaseNestedInput
     user?: UserUpdateOneRequiredWithoutPurchaseNestedInput
+    cancelledBy?: UserUpdateOneWithoutPurchasesCancelledNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutPurchaseNestedInput
   }
 
@@ -23861,6 +28919,8 @@ export namespace Prisma {
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutPurchaseNestedInput
@@ -23875,6 +28935,8 @@ export namespace Prisma {
     purchaseStatus?: string | null
     purchaseComment?: string | null
     createdByUserId: string
+    cancelledByUserId?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23886,6 +28948,7 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23899,6 +28962,8 @@ export namespace Prisma {
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24140,6 +29205,18 @@ export namespace Prisma {
     none?: ExpenseWhereInput
   }
 
+  export type InventoryMovementListRelationFilter = {
+    every?: InventoryMovementWhereInput
+    some?: InventoryMovementWhereInput
+    none?: InventoryMovementWhereInput
+  }
+
+  export type AsmrCampaignListRelationFilter = {
+    every?: AsmrCampaignWhereInput
+    some?: AsmrCampaignWhereInput
+    none?: AsmrCampaignWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -24198,6 +29275,14 @@ export namespace Prisma {
   }
 
   export type ExpenseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InventoryMovementOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AsmrCampaignOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -24403,6 +29488,11 @@ export namespace Prisma {
     not?: NestedEnumProductUnitFilter<$PrismaModel> | $Enums.ProductUnit
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type CategoryScalarRelationFilter = {
     is?: CategoryWhereInput
     isNot?: CategoryWhereInput
@@ -24411,6 +29501,11 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type ProductStockNullableScalarRelationFilter = {
+    is?: ProductStockWhereInput | null
+    isNot?: ProductStockWhereInput | null
   }
 
   export type ProductCountOrderByAggregateInput = {
@@ -24423,6 +29518,7 @@ export namespace Prisma {
     productPriceFixed?: SortOrder
     productStatus?: SortOrder
     productUnit?: SortOrder
+    productAllowZeroStock?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24442,6 +29538,7 @@ export namespace Prisma {
     productPriceFixed?: SortOrder
     productStatus?: SortOrder
     productUnit?: SortOrder
+    productAllowZeroStock?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24457,6 +29554,7 @@ export namespace Prisma {
     productPriceFixed?: SortOrder
     productStatus?: SortOrder
     productUnit?: SortOrder
+    productAllowZeroStock?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -24508,6 +29606,165 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProductUnitFilter<$PrismaModel>
     _max?: NestedEnumProductUnitFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type ProductScalarRelationFilter = {
+    is?: ProductWhereInput
+    isNot?: ProductWhereInput
+  }
+
+  export type ProductStockCountOrderByAggregateInput = {
+    productId?: SortOrder
+    quantityOnHand?: SortOrder
+    reorderPoint?: SortOrder
+    averageUnitCost?: SortOrder
+    lastMovementAt?: SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProductStockAvgOrderByAggregateInput = {
+    quantityOnHand?: SortOrder
+    reorderPoint?: SortOrder
+    averageUnitCost?: SortOrder
+    version?: SortOrder
+  }
+
+  export type ProductStockMaxOrderByAggregateInput = {
+    productId?: SortOrder
+    quantityOnHand?: SortOrder
+    reorderPoint?: SortOrder
+    averageUnitCost?: SortOrder
+    lastMovementAt?: SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProductStockMinOrderByAggregateInput = {
+    productId?: SortOrder
+    quantityOnHand?: SortOrder
+    reorderPoint?: SortOrder
+    averageUnitCost?: SortOrder
+    lastMovementAt?: SortOrder
+    version?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProductStockSumOrderByAggregateInput = {
+    quantityOnHand?: SortOrder
+    reorderPoint?: SortOrder
+    averageUnitCost?: SortOrder
+    version?: SortOrder
+  }
+
+  export type EnumInventoryMovementTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryMovementType | EnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryMovementType[] | ListEnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryMovementType[] | ListEnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryMovementTypeFilter<$PrismaModel> | $Enums.InventoryMovementType
+  }
+
+  export type EnumInventoryReferenceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryReferenceType | EnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryReferenceType[] | ListEnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryReferenceType[] | ListEnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryReferenceTypeFilter<$PrismaModel> | $Enums.InventoryReferenceType
+  }
+
+  export type ProductStockScalarRelationFilter = {
+    is?: ProductStockWhereInput
+    isNot?: ProductStockWhereInput
+  }
+
+  export type InventoryMovementCountOrderByAggregateInput = {
+    movementId?: SortOrder
+    productId?: SortOrder
+    movementType?: SortOrder
+    quantityDelta?: SortOrder
+    stockBefore?: SortOrder
+    stockAfter?: SortOrder
+    referenceType?: SortOrder
+    referenceId?: SortOrder
+    referenceLabel?: SortOrder
+    reason?: SortOrder
+    notes?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type InventoryMovementAvgOrderByAggregateInput = {
+    quantityDelta?: SortOrder
+    stockBefore?: SortOrder
+    stockAfter?: SortOrder
+  }
+
+  export type InventoryMovementMaxOrderByAggregateInput = {
+    movementId?: SortOrder
+    productId?: SortOrder
+    movementType?: SortOrder
+    quantityDelta?: SortOrder
+    stockBefore?: SortOrder
+    stockAfter?: SortOrder
+    referenceType?: SortOrder
+    referenceId?: SortOrder
+    referenceLabel?: SortOrder
+    reason?: SortOrder
+    notes?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type InventoryMovementMinOrderByAggregateInput = {
+    movementId?: SortOrder
+    productId?: SortOrder
+    movementType?: SortOrder
+    quantityDelta?: SortOrder
+    stockBefore?: SortOrder
+    stockAfter?: SortOrder
+    referenceType?: SortOrder
+    referenceId?: SortOrder
+    referenceLabel?: SortOrder
+    reason?: SortOrder
+    notes?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type InventoryMovementSumOrderByAggregateInput = {
+    quantityDelta?: SortOrder
+    stockBefore?: SortOrder
+    stockAfter?: SortOrder
+  }
+
+  export type EnumInventoryMovementTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryMovementType | EnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryMovementType[] | ListEnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryMovementType[] | ListEnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryMovementTypeWithAggregatesFilter<$PrismaModel> | $Enums.InventoryMovementType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInventoryMovementTypeFilter<$PrismaModel>
+    _max?: NestedEnumInventoryMovementTypeFilter<$PrismaModel>
+  }
+
+  export type EnumInventoryReferenceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryReferenceType | EnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryReferenceType[] | ListEnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryReferenceType[] | ListEnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryReferenceTypeWithAggregatesFilter<$PrismaModel> | $Enums.InventoryReferenceType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInventoryReferenceTypeFilter<$PrismaModel>
+    _max?: NestedEnumInventoryReferenceTypeFilter<$PrismaModel>
   }
 
   export type EnumServiceUnitFilter<$PrismaModel = never> = {
@@ -24988,6 +30245,103 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type AsmrCampaignCountOrderByAggregateInput = {
+    campaignId?: SortOrder
+    campaignName?: SortOrder
+    campaignType?: SortOrder
+    auditMonth?: SortOrder
+    auditYear?: SortOrder
+    sourceMonth?: SortOrder
+    sourceYear?: SortOrder
+    discountPercent?: SortOrder
+    messageSent?: SortOrder
+    contactsSuccess?: SortOrder
+    universeTotal?: SortOrder
+    excludedRepurchase?: SortOrder
+    eligibleBeforeDedup?: SortOrder
+    eligibleFinal?: SortOrder
+    phonesDeduplicated?: SortOrder
+    campaignStatus?: SortOrder
+    createdByUserId?: SortOrder
+    executedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AsmrCampaignAvgOrderByAggregateInput = {
+    auditMonth?: SortOrder
+    auditYear?: SortOrder
+    sourceMonth?: SortOrder
+    sourceYear?: SortOrder
+    discountPercent?: SortOrder
+    contactsSuccess?: SortOrder
+    universeTotal?: SortOrder
+    excludedRepurchase?: SortOrder
+    eligibleBeforeDedup?: SortOrder
+    eligibleFinal?: SortOrder
+    phonesDeduplicated?: SortOrder
+  }
+
+  export type AsmrCampaignMaxOrderByAggregateInput = {
+    campaignId?: SortOrder
+    campaignName?: SortOrder
+    campaignType?: SortOrder
+    auditMonth?: SortOrder
+    auditYear?: SortOrder
+    sourceMonth?: SortOrder
+    sourceYear?: SortOrder
+    discountPercent?: SortOrder
+    messageSent?: SortOrder
+    contactsSuccess?: SortOrder
+    universeTotal?: SortOrder
+    excludedRepurchase?: SortOrder
+    eligibleBeforeDedup?: SortOrder
+    eligibleFinal?: SortOrder
+    phonesDeduplicated?: SortOrder
+    campaignStatus?: SortOrder
+    createdByUserId?: SortOrder
+    executedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AsmrCampaignMinOrderByAggregateInput = {
+    campaignId?: SortOrder
+    campaignName?: SortOrder
+    campaignType?: SortOrder
+    auditMonth?: SortOrder
+    auditYear?: SortOrder
+    sourceMonth?: SortOrder
+    sourceYear?: SortOrder
+    discountPercent?: SortOrder
+    messageSent?: SortOrder
+    contactsSuccess?: SortOrder
+    universeTotal?: SortOrder
+    excludedRepurchase?: SortOrder
+    eligibleBeforeDedup?: SortOrder
+    eligibleFinal?: SortOrder
+    phonesDeduplicated?: SortOrder
+    campaignStatus?: SortOrder
+    createdByUserId?: SortOrder
+    executedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AsmrCampaignSumOrderByAggregateInput = {
+    auditMonth?: SortOrder
+    auditYear?: SortOrder
+    sourceMonth?: SortOrder
+    sourceYear?: SortOrder
+    discountPercent?: SortOrder
+    contactsSuccess?: SortOrder
+    universeTotal?: SortOrder
+    excludedRepurchase?: SortOrder
+    eligibleBeforeDedup?: SortOrder
+    eligibleFinal?: SortOrder
+    phonesDeduplicated?: SortOrder
+  }
+
   export type ExpenseCountOrderByAggregateInput = {
     expenseId?: SortOrder
     expenseDescription?: SortOrder
@@ -25085,6 +30439,8 @@ export namespace Prisma {
     purchaseStatus?: SortOrder
     purchaseComment?: SortOrder
     createdByUserId?: SortOrder
+    cancelledByUserId?: SortOrder
+    cancelledAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25102,6 +30458,8 @@ export namespace Prisma {
     purchaseStatus?: SortOrder
     purchaseComment?: SortOrder
     createdByUserId?: SortOrder
+    cancelledByUserId?: SortOrder
+    cancelledAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25115,6 +30473,8 @@ export namespace Prisma {
     purchaseStatus?: SortOrder
     purchaseComment?: SortOrder
     createdByUserId?: SortOrder
+    cancelledByUserId?: SortOrder
+    cancelledAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25238,6 +30598,13 @@ export namespace Prisma {
     connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
   }
 
+  export type PurchaseCreateNestedManyWithoutCancelledByInput = {
+    create?: XOR<PurchaseCreateWithoutCancelledByInput, PurchaseUncheckedCreateWithoutCancelledByInput> | PurchaseCreateWithoutCancelledByInput[] | PurchaseUncheckedCreateWithoutCancelledByInput[]
+    connectOrCreate?: PurchaseCreateOrConnectWithoutCancelledByInput | PurchaseCreateOrConnectWithoutCancelledByInput[]
+    createMany?: PurchaseCreateManyCancelledByInputEnvelope
+    connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+  }
+
   export type PurchaseDetailCreateNestedManyWithoutUserInput = {
     create?: XOR<PurchaseDetailCreateWithoutUserInput, PurchaseDetailUncheckedCreateWithoutUserInput> | PurchaseDetailCreateWithoutUserInput[] | PurchaseDetailUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PurchaseDetailCreateOrConnectWithoutUserInput | PurchaseDetailCreateOrConnectWithoutUserInput[]
@@ -25278,6 +30645,20 @@ export namespace Prisma {
     connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
     createMany?: ExpenseCreateManyUserInputEnvelope
     connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
+  export type InventoryMovementCreateNestedManyWithoutUserInput = {
+    create?: XOR<InventoryMovementCreateWithoutUserInput, InventoryMovementUncheckedCreateWithoutUserInput> | InventoryMovementCreateWithoutUserInput[] | InventoryMovementUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InventoryMovementCreateOrConnectWithoutUserInput | InventoryMovementCreateOrConnectWithoutUserInput[]
+    createMany?: InventoryMovementCreateManyUserInputEnvelope
+    connect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+  }
+
+  export type AsmrCampaignCreateNestedManyWithoutUserInput = {
+    create?: XOR<AsmrCampaignCreateWithoutUserInput, AsmrCampaignUncheckedCreateWithoutUserInput> | AsmrCampaignCreateWithoutUserInput[] | AsmrCampaignUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AsmrCampaignCreateOrConnectWithoutUserInput | AsmrCampaignCreateOrConnectWithoutUserInput[]
+    createMany?: AsmrCampaignCreateManyUserInputEnvelope
+    connect?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
   }
 
   export type CustomerUncheckedCreateNestedManyWithoutCreatedByInput = {
@@ -25336,6 +30717,13 @@ export namespace Prisma {
     connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
   }
 
+  export type PurchaseUncheckedCreateNestedManyWithoutCancelledByInput = {
+    create?: XOR<PurchaseCreateWithoutCancelledByInput, PurchaseUncheckedCreateWithoutCancelledByInput> | PurchaseCreateWithoutCancelledByInput[] | PurchaseUncheckedCreateWithoutCancelledByInput[]
+    connectOrCreate?: PurchaseCreateOrConnectWithoutCancelledByInput | PurchaseCreateOrConnectWithoutCancelledByInput[]
+    createMany?: PurchaseCreateManyCancelledByInputEnvelope
+    connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+  }
+
   export type PurchaseDetailUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<PurchaseDetailCreateWithoutUserInput, PurchaseDetailUncheckedCreateWithoutUserInput> | PurchaseDetailCreateWithoutUserInput[] | PurchaseDetailUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PurchaseDetailCreateOrConnectWithoutUserInput | PurchaseDetailCreateOrConnectWithoutUserInput[]
@@ -25376,6 +30764,20 @@ export namespace Prisma {
     connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
     createMany?: ExpenseCreateManyUserInputEnvelope
     connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
+  export type InventoryMovementUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<InventoryMovementCreateWithoutUserInput, InventoryMovementUncheckedCreateWithoutUserInput> | InventoryMovementCreateWithoutUserInput[] | InventoryMovementUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InventoryMovementCreateOrConnectWithoutUserInput | InventoryMovementCreateOrConnectWithoutUserInput[]
+    createMany?: InventoryMovementCreateManyUserInputEnvelope
+    connect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+  }
+
+  export type AsmrCampaignUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AsmrCampaignCreateWithoutUserInput, AsmrCampaignUncheckedCreateWithoutUserInput> | AsmrCampaignCreateWithoutUserInput[] | AsmrCampaignUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AsmrCampaignCreateOrConnectWithoutUserInput | AsmrCampaignCreateOrConnectWithoutUserInput[]
+    createMany?: AsmrCampaignCreateManyUserInputEnvelope
+    connect?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -25510,6 +30912,20 @@ export namespace Prisma {
     deleteMany?: PurchaseScalarWhereInput | PurchaseScalarWhereInput[]
   }
 
+  export type PurchaseUpdateManyWithoutCancelledByNestedInput = {
+    create?: XOR<PurchaseCreateWithoutCancelledByInput, PurchaseUncheckedCreateWithoutCancelledByInput> | PurchaseCreateWithoutCancelledByInput[] | PurchaseUncheckedCreateWithoutCancelledByInput[]
+    connectOrCreate?: PurchaseCreateOrConnectWithoutCancelledByInput | PurchaseCreateOrConnectWithoutCancelledByInput[]
+    upsert?: PurchaseUpsertWithWhereUniqueWithoutCancelledByInput | PurchaseUpsertWithWhereUniqueWithoutCancelledByInput[]
+    createMany?: PurchaseCreateManyCancelledByInputEnvelope
+    set?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+    disconnect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+    delete?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+    connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+    update?: PurchaseUpdateWithWhereUniqueWithoutCancelledByInput | PurchaseUpdateWithWhereUniqueWithoutCancelledByInput[]
+    updateMany?: PurchaseUpdateManyWithWhereWithoutCancelledByInput | PurchaseUpdateManyWithWhereWithoutCancelledByInput[]
+    deleteMany?: PurchaseScalarWhereInput | PurchaseScalarWhereInput[]
+  }
+
   export type PurchaseDetailUpdateManyWithoutUserNestedInput = {
     create?: XOR<PurchaseDetailCreateWithoutUserInput, PurchaseDetailUncheckedCreateWithoutUserInput> | PurchaseDetailCreateWithoutUserInput[] | PurchaseDetailUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PurchaseDetailCreateOrConnectWithoutUserInput | PurchaseDetailCreateOrConnectWithoutUserInput[]
@@ -25592,6 +31008,34 @@ export namespace Prisma {
     update?: ExpenseUpdateWithWhereUniqueWithoutUserInput | ExpenseUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ExpenseUpdateManyWithWhereWithoutUserInput | ExpenseUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
+  export type InventoryMovementUpdateManyWithoutUserNestedInput = {
+    create?: XOR<InventoryMovementCreateWithoutUserInput, InventoryMovementUncheckedCreateWithoutUserInput> | InventoryMovementCreateWithoutUserInput[] | InventoryMovementUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InventoryMovementCreateOrConnectWithoutUserInput | InventoryMovementCreateOrConnectWithoutUserInput[]
+    upsert?: InventoryMovementUpsertWithWhereUniqueWithoutUserInput | InventoryMovementUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: InventoryMovementCreateManyUserInputEnvelope
+    set?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    disconnect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    delete?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    connect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    update?: InventoryMovementUpdateWithWhereUniqueWithoutUserInput | InventoryMovementUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: InventoryMovementUpdateManyWithWhereWithoutUserInput | InventoryMovementUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: InventoryMovementScalarWhereInput | InventoryMovementScalarWhereInput[]
+  }
+
+  export type AsmrCampaignUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AsmrCampaignCreateWithoutUserInput, AsmrCampaignUncheckedCreateWithoutUserInput> | AsmrCampaignCreateWithoutUserInput[] | AsmrCampaignUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AsmrCampaignCreateOrConnectWithoutUserInput | AsmrCampaignCreateOrConnectWithoutUserInput[]
+    upsert?: AsmrCampaignUpsertWithWhereUniqueWithoutUserInput | AsmrCampaignUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AsmrCampaignCreateManyUserInputEnvelope
+    set?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
+    disconnect?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
+    delete?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
+    connect?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
+    update?: AsmrCampaignUpdateWithWhereUniqueWithoutUserInput | AsmrCampaignUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AsmrCampaignUpdateManyWithWhereWithoutUserInput | AsmrCampaignUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AsmrCampaignScalarWhereInput | AsmrCampaignScalarWhereInput[]
   }
 
   export type CustomerUncheckedUpdateManyWithoutCreatedByNestedInput = {
@@ -25706,6 +31150,20 @@ export namespace Prisma {
     deleteMany?: PurchaseScalarWhereInput | PurchaseScalarWhereInput[]
   }
 
+  export type PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput = {
+    create?: XOR<PurchaseCreateWithoutCancelledByInput, PurchaseUncheckedCreateWithoutCancelledByInput> | PurchaseCreateWithoutCancelledByInput[] | PurchaseUncheckedCreateWithoutCancelledByInput[]
+    connectOrCreate?: PurchaseCreateOrConnectWithoutCancelledByInput | PurchaseCreateOrConnectWithoutCancelledByInput[]
+    upsert?: PurchaseUpsertWithWhereUniqueWithoutCancelledByInput | PurchaseUpsertWithWhereUniqueWithoutCancelledByInput[]
+    createMany?: PurchaseCreateManyCancelledByInputEnvelope
+    set?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+    disconnect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+    delete?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+    connect?: PurchaseWhereUniqueInput | PurchaseWhereUniqueInput[]
+    update?: PurchaseUpdateWithWhereUniqueWithoutCancelledByInput | PurchaseUpdateWithWhereUniqueWithoutCancelledByInput[]
+    updateMany?: PurchaseUpdateManyWithWhereWithoutCancelledByInput | PurchaseUpdateManyWithWhereWithoutCancelledByInput[]
+    deleteMany?: PurchaseScalarWhereInput | PurchaseScalarWhereInput[]
+  }
+
   export type PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<PurchaseDetailCreateWithoutUserInput, PurchaseDetailUncheckedCreateWithoutUserInput> | PurchaseDetailCreateWithoutUserInput[] | PurchaseDetailUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PurchaseDetailCreateOrConnectWithoutUserInput | PurchaseDetailCreateOrConnectWithoutUserInput[]
@@ -25788,6 +31246,34 @@ export namespace Prisma {
     update?: ExpenseUpdateWithWhereUniqueWithoutUserInput | ExpenseUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ExpenseUpdateManyWithWhereWithoutUserInput | ExpenseUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
+  export type InventoryMovementUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<InventoryMovementCreateWithoutUserInput, InventoryMovementUncheckedCreateWithoutUserInput> | InventoryMovementCreateWithoutUserInput[] | InventoryMovementUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InventoryMovementCreateOrConnectWithoutUserInput | InventoryMovementCreateOrConnectWithoutUserInput[]
+    upsert?: InventoryMovementUpsertWithWhereUniqueWithoutUserInput | InventoryMovementUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: InventoryMovementCreateManyUserInputEnvelope
+    set?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    disconnect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    delete?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    connect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    update?: InventoryMovementUpdateWithWhereUniqueWithoutUserInput | InventoryMovementUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: InventoryMovementUpdateManyWithWhereWithoutUserInput | InventoryMovementUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: InventoryMovementScalarWhereInput | InventoryMovementScalarWhereInput[]
+  }
+
+  export type AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AsmrCampaignCreateWithoutUserInput, AsmrCampaignUncheckedCreateWithoutUserInput> | AsmrCampaignCreateWithoutUserInput[] | AsmrCampaignUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AsmrCampaignCreateOrConnectWithoutUserInput | AsmrCampaignCreateOrConnectWithoutUserInput[]
+    upsert?: AsmrCampaignUpsertWithWhereUniqueWithoutUserInput | AsmrCampaignUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AsmrCampaignCreateManyUserInputEnvelope
+    set?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
+    disconnect?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
+    delete?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
+    connect?: AsmrCampaignWhereUniqueInput | AsmrCampaignWhereUniqueInput[]
+    update?: AsmrCampaignUpdateWithWhereUniqueWithoutUserInput | AsmrCampaignUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AsmrCampaignUpdateManyWithWhereWithoutUserInput | AsmrCampaignUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AsmrCampaignScalarWhereInput | AsmrCampaignScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCustomersInput = {
@@ -25916,6 +31402,12 @@ export namespace Prisma {
     connect?: PurchaseDetailWhereUniqueInput | PurchaseDetailWhereUniqueInput[]
   }
 
+  export type ProductStockCreateNestedOneWithoutProductInput = {
+    create?: XOR<ProductStockCreateWithoutProductInput, ProductStockUncheckedCreateWithoutProductInput>
+    connectOrCreate?: ProductStockCreateOrConnectWithoutProductInput
+    connect?: ProductStockWhereUniqueInput
+  }
+
   export type SaleDetailUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<SaleDetailCreateWithoutProductInput, SaleDetailUncheckedCreateWithoutProductInput> | SaleDetailCreateWithoutProductInput[] | SaleDetailUncheckedCreateWithoutProductInput[]
     connectOrCreate?: SaleDetailCreateOrConnectWithoutProductInput | SaleDetailCreateOrConnectWithoutProductInput[]
@@ -25928,6 +31420,12 @@ export namespace Prisma {
     connectOrCreate?: PurchaseDetailCreateOrConnectWithoutProductInput | PurchaseDetailCreateOrConnectWithoutProductInput[]
     createMany?: PurchaseDetailCreateManyProductInputEnvelope
     connect?: PurchaseDetailWhereUniqueInput | PurchaseDetailWhereUniqueInput[]
+  }
+
+  export type ProductStockUncheckedCreateNestedOneWithoutProductInput = {
+    create?: XOR<ProductStockCreateWithoutProductInput, ProductStockUncheckedCreateWithoutProductInput>
+    connectOrCreate?: ProductStockCreateOrConnectWithoutProductInput
+    connect?: ProductStockWhereUniqueInput
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -25948,6 +31446,10 @@ export namespace Prisma {
 
   export type EnumProductUnitFieldUpdateOperationsInput = {
     set?: $Enums.ProductUnit
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type CategoryUpdateOneRequiredWithoutProductsNestedInput = {
@@ -25994,6 +31496,16 @@ export namespace Prisma {
     deleteMany?: PurchaseDetailScalarWhereInput | PurchaseDetailScalarWhereInput[]
   }
 
+  export type ProductStockUpdateOneWithoutProductNestedInput = {
+    create?: XOR<ProductStockCreateWithoutProductInput, ProductStockUncheckedCreateWithoutProductInput>
+    connectOrCreate?: ProductStockCreateOrConnectWithoutProductInput
+    upsert?: ProductStockUpsertWithoutProductInput
+    disconnect?: ProductStockWhereInput | boolean
+    delete?: ProductStockWhereInput | boolean
+    connect?: ProductStockWhereUniqueInput
+    update?: XOR<XOR<ProductStockUpdateToOneWithWhereWithoutProductInput, ProductStockUpdateWithoutProductInput>, ProductStockUncheckedUpdateWithoutProductInput>
+  }
+
   export type SaleDetailUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<SaleDetailCreateWithoutProductInput, SaleDetailUncheckedCreateWithoutProductInput> | SaleDetailCreateWithoutProductInput[] | SaleDetailUncheckedCreateWithoutProductInput[]
     connectOrCreate?: SaleDetailCreateOrConnectWithoutProductInput | SaleDetailCreateOrConnectWithoutProductInput[]
@@ -26020,6 +31532,108 @@ export namespace Prisma {
     update?: PurchaseDetailUpdateWithWhereUniqueWithoutProductInput | PurchaseDetailUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: PurchaseDetailUpdateManyWithWhereWithoutProductInput | PurchaseDetailUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: PurchaseDetailScalarWhereInput | PurchaseDetailScalarWhereInput[]
+  }
+
+  export type ProductStockUncheckedUpdateOneWithoutProductNestedInput = {
+    create?: XOR<ProductStockCreateWithoutProductInput, ProductStockUncheckedCreateWithoutProductInput>
+    connectOrCreate?: ProductStockCreateOrConnectWithoutProductInput
+    upsert?: ProductStockUpsertWithoutProductInput
+    disconnect?: ProductStockWhereInput | boolean
+    delete?: ProductStockWhereInput | boolean
+    connect?: ProductStockWhereUniqueInput
+    update?: XOR<XOR<ProductStockUpdateToOneWithWhereWithoutProductInput, ProductStockUpdateWithoutProductInput>, ProductStockUncheckedUpdateWithoutProductInput>
+  }
+
+  export type ProductCreateNestedOneWithoutProductStockInput = {
+    create?: XOR<ProductCreateWithoutProductStockInput, ProductUncheckedCreateWithoutProductStockInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutProductStockInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type InventoryMovementCreateNestedManyWithoutProductStockInput = {
+    create?: XOR<InventoryMovementCreateWithoutProductStockInput, InventoryMovementUncheckedCreateWithoutProductStockInput> | InventoryMovementCreateWithoutProductStockInput[] | InventoryMovementUncheckedCreateWithoutProductStockInput[]
+    connectOrCreate?: InventoryMovementCreateOrConnectWithoutProductStockInput | InventoryMovementCreateOrConnectWithoutProductStockInput[]
+    createMany?: InventoryMovementCreateManyProductStockInputEnvelope
+    connect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+  }
+
+  export type InventoryMovementUncheckedCreateNestedManyWithoutProductStockInput = {
+    create?: XOR<InventoryMovementCreateWithoutProductStockInput, InventoryMovementUncheckedCreateWithoutProductStockInput> | InventoryMovementCreateWithoutProductStockInput[] | InventoryMovementUncheckedCreateWithoutProductStockInput[]
+    connectOrCreate?: InventoryMovementCreateOrConnectWithoutProductStockInput | InventoryMovementCreateOrConnectWithoutProductStockInput[]
+    createMany?: InventoryMovementCreateManyProductStockInputEnvelope
+    connect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+  }
+
+  export type ProductUpdateOneRequiredWithoutProductStockNestedInput = {
+    create?: XOR<ProductCreateWithoutProductStockInput, ProductUncheckedCreateWithoutProductStockInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutProductStockInput
+    upsert?: ProductUpsertWithoutProductStockInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutProductStockInput, ProductUpdateWithoutProductStockInput>, ProductUncheckedUpdateWithoutProductStockInput>
+  }
+
+  export type InventoryMovementUpdateManyWithoutProductStockNestedInput = {
+    create?: XOR<InventoryMovementCreateWithoutProductStockInput, InventoryMovementUncheckedCreateWithoutProductStockInput> | InventoryMovementCreateWithoutProductStockInput[] | InventoryMovementUncheckedCreateWithoutProductStockInput[]
+    connectOrCreate?: InventoryMovementCreateOrConnectWithoutProductStockInput | InventoryMovementCreateOrConnectWithoutProductStockInput[]
+    upsert?: InventoryMovementUpsertWithWhereUniqueWithoutProductStockInput | InventoryMovementUpsertWithWhereUniqueWithoutProductStockInput[]
+    createMany?: InventoryMovementCreateManyProductStockInputEnvelope
+    set?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    disconnect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    delete?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    connect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    update?: InventoryMovementUpdateWithWhereUniqueWithoutProductStockInput | InventoryMovementUpdateWithWhereUniqueWithoutProductStockInput[]
+    updateMany?: InventoryMovementUpdateManyWithWhereWithoutProductStockInput | InventoryMovementUpdateManyWithWhereWithoutProductStockInput[]
+    deleteMany?: InventoryMovementScalarWhereInput | InventoryMovementScalarWhereInput[]
+  }
+
+  export type InventoryMovementUncheckedUpdateManyWithoutProductStockNestedInput = {
+    create?: XOR<InventoryMovementCreateWithoutProductStockInput, InventoryMovementUncheckedCreateWithoutProductStockInput> | InventoryMovementCreateWithoutProductStockInput[] | InventoryMovementUncheckedCreateWithoutProductStockInput[]
+    connectOrCreate?: InventoryMovementCreateOrConnectWithoutProductStockInput | InventoryMovementCreateOrConnectWithoutProductStockInput[]
+    upsert?: InventoryMovementUpsertWithWhereUniqueWithoutProductStockInput | InventoryMovementUpsertWithWhereUniqueWithoutProductStockInput[]
+    createMany?: InventoryMovementCreateManyProductStockInputEnvelope
+    set?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    disconnect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    delete?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    connect?: InventoryMovementWhereUniqueInput | InventoryMovementWhereUniqueInput[]
+    update?: InventoryMovementUpdateWithWhereUniqueWithoutProductStockInput | InventoryMovementUpdateWithWhereUniqueWithoutProductStockInput[]
+    updateMany?: InventoryMovementUpdateManyWithWhereWithoutProductStockInput | InventoryMovementUpdateManyWithWhereWithoutProductStockInput[]
+    deleteMany?: InventoryMovementScalarWhereInput | InventoryMovementScalarWhereInput[]
+  }
+
+  export type ProductStockCreateNestedOneWithoutMovementsInput = {
+    create?: XOR<ProductStockCreateWithoutMovementsInput, ProductStockUncheckedCreateWithoutMovementsInput>
+    connectOrCreate?: ProductStockCreateOrConnectWithoutMovementsInput
+    connect?: ProductStockWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutInventoryMovementInput = {
+    create?: XOR<UserCreateWithoutInventoryMovementInput, UserUncheckedCreateWithoutInventoryMovementInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInventoryMovementInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumInventoryMovementTypeFieldUpdateOperationsInput = {
+    set?: $Enums.InventoryMovementType
+  }
+
+  export type EnumInventoryReferenceTypeFieldUpdateOperationsInput = {
+    set?: $Enums.InventoryReferenceType
+  }
+
+  export type ProductStockUpdateOneRequiredWithoutMovementsNestedInput = {
+    create?: XOR<ProductStockCreateWithoutMovementsInput, ProductStockUncheckedCreateWithoutMovementsInput>
+    connectOrCreate?: ProductStockCreateOrConnectWithoutMovementsInput
+    upsert?: ProductStockUpsertWithoutMovementsInput
+    connect?: ProductStockWhereUniqueInput
+    update?: XOR<XOR<ProductStockUpdateToOneWithWhereWithoutMovementsInput, ProductStockUpdateWithoutMovementsInput>, ProductStockUncheckedUpdateWithoutMovementsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutInventoryMovementNestedInput = {
+    create?: XOR<UserCreateWithoutInventoryMovementInput, UserUncheckedCreateWithoutInventoryMovementInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInventoryMovementInput
+    upsert?: UserUpsertWithoutInventoryMovementInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInventoryMovementInput, UserUpdateWithoutInventoryMovementInput>, UserUncheckedUpdateWithoutInventoryMovementInput>
   }
 
   export type CategoryCreateNestedOneWithoutServicesInput = {
@@ -26504,6 +32118,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTransactionsInput, UserUpdateWithoutTransactionsInput>, UserUncheckedUpdateWithoutTransactionsInput>
   }
 
+  export type UserCreateNestedOneWithoutAsmrCampaignInput = {
+    create?: XOR<UserCreateWithoutAsmrCampaignInput, UserUncheckedCreateWithoutAsmrCampaignInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAsmrCampaignInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutAsmrCampaignNestedInput = {
+    create?: XOR<UserCreateWithoutAsmrCampaignInput, UserUncheckedCreateWithoutAsmrCampaignInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAsmrCampaignInput
+    upsert?: UserUpsertWithoutAsmrCampaignInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAsmrCampaignInput, UserUpdateWithoutAsmrCampaignInput>, UserUncheckedUpdateWithoutAsmrCampaignInput>
+  }
+
   export type UserCreateNestedOneWithoutExpenseInput = {
     create?: XOR<UserCreateWithoutExpenseInput, UserUncheckedCreateWithoutExpenseInput>
     connectOrCreate?: UserCreateOrConnectWithoutExpenseInput
@@ -26586,6 +32214,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type UserCreateNestedOneWithoutPurchasesCancelledInput = {
+    create?: XOR<UserCreateWithoutPurchasesCancelledInput, UserUncheckedCreateWithoutPurchasesCancelledInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPurchasesCancelledInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type PurchaseDetailCreateNestedManyWithoutPurchaseInput = {
     create?: XOR<PurchaseDetailCreateWithoutPurchaseInput, PurchaseDetailUncheckedCreateWithoutPurchaseInput> | PurchaseDetailCreateWithoutPurchaseInput[] | PurchaseDetailUncheckedCreateWithoutPurchaseInput[]
     connectOrCreate?: PurchaseDetailCreateOrConnectWithoutPurchaseInput | PurchaseDetailCreateOrConnectWithoutPurchaseInput[]
@@ -26614,6 +32248,16 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutPurchaseInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPurchaseInput, UserUpdateWithoutPurchaseInput>, UserUncheckedUpdateWithoutPurchaseInput>
+  }
+
+  export type UserUpdateOneWithoutPurchasesCancelledNestedInput = {
+    create?: XOR<UserCreateWithoutPurchasesCancelledInput, UserUncheckedCreateWithoutPurchasesCancelledInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPurchasesCancelledInput
+    upsert?: UserUpsertWithoutPurchasesCancelledInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPurchasesCancelledInput, UserUpdateWithoutPurchasesCancelledInput>, UserUncheckedUpdateWithoutPurchasesCancelledInput>
   }
 
   export type PurchaseDetailUpdateManyWithoutPurchaseNestedInput = {
@@ -26874,6 +32518,11 @@ export namespace Prisma {
     not?: NestedEnumProductUnitFilter<$PrismaModel> | $Enums.ProductUnit
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -26927,6 +32576,48 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProductUnitFilter<$PrismaModel>
     _max?: NestedEnumProductUnitFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedEnumInventoryMovementTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryMovementType | EnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryMovementType[] | ListEnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryMovementType[] | ListEnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryMovementTypeFilter<$PrismaModel> | $Enums.InventoryMovementType
+  }
+
+  export type NestedEnumInventoryReferenceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryReferenceType | EnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryReferenceType[] | ListEnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryReferenceType[] | ListEnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryReferenceTypeFilter<$PrismaModel> | $Enums.InventoryReferenceType
+  }
+
+  export type NestedEnumInventoryMovementTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryMovementType | EnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryMovementType[] | ListEnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryMovementType[] | ListEnumInventoryMovementTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryMovementTypeWithAggregatesFilter<$PrismaModel> | $Enums.InventoryMovementType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInventoryMovementTypeFilter<$PrismaModel>
+    _max?: NestedEnumInventoryMovementTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumInventoryReferenceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryReferenceType | EnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryReferenceType[] | ListEnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryReferenceType[] | ListEnumInventoryReferenceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryReferenceTypeWithAggregatesFilter<$PrismaModel> | $Enums.InventoryReferenceType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumInventoryReferenceTypeFilter<$PrismaModel>
+    _max?: NestedEnumInventoryReferenceTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumServiceUnitFilter<$PrismaModel = never> = {
@@ -27066,11 +32757,13 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutProductInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutProductInput
+    productStock?: ProductStockCreateNestedOneWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutUserInput = {
@@ -27083,10 +32776,12 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutProductInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutProductInput
+    productStock?: ProductStockUncheckedCreateNestedOneWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutUserInput = {
@@ -27284,9 +32979,11 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     provider: ProviderCreateNestedOneWithoutPurchaseInput
+    cancelledBy?: UserCreateNestedOneWithoutPurchasesCancelledInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutPurchaseInput
   }
 
@@ -27298,6 +32995,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    cancelledByUserId?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutPurchaseInput
@@ -27310,6 +33009,46 @@ export namespace Prisma {
 
   export type PurchaseCreateManyUserInputEnvelope = {
     data: PurchaseCreateManyUserInput | PurchaseCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PurchaseCreateWithoutCancelledByInput = {
+    purchaseId: string
+    purchaseNumber?: string | null
+    purchaseRealNumber?: string | null
+    purchaseTotal: number
+    purchaseStatus?: string | null
+    purchaseComment?: string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    provider: ProviderCreateNestedOneWithoutPurchaseInput
+    user: UserCreateNestedOneWithoutPurchaseInput
+    PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutPurchaseInput
+  }
+
+  export type PurchaseUncheckedCreateWithoutCancelledByInput = {
+    purchaseId: string
+    purchaseNumber?: string | null
+    purchaseRealNumber?: string | null
+    purchaseProviderId: string
+    purchaseTotal: number
+    purchaseStatus?: string | null
+    purchaseComment?: string | null
+    createdByUserId: string
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutPurchaseInput
+  }
+
+  export type PurchaseCreateOrConnectWithoutCancelledByInput = {
+    where: PurchaseWhereUniqueInput
+    create: XOR<PurchaseCreateWithoutCancelledByInput, PurchaseUncheckedCreateWithoutCancelledByInput>
+  }
+
+  export type PurchaseCreateManyCancelledByInputEnvelope = {
+    data: PurchaseCreateManyCancelledByInput | PurchaseCreateManyCancelledByInput[]
     skipDuplicates?: boolean
   }
 
@@ -27511,6 +33250,100 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type InventoryMovementCreateWithoutUserInput = {
+    movementId?: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType?: $Enums.InventoryReferenceType
+    referenceId?: string | null
+    referenceLabel?: string | null
+    reason?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    productStock: ProductStockCreateNestedOneWithoutMovementsInput
+  }
+
+  export type InventoryMovementUncheckedCreateWithoutUserInput = {
+    movementId?: string
+    productId: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType?: $Enums.InventoryReferenceType
+    referenceId?: string | null
+    referenceLabel?: string | null
+    reason?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type InventoryMovementCreateOrConnectWithoutUserInput = {
+    where: InventoryMovementWhereUniqueInput
+    create: XOR<InventoryMovementCreateWithoutUserInput, InventoryMovementUncheckedCreateWithoutUserInput>
+  }
+
+  export type InventoryMovementCreateManyUserInputEnvelope = {
+    data: InventoryMovementCreateManyUserInput | InventoryMovementCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AsmrCampaignCreateWithoutUserInput = {
+    campaignId?: string
+    campaignName: string
+    campaignType: string
+    auditMonth: number
+    auditYear: number
+    sourceMonth: number
+    sourceYear: number
+    discountPercent?: number
+    messageSent?: string | null
+    contactsSuccess?: number
+    universeTotal?: number
+    excludedRepurchase?: number
+    eligibleBeforeDedup?: number
+    eligibleFinal?: number
+    phonesDeduplicated?: number
+    campaignStatus?: string
+    executedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AsmrCampaignUncheckedCreateWithoutUserInput = {
+    campaignId?: string
+    campaignName: string
+    campaignType: string
+    auditMonth: number
+    auditYear: number
+    sourceMonth: number
+    sourceYear: number
+    discountPercent?: number
+    messageSent?: string | null
+    contactsSuccess?: number
+    universeTotal?: number
+    excludedRepurchase?: number
+    eligibleBeforeDedup?: number
+    eligibleFinal?: number
+    phonesDeduplicated?: number
+    campaignStatus?: string
+    executedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AsmrCampaignCreateOrConnectWithoutUserInput = {
+    where: AsmrCampaignWhereUniqueInput
+    create: XOR<AsmrCampaignCreateWithoutUserInput, AsmrCampaignUncheckedCreateWithoutUserInput>
+  }
+
+  export type AsmrCampaignCreateManyUserInputEnvelope = {
+    data: AsmrCampaignCreateManyUserInput | AsmrCampaignCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CustomerUpsertWithWhereUniqueWithoutCreatedByInput = {
     where: CustomerWhereUniqueInput
     update: XOR<CustomerUpdateWithoutCreatedByInput, CustomerUncheckedUpdateWithoutCreatedByInput>
@@ -27575,6 +33408,7 @@ export namespace Prisma {
     productPriceFixed?: BoolNullableFilter<"Product"> | boolean | null
     productStatus?: EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
     productUnit?: EnumProductUnitFilter<"Product"> | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFilter<"Product"> | boolean
     createdByUserId?: StringFilter<"Product"> | string
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
@@ -27766,8 +33600,26 @@ export namespace Prisma {
     purchaseStatus?: StringNullableFilter<"Purchase"> | string | null
     purchaseComment?: StringNullableFilter<"Purchase"> | string | null
     createdByUserId?: StringFilter<"Purchase"> | string
+    cancelledByUserId?: StringNullableFilter<"Purchase"> | string | null
+    cancelledAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
     createdAt?: DateTimeFilter<"Purchase"> | Date | string
     updatedAt?: DateTimeFilter<"Purchase"> | Date | string
+  }
+
+  export type PurchaseUpsertWithWhereUniqueWithoutCancelledByInput = {
+    where: PurchaseWhereUniqueInput
+    update: XOR<PurchaseUpdateWithoutCancelledByInput, PurchaseUncheckedUpdateWithoutCancelledByInput>
+    create: XOR<PurchaseCreateWithoutCancelledByInput, PurchaseUncheckedCreateWithoutCancelledByInput>
+  }
+
+  export type PurchaseUpdateWithWhereUniqueWithoutCancelledByInput = {
+    where: PurchaseWhereUniqueInput
+    data: XOR<PurchaseUpdateWithoutCancelledByInput, PurchaseUncheckedUpdateWithoutCancelledByInput>
+  }
+
+  export type PurchaseUpdateManyWithWhereWithoutCancelledByInput = {
+    where: PurchaseScalarWhereInput
+    data: XOR<PurchaseUpdateManyMutationInput, PurchaseUncheckedUpdateManyWithoutCancelledByInput>
   }
 
   export type PurchaseDetailUpsertWithWhereUniqueWithoutUserInput = {
@@ -27958,6 +33810,83 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Expense"> | Date | string
   }
 
+  export type InventoryMovementUpsertWithWhereUniqueWithoutUserInput = {
+    where: InventoryMovementWhereUniqueInput
+    update: XOR<InventoryMovementUpdateWithoutUserInput, InventoryMovementUncheckedUpdateWithoutUserInput>
+    create: XOR<InventoryMovementCreateWithoutUserInput, InventoryMovementUncheckedCreateWithoutUserInput>
+  }
+
+  export type InventoryMovementUpdateWithWhereUniqueWithoutUserInput = {
+    where: InventoryMovementWhereUniqueInput
+    data: XOR<InventoryMovementUpdateWithoutUserInput, InventoryMovementUncheckedUpdateWithoutUserInput>
+  }
+
+  export type InventoryMovementUpdateManyWithWhereWithoutUserInput = {
+    where: InventoryMovementScalarWhereInput
+    data: XOR<InventoryMovementUpdateManyMutationInput, InventoryMovementUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type InventoryMovementScalarWhereInput = {
+    AND?: InventoryMovementScalarWhereInput | InventoryMovementScalarWhereInput[]
+    OR?: InventoryMovementScalarWhereInput[]
+    NOT?: InventoryMovementScalarWhereInput | InventoryMovementScalarWhereInput[]
+    movementId?: StringFilter<"InventoryMovement"> | string
+    productId?: StringFilter<"InventoryMovement"> | string
+    movementType?: EnumInventoryMovementTypeFilter<"InventoryMovement"> | $Enums.InventoryMovementType
+    quantityDelta?: IntFilter<"InventoryMovement"> | number
+    stockBefore?: IntFilter<"InventoryMovement"> | number
+    stockAfter?: IntFilter<"InventoryMovement"> | number
+    referenceType?: EnumInventoryReferenceTypeFilter<"InventoryMovement"> | $Enums.InventoryReferenceType
+    referenceId?: StringNullableFilter<"InventoryMovement"> | string | null
+    referenceLabel?: StringNullableFilter<"InventoryMovement"> | string | null
+    reason?: StringNullableFilter<"InventoryMovement"> | string | null
+    notes?: StringNullableFilter<"InventoryMovement"> | string | null
+    createdByUserId?: StringFilter<"InventoryMovement"> | string
+    createdAt?: DateTimeFilter<"InventoryMovement"> | Date | string
+  }
+
+  export type AsmrCampaignUpsertWithWhereUniqueWithoutUserInput = {
+    where: AsmrCampaignWhereUniqueInput
+    update: XOR<AsmrCampaignUpdateWithoutUserInput, AsmrCampaignUncheckedUpdateWithoutUserInput>
+    create: XOR<AsmrCampaignCreateWithoutUserInput, AsmrCampaignUncheckedCreateWithoutUserInput>
+  }
+
+  export type AsmrCampaignUpdateWithWhereUniqueWithoutUserInput = {
+    where: AsmrCampaignWhereUniqueInput
+    data: XOR<AsmrCampaignUpdateWithoutUserInput, AsmrCampaignUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AsmrCampaignUpdateManyWithWhereWithoutUserInput = {
+    where: AsmrCampaignScalarWhereInput
+    data: XOR<AsmrCampaignUpdateManyMutationInput, AsmrCampaignUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AsmrCampaignScalarWhereInput = {
+    AND?: AsmrCampaignScalarWhereInput | AsmrCampaignScalarWhereInput[]
+    OR?: AsmrCampaignScalarWhereInput[]
+    NOT?: AsmrCampaignScalarWhereInput | AsmrCampaignScalarWhereInput[]
+    campaignId?: StringFilter<"AsmrCampaign"> | string
+    campaignName?: StringFilter<"AsmrCampaign"> | string
+    campaignType?: StringFilter<"AsmrCampaign"> | string
+    auditMonth?: IntFilter<"AsmrCampaign"> | number
+    auditYear?: IntFilter<"AsmrCampaign"> | number
+    sourceMonth?: IntFilter<"AsmrCampaign"> | number
+    sourceYear?: IntFilter<"AsmrCampaign"> | number
+    discountPercent?: IntFilter<"AsmrCampaign"> | number
+    messageSent?: StringNullableFilter<"AsmrCampaign"> | string | null
+    contactsSuccess?: IntFilter<"AsmrCampaign"> | number
+    universeTotal?: IntFilter<"AsmrCampaign"> | number
+    excludedRepurchase?: IntFilter<"AsmrCampaign"> | number
+    eligibleBeforeDedup?: IntFilter<"AsmrCampaign"> | number
+    eligibleFinal?: IntFilter<"AsmrCampaign"> | number
+    phonesDeduplicated?: IntFilter<"AsmrCampaign"> | number
+    campaignStatus?: StringFilter<"AsmrCampaign"> | string
+    createdByUserId?: StringFilter<"AsmrCampaign"> | string
+    executedAt?: DateTimeFilter<"AsmrCampaign"> | Date | string
+    createdAt?: DateTimeFilter<"AsmrCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"AsmrCampaign"> | Date | string
+  }
+
   export type UserCreateWithoutCustomersInput = {
     userId: string
     userFirstName: string
@@ -27978,12 +33907,15 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCustomersInput = {
@@ -28006,12 +33938,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCustomersInput = {
@@ -28128,12 +34063,15 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCustomersInput = {
@@ -28156,12 +34094,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleUpsertWithWhereUniqueWithoutCustomerInput = {
@@ -28241,12 +34182,15 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProductInput = {
@@ -28269,12 +34213,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProductInput = {
@@ -28356,6 +34303,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProductStockCreateWithoutProductInput = {
+    quantityOnHand?: number
+    reorderPoint?: number
+    averageUnitCost?: number
+    lastMovementAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    movements?: InventoryMovementCreateNestedManyWithoutProductStockInput
+  }
+
+  export type ProductStockUncheckedCreateWithoutProductInput = {
+    quantityOnHand?: number
+    reorderPoint?: number
+    averageUnitCost?: number
+    lastMovementAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    movements?: InventoryMovementUncheckedCreateNestedManyWithoutProductStockInput
+  }
+
+  export type ProductStockCreateOrConnectWithoutProductInput = {
+    where: ProductStockWhereUniqueInput
+    create: XOR<ProductStockCreateWithoutProductInput, ProductStockUncheckedCreateWithoutProductInput>
+  }
+
   export type CategoryUpsertWithoutProductsInput = {
     update: XOR<CategoryUpdateWithoutProductsInput, CategoryUncheckedUpdateWithoutProductsInput>
     create: XOR<CategoryCreateWithoutProductsInput, CategoryUncheckedCreateWithoutProductsInput>
@@ -28418,12 +34392,15 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProductInput = {
@@ -28446,12 +34423,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleDetailUpsertWithWhereUniqueWithoutProductInput = {
@@ -28484,6 +34464,383 @@ export namespace Prisma {
   export type PurchaseDetailUpdateManyWithWhereWithoutProductInput = {
     where: PurchaseDetailScalarWhereInput
     data: XOR<PurchaseDetailUpdateManyMutationInput, PurchaseDetailUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type ProductStockUpsertWithoutProductInput = {
+    update: XOR<ProductStockUpdateWithoutProductInput, ProductStockUncheckedUpdateWithoutProductInput>
+    create: XOR<ProductStockCreateWithoutProductInput, ProductStockUncheckedCreateWithoutProductInput>
+    where?: ProductStockWhereInput
+  }
+
+  export type ProductStockUpdateToOneWithWhereWithoutProductInput = {
+    where?: ProductStockWhereInput
+    data: XOR<ProductStockUpdateWithoutProductInput, ProductStockUncheckedUpdateWithoutProductInput>
+  }
+
+  export type ProductStockUpdateWithoutProductInput = {
+    quantityOnHand?: IntFieldUpdateOperationsInput | number
+    reorderPoint?: IntFieldUpdateOperationsInput | number
+    averageUnitCost?: IntFieldUpdateOperationsInput | number
+    lastMovementAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    movements?: InventoryMovementUpdateManyWithoutProductStockNestedInput
+  }
+
+  export type ProductStockUncheckedUpdateWithoutProductInput = {
+    quantityOnHand?: IntFieldUpdateOperationsInput | number
+    reorderPoint?: IntFieldUpdateOperationsInput | number
+    averageUnitCost?: IntFieldUpdateOperationsInput | number
+    lastMovementAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    movements?: InventoryMovementUncheckedUpdateManyWithoutProductStockNestedInput
+  }
+
+  export type ProductCreateWithoutProductStockInput = {
+    productId?: string
+    productName: string
+    productDescription?: string | null
+    productSKU: string
+    productPrice: number
+    productPriceFixed?: boolean | null
+    productStatus: $Enums.ProductStatus
+    productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    user: UserCreateNestedOneWithoutProductInput
+    SaleDetail?: SaleDetailCreateNestedManyWithoutProductInput
+    PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutProductStockInput = {
+    productId?: string
+    productName: string
+    productDescription?: string | null
+    productSKU: string
+    categoryId: string
+    productPrice: number
+    productPriceFixed?: boolean | null
+    productStatus: $Enums.ProductStatus
+    productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutProductInput
+    PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutProductStockInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutProductStockInput, ProductUncheckedCreateWithoutProductStockInput>
+  }
+
+  export type InventoryMovementCreateWithoutProductStockInput = {
+    movementId?: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType?: $Enums.InventoryReferenceType
+    referenceId?: string | null
+    referenceLabel?: string | null
+    reason?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutInventoryMovementInput
+  }
+
+  export type InventoryMovementUncheckedCreateWithoutProductStockInput = {
+    movementId?: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType?: $Enums.InventoryReferenceType
+    referenceId?: string | null
+    referenceLabel?: string | null
+    reason?: string | null
+    notes?: string | null
+    createdByUserId: string
+    createdAt?: Date | string
+  }
+
+  export type InventoryMovementCreateOrConnectWithoutProductStockInput = {
+    where: InventoryMovementWhereUniqueInput
+    create: XOR<InventoryMovementCreateWithoutProductStockInput, InventoryMovementUncheckedCreateWithoutProductStockInput>
+  }
+
+  export type InventoryMovementCreateManyProductStockInputEnvelope = {
+    data: InventoryMovementCreateManyProductStockInput | InventoryMovementCreateManyProductStockInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductUpsertWithoutProductStockInput = {
+    update: XOR<ProductUpdateWithoutProductStockInput, ProductUncheckedUpdateWithoutProductStockInput>
+    create: XOR<ProductCreateWithoutProductStockInput, ProductUncheckedCreateWithoutProductStockInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutProductStockInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutProductStockInput, ProductUncheckedUpdateWithoutProductStockInput>
+  }
+
+  export type ProductUpdateWithoutProductStockInput = {
+    productId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    productSKU?: StringFieldUpdateOperationsInput | string
+    productPrice?: IntFieldUpdateOperationsInput | number
+    productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    user?: UserUpdateOneRequiredWithoutProductNestedInput
+    SaleDetail?: SaleDetailUpdateManyWithoutProductNestedInput
+    PurchaseDetail?: PurchaseDetailUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutProductStockInput = {
+    productId?: StringFieldUpdateOperationsInput | string
+    productName?: StringFieldUpdateOperationsInput | string
+    productDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    productSKU?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    productPrice?: IntFieldUpdateOperationsInput | number
+    productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    SaleDetail?: SaleDetailUncheckedUpdateManyWithoutProductNestedInput
+    PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type InventoryMovementUpsertWithWhereUniqueWithoutProductStockInput = {
+    where: InventoryMovementWhereUniqueInput
+    update: XOR<InventoryMovementUpdateWithoutProductStockInput, InventoryMovementUncheckedUpdateWithoutProductStockInput>
+    create: XOR<InventoryMovementCreateWithoutProductStockInput, InventoryMovementUncheckedCreateWithoutProductStockInput>
+  }
+
+  export type InventoryMovementUpdateWithWhereUniqueWithoutProductStockInput = {
+    where: InventoryMovementWhereUniqueInput
+    data: XOR<InventoryMovementUpdateWithoutProductStockInput, InventoryMovementUncheckedUpdateWithoutProductStockInput>
+  }
+
+  export type InventoryMovementUpdateManyWithWhereWithoutProductStockInput = {
+    where: InventoryMovementScalarWhereInput
+    data: XOR<InventoryMovementUpdateManyMutationInput, InventoryMovementUncheckedUpdateManyWithoutProductStockInput>
+  }
+
+  export type ProductStockCreateWithoutMovementsInput = {
+    quantityOnHand?: number
+    reorderPoint?: number
+    averageUnitCost?: number
+    lastMovementAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutProductStockInput
+  }
+
+  export type ProductStockUncheckedCreateWithoutMovementsInput = {
+    productId: string
+    quantityOnHand?: number
+    reorderPoint?: number
+    averageUnitCost?: number
+    lastMovementAt?: Date | string | null
+    version?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductStockCreateOrConnectWithoutMovementsInput = {
+    where: ProductStockWhereUniqueInput
+    create: XOR<ProductStockCreateWithoutMovementsInput, ProductStockUncheckedCreateWithoutMovementsInput>
+  }
+
+  export type UserCreateWithoutInventoryMovementInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerCreateNestedManyWithoutCreatedByInput
+    Product?: ProductCreateNestedManyWithoutUserInput
+    Service?: ServiceCreateNestedManyWithoutUserInput
+    Category?: CategoryCreateNestedManyWithoutUserInput
+    Sale?: SaleCreateNestedManyWithoutUserInput
+    Payment?: PaymentCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
+    PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
+    Provider?: ProviderCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
+    Transactions?: TransactionsCreateNestedManyWithoutUserInput
+    Expense?: ExpenseCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutInventoryMovementInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerUncheckedCreateNestedManyWithoutCreatedByInput
+    Product?: ProductUncheckedCreateNestedManyWithoutUserInput
+    Service?: ServiceUncheckedCreateNestedManyWithoutUserInput
+    Category?: CategoryUncheckedCreateNestedManyWithoutUserInput
+    Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
+    Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
+    PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
+    Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
+    Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
+    Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutInventoryMovementInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutInventoryMovementInput, UserUncheckedCreateWithoutInventoryMovementInput>
+  }
+
+  export type ProductStockUpsertWithoutMovementsInput = {
+    update: XOR<ProductStockUpdateWithoutMovementsInput, ProductStockUncheckedUpdateWithoutMovementsInput>
+    create: XOR<ProductStockCreateWithoutMovementsInput, ProductStockUncheckedCreateWithoutMovementsInput>
+    where?: ProductStockWhereInput
+  }
+
+  export type ProductStockUpdateToOneWithWhereWithoutMovementsInput = {
+    where?: ProductStockWhereInput
+    data: XOR<ProductStockUpdateWithoutMovementsInput, ProductStockUncheckedUpdateWithoutMovementsInput>
+  }
+
+  export type ProductStockUpdateWithoutMovementsInput = {
+    quantityOnHand?: IntFieldUpdateOperationsInput | number
+    reorderPoint?: IntFieldUpdateOperationsInput | number
+    averageUnitCost?: IntFieldUpdateOperationsInput | number
+    lastMovementAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutProductStockNestedInput
+  }
+
+  export type ProductStockUncheckedUpdateWithoutMovementsInput = {
+    productId?: StringFieldUpdateOperationsInput | string
+    quantityOnHand?: IntFieldUpdateOperationsInput | number
+    reorderPoint?: IntFieldUpdateOperationsInput | number
+    averageUnitCost?: IntFieldUpdateOperationsInput | number
+    lastMovementAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    version?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutInventoryMovementInput = {
+    update: XOR<UserUpdateWithoutInventoryMovementInput, UserUncheckedUpdateWithoutInventoryMovementInput>
+    create: XOR<UserCreateWithoutInventoryMovementInput, UserUncheckedCreateWithoutInventoryMovementInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutInventoryMovementInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutInventoryMovementInput, UserUncheckedUpdateWithoutInventoryMovementInput>
+  }
+
+  export type UserUpdateWithoutInventoryMovementInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUpdateManyWithoutUserNestedInput
+    Service?: ServiceUpdateManyWithoutUserNestedInput
+    Category?: CategoryUpdateManyWithoutUserNestedInput
+    Sale?: SaleUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
+    PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
+    Provider?: ProviderUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
+    Transactions?: TransactionsUpdateManyWithoutUserNestedInput
+    Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutInventoryMovementInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUncheckedUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    Service?: ServiceUncheckedUpdateManyWithoutUserNestedInput
+    Category?: CategoryUncheckedUpdateManyWithoutUserNestedInput
+    Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
+    PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
+    Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
+    Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
+    Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CategoryCreateWithoutServicesInput = {
@@ -28531,12 +34888,15 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutServiceInput = {
@@ -28559,12 +34919,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutServiceInput = {
@@ -28708,12 +35071,15 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutServiceInput = {
@@ -28736,12 +35102,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleDetailUpsertWithWhereUniqueWithoutServiceInput = {
@@ -28785,11 +35154,13 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutProductInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutProductInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutProductInput
+    productStock?: ProductStockCreateNestedOneWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCategoryInput = {
@@ -28801,11 +35172,13 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutProductInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutProductInput
+    productStock?: ProductStockUncheckedCreateNestedOneWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCategoryInput = {
@@ -28880,12 +35253,15 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCategoryInput = {
@@ -28908,12 +35284,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCategoryInput = {
@@ -28984,12 +35363,15 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCategoryInput = {
@@ -29012,12 +35394,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSaleInput = {
@@ -29040,12 +35425,15 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSaleInput = {
@@ -29068,12 +35456,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSaleInput = {
@@ -29217,12 +35608,15 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSaleInput = {
@@ -29245,12 +35639,15 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CustomerUpsertWithoutSaleInput = {
@@ -29389,12 +35786,15 @@ export namespace Prisma {
     Sale?: SaleCreateNestedManyWithoutUserInput
     Payment?: PaymentCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSaleDetailInput = {
@@ -29417,12 +35817,15 @@ export namespace Prisma {
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSaleDetailInput = {
@@ -29474,11 +35877,13 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
     user: UserCreateNestedOneWithoutProductInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutProductInput
+    productStock?: ProductStockCreateNestedOneWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutSaleDetailInput = {
@@ -29491,10 +35896,12 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutProductInput
+    productStock?: ProductStockUncheckedCreateNestedOneWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutSaleDetailInput = {
@@ -29615,12 +36022,15 @@ export namespace Prisma {
     Sale?: SaleUpdateManyWithoutUserNestedInput
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSaleDetailInput = {
@@ -29643,12 +36053,15 @@ export namespace Prisma {
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleUpsertWithoutSaleDetailInput = {
@@ -29712,11 +36125,13 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
     user?: UserUpdateOneRequiredWithoutProductNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUpdateOneWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutSaleDetailInput = {
@@ -29729,10 +36144,12 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUncheckedUpdateOneWithoutProductNestedInput
   }
 
   export type ServiceUpsertWithoutSaleDetailInput = {
@@ -29798,12 +36215,15 @@ export namespace Prisma {
     Sale?: SaleCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPaymentInput = {
@@ -29826,12 +36246,15 @@ export namespace Prisma {
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPaymentInput = {
@@ -29905,12 +36328,15 @@ export namespace Prisma {
     Sale?: SaleUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPaymentInput = {
@@ -29933,12 +36359,15 @@ export namespace Prisma {
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SaleUpsertWithoutPaymentInput = {
@@ -30003,11 +36432,14 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCashExpenseInput = {
@@ -30031,11 +36463,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCashExpenseInput = {
@@ -30075,11 +36510,14 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCashExpenseInput = {
@@ -30103,11 +36541,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDailySalesInput = {
@@ -30131,11 +36572,14 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDailySalesInput = {
@@ -30159,11 +36603,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDailySalesInput = {
@@ -30203,11 +36650,14 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDailySalesInput = {
@@ -30231,11 +36681,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTransactionsInput = {
@@ -30259,11 +36712,14 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -30287,11 +36743,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -30331,11 +36790,14 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -30359,11 +36821,154 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutAsmrCampaignInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerCreateNestedManyWithoutCreatedByInput
+    Product?: ProductCreateNestedManyWithoutUserInput
+    Service?: ServiceCreateNestedManyWithoutUserInput
+    Category?: CategoryCreateNestedManyWithoutUserInput
+    Sale?: SaleCreateNestedManyWithoutUserInput
+    Payment?: PaymentCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
+    PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
+    Provider?: ProviderCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
+    Transactions?: TransactionsCreateNestedManyWithoutUserInput
+    Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAsmrCampaignInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerUncheckedCreateNestedManyWithoutCreatedByInput
+    Product?: ProductUncheckedCreateNestedManyWithoutUserInput
+    Service?: ServiceUncheckedCreateNestedManyWithoutUserInput
+    Category?: CategoryUncheckedCreateNestedManyWithoutUserInput
+    Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
+    Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
+    PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
+    Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
+    Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
+    Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAsmrCampaignInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAsmrCampaignInput, UserUncheckedCreateWithoutAsmrCampaignInput>
+  }
+
+  export type UserUpsertWithoutAsmrCampaignInput = {
+    update: XOR<UserUpdateWithoutAsmrCampaignInput, UserUncheckedUpdateWithoutAsmrCampaignInput>
+    create: XOR<UserCreateWithoutAsmrCampaignInput, UserUncheckedCreateWithoutAsmrCampaignInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAsmrCampaignInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAsmrCampaignInput, UserUncheckedUpdateWithoutAsmrCampaignInput>
+  }
+
+  export type UserUpdateWithoutAsmrCampaignInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUpdateManyWithoutUserNestedInput
+    Service?: ServiceUpdateManyWithoutUserNestedInput
+    Category?: CategoryUpdateManyWithoutUserNestedInput
+    Sale?: SaleUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
+    PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
+    Provider?: ProviderUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
+    Transactions?: TransactionsUpdateManyWithoutUserNestedInput
+    Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAsmrCampaignInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUncheckedUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    Service?: ServiceUncheckedUpdateManyWithoutUserNestedInput
+    Category?: CategoryUncheckedUpdateManyWithoutUserNestedInput
+    Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
+    PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
+    Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
+    Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
+    Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutExpenseInput = {
@@ -30387,11 +36992,14 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutExpenseInput = {
@@ -30415,11 +37023,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutExpenseInput = {
@@ -30459,11 +37070,14 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExpenseInput = {
@@ -30487,11 +37101,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutProviderInput = {
@@ -30515,11 +37132,14 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProviderInput = {
@@ -30543,11 +37163,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProviderInput = {
@@ -30562,9 +37185,11 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutPurchaseInput
+    cancelledBy?: UserCreateNestedOneWithoutPurchasesCancelledInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutPurchaseInput
   }
 
@@ -30576,6 +37201,8 @@ export namespace Prisma {
     purchaseStatus?: string | null
     purchaseComment?: string | null
     createdByUserId: string
+    cancelledByUserId?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutPurchaseInput
@@ -30623,11 +37250,14 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProviderInput = {
@@ -30651,11 +37281,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PurchaseUpsertWithWhereUniqueWithoutProviderInput = {
@@ -30729,12 +37362,15 @@ export namespace Prisma {
     Sale?: SaleCreateNestedManyWithoutUserInput
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPurchaseInput = {
@@ -30757,17 +37393,87 @@ export namespace Prisma {
     Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPurchaseInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutPurchaseInput, UserUncheckedCreateWithoutPurchaseInput>
+  }
+
+  export type UserCreateWithoutPurchasesCancelledInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerCreateNestedManyWithoutCreatedByInput
+    Product?: ProductCreateNestedManyWithoutUserInput
+    Service?: ServiceCreateNestedManyWithoutUserInput
+    Category?: CategoryCreateNestedManyWithoutUserInput
+    Sale?: SaleCreateNestedManyWithoutUserInput
+    Payment?: PaymentCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
+    Provider?: ProviderCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
+    Transactions?: TransactionsCreateNestedManyWithoutUserInput
+    Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPurchasesCancelledInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerUncheckedCreateNestedManyWithoutCreatedByInput
+    Product?: ProductUncheckedCreateNestedManyWithoutUserInput
+    Service?: ServiceUncheckedCreateNestedManyWithoutUserInput
+    Category?: CategoryUncheckedCreateNestedManyWithoutUserInput
+    Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
+    Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
+    Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
+    Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
+    Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPurchasesCancelledInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPurchasesCancelledInput, UserUncheckedCreateWithoutPurchasesCancelledInput>
   }
 
   export type PurchaseDetailCreateWithoutPurchaseInput = {
@@ -30878,12 +37584,15 @@ export namespace Prisma {
     Sale?: SaleUpdateManyWithoutUserNestedInput
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPurchaseInput = {
@@ -30906,12 +37615,88 @@ export namespace Prisma {
     Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutPurchasesCancelledInput = {
+    update: XOR<UserUpdateWithoutPurchasesCancelledInput, UserUncheckedUpdateWithoutPurchasesCancelledInput>
+    create: XOR<UserCreateWithoutPurchasesCancelledInput, UserUncheckedCreateWithoutPurchasesCancelledInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPurchasesCancelledInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPurchasesCancelledInput, UserUncheckedUpdateWithoutPurchasesCancelledInput>
+  }
+
+  export type UserUpdateWithoutPurchasesCancelledInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUpdateManyWithoutUserNestedInput
+    Service?: ServiceUpdateManyWithoutUserNestedInput
+    Category?: CategoryUpdateManyWithoutUserNestedInput
+    Sale?: SaleUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
+    Provider?: ProviderUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
+    Transactions?: TransactionsUpdateManyWithoutUserNestedInput
+    Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPurchasesCancelledInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUncheckedUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    Service?: ServiceUncheckedUpdateManyWithoutUserNestedInput
+    Category?: CategoryUncheckedUpdateManyWithoutUserNestedInput
+    Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
+    Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
+    Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
+    Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
+    Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PurchaseDetailUpsertWithWhereUniqueWithoutPurchaseInput = {
@@ -30937,10 +37722,12 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     provider: ProviderCreateNestedOneWithoutPurchaseInput
     user: UserCreateNestedOneWithoutPurchaseInput
+    cancelledBy?: UserCreateNestedOneWithoutPurchasesCancelledInput
   }
 
   export type PurchaseUncheckedCreateWithoutPurchaseDetailInput = {
@@ -30952,6 +37739,8 @@ export namespace Prisma {
     purchaseStatus?: string | null
     purchaseComment?: string | null
     createdByUserId: string
+    cancelledByUserId?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30970,11 +37759,13 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
     user: UserCreateNestedOneWithoutProductInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutProductInput
+    productStock?: ProductStockCreateNestedOneWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutPurchaseDetailInput = {
@@ -30987,10 +37778,12 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutProductInput
+    productStock?: ProductStockUncheckedCreateNestedOneWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutPurchaseDetailInput = {
@@ -31056,11 +37849,14 @@ export namespace Prisma {
     Payment?: PaymentCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
     Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
     Provider?: ProviderCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPurchaseDetailInput = {
@@ -31084,11 +37880,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
     Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
     Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPurchaseDetailInput = {
@@ -31114,10 +37913,12 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     provider?: ProviderUpdateOneRequiredWithoutPurchaseNestedInput
     user?: UserUpdateOneRequiredWithoutPurchaseNestedInput
+    cancelledBy?: UserUpdateOneWithoutPurchasesCancelledNestedInput
   }
 
   export type PurchaseUncheckedUpdateWithoutPurchaseDetailInput = {
@@ -31129,6 +37930,8 @@ export namespace Prisma {
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31153,11 +37956,13 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
     user?: UserUpdateOneRequiredWithoutProductNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUpdateOneWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutPurchaseDetailInput = {
@@ -31170,10 +37975,12 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUncheckedUpdateOneWithoutProductNestedInput
   }
 
   export type ServiceUpsertWithoutPurchaseDetailInput = {
@@ -31251,11 +38058,14 @@ export namespace Prisma {
     Payment?: PaymentUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
     Provider?: ProviderUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPurchaseDetailInput = {
@@ -31279,11 +38089,14 @@ export namespace Prisma {
     Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
     Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
     Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CustomerCreateManyCreatedByInput = {
@@ -31311,6 +38124,7 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -31381,6 +38195,22 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    cancelledByUserId?: string | null
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PurchaseCreateManyCancelledByInput = {
+    purchaseId: string
+    purchaseNumber?: string | null
+    purchaseRealNumber?: string | null
+    purchaseProviderId: string
+    purchaseTotal: number
+    purchaseStatus?: string | null
+    purchaseComment?: string | null
+    createdByUserId: string
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -31453,6 +38283,43 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type InventoryMovementCreateManyUserInput = {
+    movementId?: string
+    productId: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType?: $Enums.InventoryReferenceType
+    referenceId?: string | null
+    referenceLabel?: string | null
+    reason?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AsmrCampaignCreateManyUserInput = {
+    campaignId?: string
+    campaignName: string
+    campaignType: string
+    auditMonth: number
+    auditYear: number
+    sourceMonth: number
+    sourceYear: number
+    discountPercent?: number
+    messageSent?: string | null
+    contactsSuccess?: number
+    universeTotal?: number
+    excludedRepurchase?: number
+    eligibleBeforeDedup?: number
+    eligibleFinal?: number
+    phonesDeduplicated?: number
+    campaignStatus?: string
+    executedAt?: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type CustomerUpdateWithoutCreatedByInput = {
     customerId?: StringFieldUpdateOperationsInput | string
     customerFirstName?: StringFieldUpdateOperationsInput | string
@@ -31511,11 +38378,13 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutProductNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUpdateOneWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutUserInput = {
@@ -31528,10 +38397,12 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutProductNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUncheckedUpdateOneWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutUserInput = {
@@ -31544,6 +38415,7 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31741,9 +38613,11 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     provider?: ProviderUpdateOneRequiredWithoutPurchaseNestedInput
+    cancelledBy?: UserUpdateOneWithoutPurchasesCancelledNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutPurchaseNestedInput
   }
 
@@ -31755,6 +38629,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutPurchaseNestedInput
@@ -31768,6 +38644,52 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PurchaseUpdateWithoutCancelledByInput = {
+    purchaseId?: StringFieldUpdateOperationsInput | string
+    purchaseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseRealNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseTotal?: IntFieldUpdateOperationsInput | number
+    purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: ProviderUpdateOneRequiredWithoutPurchaseNestedInput
+    user?: UserUpdateOneRequiredWithoutPurchaseNestedInput
+    PurchaseDetail?: PurchaseDetailUpdateManyWithoutPurchaseNestedInput
+  }
+
+  export type PurchaseUncheckedUpdateWithoutCancelledByInput = {
+    purchaseId?: StringFieldUpdateOperationsInput | string
+    purchaseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseRealNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseProviderId?: StringFieldUpdateOperationsInput | string
+    purchaseTotal?: IntFieldUpdateOperationsInput | number
+    purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutPurchaseNestedInput
+  }
+
+  export type PurchaseUncheckedUpdateManyWithoutCancelledByInput = {
+    purchaseId?: StringFieldUpdateOperationsInput | string
+    purchaseNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseRealNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseProviderId?: StringFieldUpdateOperationsInput | string
+    purchaseTotal?: IntFieldUpdateOperationsInput | number
+    purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31976,6 +38898,117 @@ export namespace Prisma {
     expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryMovementUpdateWithoutUserInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    productStock?: ProductStockUpdateOneRequiredWithoutMovementsNestedInput
+  }
+
+  export type InventoryMovementUncheckedUpdateWithoutUserInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryMovementUncheckedUpdateManyWithoutUserInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AsmrCampaignUpdateWithoutUserInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignType?: StringFieldUpdateOperationsInput | string
+    auditMonth?: IntFieldUpdateOperationsInput | number
+    auditYear?: IntFieldUpdateOperationsInput | number
+    sourceMonth?: IntFieldUpdateOperationsInput | number
+    sourceYear?: IntFieldUpdateOperationsInput | number
+    discountPercent?: IntFieldUpdateOperationsInput | number
+    messageSent?: NullableStringFieldUpdateOperationsInput | string | null
+    contactsSuccess?: IntFieldUpdateOperationsInput | number
+    universeTotal?: IntFieldUpdateOperationsInput | number
+    excludedRepurchase?: IntFieldUpdateOperationsInput | number
+    eligibleBeforeDedup?: IntFieldUpdateOperationsInput | number
+    eligibleFinal?: IntFieldUpdateOperationsInput | number
+    phonesDeduplicated?: IntFieldUpdateOperationsInput | number
+    campaignStatus?: StringFieldUpdateOperationsInput | string
+    executedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AsmrCampaignUncheckedUpdateWithoutUserInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignType?: StringFieldUpdateOperationsInput | string
+    auditMonth?: IntFieldUpdateOperationsInput | number
+    auditYear?: IntFieldUpdateOperationsInput | number
+    sourceMonth?: IntFieldUpdateOperationsInput | number
+    sourceYear?: IntFieldUpdateOperationsInput | number
+    discountPercent?: IntFieldUpdateOperationsInput | number
+    messageSent?: NullableStringFieldUpdateOperationsInput | string | null
+    contactsSuccess?: IntFieldUpdateOperationsInput | number
+    universeTotal?: IntFieldUpdateOperationsInput | number
+    excludedRepurchase?: IntFieldUpdateOperationsInput | number
+    eligibleBeforeDedup?: IntFieldUpdateOperationsInput | number
+    eligibleFinal?: IntFieldUpdateOperationsInput | number
+    phonesDeduplicated?: IntFieldUpdateOperationsInput | number
+    campaignStatus?: StringFieldUpdateOperationsInput | string
+    executedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AsmrCampaignUncheckedUpdateManyWithoutUserInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignType?: StringFieldUpdateOperationsInput | string
+    auditMonth?: IntFieldUpdateOperationsInput | number
+    auditYear?: IntFieldUpdateOperationsInput | number
+    sourceMonth?: IntFieldUpdateOperationsInput | number
+    sourceYear?: IntFieldUpdateOperationsInput | number
+    discountPercent?: IntFieldUpdateOperationsInput | number
+    messageSent?: NullableStringFieldUpdateOperationsInput | string | null
+    contactsSuccess?: IntFieldUpdateOperationsInput | number
+    universeTotal?: IntFieldUpdateOperationsInput | number
+    excludedRepurchase?: IntFieldUpdateOperationsInput | number
+    eligibleBeforeDedup?: IntFieldUpdateOperationsInput | number
+    eligibleFinal?: IntFieldUpdateOperationsInput | number
+    phonesDeduplicated?: IntFieldUpdateOperationsInput | number
+    campaignStatus?: StringFieldUpdateOperationsInput | string
+    executedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SaleCreateManyCustomerInput = {
@@ -32198,6 +39231,66 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InventoryMovementCreateManyProductStockInput = {
+    movementId?: string
+    movementType: $Enums.InventoryMovementType
+    quantityDelta: number
+    stockBefore: number
+    stockAfter: number
+    referenceType?: $Enums.InventoryReferenceType
+    referenceId?: string | null
+    referenceLabel?: string | null
+    reason?: string | null
+    notes?: string | null
+    createdByUserId: string
+    createdAt?: Date | string
+  }
+
+  export type InventoryMovementUpdateWithoutProductStockInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutInventoryMovementNestedInput
+  }
+
+  export type InventoryMovementUncheckedUpdateWithoutProductStockInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InventoryMovementUncheckedUpdateManyWithoutProductStockInput = {
+    movementId?: StringFieldUpdateOperationsInput | string
+    movementType?: EnumInventoryMovementTypeFieldUpdateOperationsInput | $Enums.InventoryMovementType
+    quantityDelta?: IntFieldUpdateOperationsInput | number
+    stockBefore?: IntFieldUpdateOperationsInput | number
+    stockAfter?: IntFieldUpdateOperationsInput | number
+    referenceType?: EnumInventoryReferenceTypeFieldUpdateOperationsInput | $Enums.InventoryReferenceType
+    referenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    referenceLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SaleDetailCreateManyServiceInput = {
     saleDetailId: string
     saleId: string
@@ -32315,6 +39408,7 @@ export namespace Prisma {
     productPriceFixed?: boolean | null
     productStatus: $Enums.ProductStatus
     productUnit: $Enums.ProductUnit
+    productAllowZeroStock?: boolean
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -32343,11 +39437,13 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutProductNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutProductNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUpdateOneWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCategoryInput = {
@@ -32359,11 +39455,13 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutProductNestedInput
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutProductNestedInput
+    productStock?: ProductStockUncheckedUpdateOneWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutCategoryInput = {
@@ -32375,6 +39473,7 @@ export namespace Prisma {
     productPriceFixed?: NullableBoolFieldUpdateOperationsInput | boolean | null
     productStatus?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
     productUnit?: EnumProductUnitFieldUpdateOperationsInput | $Enums.ProductUnit
+    productAllowZeroStock?: BoolFieldUpdateOperationsInput | boolean
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -32526,6 +39625,8 @@ export namespace Prisma {
     purchaseStatus?: string | null
     purchaseComment?: string | null
     createdByUserId: string
+    cancelledByUserId?: string | null
+    cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -32537,9 +39638,11 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutPurchaseNestedInput
+    cancelledBy?: UserUpdateOneWithoutPurchasesCancelledNestedInput
     PurchaseDetail?: PurchaseDetailUpdateManyWithoutPurchaseNestedInput
   }
 
@@ -32551,6 +39654,8 @@ export namespace Prisma {
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutPurchaseNestedInput
@@ -32564,6 +39669,8 @@ export namespace Prisma {
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

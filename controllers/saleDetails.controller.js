@@ -1,4 +1,4 @@
-import { createDetailSale, getSaleDetails, getSaleDetailById } from '../services/saleDetailsService.js';
+import { createDetailSale, getSaleDetails, getSaleDetailById, InsufficientStockError } from '../services/saleDetailsService.js';
 
 export const createSaleDetailController = async (req, res) => {
     const {
@@ -36,6 +36,13 @@ export const createSaleDetailController = async (req, res) => {
 
     } catch (error) {
         console.error(error);
+        if (error instanceof InsufficientStockError || error.code === "INSUFFICIENT_STOCK") {
+            return res.status(409).json({
+                message: error.message,
+                code: "INSUFFICIENT_STOCK",
+                details: error.details,
+            });
+        }
         return res.status(500).json({
             message: 'Error creating sale detail',
             error: error.message

@@ -1,4 +1,5 @@
-import { createPurchase, getPurchaseById, getPurchases, getMonthlyPurchases, getDayPurchases, getPurchasesByProviderIdService, countPurchasesMonthService } from '../services/purchaseServices.js';
+import { createPurchase, getPurchaseById, getPurchases, getMonthlyPurchases, getDayPurchases, getPurchasesByProviderIdService, countPurchasesMonthService, createPurchaseComplete, updatePurchaseHeader, cancelPurchaseWithInventory } from '../services/purchaseServices.js';
+import { InsufficientStockError } from '../services/inventory/inventoryService.js';
 import definePurchaseNumber from '../libs/definePurchaseNumber.js';
 
 export const createPurchaseController = async (req, res) => {
@@ -36,6 +37,85 @@ export const createPurchaseController = async (req, res) => {
     }
 };
 
+export const createPurchaseCompleteController = async (req, res) => {
+    try {
+        const userId = req.user.payload.id;
+        const {
+            purchase,
+            purchaseDetails,
+            items,
+            purchaseId,
+            purchaseProviderId,
+            providerId,
+            purchaseRealNumber,
+            documentNumber,
+            purchaseComment,
+            note,
+            purchaseTotal,
+        } = req.body;
+
+        const purchasePayload = purchase ?? {
+            purchaseId: purchaseId ?? req.body.purchaseId,
+            purchaseProviderId: purchaseProviderId ?? providerId,
+            purchaseRealNumber: purchaseRealNumber ?? documentNumber,
+            purchaseComment: purchaseComment ?? note,
+            purchaseTotal,
+        };
+
+        let detailsPayload = purchaseDetails;
+
+        if (!detailsPayload && Array.isArray(items)) {
+            detailsPayload = items
+                .filter((item) => item.productId && Number(item.quantity) > 0)
+                .map((item) => ({
+                    purchaseDetailId: item.purchaseDetailId ?? item.id,
+                    purchaseDetailProductId: item.productId,
+                    purchaseDetailServiceId: null,
+                    purchaseDetailType: "PRODUCT",
+                    purchaseDetailQuantity: Number(item.quantity),
+                    purchaseDetailPrice: Number(item.unitCost ?? item.purchaseDetailPrice ?? 0),
+                    purchaseDetailTotal: Number(
+                        item.totalLine ??
+                            item.purchaseDetailTotal ??
+                            Number(item.quantity) * Number(item.unitCost ?? 0),
+                    ),
+                }));
+        }
+
+        if (!purchasePayload.purchaseId) {
+            return res.status(400).json({ message: "purchaseId is required" });
+        }
+        if (!purchasePayload.purchaseProviderId) {
+            return res.status(400).json({ message: "Proveedor requerido" });
+        }
+        if (!purchasePayload.purchaseRealNumber?.trim()) {
+            return res.status(400).json({ message: "Número de documento requerido" });
+        }
+        if (!detailsPayload?.length) {
+            return res.status(400).json({ message: "Debe incluir al menos un producto" });
+        }
+
+        const result = await createPurchaseComplete(
+            {
+                purchase: purchasePayload,
+                purchaseDetails: detailsPayload,
+            },
+            req.prisma,
+            userId,
+        );
+
+        res.status(201).json({
+            message: "Purchase created successfully",
+            purchase: result,
+        });
+    } catch (error) {
+        console.error("(purchase.controller.js): Error creating complete purchase:", error);
+        res.status(500).json({
+            message: error.message || "Internal server error",
+        });
+    }
+};
+
 export const getPurchasesController = async (req, res) => {
     try {
         const purchases = await getPurchases(req.prisma);
@@ -57,6 +137,49 @@ export const getPurchaseByIdController = async (req, res) => {
     } catch (error) {
         console.error("(purchase.controller.js): Error fetching purchase by ID:", error);
         res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const updatePurchaseController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const purchase = await updatePurchaseHeader(id, req.body, req.prisma);
+        res.status(200).json({
+            message: "Compra actualizada correctamente",
+            purchase,
+        });
+    } catch (error) {
+        console.error("(purchase.controller.js): Error updating purchase:", error);
+        const status = error.statusCode || 500;
+        res.status(status).json({
+            message: error.message || "Internal server error",
+        });
+    }
+};
+
+export const cancelPurchaseController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.payload.id;
+        const purchase = await cancelPurchaseWithInventory(id, userId, req.prisma);
+        res.status(200).json({
+            message: "Compra anulada. El registro se conserva y el inventario fue ajustado.",
+            purchase,
+        });
+    } catch (error) {
+        console.error("(purchase.controller.js): Error cancelling purchase:", error);
+        if (error instanceof InsufficientStockError || error.code === "INSUFFICIENT_STOCK") {
+            return res.status(409).json({
+                message: error.message,
+                code: "INSUFFICIENT_STOCK",
+                details: error.details,
+            });
+        }
+
+        const status = error.statusCode || 500;
+        res.status(status).json({
+            message: error.message || "Internal server error",
+        });
     }
 };
 

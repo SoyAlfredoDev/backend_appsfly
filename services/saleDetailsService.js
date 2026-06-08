@@ -1,8 +1,49 @@
+import { applyInventoryMovement, InsufficientStockError } from "./inventory/inventoryService.js";
+
+export { InsufficientStockError };
 
 export const createDetailSale = async (data, prisma) => {
     try {
-        const res = await prisma.saleDetail.create({ data });
-        return res;
+        return await prisma.$transaction(async (tx) => {
+            if (data.saleDetailType === "PRODUCT" && data.saleDetailProductId) {
+                const existingMovement = await tx.inventoryMovement.findFirst({
+                    where: {
+                        referenceType: "SALE_DETAIL",
+                        referenceId: data.saleDetailId,
+                    },
+                });
+
+                if (existingMovement) {
+                    const existingDetail = await tx.saleDetail.findUnique({
+                        where: { saleDetailId: data.saleDetailId },
+                    });
+                    if (existingDetail) return existingDetail;
+                }
+            }
+
+            const saleDetail = await tx.saleDetail.create({ data });
+
+            if (data.saleDetailType === "PRODUCT" && data.saleDetailProductId) {
+                const sale = await tx.sale.findUnique({
+                    where: { saleId: data.saleId },
+                    select: { saleNumber: true },
+                });
+
+                await applyInventoryMovement(tx, {
+                    productId: data.saleDetailProductId,
+                    movementType: "VENTA",
+                    quantityDelta: -Number(data.saleDetailQuantity),
+                    referenceType: "SALE_DETAIL",
+                    referenceId: data.saleDetailId,
+                    referenceLabel: sale?.saleNumber
+                        ? `Venta #${sale.saleNumber}`
+                        : `Venta ${data.saleId}`,
+                    createdByUserId: data.createdByUserId,
+                });
+            }
+
+            return saleDetail;
+        });
     } catch (error) {
         console.error("(salesServices.js): Error creating detail sale:", error);
         throw error;

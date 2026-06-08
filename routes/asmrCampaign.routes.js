@@ -1,43 +1,41 @@
 import { Router } from "express";
-
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
-
 import {
-    getTransactionsController,
-    getTransactionByIdController,
-    createTransactionController,
-    getTransactionsSummaryController,
-} from "../controllers/transactions.controller.js";
+    segmentAsmrCampaignController,
+    executeAsmrCampaignController,
+    listAsmrCampaignsController,
+    getAsmrCampaignSummaryController,
+} from "../controllers/asmrCampaign.controller.js";
 
 const router = Router();
 
 router.get(
-    "/transactions/summary",
+    "/asmr-campaigns/summary",
     authRequired,
     dbSelectorMiddleware,
-    getTransactionsSummaryController,
+    getAsmrCampaignSummaryController,
 );
 
 router.get(
-    "/transactions",
+    "/asmr-campaigns",
     authRequired,
     dbSelectorMiddleware,
-    getTransactionsController,
-);
-
-router.get(
-    "/transactions/:id",
-    authRequired,
-    dbSelectorMiddleware,
-    getTransactionByIdController,
+    listAsmrCampaignsController,
 );
 
 router.post(
-    "/transactions",
+    "/asmr-campaigns/segment",
     authRequired,
     dbSelectorMiddleware,
-    createTransactionController,
+    segmentAsmrCampaignController,
+);
+
+router.post(
+    "/asmr-campaigns/execute",
+    authRequired,
+    dbSelectorMiddleware,
+    executeAsmrCampaignController,
 );
 
 export default router;

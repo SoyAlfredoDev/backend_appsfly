@@ -34,13 +34,16 @@ model User {
     Sale           Sale[]
     Payment        Payment[]
     SaleDetail     SaleDetail[]
-    Purchase       Purchase[]
-    PurchaseDetail PurchaseDetail[]
+    Purchase              Purchase[] @relation("PurchaseCreatedBy")
+    purchasesCancelled    Purchase[] @relation("PurchaseCancelledBy")
+    PurchaseDetail        PurchaseDetail[]
     Provider       Provider[]
     CashExpense    CashExpense[]
     DailySales     DailySales[]
     Transactions   Transactions[]
-    Expense        Expense[]
+    Expense            Expense[]
+    InventoryMovement  InventoryMovement[]
+    AsmrCampaign       AsmrCampaign[]
 }
 
 model Customer {
@@ -64,22 +67,70 @@ model Customer {
 }
 
 model Product {
-    productId          String           @id @default(uuid())
-    productName        String
-    productDescription String?
-    productSKU         String           @unique
-    categoryId         String
-    category           Category         @relation(fields: [categoryId], references: [categoryId])
-    productPrice       Int
-    productPriceFixed  Boolean?
-    productStatus      ProductStatus
-    productUnit        ProductUnit
-    createdByUserId    String
-    user               User             @relation(fields: [createdByUserId], references: [userId])
-    createdAt          DateTime         @default(now())
-    updatedAt          DateTime         @updatedAt
-    SaleDetail         SaleDetail[]
-    PurchaseDetail     PurchaseDetail[]
+    productId              String           @id @default(uuid())
+    productName            String
+    productDescription     String?
+    productSKU             String           @unique
+    categoryId             String
+    category               Category         @relation(fields: [categoryId], references: [categoryId])
+    productPrice           Int
+    productPriceFixed      Boolean?
+    productStatus          ProductStatus
+    productUnit            ProductUnit
+    /** Permite vender el producto aunque quantityOnHand sea 0 o negativo */
+    productAllowZeroStock  Boolean          @default(false)
+    createdByUserId        String
+    user                   User             @relation(fields: [createdByUserId], references: [userId])
+    createdAt              DateTime         @default(now())
+    updatedAt              DateTime         @updatedAt
+    SaleDetail             SaleDetail[]
+    PurchaseDetail         PurchaseDetail[]
+    productStock           ProductStock?
+}
+
+model ProductStock {
+    productId        String   @id
+    product          Product  @relation(fields: [productId], references: [productId], onDelete: Cascade)
+
+    quantityOnHand   Int      @default(0)
+    reorderPoint     Int      @default(0)
+    averageUnitCost  Int      @default(0)
+    lastMovementAt   DateTime?
+    version          Int      @default(0)
+
+    createdAt        DateTime @default(now())
+    updatedAt        DateTime @updatedAt
+
+    movements        InventoryMovement[]
+}
+
+model InventoryMovement {
+    movementId      String                  @id @default(uuid())
+
+    productId       String
+    productStock    ProductStock            @relation(fields: [productId], references: [productId])
+
+    movementType    InventoryMovementType
+    quantityDelta   Int
+    stockBefore     Int
+    stockAfter      Int
+
+    referenceType   InventoryReferenceType  @default(NONE)
+    referenceId     String?
+    referenceLabel  String?
+
+    reason          String?
+    notes           String?
+
+    createdByUserId String
+    user            User                    @relation(fields: [createdByUserId], references: [userId])
+
+    createdAt       DateTime                @default(now())
+
+    @@index([productId, createdAt(sort: Desc)])
+    @@index([movementType, createdAt(sort: Desc)])
+    @@index([referenceType, referenceId])
+    @@index([createdAt(sort: Desc)])
 }
 
 model Service {
@@ -202,6 +253,33 @@ model Transactions {
     user                   User     @relation(fields: [createdByUserId], references: [userId])
 }
 
+model AsmrCampaign {
+    campaignId         String   @id @default(uuid())
+    campaignName       String
+    campaignType       String
+    auditMonth         Int
+    auditYear          Int
+    sourceMonth        Int
+    sourceYear         Int
+    discountPercent    Int      @default(20)
+    messageSent        String?
+    contactsSuccess    Int      @default(0)
+    universeTotal      Int      @default(0)
+    excludedRepurchase Int      @default(0)
+    eligibleBeforeDedup Int     @default(0)
+    eligibleFinal      Int      @default(0)
+    phonesDeduplicated Int      @default(0)
+    campaignStatus     String   @default("SENT")
+    createdByUserId    String
+    user               User     @relation(fields: [createdByUserId], references: [userId])
+    executedAt         DateTime @default(now())
+    createdAt          DateTime @default(now())
+    updatedAt          DateTime @updatedAt
+
+    @@index([createdAt(sort: Desc)])
+    @@index([auditYear, auditMonth])
+}
+
 enum Role {
     ADMIN
     USER
@@ -248,7 +326,11 @@ model Purchase {
     purchaseComment String?
 
     createdByUserId String
-    user            User   @relation(fields: [createdByUserId], references: [userId])
+    user            User   @relation("PurchaseCreatedBy", fields: [createdByUserId], references: [userId])
+
+    cancelledByUserId String?
+    cancelledBy       User?    @relation("PurchaseCancelledBy", fields: [cancelledByUserId], references: [userId])
+    cancelledAt       DateTime?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -307,4 +389,23 @@ enum UsageContext {
     PRODUCTS
     SERVICES
     BOTH
+}
+
+enum InventoryMovementType {
+    VENTA
+    COMPRA
+    AJUSTE_MANUAL
+    MERMA
+    DEVOLUCION
+    ANULACION_VENTA
+    ANULACION_COMPRA
+}
+
+enum InventoryReferenceType {
+    SALE
+    SALE_DETAIL
+    PURCHASE
+    PURCHASE_DETAIL
+    MANUAL
+    NONE
 }

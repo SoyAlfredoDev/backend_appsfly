@@ -162,9 +162,37 @@ exports.Prisma.ProductScalarFieldEnum = {
   productPriceFixed: 'productPriceFixed',
   productStatus: 'productStatus',
   productUnit: 'productUnit',
+  productAllowZeroStock: 'productAllowZeroStock',
   createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProductStockScalarFieldEnum = {
+  productId: 'productId',
+  quantityOnHand: 'quantityOnHand',
+  reorderPoint: 'reorderPoint',
+  averageUnitCost: 'averageUnitCost',
+  lastMovementAt: 'lastMovementAt',
+  version: 'version',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.InventoryMovementScalarFieldEnum = {
+  movementId: 'movementId',
+  productId: 'productId',
+  movementType: 'movementType',
+  quantityDelta: 'quantityDelta',
+  stockBefore: 'stockBefore',
+  stockAfter: 'stockAfter',
+  referenceType: 'referenceType',
+  referenceId: 'referenceId',
+  referenceLabel: 'referenceLabel',
+  reason: 'reason',
+  notes: 'notes',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.ServiceScalarFieldEnum = {
@@ -265,6 +293,29 @@ exports.Prisma.TransactionsScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.AsmrCampaignScalarFieldEnum = {
+  campaignId: 'campaignId',
+  campaignName: 'campaignName',
+  campaignType: 'campaignType',
+  auditMonth: 'auditMonth',
+  auditYear: 'auditYear',
+  sourceMonth: 'sourceMonth',
+  sourceYear: 'sourceYear',
+  discountPercent: 'discountPercent',
+  messageSent: 'messageSent',
+  contactsSuccess: 'contactsSuccess',
+  universeTotal: 'universeTotal',
+  excludedRepurchase: 'excludedRepurchase',
+  eligibleBeforeDedup: 'eligibleBeforeDedup',
+  eligibleFinal: 'eligibleFinal',
+  phonesDeduplicated: 'phonesDeduplicated',
+  campaignStatus: 'campaignStatus',
+  createdByUserId: 'createdByUserId',
+  executedAt: 'executedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ExpenseScalarFieldEnum = {
   expenseId: 'expenseId',
   expenseDescription: 'expenseDescription',
@@ -299,6 +350,8 @@ exports.Prisma.PurchaseScalarFieldEnum = {
   purchaseStatus: 'purchaseStatus',
   purchaseComment: 'purchaseComment',
   createdByUserId: 'createdByUserId',
+  cancelledByUserId: 'cancelledByUserId',
+  cancelledAt: 'cancelledAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -363,6 +416,25 @@ exports.ProductUnit = exports.$Enums.ProductUnit = {
   CENTIMETER: 'CENTIMETER'
 };
 
+exports.InventoryMovementType = exports.$Enums.InventoryMovementType = {
+  VENTA: 'VENTA',
+  COMPRA: 'COMPRA',
+  AJUSTE_MANUAL: 'AJUSTE_MANUAL',
+  MERMA: 'MERMA',
+  DEVOLUCION: 'DEVOLUCION',
+  ANULACION_VENTA: 'ANULACION_VENTA',
+  ANULACION_COMPRA: 'ANULACION_COMPRA'
+};
+
+exports.InventoryReferenceType = exports.$Enums.InventoryReferenceType = {
+  SALE: 'SALE',
+  SALE_DETAIL: 'SALE_DETAIL',
+  PURCHASE: 'PURCHASE',
+  PURCHASE_DETAIL: 'PURCHASE_DETAIL',
+  MANUAL: 'MANUAL',
+  NONE: 'NONE'
+};
+
 exports.ServiceUnit = exports.$Enums.ServiceUnit = {
   UNIT: 'UNIT',
   MONTH: 'MONTH',
@@ -381,6 +453,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Customer: 'Customer',
   Product: 'Product',
+  ProductStock: 'ProductStock',
+  InventoryMovement: 'InventoryMovement',
   Service: 'Service',
   Category: 'Category',
   Sale: 'Sale',
@@ -389,6 +463,7 @@ exports.Prisma.ModelName = {
   CashExpense: 'CashExpense',
   DailySales: 'DailySales',
   Transactions: 'Transactions',
+  AsmrCampaign: 'AsmrCampaign',
   Expense: 'Expense',
   Provider: 'Provider',
   Purchase: 'Purchase',

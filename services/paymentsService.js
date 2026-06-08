@@ -1,9 +1,36 @@
 
 
+import {
+    recordFinancialTransaction,
+    TRANSACTION_TYPES,
+    TRANSACTION_DIRECTIONS,
+} from "./financial/financialLedgerService.js";
+
 export const createPaymentService = async (data, prisma) => {
     try {
-        const res = await prisma.payment.create({ data });
-        return res
+        return prisma.$transaction(async (tx) => {
+            const res = await tx.payment.create({ data });
+
+            const sale = await tx.sale.findUnique({
+                where: { saleId: res.saleId },
+                select: { saleNumber: true },
+            });
+
+            await recordFinancialTransaction(tx, {
+                transactionType: TRANSACTION_TYPES.PAYMENT,
+                transactionMethod: res.paymentMethod,
+                transactionTable: "Payment",
+                transactionRecordId: res.paymentId,
+                amount: res.paymentAmount,
+                direction: TRANSACTION_DIRECTIONS.IN,
+                description: sale?.saleNumber
+                    ? `Pago recibido — Venta #${sale.saleNumber}`
+                    : "Pago recibido — Venta",
+                createdByUserId: data.createdByUserId,
+            });
+
+            return res;
+        });
     } catch (error) {
         console.error("(paymentsService.js): Error creating payment:", error);
         throw error;

@@ -1,5 +1,11 @@
 // expensesService.js
 
+import {
+    recordFinancialTransaction,
+    TRANSACTION_TYPES,
+    TRANSACTION_DIRECTIONS,
+} from "./financial/financialLedgerService.js";
+
 const parseMonthYear = (month, year) => {
   const m = parseInt(month, 10);
   const y = parseInt(year, 10);
@@ -30,9 +36,22 @@ const expenseInclude = {
 // 1. CREATE Expense
 export const createExpenseService = async (data, prisma) => {
   try {
-    // Creates a new expense record in the database
-    const res = await prisma.expense.create({ data });
-    return res;
+    return prisma.$transaction(async (tx) => {
+      const res = await tx.expense.create({ data });
+
+      await recordFinancialTransaction(tx, {
+        transactionType: TRANSACTION_TYPES.EXPENSE,
+        transactionMethod: res.expensePaymentMethod,
+        transactionTable: "Expense",
+        transactionRecordId: res.expenseId,
+        amount: res.expenseAmount,
+        direction: TRANSACTION_DIRECTIONS.OUT,
+        description: res.expenseDescription?.trim() || "Gasto operacional",
+        createdByUserId: data.createdByUserId,
+      });
+
+      return res;
+    });
   } catch (error) {
     console.error("(expensesService.js): Error creating expense:", error);
     throw error;
