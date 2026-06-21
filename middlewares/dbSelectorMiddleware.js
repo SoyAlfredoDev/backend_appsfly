@@ -1,5 +1,6 @@
 // middlewares/dbSelectorMiddleware.js
-import { getPrismaForBusiness } from "../db.js";
+import { getPrismaForBusinessId } from "../db.js";
+import { getUserBusinessById } from "../services/userBusinessService.js";
 
 export async function dbSelectorMiddleware(req, res, next) {
   try {
@@ -7,8 +8,17 @@ export async function dbSelectorMiddleware(req, res, next) {
     if (!userId) {
       return res.status(400).json({ error: "Falta el userId en la petición" });
     }
-    // Asigna el Prisma correspondiente al negocio del usuario
-    const prisma = await getPrismaForBusiness(userId);
+
+    const memberships = await getUserBusinessById(userId);
+    if (!memberships?.length) {
+      return res.status(403).json({ error: "No tienes un negocio asociado" });
+    }
+
+    const membership = memberships[0];
+    req.tenantBusinessId = membership.userBusinessBusinessId;
+    req.tenantRole = membership.userBusinessRole;
+
+    const prisma = await getPrismaForBusinessId(req.tenantBusinessId);
     if (!prisma) {
       return res.status(500).json({ error: "No se pudo asignar la base de datos" });
     }

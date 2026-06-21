@@ -82,6 +82,11 @@ export async function deleteCloudinaryImageIfReplaced(oldUrl, newUrl) {
     const normalizedOld = oldUrl?.trim() || null;
     const normalizedNew = newUrl?.trim() || null;
     if (!normalizedOld || normalizedOld === normalizedNew) return null;
+
+    const oldPublicId = extractPublicIdFromCloudinaryUrl(normalizedOld);
+    const newPublicId = extractPublicIdFromCloudinaryUrl(normalizedNew);
+    if (oldPublicId && newPublicId && oldPublicId === newPublicId) return null;
+
     return deleteCloudinaryImageByUrl(normalizedOld);
 }
 

@@ -47,7 +47,8 @@ export const createCustomerController = async (req, res) => {
                 customerLastName: customer.customerLastName,
                 customerEmail: customer.customerEmail,
                 customerCodePhoneNumber: customer.customerCodePhoneNumber,
-                customerPhoneNumber: customer.customerPhoneNumber
+                customerPhoneNumber: customer.customerPhoneNumber,
+                customerImageUrl: customer.customerImageUrl,
             }
         });
 
@@ -70,7 +71,7 @@ export const getCustomerController = async (req, res) => {
 export const validateRutExists = async (req, res) => {
     try {
         const { rut } = req.params;
-        const rutFound = await getCustomersByRut(rut, req.prismaa);
+        const rutFound = await getCustomersByRut(rut, req.prisma);
         let exists
         if (rutFound > 0) {
             exists = true

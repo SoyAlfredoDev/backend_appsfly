@@ -1,7 +1,7 @@
 // Create a customer
 export const createCustomer = async (data, prisma) => {
     try {
-        const res = await prisma.Customer.create({ data });
+        const res = await prisma.customer.create({ data });
         return res;
     } catch (error) {
         console.error("(customersService.js): Error creating customer:", error);

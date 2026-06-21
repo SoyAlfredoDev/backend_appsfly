@@ -5,6 +5,7 @@ import { getUserGuestById } from "../services/userGuestService.js";
 import { createAccessToken } from "../libs/jwt.js";
 import validateRut from "../libs/validateRut.js";
 import { sendConfirmEmail } from "../emails/dispatchers/confirmEmail.dispatcher.js";
+import { markProspectConvertedByEmail } from "../services/emailProspect/emailProspectConversionService.js";
 
 import dotenv from "dotenv";
 
@@ -73,6 +74,16 @@ export const register = async (req, res) => {
       userDocumentNumber: rutFormatted || userDocumentNumber,
     };
     const user = await createUser(data);
+
+    try {
+        await markProspectConvertedByEmail(user.userEmail, user.userId);
+    } catch (conversionError) {
+        console.error(
+            "(auth.controller.js): Error marking prospect conversion:",
+            conversionError.message,
+        );
+    }
+
     const token = await createAccessToken({ id: user.userId });
 
     let emailSent = false;

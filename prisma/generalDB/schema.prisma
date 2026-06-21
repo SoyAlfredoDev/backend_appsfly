@@ -35,6 +35,7 @@ model User {
     subscriptionCancellations SubscriptionCancellation[]
     tickets       Ticket[]
     ticketDetails TicketDetail[]
+    platformEmailCampaigns PlatformEmailCampaign[]
 
 }
 
@@ -229,6 +230,192 @@ model newsletterSubscriber {
     email String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+/** Prospectos externos (no usuarios AppsFly) para campaña de outreach */
+model PlatformEmailProspect {
+    prospectId         String                      @id @default(uuid())
+    email              String                      @unique
+    firstName          String?
+    lastName           String?
+    companyName        String?
+    status             PlatformEmailProspectStatus @default(ACTIVE)
+    unsubscribeToken   String                      @unique @default(uuid())
+    unsubscribedAt     DateTime?
+    source             String?
+    notes              String?
+    /** Usuario AppsFly creado tras outreach */
+    convertedUserId    String?
+    convertedAt        DateTime?
+    outreachEmailsSent Int                         @default(0)
+    firstOutreachAt    DateTime?
+    lastOutreachAt     DateTime?
+    createdAt          DateTime                    @default(now())
+    updatedAt          DateTime                    @updatedAt
+
+    @@index([status])
+    @@index([email])
+    @@index([convertedUserId])
+}
+
+enum PlatformEmailProspectStatus {
+    ACTIVE
+    UNSUBSCRIBED
+    CONVERTED
+}
+
+/** Campañas de correo de plataforma (panel /admin). Separadas de campañas tenant (ASMR). */
+model PlatformEmailCampaign {
+    campaignId           String                         @id @default(uuid())
+    campaignKey          String?                        @unique
+    campaignName         String
+    campaignDescription  String?
+    campaignStatus       PlatformEmailCampaignStatus    @default(DRAFT)
+    audienceType         PlatformEmailAudienceType      @default(ALL_USERS)
+    audienceParams       Json?
+    scheduleFrequency    PlatformEmailScheduleFrequency @default(MANUAL)
+    emailSubject         String?
+    emailHtml            String?
+    emailText            String?
+    messageIntent        String?
+    /** Remitente del correo (mismo dominio, distinto por campaña) */
+    senderEmail          String?
+    senderName           String?
+    scheduledAt          DateTime?
+    sentAt               DateTime?
+    lastRunAt            DateTime?
+    totalRecipients      Int                            @default(0)
+    totalSent            Int                            @default(0)
+    totalDelivered       Int                            @default(0)
+    totalFailed          Int                            @default(0)
+    totalBounced         Int                            @default(0)
+    totalOpened          Int                            @default(0)
+    createdByUserId      String
+    createdBy            User                           @relation(fields: [createdByUserId], references: [userId])
+    createdAt            DateTime                       @default(now())
+    updatedAt            DateTime                       @updatedAt
+    runs                 PlatformEmailCampaignRun[]
+
+    @@index([campaignStatus])
+    @@index([createdAt])
+    @@index([campaignKey])
+}
+
+model PlatformEmailCampaignRun {
+    runId           String                           @id @default(uuid())
+    campaignId      String
+    campaign        PlatformEmailCampaign            @relation(fields: [campaignId], references: [campaignId], onDelete: Cascade)
+    runStatus       PlatformEmailCampaignRunStatus   @default(PENDING)
+    startedAt       DateTime?
+    completedAt     DateTime?
+    recipientCount  Int                              @default(0)
+    sentCount       Int                              @default(0)
+    deliveredCount  Int                              @default(0)
+    failedCount     Int                              @default(0)
+    bouncedCount    Int                              @default(0)
+    openedCount     Int                              @default(0)
+    errorLog        Json?
+    createdAt       DateTime                         @default(now())
+    recipients      PlatformEmailCampaignRecipient[]
+
+    @@index([campaignId])
+    @@index([runStatus])
+}
+
+model PlatformEmailCampaignRecipient {
+    recipientId       String                       @id @default(uuid())
+    runId             String
+    run               PlatformEmailCampaignRun     @relation(fields: [runId], references: [runId], onDelete: Cascade)
+    userId            String
+    businessId        String?
+    recipientEmail    String
+    recipientName     String?
+    businessName      String?
+    deliveryStatus    PlatformEmailRecipientStatus @default(PENDING)
+    providerMessageId String?
+    errorMessage      String?
+    sentAt            DateTime?
+    deliveredAt       DateTime?
+    bouncedAt         DateTime?
+    openedAt          DateTime?
+    openCount         Int                          @default(0)
+    createdAt         DateTime                     @default(now())
+
+    @@index([runId])
+    @@index([deliveryStatus])
+    @@index([recipientEmail])
+    @@index([providerMessageId])
+}
+
+model PlatformAdminNotification {
+    notificationId   String                        @id @default(uuid())
+    notificationType PlatformAdminNotificationType @default(CAMPAIGN_SUCCESS)
+    title              String
+    message            String
+    payload            Json?
+    campaignId         String?
+    isRead             Boolean                       @default(false)
+    createdAt          DateTime                      @default(now())
+
+    @@index([isRead])
+    @@index([createdAt])
+}
+
+enum PlatformAdminNotificationType {
+    CAMPAIGN_SUCCESS
+    CAMPAIGN_FAILED
+    CAMPAIGN_SKIPPED
+    CAMPAIGN_AUTO_RUN
+}
+
+enum PlatformEmailCampaignStatus {
+    DRAFT
+    SCHEDULED
+    SENDING
+    SENT
+    FAILED
+    ARCHIVED
+}
+
+enum PlatformEmailAudienceType {
+    ALL_USERS
+    CONFIRMED_EMAIL
+    PENDING_EMAIL
+    ACTIVE_SUBSCRIPTION
+    EXPIRED_SUBSCRIPTION
+    NEWSLETTER_SUBSCRIBERS
+    /** Admins de negocios sin suscripción activa (cuenta suspendida en AppsFly) */
+    SUSPENDED_BUSINESS_ADMINS
+    /** Admins de negocios cuyo plan vence en 5 días (calendario Chile) */
+    BUSINESS_ADMINS_PLAN_EXPIRING_5D
+    /** Admins de negocios cuyo plan vence hoy (calendario Chile) */
+    BUSINESS_ADMINS_PLAN_EXPIRING_TODAY
+    /** Prospectos externos (no registrados en AppsFly) con suscripción activa al correo */
+    PLATFORM_PROSPECTS
+    CUSTOM_SEGMENT
+}
+
+enum PlatformEmailScheduleFrequency {
+    MANUAL
+    MONTHLY
+    DAILY
+    WEEKLY
+}
+
+enum PlatformEmailRecipientStatus {
+    PENDING
+    SENT
+    DELIVERED
+    FAILED
+    BOUNCED
+}
+
+enum PlatformEmailCampaignRunStatus {
+    PENDING
+    RUNNING
+    COMPLETED
+    FAILED
+    CANCELLED
 }
 
 enum Role {

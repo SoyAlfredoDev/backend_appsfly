@@ -32,6 +32,11 @@ import purchasesRoutes from "./routes/purchases.routes.js";
 import reportsRoutes from "./routes/reports.routes.js";
 import inventoryRoutes from "./routes/inventory.routes.js";
 import asmrCampaignRoutes from "./routes/asmrCampaign.routes.js";
+import assistantRoutes from "./routes/assistant.routes.js";
+import adminEmailCampaignRoutes from "./routes/adminEmailCampaign.routes.js";
+import adminNotificationRoutes from "./routes/adminNotification.routes.js";
+import emailProspectRoutes from "./routes/emailProspect.routes.js";
+import { resendWebhookController } from "./controllers/resendWebhook.controller.js";
 
 import dotenv from "dotenv";
 
@@ -47,6 +52,11 @@ const isProduction =
 const app = express();
 
 app.use(cookieParser());
+app.post(
+    "/api/webhooks/resend",
+    express.raw({ type: "application/json" }),
+    resendWebhookController,
+);
 app.use(express.json());
 console.log(">>>>> ENVIRONMENT:", isProduction ? "Production" : "Development", {
   appEnv,
@@ -128,5 +138,9 @@ app.use("/api", providersRoutes);
 app.use("/api", reportsRoutes);
 app.use("/api", inventoryRoutes);
 app.use("/api", asmrCampaignRoutes);
+app.use("/api", assistantRoutes);
+app.use("/api", adminEmailCampaignRoutes);
+app.use("/api", adminNotificationRoutes);
+app.use("/api", emailProspectRoutes);
 
 export default app;

@@ -68,12 +68,117 @@ export type TicketDetail = $Result.DefaultSelection<Prisma.$TicketDetailPayload>
  * 
  */
 export type newsletterSubscriber = $Result.DefaultSelection<Prisma.$newsletterSubscriberPayload>
+/**
+ * Model PlatformEmailProspect
+ * * Prospectos externos (no usuarios AppsFly) para campaña de outreach
+ */
+export type PlatformEmailProspect = $Result.DefaultSelection<Prisma.$PlatformEmailProspectPayload>
+/**
+ * Model PlatformEmailCampaign
+ * * Campañas de correo de plataforma (panel /admin). Separadas de campañas tenant (ASMR).
+ */
+export type PlatformEmailCampaign = $Result.DefaultSelection<Prisma.$PlatformEmailCampaignPayload>
+/**
+ * Model PlatformEmailCampaignRun
+ * 
+ */
+export type PlatformEmailCampaignRun = $Result.DefaultSelection<Prisma.$PlatformEmailCampaignRunPayload>
+/**
+ * Model PlatformEmailCampaignRecipient
+ * 
+ */
+export type PlatformEmailCampaignRecipient = $Result.DefaultSelection<Prisma.$PlatformEmailCampaignRecipientPayload>
+/**
+ * Model PlatformAdminNotification
+ * 
+ */
+export type PlatformAdminNotification = $Result.DefaultSelection<Prisma.$PlatformAdminNotificationPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const Role: {
+  export const PlatformEmailProspectStatus: {
+  ACTIVE: 'ACTIVE',
+  UNSUBSCRIBED: 'UNSUBSCRIBED',
+  CONVERTED: 'CONVERTED'
+};
+
+export type PlatformEmailProspectStatus = (typeof PlatformEmailProspectStatus)[keyof typeof PlatformEmailProspectStatus]
+
+
+export const PlatformAdminNotificationType: {
+  CAMPAIGN_SUCCESS: 'CAMPAIGN_SUCCESS',
+  CAMPAIGN_FAILED: 'CAMPAIGN_FAILED',
+  CAMPAIGN_SKIPPED: 'CAMPAIGN_SKIPPED',
+  CAMPAIGN_AUTO_RUN: 'CAMPAIGN_AUTO_RUN'
+};
+
+export type PlatformAdminNotificationType = (typeof PlatformAdminNotificationType)[keyof typeof PlatformAdminNotificationType]
+
+
+export const PlatformEmailCampaignStatus: {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  SENDING: 'SENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+export type PlatformEmailCampaignStatus = (typeof PlatformEmailCampaignStatus)[keyof typeof PlatformEmailCampaignStatus]
+
+
+export const PlatformEmailAudienceType: {
+  ALL_USERS: 'ALL_USERS',
+  CONFIRMED_EMAIL: 'CONFIRMED_EMAIL',
+  PENDING_EMAIL: 'PENDING_EMAIL',
+  ACTIVE_SUBSCRIPTION: 'ACTIVE_SUBSCRIPTION',
+  EXPIRED_SUBSCRIPTION: 'EXPIRED_SUBSCRIPTION',
+  NEWSLETTER_SUBSCRIBERS: 'NEWSLETTER_SUBSCRIBERS',
+  SUSPENDED_BUSINESS_ADMINS: 'SUSPENDED_BUSINESS_ADMINS',
+  BUSINESS_ADMINS_PLAN_EXPIRING_5D: 'BUSINESS_ADMINS_PLAN_EXPIRING_5D',
+  BUSINESS_ADMINS_PLAN_EXPIRING_TODAY: 'BUSINESS_ADMINS_PLAN_EXPIRING_TODAY',
+  PLATFORM_PROSPECTS: 'PLATFORM_PROSPECTS',
+  CUSTOM_SEGMENT: 'CUSTOM_SEGMENT'
+};
+
+export type PlatformEmailAudienceType = (typeof PlatformEmailAudienceType)[keyof typeof PlatformEmailAudienceType]
+
+
+export const PlatformEmailScheduleFrequency: {
+  MANUAL: 'MANUAL',
+  MONTHLY: 'MONTHLY',
+  DAILY: 'DAILY',
+  WEEKLY: 'WEEKLY'
+};
+
+export type PlatformEmailScheduleFrequency = (typeof PlatformEmailScheduleFrequency)[keyof typeof PlatformEmailScheduleFrequency]
+
+
+export const PlatformEmailRecipientStatus: {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED'
+};
+
+export type PlatformEmailRecipientStatus = (typeof PlatformEmailRecipientStatus)[keyof typeof PlatformEmailRecipientStatus]
+
+
+export const PlatformEmailCampaignRunStatus: {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type PlatformEmailCampaignRunStatus = (typeof PlatformEmailCampaignRunStatus)[keyof typeof PlatformEmailCampaignRunStatus]
+
+
+export const Role: {
   ADMIN: 'ADMIN',
   USER: 'USER',
   GUEST: 'GUEST'
@@ -165,6 +270,34 @@ export const TicketDetailOrigin: {
 export type TicketDetailOrigin = (typeof TicketDetailOrigin)[keyof typeof TicketDetailOrigin]
 
 }
+
+export type PlatformEmailProspectStatus = $Enums.PlatformEmailProspectStatus
+
+export const PlatformEmailProspectStatus: typeof $Enums.PlatformEmailProspectStatus
+
+export type PlatformAdminNotificationType = $Enums.PlatformAdminNotificationType
+
+export const PlatformAdminNotificationType: typeof $Enums.PlatformAdminNotificationType
+
+export type PlatformEmailCampaignStatus = $Enums.PlatformEmailCampaignStatus
+
+export const PlatformEmailCampaignStatus: typeof $Enums.PlatformEmailCampaignStatus
+
+export type PlatformEmailAudienceType = $Enums.PlatformEmailAudienceType
+
+export const PlatformEmailAudienceType: typeof $Enums.PlatformEmailAudienceType
+
+export type PlatformEmailScheduleFrequency = $Enums.PlatformEmailScheduleFrequency
+
+export const PlatformEmailScheduleFrequency: typeof $Enums.PlatformEmailScheduleFrequency
+
+export type PlatformEmailRecipientStatus = $Enums.PlatformEmailRecipientStatus
+
+export const PlatformEmailRecipientStatus: typeof $Enums.PlatformEmailRecipientStatus
+
+export type PlatformEmailCampaignRunStatus = $Enums.PlatformEmailCampaignRunStatus
+
+export const PlatformEmailCampaignRunStatus: typeof $Enums.PlatformEmailCampaignRunStatus
 
 export type Role = $Enums.Role
 
@@ -433,6 +566,56 @@ export class PrismaClient<
     * ```
     */
   get newsletterSubscriber(): Prisma.newsletterSubscriberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.platformEmailProspect`: Exposes CRUD operations for the **PlatformEmailProspect** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlatformEmailProspects
+    * const platformEmailProspects = await prisma.platformEmailProspect.findMany()
+    * ```
+    */
+  get platformEmailProspect(): Prisma.PlatformEmailProspectDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.platformEmailCampaign`: Exposes CRUD operations for the **PlatformEmailCampaign** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlatformEmailCampaigns
+    * const platformEmailCampaigns = await prisma.platformEmailCampaign.findMany()
+    * ```
+    */
+  get platformEmailCampaign(): Prisma.PlatformEmailCampaignDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.platformEmailCampaignRun`: Exposes CRUD operations for the **PlatformEmailCampaignRun** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlatformEmailCampaignRuns
+    * const platformEmailCampaignRuns = await prisma.platformEmailCampaignRun.findMany()
+    * ```
+    */
+  get platformEmailCampaignRun(): Prisma.PlatformEmailCampaignRunDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.platformEmailCampaignRecipient`: Exposes CRUD operations for the **PlatformEmailCampaignRecipient** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlatformEmailCampaignRecipients
+    * const platformEmailCampaignRecipients = await prisma.platformEmailCampaignRecipient.findMany()
+    * ```
+    */
+  get platformEmailCampaignRecipient(): Prisma.PlatformEmailCampaignRecipientDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.platformAdminNotification`: Exposes CRUD operations for the **PlatformAdminNotification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlatformAdminNotifications
+    * const platformAdminNotifications = await prisma.platformAdminNotification.findMany()
+    * ```
+    */
+  get platformAdminNotification(): Prisma.PlatformAdminNotificationDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -884,7 +1067,12 @@ export namespace Prisma {
     SubscriptionPayment: 'SubscriptionPayment',
     Ticket: 'Ticket',
     TicketDetail: 'TicketDetail',
-    newsletterSubscriber: 'newsletterSubscriber'
+    newsletterSubscriber: 'newsletterSubscriber',
+    PlatformEmailProspect: 'PlatformEmailProspect',
+    PlatformEmailCampaign: 'PlatformEmailCampaign',
+    PlatformEmailCampaignRun: 'PlatformEmailCampaignRun',
+    PlatformEmailCampaignRecipient: 'PlatformEmailCampaignRecipient',
+    PlatformAdminNotification: 'PlatformAdminNotification'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -903,7 +1091,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "business" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber"
+      modelProps: "user" | "business" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber" | "platformEmailProspect" | "platformEmailCampaign" | "platformEmailCampaignRun" | "platformEmailCampaignRecipient" | "platformAdminNotification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1721,6 +1909,376 @@ export namespace Prisma {
           }
         }
       }
+      PlatformEmailProspect: {
+        payload: Prisma.$PlatformEmailProspectPayload<ExtArgs>
+        fields: Prisma.PlatformEmailProspectFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlatformEmailProspectFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlatformEmailProspectFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload>
+          }
+          findFirst: {
+            args: Prisma.PlatformEmailProspectFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlatformEmailProspectFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload>
+          }
+          findMany: {
+            args: Prisma.PlatformEmailProspectFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload>[]
+          }
+          create: {
+            args: Prisma.PlatformEmailProspectCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload>
+          }
+          createMany: {
+            args: Prisma.PlatformEmailProspectCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlatformEmailProspectCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload>[]
+          }
+          delete: {
+            args: Prisma.PlatformEmailProspectDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload>
+          }
+          update: {
+            args: Prisma.PlatformEmailProspectUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlatformEmailProspectDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlatformEmailProspectUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PlatformEmailProspectUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload>[]
+          }
+          upsert: {
+            args: Prisma.PlatformEmailProspectUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailProspectPayload>
+          }
+          aggregate: {
+            args: Prisma.PlatformEmailProspectAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlatformEmailProspect>
+          }
+          groupBy: {
+            args: Prisma.PlatformEmailProspectGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlatformEmailProspectGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlatformEmailProspectCountArgs<ExtArgs>
+            result: $Utils.Optional<PlatformEmailProspectCountAggregateOutputType> | number
+          }
+        }
+      }
+      PlatformEmailCampaign: {
+        payload: Prisma.$PlatformEmailCampaignPayload<ExtArgs>
+        fields: Prisma.PlatformEmailCampaignFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlatformEmailCampaignFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlatformEmailCampaignFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload>
+          }
+          findFirst: {
+            args: Prisma.PlatformEmailCampaignFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlatformEmailCampaignFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload>
+          }
+          findMany: {
+            args: Prisma.PlatformEmailCampaignFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload>[]
+          }
+          create: {
+            args: Prisma.PlatformEmailCampaignCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload>
+          }
+          createMany: {
+            args: Prisma.PlatformEmailCampaignCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlatformEmailCampaignCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload>[]
+          }
+          delete: {
+            args: Prisma.PlatformEmailCampaignDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload>
+          }
+          update: {
+            args: Prisma.PlatformEmailCampaignUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlatformEmailCampaignDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlatformEmailCampaignUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PlatformEmailCampaignUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload>[]
+          }
+          upsert: {
+            args: Prisma.PlatformEmailCampaignUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignPayload>
+          }
+          aggregate: {
+            args: Prisma.PlatformEmailCampaignAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlatformEmailCampaign>
+          }
+          groupBy: {
+            args: Prisma.PlatformEmailCampaignGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlatformEmailCampaignGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlatformEmailCampaignCountArgs<ExtArgs>
+            result: $Utils.Optional<PlatformEmailCampaignCountAggregateOutputType> | number
+          }
+        }
+      }
+      PlatformEmailCampaignRun: {
+        payload: Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>
+        fields: Prisma.PlatformEmailCampaignRunFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlatformEmailCampaignRunFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlatformEmailCampaignRunFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload>
+          }
+          findFirst: {
+            args: Prisma.PlatformEmailCampaignRunFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlatformEmailCampaignRunFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload>
+          }
+          findMany: {
+            args: Prisma.PlatformEmailCampaignRunFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload>[]
+          }
+          create: {
+            args: Prisma.PlatformEmailCampaignRunCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload>
+          }
+          createMany: {
+            args: Prisma.PlatformEmailCampaignRunCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlatformEmailCampaignRunCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload>[]
+          }
+          delete: {
+            args: Prisma.PlatformEmailCampaignRunDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload>
+          }
+          update: {
+            args: Prisma.PlatformEmailCampaignRunUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlatformEmailCampaignRunDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlatformEmailCampaignRunUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PlatformEmailCampaignRunUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload>[]
+          }
+          upsert: {
+            args: Prisma.PlatformEmailCampaignRunUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRunPayload>
+          }
+          aggregate: {
+            args: Prisma.PlatformEmailCampaignRunAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlatformEmailCampaignRun>
+          }
+          groupBy: {
+            args: Prisma.PlatformEmailCampaignRunGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlatformEmailCampaignRunGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlatformEmailCampaignRunCountArgs<ExtArgs>
+            result: $Utils.Optional<PlatformEmailCampaignRunCountAggregateOutputType> | number
+          }
+        }
+      }
+      PlatformEmailCampaignRecipient: {
+        payload: Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>
+        fields: Prisma.PlatformEmailCampaignRecipientFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlatformEmailCampaignRecipientFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlatformEmailCampaignRecipientFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload>
+          }
+          findFirst: {
+            args: Prisma.PlatformEmailCampaignRecipientFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlatformEmailCampaignRecipientFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload>
+          }
+          findMany: {
+            args: Prisma.PlatformEmailCampaignRecipientFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload>[]
+          }
+          create: {
+            args: Prisma.PlatformEmailCampaignRecipientCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload>
+          }
+          createMany: {
+            args: Prisma.PlatformEmailCampaignRecipientCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlatformEmailCampaignRecipientCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload>[]
+          }
+          delete: {
+            args: Prisma.PlatformEmailCampaignRecipientDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload>
+          }
+          update: {
+            args: Prisma.PlatformEmailCampaignRecipientUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlatformEmailCampaignRecipientDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlatformEmailCampaignRecipientUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PlatformEmailCampaignRecipientUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload>[]
+          }
+          upsert: {
+            args: Prisma.PlatformEmailCampaignRecipientUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformEmailCampaignRecipientPayload>
+          }
+          aggregate: {
+            args: Prisma.PlatformEmailCampaignRecipientAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlatformEmailCampaignRecipient>
+          }
+          groupBy: {
+            args: Prisma.PlatformEmailCampaignRecipientGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlatformEmailCampaignRecipientGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlatformEmailCampaignRecipientCountArgs<ExtArgs>
+            result: $Utils.Optional<PlatformEmailCampaignRecipientCountAggregateOutputType> | number
+          }
+        }
+      }
+      PlatformAdminNotification: {
+        payload: Prisma.$PlatformAdminNotificationPayload<ExtArgs>
+        fields: Prisma.PlatformAdminNotificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlatformAdminNotificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlatformAdminNotificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload>
+          }
+          findFirst: {
+            args: Prisma.PlatformAdminNotificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlatformAdminNotificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload>
+          }
+          findMany: {
+            args: Prisma.PlatformAdminNotificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload>[]
+          }
+          create: {
+            args: Prisma.PlatformAdminNotificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload>
+          }
+          createMany: {
+            args: Prisma.PlatformAdminNotificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlatformAdminNotificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload>[]
+          }
+          delete: {
+            args: Prisma.PlatformAdminNotificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload>
+          }
+          update: {
+            args: Prisma.PlatformAdminNotificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlatformAdminNotificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlatformAdminNotificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PlatformAdminNotificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.PlatformAdminNotificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAdminNotificationPayload>
+          }
+          aggregate: {
+            args: Prisma.PlatformAdminNotificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlatformAdminNotification>
+          }
+          groupBy: {
+            args: Prisma.PlatformAdminNotificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlatformAdminNotificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlatformAdminNotificationCountArgs<ExtArgs>
+            result: $Utils.Optional<PlatformAdminNotificationCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1828,6 +2386,11 @@ export namespace Prisma {
     ticket?: TicketOmit
     ticketDetail?: TicketDetailOmit
     newsletterSubscriber?: newsletterSubscriberOmit
+    platformEmailProspect?: PlatformEmailProspectOmit
+    platformEmailCampaign?: PlatformEmailCampaignOmit
+    platformEmailCampaignRun?: PlatformEmailCampaignRunOmit
+    platformEmailCampaignRecipient?: PlatformEmailCampaignRecipientOmit
+    platformAdminNotification?: PlatformAdminNotificationOmit
   }
 
   /* Types for Logging */
@@ -1916,6 +2479,7 @@ export namespace Prisma {
     subscriptionCancellations: number
     tickets: number
     ticketDetails: number
+    platformEmailCampaigns: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1927,6 +2491,7 @@ export namespace Prisma {
     subscriptionCancellations?: boolean | UserCountOutputTypeCountSubscriptionCancellationsArgs
     tickets?: boolean | UserCountOutputTypeCountTicketsArgs
     ticketDetails?: boolean | UserCountOutputTypeCountTicketDetailsArgs
+    platformEmailCampaigns?: boolean | UserCountOutputTypeCountPlatformEmailCampaignsArgs
   }
 
   // Custom InputTypes
@@ -1994,6 +2559,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountTicketDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TicketDetailWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPlatformEmailCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformEmailCampaignWhereInput
   }
 
 
@@ -2172,6 +2744,68 @@ export namespace Prisma {
    */
   export type TicketCountOutputTypeCountTicketDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TicketDetailWhereInput
+  }
+
+
+  /**
+   * Count Type PlatformEmailCampaignCountOutputType
+   */
+
+  export type PlatformEmailCampaignCountOutputType = {
+    runs: number
+  }
+
+  export type PlatformEmailCampaignCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    runs?: boolean | PlatformEmailCampaignCountOutputTypeCountRunsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PlatformEmailCampaignCountOutputType without action
+   */
+  export type PlatformEmailCampaignCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignCountOutputType
+     */
+    select?: PlatformEmailCampaignCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PlatformEmailCampaignCountOutputType without action
+   */
+  export type PlatformEmailCampaignCountOutputTypeCountRunsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformEmailCampaignRunWhereInput
+  }
+
+
+  /**
+   * Count Type PlatformEmailCampaignRunCountOutputType
+   */
+
+  export type PlatformEmailCampaignRunCountOutputType = {
+    recipients: number
+  }
+
+  export type PlatformEmailCampaignRunCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    recipients?: boolean | PlatformEmailCampaignRunCountOutputTypeCountRecipientsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PlatformEmailCampaignRunCountOutputType without action
+   */
+  export type PlatformEmailCampaignRunCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRunCountOutputType
+     */
+    select?: PlatformEmailCampaignRunCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PlatformEmailCampaignRunCountOutputType without action
+   */
+  export type PlatformEmailCampaignRunCountOutputTypeCountRecipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformEmailCampaignRecipientWhereInput
   }
 
 
@@ -2415,6 +3049,7 @@ export namespace Prisma {
     subscriptionCancellations?: boolean | User$subscriptionCancellationsArgs<ExtArgs>
     tickets?: boolean | User$ticketsArgs<ExtArgs>
     ticketDetails?: boolean | User$ticketDetailsArgs<ExtArgs>
+    platformEmailCampaigns?: boolean | User$platformEmailCampaignsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2476,6 +3111,7 @@ export namespace Prisma {
     subscriptionCancellations?: boolean | User$subscriptionCancellationsArgs<ExtArgs>
     tickets?: boolean | User$ticketsArgs<ExtArgs>
     ticketDetails?: boolean | User$ticketDetailsArgs<ExtArgs>
+    platformEmailCampaigns?: boolean | User$platformEmailCampaignsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2492,6 +3128,7 @@ export namespace Prisma {
       subscriptionCancellations: Prisma.$SubscriptionCancellationPayload<ExtArgs>[]
       tickets: Prisma.$TicketPayload<ExtArgs>[]
       ticketDetails: Prisma.$TicketDetailPayload<ExtArgs>[]
+      platformEmailCampaigns: Prisma.$PlatformEmailCampaignPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       userId: string
@@ -2909,6 +3546,7 @@ export namespace Prisma {
     subscriptionCancellations<T extends User$subscriptionCancellationsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionCancellationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tickets<T extends User$ticketsArgs<ExtArgs> = {}>(args?: Subset<T, User$ticketsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ticketDetails<T extends User$ticketDetailsArgs<ExtArgs> = {}>(args?: Subset<T, User$ticketDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    platformEmailCampaigns<T extends User$platformEmailCampaignsArgs<ExtArgs> = {}>(args?: Subset<T, User$platformEmailCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3528,6 +4166,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TicketDetailScalarFieldEnum | TicketDetailScalarFieldEnum[]
+  }
+
+  /**
+   * User.platformEmailCampaigns
+   */
+  export type User$platformEmailCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    where?: PlatformEmailCampaignWhereInput
+    orderBy?: PlatformEmailCampaignOrderByWithRelationInput | PlatformEmailCampaignOrderByWithRelationInput[]
+    cursor?: PlatformEmailCampaignWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlatformEmailCampaignScalarFieldEnum | PlatformEmailCampaignScalarFieldEnum[]
   }
 
   /**
@@ -15395,6 +16057,6115 @@ export namespace Prisma {
 
 
   /**
+   * Model PlatformEmailProspect
+   */
+
+  export type AggregatePlatformEmailProspect = {
+    _count: PlatformEmailProspectCountAggregateOutputType | null
+    _avg: PlatformEmailProspectAvgAggregateOutputType | null
+    _sum: PlatformEmailProspectSumAggregateOutputType | null
+    _min: PlatformEmailProspectMinAggregateOutputType | null
+    _max: PlatformEmailProspectMaxAggregateOutputType | null
+  }
+
+  export type PlatformEmailProspectAvgAggregateOutputType = {
+    outreachEmailsSent: number | null
+  }
+
+  export type PlatformEmailProspectSumAggregateOutputType = {
+    outreachEmailsSent: number | null
+  }
+
+  export type PlatformEmailProspectMinAggregateOutputType = {
+    prospectId: string | null
+    email: string | null
+    firstName: string | null
+    lastName: string | null
+    companyName: string | null
+    status: $Enums.PlatformEmailProspectStatus | null
+    unsubscribeToken: string | null
+    unsubscribedAt: Date | null
+    source: string | null
+    notes: string | null
+    convertedUserId: string | null
+    convertedAt: Date | null
+    outreachEmailsSent: number | null
+    firstOutreachAt: Date | null
+    lastOutreachAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformEmailProspectMaxAggregateOutputType = {
+    prospectId: string | null
+    email: string | null
+    firstName: string | null
+    lastName: string | null
+    companyName: string | null
+    status: $Enums.PlatformEmailProspectStatus | null
+    unsubscribeToken: string | null
+    unsubscribedAt: Date | null
+    source: string | null
+    notes: string | null
+    convertedUserId: string | null
+    convertedAt: Date | null
+    outreachEmailsSent: number | null
+    firstOutreachAt: Date | null
+    lastOutreachAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformEmailProspectCountAggregateOutputType = {
+    prospectId: number
+    email: number
+    firstName: number
+    lastName: number
+    companyName: number
+    status: number
+    unsubscribeToken: number
+    unsubscribedAt: number
+    source: number
+    notes: number
+    convertedUserId: number
+    convertedAt: number
+    outreachEmailsSent: number
+    firstOutreachAt: number
+    lastOutreachAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PlatformEmailProspectAvgAggregateInputType = {
+    outreachEmailsSent?: true
+  }
+
+  export type PlatformEmailProspectSumAggregateInputType = {
+    outreachEmailsSent?: true
+  }
+
+  export type PlatformEmailProspectMinAggregateInputType = {
+    prospectId?: true
+    email?: true
+    firstName?: true
+    lastName?: true
+    companyName?: true
+    status?: true
+    unsubscribeToken?: true
+    unsubscribedAt?: true
+    source?: true
+    notes?: true
+    convertedUserId?: true
+    convertedAt?: true
+    outreachEmailsSent?: true
+    firstOutreachAt?: true
+    lastOutreachAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlatformEmailProspectMaxAggregateInputType = {
+    prospectId?: true
+    email?: true
+    firstName?: true
+    lastName?: true
+    companyName?: true
+    status?: true
+    unsubscribeToken?: true
+    unsubscribedAt?: true
+    source?: true
+    notes?: true
+    convertedUserId?: true
+    convertedAt?: true
+    outreachEmailsSent?: true
+    firstOutreachAt?: true
+    lastOutreachAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlatformEmailProspectCountAggregateInputType = {
+    prospectId?: true
+    email?: true
+    firstName?: true
+    lastName?: true
+    companyName?: true
+    status?: true
+    unsubscribeToken?: true
+    unsubscribedAt?: true
+    source?: true
+    notes?: true
+    convertedUserId?: true
+    convertedAt?: true
+    outreachEmailsSent?: true
+    firstOutreachAt?: true
+    lastOutreachAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PlatformEmailProspectAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformEmailProspect to aggregate.
+     */
+    where?: PlatformEmailProspectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailProspects to fetch.
+     */
+    orderBy?: PlatformEmailProspectOrderByWithRelationInput | PlatformEmailProspectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlatformEmailProspectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailProspects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailProspects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlatformEmailProspects
+    **/
+    _count?: true | PlatformEmailProspectCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlatformEmailProspectAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlatformEmailProspectSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlatformEmailProspectMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlatformEmailProspectMaxAggregateInputType
+  }
+
+  export type GetPlatformEmailProspectAggregateType<T extends PlatformEmailProspectAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlatformEmailProspect]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlatformEmailProspect[P]>
+      : GetScalarType<T[P], AggregatePlatformEmailProspect[P]>
+  }
+
+
+
+
+  export type PlatformEmailProspectGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformEmailProspectWhereInput
+    orderBy?: PlatformEmailProspectOrderByWithAggregationInput | PlatformEmailProspectOrderByWithAggregationInput[]
+    by: PlatformEmailProspectScalarFieldEnum[] | PlatformEmailProspectScalarFieldEnum
+    having?: PlatformEmailProspectScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlatformEmailProspectCountAggregateInputType | true
+    _avg?: PlatformEmailProspectAvgAggregateInputType
+    _sum?: PlatformEmailProspectSumAggregateInputType
+    _min?: PlatformEmailProspectMinAggregateInputType
+    _max?: PlatformEmailProspectMaxAggregateInputType
+  }
+
+  export type PlatformEmailProspectGroupByOutputType = {
+    prospectId: string
+    email: string
+    firstName: string | null
+    lastName: string | null
+    companyName: string | null
+    status: $Enums.PlatformEmailProspectStatus
+    unsubscribeToken: string
+    unsubscribedAt: Date | null
+    source: string | null
+    notes: string | null
+    convertedUserId: string | null
+    convertedAt: Date | null
+    outreachEmailsSent: number
+    firstOutreachAt: Date | null
+    lastOutreachAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PlatformEmailProspectCountAggregateOutputType | null
+    _avg: PlatformEmailProspectAvgAggregateOutputType | null
+    _sum: PlatformEmailProspectSumAggregateOutputType | null
+    _min: PlatformEmailProspectMinAggregateOutputType | null
+    _max: PlatformEmailProspectMaxAggregateOutputType | null
+  }
+
+  type GetPlatformEmailProspectGroupByPayload<T extends PlatformEmailProspectGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlatformEmailProspectGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlatformEmailProspectGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlatformEmailProspectGroupByOutputType[P]>
+            : GetScalarType<T[P], PlatformEmailProspectGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlatformEmailProspectSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    prospectId?: boolean
+    email?: boolean
+    firstName?: boolean
+    lastName?: boolean
+    companyName?: boolean
+    status?: boolean
+    unsubscribeToken?: boolean
+    unsubscribedAt?: boolean
+    source?: boolean
+    notes?: boolean
+    convertedUserId?: boolean
+    convertedAt?: boolean
+    outreachEmailsSent?: boolean
+    firstOutreachAt?: boolean
+    lastOutreachAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["platformEmailProspect"]>
+
+  export type PlatformEmailProspectSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    prospectId?: boolean
+    email?: boolean
+    firstName?: boolean
+    lastName?: boolean
+    companyName?: boolean
+    status?: boolean
+    unsubscribeToken?: boolean
+    unsubscribedAt?: boolean
+    source?: boolean
+    notes?: boolean
+    convertedUserId?: boolean
+    convertedAt?: boolean
+    outreachEmailsSent?: boolean
+    firstOutreachAt?: boolean
+    lastOutreachAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["platformEmailProspect"]>
+
+  export type PlatformEmailProspectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    prospectId?: boolean
+    email?: boolean
+    firstName?: boolean
+    lastName?: boolean
+    companyName?: boolean
+    status?: boolean
+    unsubscribeToken?: boolean
+    unsubscribedAt?: boolean
+    source?: boolean
+    notes?: boolean
+    convertedUserId?: boolean
+    convertedAt?: boolean
+    outreachEmailsSent?: boolean
+    firstOutreachAt?: boolean
+    lastOutreachAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["platformEmailProspect"]>
+
+  export type PlatformEmailProspectSelectScalar = {
+    prospectId?: boolean
+    email?: boolean
+    firstName?: boolean
+    lastName?: boolean
+    companyName?: boolean
+    status?: boolean
+    unsubscribeToken?: boolean
+    unsubscribedAt?: boolean
+    source?: boolean
+    notes?: boolean
+    convertedUserId?: boolean
+    convertedAt?: boolean
+    outreachEmailsSent?: boolean
+    firstOutreachAt?: boolean
+    lastOutreachAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PlatformEmailProspectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"prospectId" | "email" | "firstName" | "lastName" | "companyName" | "status" | "unsubscribeToken" | "unsubscribedAt" | "source" | "notes" | "convertedUserId" | "convertedAt" | "outreachEmailsSent" | "firstOutreachAt" | "lastOutreachAt" | "createdAt" | "updatedAt", ExtArgs["result"]["platformEmailProspect"]>
+
+  export type $PlatformEmailProspectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlatformEmailProspect"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      prospectId: string
+      email: string
+      firstName: string | null
+      lastName: string | null
+      companyName: string | null
+      status: $Enums.PlatformEmailProspectStatus
+      unsubscribeToken: string
+      unsubscribedAt: Date | null
+      source: string | null
+      notes: string | null
+      /**
+       * * Usuario AppsFly creado tras outreach
+       */
+      convertedUserId: string | null
+      convertedAt: Date | null
+      outreachEmailsSent: number
+      firstOutreachAt: Date | null
+      lastOutreachAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["platformEmailProspect"]>
+    composites: {}
+  }
+
+  type PlatformEmailProspectGetPayload<S extends boolean | null | undefined | PlatformEmailProspectDefaultArgs> = $Result.GetResult<Prisma.$PlatformEmailProspectPayload, S>
+
+  type PlatformEmailProspectCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlatformEmailProspectFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlatformEmailProspectCountAggregateInputType | true
+    }
+
+  export interface PlatformEmailProspectDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlatformEmailProspect'], meta: { name: 'PlatformEmailProspect' } }
+    /**
+     * Find zero or one PlatformEmailProspect that matches the filter.
+     * @param {PlatformEmailProspectFindUniqueArgs} args - Arguments to find a PlatformEmailProspect
+     * @example
+     * // Get one PlatformEmailProspect
+     * const platformEmailProspect = await prisma.platformEmailProspect.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlatformEmailProspectFindUniqueArgs>(args: SelectSubset<T, PlatformEmailProspectFindUniqueArgs<ExtArgs>>): Prisma__PlatformEmailProspectClient<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlatformEmailProspect that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlatformEmailProspectFindUniqueOrThrowArgs} args - Arguments to find a PlatformEmailProspect
+     * @example
+     * // Get one PlatformEmailProspect
+     * const platformEmailProspect = await prisma.platformEmailProspect.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlatformEmailProspectFindUniqueOrThrowArgs>(args: SelectSubset<T, PlatformEmailProspectFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlatformEmailProspectClient<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformEmailProspect that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailProspectFindFirstArgs} args - Arguments to find a PlatformEmailProspect
+     * @example
+     * // Get one PlatformEmailProspect
+     * const platformEmailProspect = await prisma.platformEmailProspect.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlatformEmailProspectFindFirstArgs>(args?: SelectSubset<T, PlatformEmailProspectFindFirstArgs<ExtArgs>>): Prisma__PlatformEmailProspectClient<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformEmailProspect that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailProspectFindFirstOrThrowArgs} args - Arguments to find a PlatformEmailProspect
+     * @example
+     * // Get one PlatformEmailProspect
+     * const platformEmailProspect = await prisma.platformEmailProspect.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlatformEmailProspectFindFirstOrThrowArgs>(args?: SelectSubset<T, PlatformEmailProspectFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlatformEmailProspectClient<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlatformEmailProspects that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailProspectFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlatformEmailProspects
+     * const platformEmailProspects = await prisma.platformEmailProspect.findMany()
+     * 
+     * // Get first 10 PlatformEmailProspects
+     * const platformEmailProspects = await prisma.platformEmailProspect.findMany({ take: 10 })
+     * 
+     * // Only select the `prospectId`
+     * const platformEmailProspectWithProspectIdOnly = await prisma.platformEmailProspect.findMany({ select: { prospectId: true } })
+     * 
+     */
+    findMany<T extends PlatformEmailProspectFindManyArgs>(args?: SelectSubset<T, PlatformEmailProspectFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlatformEmailProspect.
+     * @param {PlatformEmailProspectCreateArgs} args - Arguments to create a PlatformEmailProspect.
+     * @example
+     * // Create one PlatformEmailProspect
+     * const PlatformEmailProspect = await prisma.platformEmailProspect.create({
+     *   data: {
+     *     // ... data to create a PlatformEmailProspect
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlatformEmailProspectCreateArgs>(args: SelectSubset<T, PlatformEmailProspectCreateArgs<ExtArgs>>): Prisma__PlatformEmailProspectClient<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlatformEmailProspects.
+     * @param {PlatformEmailProspectCreateManyArgs} args - Arguments to create many PlatformEmailProspects.
+     * @example
+     * // Create many PlatformEmailProspects
+     * const platformEmailProspect = await prisma.platformEmailProspect.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlatformEmailProspectCreateManyArgs>(args?: SelectSubset<T, PlatformEmailProspectCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlatformEmailProspects and returns the data saved in the database.
+     * @param {PlatformEmailProspectCreateManyAndReturnArgs} args - Arguments to create many PlatformEmailProspects.
+     * @example
+     * // Create many PlatformEmailProspects
+     * const platformEmailProspect = await prisma.platformEmailProspect.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlatformEmailProspects and only return the `prospectId`
+     * const platformEmailProspectWithProspectIdOnly = await prisma.platformEmailProspect.createManyAndReturn({
+     *   select: { prospectId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlatformEmailProspectCreateManyAndReturnArgs>(args?: SelectSubset<T, PlatformEmailProspectCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PlatformEmailProspect.
+     * @param {PlatformEmailProspectDeleteArgs} args - Arguments to delete one PlatformEmailProspect.
+     * @example
+     * // Delete one PlatformEmailProspect
+     * const PlatformEmailProspect = await prisma.platformEmailProspect.delete({
+     *   where: {
+     *     // ... filter to delete one PlatformEmailProspect
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlatformEmailProspectDeleteArgs>(args: SelectSubset<T, PlatformEmailProspectDeleteArgs<ExtArgs>>): Prisma__PlatformEmailProspectClient<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlatformEmailProspect.
+     * @param {PlatformEmailProspectUpdateArgs} args - Arguments to update one PlatformEmailProspect.
+     * @example
+     * // Update one PlatformEmailProspect
+     * const platformEmailProspect = await prisma.platformEmailProspect.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlatformEmailProspectUpdateArgs>(args: SelectSubset<T, PlatformEmailProspectUpdateArgs<ExtArgs>>): Prisma__PlatformEmailProspectClient<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlatformEmailProspects.
+     * @param {PlatformEmailProspectDeleteManyArgs} args - Arguments to filter PlatformEmailProspects to delete.
+     * @example
+     * // Delete a few PlatformEmailProspects
+     * const { count } = await prisma.platformEmailProspect.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlatformEmailProspectDeleteManyArgs>(args?: SelectSubset<T, PlatformEmailProspectDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformEmailProspects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailProspectUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlatformEmailProspects
+     * const platformEmailProspect = await prisma.platformEmailProspect.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlatformEmailProspectUpdateManyArgs>(args: SelectSubset<T, PlatformEmailProspectUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformEmailProspects and returns the data updated in the database.
+     * @param {PlatformEmailProspectUpdateManyAndReturnArgs} args - Arguments to update many PlatformEmailProspects.
+     * @example
+     * // Update many PlatformEmailProspects
+     * const platformEmailProspect = await prisma.platformEmailProspect.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PlatformEmailProspects and only return the `prospectId`
+     * const platformEmailProspectWithProspectIdOnly = await prisma.platformEmailProspect.updateManyAndReturn({
+     *   select: { prospectId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PlatformEmailProspectUpdateManyAndReturnArgs>(args: SelectSubset<T, PlatformEmailProspectUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PlatformEmailProspect.
+     * @param {PlatformEmailProspectUpsertArgs} args - Arguments to update or create a PlatformEmailProspect.
+     * @example
+     * // Update or create a PlatformEmailProspect
+     * const platformEmailProspect = await prisma.platformEmailProspect.upsert({
+     *   create: {
+     *     // ... data to create a PlatformEmailProspect
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlatformEmailProspect we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlatformEmailProspectUpsertArgs>(args: SelectSubset<T, PlatformEmailProspectUpsertArgs<ExtArgs>>): Prisma__PlatformEmailProspectClient<$Result.GetResult<Prisma.$PlatformEmailProspectPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlatformEmailProspects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailProspectCountArgs} args - Arguments to filter PlatformEmailProspects to count.
+     * @example
+     * // Count the number of PlatformEmailProspects
+     * const count = await prisma.platformEmailProspect.count({
+     *   where: {
+     *     // ... the filter for the PlatformEmailProspects we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlatformEmailProspectCountArgs>(
+      args?: Subset<T, PlatformEmailProspectCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlatformEmailProspectCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlatformEmailProspect.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailProspectAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlatformEmailProspectAggregateArgs>(args: Subset<T, PlatformEmailProspectAggregateArgs>): Prisma.PrismaPromise<GetPlatformEmailProspectAggregateType<T>>
+
+    /**
+     * Group by PlatformEmailProspect.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailProspectGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlatformEmailProspectGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlatformEmailProspectGroupByArgs['orderBy'] }
+        : { orderBy?: PlatformEmailProspectGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlatformEmailProspectGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlatformEmailProspectGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlatformEmailProspect model
+   */
+  readonly fields: PlatformEmailProspectFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlatformEmailProspect.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlatformEmailProspectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlatformEmailProspect model
+   */
+  interface PlatformEmailProspectFieldRefs {
+    readonly prospectId: FieldRef<"PlatformEmailProspect", 'String'>
+    readonly email: FieldRef<"PlatformEmailProspect", 'String'>
+    readonly firstName: FieldRef<"PlatformEmailProspect", 'String'>
+    readonly lastName: FieldRef<"PlatformEmailProspect", 'String'>
+    readonly companyName: FieldRef<"PlatformEmailProspect", 'String'>
+    readonly status: FieldRef<"PlatformEmailProspect", 'PlatformEmailProspectStatus'>
+    readonly unsubscribeToken: FieldRef<"PlatformEmailProspect", 'String'>
+    readonly unsubscribedAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
+    readonly source: FieldRef<"PlatformEmailProspect", 'String'>
+    readonly notes: FieldRef<"PlatformEmailProspect", 'String'>
+    readonly convertedUserId: FieldRef<"PlatformEmailProspect", 'String'>
+    readonly convertedAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
+    readonly outreachEmailsSent: FieldRef<"PlatformEmailProspect", 'Int'>
+    readonly firstOutreachAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
+    readonly lastOutreachAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
+    readonly createdAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
+    readonly updatedAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlatformEmailProspect findUnique
+   */
+  export type PlatformEmailProspectFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailProspect to fetch.
+     */
+    where: PlatformEmailProspectWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailProspect findUniqueOrThrow
+   */
+  export type PlatformEmailProspectFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailProspect to fetch.
+     */
+    where: PlatformEmailProspectWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailProspect findFirst
+   */
+  export type PlatformEmailProspectFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailProspect to fetch.
+     */
+    where?: PlatformEmailProspectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailProspects to fetch.
+     */
+    orderBy?: PlatformEmailProspectOrderByWithRelationInput | PlatformEmailProspectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformEmailProspects.
+     */
+    cursor?: PlatformEmailProspectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailProspects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailProspects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformEmailProspects.
+     */
+    distinct?: PlatformEmailProspectScalarFieldEnum | PlatformEmailProspectScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailProspect findFirstOrThrow
+   */
+  export type PlatformEmailProspectFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailProspect to fetch.
+     */
+    where?: PlatformEmailProspectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailProspects to fetch.
+     */
+    orderBy?: PlatformEmailProspectOrderByWithRelationInput | PlatformEmailProspectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformEmailProspects.
+     */
+    cursor?: PlatformEmailProspectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailProspects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailProspects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformEmailProspects.
+     */
+    distinct?: PlatformEmailProspectScalarFieldEnum | PlatformEmailProspectScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailProspect findMany
+   */
+  export type PlatformEmailProspectFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailProspects to fetch.
+     */
+    where?: PlatformEmailProspectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailProspects to fetch.
+     */
+    orderBy?: PlatformEmailProspectOrderByWithRelationInput | PlatformEmailProspectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlatformEmailProspects.
+     */
+    cursor?: PlatformEmailProspectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailProspects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailProspects.
+     */
+    skip?: number
+    distinct?: PlatformEmailProspectScalarFieldEnum | PlatformEmailProspectScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailProspect create
+   */
+  export type PlatformEmailProspectCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PlatformEmailProspect.
+     */
+    data: XOR<PlatformEmailProspectCreateInput, PlatformEmailProspectUncheckedCreateInput>
+  }
+
+  /**
+   * PlatformEmailProspect createMany
+   */
+  export type PlatformEmailProspectCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlatformEmailProspects.
+     */
+    data: PlatformEmailProspectCreateManyInput | PlatformEmailProspectCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformEmailProspect createManyAndReturn
+   */
+  export type PlatformEmailProspectCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * The data used to create many PlatformEmailProspects.
+     */
+    data: PlatformEmailProspectCreateManyInput | PlatformEmailProspectCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformEmailProspect update
+   */
+  export type PlatformEmailProspectUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PlatformEmailProspect.
+     */
+    data: XOR<PlatformEmailProspectUpdateInput, PlatformEmailProspectUncheckedUpdateInput>
+    /**
+     * Choose, which PlatformEmailProspect to update.
+     */
+    where: PlatformEmailProspectWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailProspect updateMany
+   */
+  export type PlatformEmailProspectUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlatformEmailProspects.
+     */
+    data: XOR<PlatformEmailProspectUpdateManyMutationInput, PlatformEmailProspectUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformEmailProspects to update
+     */
+    where?: PlatformEmailProspectWhereInput
+    /**
+     * Limit how many PlatformEmailProspects to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformEmailProspect updateManyAndReturn
+   */
+  export type PlatformEmailProspectUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * The data used to update PlatformEmailProspects.
+     */
+    data: XOR<PlatformEmailProspectUpdateManyMutationInput, PlatformEmailProspectUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformEmailProspects to update
+     */
+    where?: PlatformEmailProspectWhereInput
+    /**
+     * Limit how many PlatformEmailProspects to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformEmailProspect upsert
+   */
+  export type PlatformEmailProspectUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PlatformEmailProspect to update in case it exists.
+     */
+    where: PlatformEmailProspectWhereUniqueInput
+    /**
+     * In case the PlatformEmailProspect found by the `where` argument doesn't exist, create a new PlatformEmailProspect with this data.
+     */
+    create: XOR<PlatformEmailProspectCreateInput, PlatformEmailProspectUncheckedCreateInput>
+    /**
+     * In case the PlatformEmailProspect was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlatformEmailProspectUpdateInput, PlatformEmailProspectUncheckedUpdateInput>
+  }
+
+  /**
+   * PlatformEmailProspect delete
+   */
+  export type PlatformEmailProspectDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+    /**
+     * Filter which PlatformEmailProspect to delete.
+     */
+    where: PlatformEmailProspectWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailProspect deleteMany
+   */
+  export type PlatformEmailProspectDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformEmailProspects to delete
+     */
+    where?: PlatformEmailProspectWhereInput
+    /**
+     * Limit how many PlatformEmailProspects to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformEmailProspect without action
+   */
+  export type PlatformEmailProspectDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailProspect
+     */
+    select?: PlatformEmailProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailProspect
+     */
+    omit?: PlatformEmailProspectOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PlatformEmailCampaign
+   */
+
+  export type AggregatePlatformEmailCampaign = {
+    _count: PlatformEmailCampaignCountAggregateOutputType | null
+    _avg: PlatformEmailCampaignAvgAggregateOutputType | null
+    _sum: PlatformEmailCampaignSumAggregateOutputType | null
+    _min: PlatformEmailCampaignMinAggregateOutputType | null
+    _max: PlatformEmailCampaignMaxAggregateOutputType | null
+  }
+
+  export type PlatformEmailCampaignAvgAggregateOutputType = {
+    totalRecipients: number | null
+    totalSent: number | null
+    totalDelivered: number | null
+    totalFailed: number | null
+    totalBounced: number | null
+    totalOpened: number | null
+  }
+
+  export type PlatformEmailCampaignSumAggregateOutputType = {
+    totalRecipients: number | null
+    totalSent: number | null
+    totalDelivered: number | null
+    totalFailed: number | null
+    totalBounced: number | null
+    totalOpened: number | null
+  }
+
+  export type PlatformEmailCampaignMinAggregateOutputType = {
+    campaignId: string | null
+    campaignKey: string | null
+    campaignName: string | null
+    campaignDescription: string | null
+    campaignStatus: $Enums.PlatformEmailCampaignStatus | null
+    audienceType: $Enums.PlatformEmailAudienceType | null
+    scheduleFrequency: $Enums.PlatformEmailScheduleFrequency | null
+    emailSubject: string | null
+    emailHtml: string | null
+    emailText: string | null
+    messageIntent: string | null
+    senderEmail: string | null
+    senderName: string | null
+    scheduledAt: Date | null
+    sentAt: Date | null
+    lastRunAt: Date | null
+    totalRecipients: number | null
+    totalSent: number | null
+    totalDelivered: number | null
+    totalFailed: number | null
+    totalBounced: number | null
+    totalOpened: number | null
+    createdByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformEmailCampaignMaxAggregateOutputType = {
+    campaignId: string | null
+    campaignKey: string | null
+    campaignName: string | null
+    campaignDescription: string | null
+    campaignStatus: $Enums.PlatformEmailCampaignStatus | null
+    audienceType: $Enums.PlatformEmailAudienceType | null
+    scheduleFrequency: $Enums.PlatformEmailScheduleFrequency | null
+    emailSubject: string | null
+    emailHtml: string | null
+    emailText: string | null
+    messageIntent: string | null
+    senderEmail: string | null
+    senderName: string | null
+    scheduledAt: Date | null
+    sentAt: Date | null
+    lastRunAt: Date | null
+    totalRecipients: number | null
+    totalSent: number | null
+    totalDelivered: number | null
+    totalFailed: number | null
+    totalBounced: number | null
+    totalOpened: number | null
+    createdByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformEmailCampaignCountAggregateOutputType = {
+    campaignId: number
+    campaignKey: number
+    campaignName: number
+    campaignDescription: number
+    campaignStatus: number
+    audienceType: number
+    audienceParams: number
+    scheduleFrequency: number
+    emailSubject: number
+    emailHtml: number
+    emailText: number
+    messageIntent: number
+    senderEmail: number
+    senderName: number
+    scheduledAt: number
+    sentAt: number
+    lastRunAt: number
+    totalRecipients: number
+    totalSent: number
+    totalDelivered: number
+    totalFailed: number
+    totalBounced: number
+    totalOpened: number
+    createdByUserId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PlatformEmailCampaignAvgAggregateInputType = {
+    totalRecipients?: true
+    totalSent?: true
+    totalDelivered?: true
+    totalFailed?: true
+    totalBounced?: true
+    totalOpened?: true
+  }
+
+  export type PlatformEmailCampaignSumAggregateInputType = {
+    totalRecipients?: true
+    totalSent?: true
+    totalDelivered?: true
+    totalFailed?: true
+    totalBounced?: true
+    totalOpened?: true
+  }
+
+  export type PlatformEmailCampaignMinAggregateInputType = {
+    campaignId?: true
+    campaignKey?: true
+    campaignName?: true
+    campaignDescription?: true
+    campaignStatus?: true
+    audienceType?: true
+    scheduleFrequency?: true
+    emailSubject?: true
+    emailHtml?: true
+    emailText?: true
+    messageIntent?: true
+    senderEmail?: true
+    senderName?: true
+    scheduledAt?: true
+    sentAt?: true
+    lastRunAt?: true
+    totalRecipients?: true
+    totalSent?: true
+    totalDelivered?: true
+    totalFailed?: true
+    totalBounced?: true
+    totalOpened?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlatformEmailCampaignMaxAggregateInputType = {
+    campaignId?: true
+    campaignKey?: true
+    campaignName?: true
+    campaignDescription?: true
+    campaignStatus?: true
+    audienceType?: true
+    scheduleFrequency?: true
+    emailSubject?: true
+    emailHtml?: true
+    emailText?: true
+    messageIntent?: true
+    senderEmail?: true
+    senderName?: true
+    scheduledAt?: true
+    sentAt?: true
+    lastRunAt?: true
+    totalRecipients?: true
+    totalSent?: true
+    totalDelivered?: true
+    totalFailed?: true
+    totalBounced?: true
+    totalOpened?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlatformEmailCampaignCountAggregateInputType = {
+    campaignId?: true
+    campaignKey?: true
+    campaignName?: true
+    campaignDescription?: true
+    campaignStatus?: true
+    audienceType?: true
+    audienceParams?: true
+    scheduleFrequency?: true
+    emailSubject?: true
+    emailHtml?: true
+    emailText?: true
+    messageIntent?: true
+    senderEmail?: true
+    senderName?: true
+    scheduledAt?: true
+    sentAt?: true
+    lastRunAt?: true
+    totalRecipients?: true
+    totalSent?: true
+    totalDelivered?: true
+    totalFailed?: true
+    totalBounced?: true
+    totalOpened?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PlatformEmailCampaignAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformEmailCampaign to aggregate.
+     */
+    where?: PlatformEmailCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaigns to fetch.
+     */
+    orderBy?: PlatformEmailCampaignOrderByWithRelationInput | PlatformEmailCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlatformEmailCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlatformEmailCampaigns
+    **/
+    _count?: true | PlatformEmailCampaignCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlatformEmailCampaignAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlatformEmailCampaignSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlatformEmailCampaignMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlatformEmailCampaignMaxAggregateInputType
+  }
+
+  export type GetPlatformEmailCampaignAggregateType<T extends PlatformEmailCampaignAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlatformEmailCampaign]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlatformEmailCampaign[P]>
+      : GetScalarType<T[P], AggregatePlatformEmailCampaign[P]>
+  }
+
+
+
+
+  export type PlatformEmailCampaignGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformEmailCampaignWhereInput
+    orderBy?: PlatformEmailCampaignOrderByWithAggregationInput | PlatformEmailCampaignOrderByWithAggregationInput[]
+    by: PlatformEmailCampaignScalarFieldEnum[] | PlatformEmailCampaignScalarFieldEnum
+    having?: PlatformEmailCampaignScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlatformEmailCampaignCountAggregateInputType | true
+    _avg?: PlatformEmailCampaignAvgAggregateInputType
+    _sum?: PlatformEmailCampaignSumAggregateInputType
+    _min?: PlatformEmailCampaignMinAggregateInputType
+    _max?: PlatformEmailCampaignMaxAggregateInputType
+  }
+
+  export type PlatformEmailCampaignGroupByOutputType = {
+    campaignId: string
+    campaignKey: string | null
+    campaignName: string
+    campaignDescription: string | null
+    campaignStatus: $Enums.PlatformEmailCampaignStatus
+    audienceType: $Enums.PlatformEmailAudienceType
+    audienceParams: JsonValue | null
+    scheduleFrequency: $Enums.PlatformEmailScheduleFrequency
+    emailSubject: string | null
+    emailHtml: string | null
+    emailText: string | null
+    messageIntent: string | null
+    senderEmail: string | null
+    senderName: string | null
+    scheduledAt: Date | null
+    sentAt: Date | null
+    lastRunAt: Date | null
+    totalRecipients: number
+    totalSent: number
+    totalDelivered: number
+    totalFailed: number
+    totalBounced: number
+    totalOpened: number
+    createdByUserId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: PlatformEmailCampaignCountAggregateOutputType | null
+    _avg: PlatformEmailCampaignAvgAggregateOutputType | null
+    _sum: PlatformEmailCampaignSumAggregateOutputType | null
+    _min: PlatformEmailCampaignMinAggregateOutputType | null
+    _max: PlatformEmailCampaignMaxAggregateOutputType | null
+  }
+
+  type GetPlatformEmailCampaignGroupByPayload<T extends PlatformEmailCampaignGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlatformEmailCampaignGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlatformEmailCampaignGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlatformEmailCampaignGroupByOutputType[P]>
+            : GetScalarType<T[P], PlatformEmailCampaignGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlatformEmailCampaignSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    campaignId?: boolean
+    campaignKey?: boolean
+    campaignName?: boolean
+    campaignDescription?: boolean
+    campaignStatus?: boolean
+    audienceType?: boolean
+    audienceParams?: boolean
+    scheduleFrequency?: boolean
+    emailSubject?: boolean
+    emailHtml?: boolean
+    emailText?: boolean
+    messageIntent?: boolean
+    senderEmail?: boolean
+    senderName?: boolean
+    scheduledAt?: boolean
+    sentAt?: boolean
+    lastRunAt?: boolean
+    totalRecipients?: boolean
+    totalSent?: boolean
+    totalDelivered?: boolean
+    totalFailed?: boolean
+    totalBounced?: boolean
+    totalOpened?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    runs?: boolean | PlatformEmailCampaign$runsArgs<ExtArgs>
+    _count?: boolean | PlatformEmailCampaignCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformEmailCampaign"]>
+
+  export type PlatformEmailCampaignSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    campaignId?: boolean
+    campaignKey?: boolean
+    campaignName?: boolean
+    campaignDescription?: boolean
+    campaignStatus?: boolean
+    audienceType?: boolean
+    audienceParams?: boolean
+    scheduleFrequency?: boolean
+    emailSubject?: boolean
+    emailHtml?: boolean
+    emailText?: boolean
+    messageIntent?: boolean
+    senderEmail?: boolean
+    senderName?: boolean
+    scheduledAt?: boolean
+    sentAt?: boolean
+    lastRunAt?: boolean
+    totalRecipients?: boolean
+    totalSent?: boolean
+    totalDelivered?: boolean
+    totalFailed?: boolean
+    totalBounced?: boolean
+    totalOpened?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformEmailCampaign"]>
+
+  export type PlatformEmailCampaignSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    campaignId?: boolean
+    campaignKey?: boolean
+    campaignName?: boolean
+    campaignDescription?: boolean
+    campaignStatus?: boolean
+    audienceType?: boolean
+    audienceParams?: boolean
+    scheduleFrequency?: boolean
+    emailSubject?: boolean
+    emailHtml?: boolean
+    emailText?: boolean
+    messageIntent?: boolean
+    senderEmail?: boolean
+    senderName?: boolean
+    scheduledAt?: boolean
+    sentAt?: boolean
+    lastRunAt?: boolean
+    totalRecipients?: boolean
+    totalSent?: boolean
+    totalDelivered?: boolean
+    totalFailed?: boolean
+    totalBounced?: boolean
+    totalOpened?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformEmailCampaign"]>
+
+  export type PlatformEmailCampaignSelectScalar = {
+    campaignId?: boolean
+    campaignKey?: boolean
+    campaignName?: boolean
+    campaignDescription?: boolean
+    campaignStatus?: boolean
+    audienceType?: boolean
+    audienceParams?: boolean
+    scheduleFrequency?: boolean
+    emailSubject?: boolean
+    emailHtml?: boolean
+    emailText?: boolean
+    messageIntent?: boolean
+    senderEmail?: boolean
+    senderName?: boolean
+    scheduledAt?: boolean
+    sentAt?: boolean
+    lastRunAt?: boolean
+    totalRecipients?: boolean
+    totalSent?: boolean
+    totalDelivered?: boolean
+    totalFailed?: boolean
+    totalBounced?: boolean
+    totalOpened?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PlatformEmailCampaignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"campaignId" | "campaignKey" | "campaignName" | "campaignDescription" | "campaignStatus" | "audienceType" | "audienceParams" | "scheduleFrequency" | "emailSubject" | "emailHtml" | "emailText" | "messageIntent" | "senderEmail" | "senderName" | "scheduledAt" | "sentAt" | "lastRunAt" | "totalRecipients" | "totalSent" | "totalDelivered" | "totalFailed" | "totalBounced" | "totalOpened" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["platformEmailCampaign"]>
+  export type PlatformEmailCampaignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    runs?: boolean | PlatformEmailCampaign$runsArgs<ExtArgs>
+    _count?: boolean | PlatformEmailCampaignCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PlatformEmailCampaignIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PlatformEmailCampaignIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PlatformEmailCampaignPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlatformEmailCampaign"
+    objects: {
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      runs: Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      campaignId: string
+      campaignKey: string | null
+      campaignName: string
+      campaignDescription: string | null
+      campaignStatus: $Enums.PlatformEmailCampaignStatus
+      audienceType: $Enums.PlatformEmailAudienceType
+      audienceParams: Prisma.JsonValue | null
+      scheduleFrequency: $Enums.PlatformEmailScheduleFrequency
+      emailSubject: string | null
+      emailHtml: string | null
+      emailText: string | null
+      messageIntent: string | null
+      /**
+       * * Remitente del correo (mismo dominio, distinto por campaña)
+       */
+      senderEmail: string | null
+      senderName: string | null
+      scheduledAt: Date | null
+      sentAt: Date | null
+      lastRunAt: Date | null
+      totalRecipients: number
+      totalSent: number
+      totalDelivered: number
+      totalFailed: number
+      totalBounced: number
+      totalOpened: number
+      createdByUserId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["platformEmailCampaign"]>
+    composites: {}
+  }
+
+  type PlatformEmailCampaignGetPayload<S extends boolean | null | undefined | PlatformEmailCampaignDefaultArgs> = $Result.GetResult<Prisma.$PlatformEmailCampaignPayload, S>
+
+  type PlatformEmailCampaignCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlatformEmailCampaignFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlatformEmailCampaignCountAggregateInputType | true
+    }
+
+  export interface PlatformEmailCampaignDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlatformEmailCampaign'], meta: { name: 'PlatformEmailCampaign' } }
+    /**
+     * Find zero or one PlatformEmailCampaign that matches the filter.
+     * @param {PlatformEmailCampaignFindUniqueArgs} args - Arguments to find a PlatformEmailCampaign
+     * @example
+     * // Get one PlatformEmailCampaign
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlatformEmailCampaignFindUniqueArgs>(args: SelectSubset<T, PlatformEmailCampaignFindUniqueArgs<ExtArgs>>): Prisma__PlatformEmailCampaignClient<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlatformEmailCampaign that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlatformEmailCampaignFindUniqueOrThrowArgs} args - Arguments to find a PlatformEmailCampaign
+     * @example
+     * // Get one PlatformEmailCampaign
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlatformEmailCampaignFindUniqueOrThrowArgs>(args: SelectSubset<T, PlatformEmailCampaignFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlatformEmailCampaignClient<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformEmailCampaign that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignFindFirstArgs} args - Arguments to find a PlatformEmailCampaign
+     * @example
+     * // Get one PlatformEmailCampaign
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlatformEmailCampaignFindFirstArgs>(args?: SelectSubset<T, PlatformEmailCampaignFindFirstArgs<ExtArgs>>): Prisma__PlatformEmailCampaignClient<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformEmailCampaign that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignFindFirstOrThrowArgs} args - Arguments to find a PlatformEmailCampaign
+     * @example
+     * // Get one PlatformEmailCampaign
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlatformEmailCampaignFindFirstOrThrowArgs>(args?: SelectSubset<T, PlatformEmailCampaignFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlatformEmailCampaignClient<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlatformEmailCampaigns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlatformEmailCampaigns
+     * const platformEmailCampaigns = await prisma.platformEmailCampaign.findMany()
+     * 
+     * // Get first 10 PlatformEmailCampaigns
+     * const platformEmailCampaigns = await prisma.platformEmailCampaign.findMany({ take: 10 })
+     * 
+     * // Only select the `campaignId`
+     * const platformEmailCampaignWithCampaignIdOnly = await prisma.platformEmailCampaign.findMany({ select: { campaignId: true } })
+     * 
+     */
+    findMany<T extends PlatformEmailCampaignFindManyArgs>(args?: SelectSubset<T, PlatformEmailCampaignFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlatformEmailCampaign.
+     * @param {PlatformEmailCampaignCreateArgs} args - Arguments to create a PlatformEmailCampaign.
+     * @example
+     * // Create one PlatformEmailCampaign
+     * const PlatformEmailCampaign = await prisma.platformEmailCampaign.create({
+     *   data: {
+     *     // ... data to create a PlatformEmailCampaign
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlatformEmailCampaignCreateArgs>(args: SelectSubset<T, PlatformEmailCampaignCreateArgs<ExtArgs>>): Prisma__PlatformEmailCampaignClient<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlatformEmailCampaigns.
+     * @param {PlatformEmailCampaignCreateManyArgs} args - Arguments to create many PlatformEmailCampaigns.
+     * @example
+     * // Create many PlatformEmailCampaigns
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlatformEmailCampaignCreateManyArgs>(args?: SelectSubset<T, PlatformEmailCampaignCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlatformEmailCampaigns and returns the data saved in the database.
+     * @param {PlatformEmailCampaignCreateManyAndReturnArgs} args - Arguments to create many PlatformEmailCampaigns.
+     * @example
+     * // Create many PlatformEmailCampaigns
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlatformEmailCampaigns and only return the `campaignId`
+     * const platformEmailCampaignWithCampaignIdOnly = await prisma.platformEmailCampaign.createManyAndReturn({
+     *   select: { campaignId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlatformEmailCampaignCreateManyAndReturnArgs>(args?: SelectSubset<T, PlatformEmailCampaignCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PlatformEmailCampaign.
+     * @param {PlatformEmailCampaignDeleteArgs} args - Arguments to delete one PlatformEmailCampaign.
+     * @example
+     * // Delete one PlatformEmailCampaign
+     * const PlatformEmailCampaign = await prisma.platformEmailCampaign.delete({
+     *   where: {
+     *     // ... filter to delete one PlatformEmailCampaign
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlatformEmailCampaignDeleteArgs>(args: SelectSubset<T, PlatformEmailCampaignDeleteArgs<ExtArgs>>): Prisma__PlatformEmailCampaignClient<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlatformEmailCampaign.
+     * @param {PlatformEmailCampaignUpdateArgs} args - Arguments to update one PlatformEmailCampaign.
+     * @example
+     * // Update one PlatformEmailCampaign
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlatformEmailCampaignUpdateArgs>(args: SelectSubset<T, PlatformEmailCampaignUpdateArgs<ExtArgs>>): Prisma__PlatformEmailCampaignClient<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlatformEmailCampaigns.
+     * @param {PlatformEmailCampaignDeleteManyArgs} args - Arguments to filter PlatformEmailCampaigns to delete.
+     * @example
+     * // Delete a few PlatformEmailCampaigns
+     * const { count } = await prisma.platformEmailCampaign.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlatformEmailCampaignDeleteManyArgs>(args?: SelectSubset<T, PlatformEmailCampaignDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformEmailCampaigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlatformEmailCampaigns
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlatformEmailCampaignUpdateManyArgs>(args: SelectSubset<T, PlatformEmailCampaignUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformEmailCampaigns and returns the data updated in the database.
+     * @param {PlatformEmailCampaignUpdateManyAndReturnArgs} args - Arguments to update many PlatformEmailCampaigns.
+     * @example
+     * // Update many PlatformEmailCampaigns
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PlatformEmailCampaigns and only return the `campaignId`
+     * const platformEmailCampaignWithCampaignIdOnly = await prisma.platformEmailCampaign.updateManyAndReturn({
+     *   select: { campaignId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PlatformEmailCampaignUpdateManyAndReturnArgs>(args: SelectSubset<T, PlatformEmailCampaignUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PlatformEmailCampaign.
+     * @param {PlatformEmailCampaignUpsertArgs} args - Arguments to update or create a PlatformEmailCampaign.
+     * @example
+     * // Update or create a PlatformEmailCampaign
+     * const platformEmailCampaign = await prisma.platformEmailCampaign.upsert({
+     *   create: {
+     *     // ... data to create a PlatformEmailCampaign
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlatformEmailCampaign we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlatformEmailCampaignUpsertArgs>(args: SelectSubset<T, PlatformEmailCampaignUpsertArgs<ExtArgs>>): Prisma__PlatformEmailCampaignClient<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlatformEmailCampaigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignCountArgs} args - Arguments to filter PlatformEmailCampaigns to count.
+     * @example
+     * // Count the number of PlatformEmailCampaigns
+     * const count = await prisma.platformEmailCampaign.count({
+     *   where: {
+     *     // ... the filter for the PlatformEmailCampaigns we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlatformEmailCampaignCountArgs>(
+      args?: Subset<T, PlatformEmailCampaignCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlatformEmailCampaignCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlatformEmailCampaign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlatformEmailCampaignAggregateArgs>(args: Subset<T, PlatformEmailCampaignAggregateArgs>): Prisma.PrismaPromise<GetPlatformEmailCampaignAggregateType<T>>
+
+    /**
+     * Group by PlatformEmailCampaign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlatformEmailCampaignGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlatformEmailCampaignGroupByArgs['orderBy'] }
+        : { orderBy?: PlatformEmailCampaignGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlatformEmailCampaignGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlatformEmailCampaignGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlatformEmailCampaign model
+   */
+  readonly fields: PlatformEmailCampaignFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlatformEmailCampaign.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlatformEmailCampaignClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    runs<T extends PlatformEmailCampaign$runsArgs<ExtArgs> = {}>(args?: Subset<T, PlatformEmailCampaign$runsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlatformEmailCampaign model
+   */
+  interface PlatformEmailCampaignFieldRefs {
+    readonly campaignId: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly campaignKey: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly campaignName: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly campaignDescription: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly campaignStatus: FieldRef<"PlatformEmailCampaign", 'PlatformEmailCampaignStatus'>
+    readonly audienceType: FieldRef<"PlatformEmailCampaign", 'PlatformEmailAudienceType'>
+    readonly audienceParams: FieldRef<"PlatformEmailCampaign", 'Json'>
+    readonly scheduleFrequency: FieldRef<"PlatformEmailCampaign", 'PlatformEmailScheduleFrequency'>
+    readonly emailSubject: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly emailHtml: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly emailText: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly messageIntent: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly senderEmail: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly senderName: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly scheduledAt: FieldRef<"PlatformEmailCampaign", 'DateTime'>
+    readonly sentAt: FieldRef<"PlatformEmailCampaign", 'DateTime'>
+    readonly lastRunAt: FieldRef<"PlatformEmailCampaign", 'DateTime'>
+    readonly totalRecipients: FieldRef<"PlatformEmailCampaign", 'Int'>
+    readonly totalSent: FieldRef<"PlatformEmailCampaign", 'Int'>
+    readonly totalDelivered: FieldRef<"PlatformEmailCampaign", 'Int'>
+    readonly totalFailed: FieldRef<"PlatformEmailCampaign", 'Int'>
+    readonly totalBounced: FieldRef<"PlatformEmailCampaign", 'Int'>
+    readonly totalOpened: FieldRef<"PlatformEmailCampaign", 'Int'>
+    readonly createdByUserId: FieldRef<"PlatformEmailCampaign", 'String'>
+    readonly createdAt: FieldRef<"PlatformEmailCampaign", 'DateTime'>
+    readonly updatedAt: FieldRef<"PlatformEmailCampaign", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlatformEmailCampaign findUnique
+   */
+  export type PlatformEmailCampaignFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaign to fetch.
+     */
+    where: PlatformEmailCampaignWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaign findUniqueOrThrow
+   */
+  export type PlatformEmailCampaignFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaign to fetch.
+     */
+    where: PlatformEmailCampaignWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaign findFirst
+   */
+  export type PlatformEmailCampaignFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaign to fetch.
+     */
+    where?: PlatformEmailCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaigns to fetch.
+     */
+    orderBy?: PlatformEmailCampaignOrderByWithRelationInput | PlatformEmailCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformEmailCampaigns.
+     */
+    cursor?: PlatformEmailCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformEmailCampaigns.
+     */
+    distinct?: PlatformEmailCampaignScalarFieldEnum | PlatformEmailCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaign findFirstOrThrow
+   */
+  export type PlatformEmailCampaignFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaign to fetch.
+     */
+    where?: PlatformEmailCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaigns to fetch.
+     */
+    orderBy?: PlatformEmailCampaignOrderByWithRelationInput | PlatformEmailCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformEmailCampaigns.
+     */
+    cursor?: PlatformEmailCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformEmailCampaigns.
+     */
+    distinct?: PlatformEmailCampaignScalarFieldEnum | PlatformEmailCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaign findMany
+   */
+  export type PlatformEmailCampaignFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaigns to fetch.
+     */
+    where?: PlatformEmailCampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaigns to fetch.
+     */
+    orderBy?: PlatformEmailCampaignOrderByWithRelationInput | PlatformEmailCampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlatformEmailCampaigns.
+     */
+    cursor?: PlatformEmailCampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaigns.
+     */
+    skip?: number
+    distinct?: PlatformEmailCampaignScalarFieldEnum | PlatformEmailCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaign create
+   */
+  export type PlatformEmailCampaignCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlatformEmailCampaign.
+     */
+    data: XOR<PlatformEmailCampaignCreateInput, PlatformEmailCampaignUncheckedCreateInput>
+  }
+
+  /**
+   * PlatformEmailCampaign createMany
+   */
+  export type PlatformEmailCampaignCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlatformEmailCampaigns.
+     */
+    data: PlatformEmailCampaignCreateManyInput | PlatformEmailCampaignCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformEmailCampaign createManyAndReturn
+   */
+  export type PlatformEmailCampaignCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * The data used to create many PlatformEmailCampaigns.
+     */
+    data: PlatformEmailCampaignCreateManyInput | PlatformEmailCampaignCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlatformEmailCampaign update
+   */
+  export type PlatformEmailCampaignUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlatformEmailCampaign.
+     */
+    data: XOR<PlatformEmailCampaignUpdateInput, PlatformEmailCampaignUncheckedUpdateInput>
+    /**
+     * Choose, which PlatformEmailCampaign to update.
+     */
+    where: PlatformEmailCampaignWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaign updateMany
+   */
+  export type PlatformEmailCampaignUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlatformEmailCampaigns.
+     */
+    data: XOR<PlatformEmailCampaignUpdateManyMutationInput, PlatformEmailCampaignUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformEmailCampaigns to update
+     */
+    where?: PlatformEmailCampaignWhereInput
+    /**
+     * Limit how many PlatformEmailCampaigns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformEmailCampaign updateManyAndReturn
+   */
+  export type PlatformEmailCampaignUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * The data used to update PlatformEmailCampaigns.
+     */
+    data: XOR<PlatformEmailCampaignUpdateManyMutationInput, PlatformEmailCampaignUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformEmailCampaigns to update
+     */
+    where?: PlatformEmailCampaignWhereInput
+    /**
+     * Limit how many PlatformEmailCampaigns to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlatformEmailCampaign upsert
+   */
+  export type PlatformEmailCampaignUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlatformEmailCampaign to update in case it exists.
+     */
+    where: PlatformEmailCampaignWhereUniqueInput
+    /**
+     * In case the PlatformEmailCampaign found by the `where` argument doesn't exist, create a new PlatformEmailCampaign with this data.
+     */
+    create: XOR<PlatformEmailCampaignCreateInput, PlatformEmailCampaignUncheckedCreateInput>
+    /**
+     * In case the PlatformEmailCampaign was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlatformEmailCampaignUpdateInput, PlatformEmailCampaignUncheckedUpdateInput>
+  }
+
+  /**
+   * PlatformEmailCampaign delete
+   */
+  export type PlatformEmailCampaignDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+    /**
+     * Filter which PlatformEmailCampaign to delete.
+     */
+    where: PlatformEmailCampaignWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaign deleteMany
+   */
+  export type PlatformEmailCampaignDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformEmailCampaigns to delete
+     */
+    where?: PlatformEmailCampaignWhereInput
+    /**
+     * Limit how many PlatformEmailCampaigns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformEmailCampaign.runs
+   */
+  export type PlatformEmailCampaign$runsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    where?: PlatformEmailCampaignRunWhereInput
+    orderBy?: PlatformEmailCampaignRunOrderByWithRelationInput | PlatformEmailCampaignRunOrderByWithRelationInput[]
+    cursor?: PlatformEmailCampaignRunWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlatformEmailCampaignRunScalarFieldEnum | PlatformEmailCampaignRunScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaign without action
+   */
+  export type PlatformEmailCampaignDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaign
+     */
+    select?: PlatformEmailCampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaign
+     */
+    omit?: PlatformEmailCampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PlatformEmailCampaignRun
+   */
+
+  export type AggregatePlatformEmailCampaignRun = {
+    _count: PlatformEmailCampaignRunCountAggregateOutputType | null
+    _avg: PlatformEmailCampaignRunAvgAggregateOutputType | null
+    _sum: PlatformEmailCampaignRunSumAggregateOutputType | null
+    _min: PlatformEmailCampaignRunMinAggregateOutputType | null
+    _max: PlatformEmailCampaignRunMaxAggregateOutputType | null
+  }
+
+  export type PlatformEmailCampaignRunAvgAggregateOutputType = {
+    recipientCount: number | null
+    sentCount: number | null
+    deliveredCount: number | null
+    failedCount: number | null
+    bouncedCount: number | null
+    openedCount: number | null
+  }
+
+  export type PlatformEmailCampaignRunSumAggregateOutputType = {
+    recipientCount: number | null
+    sentCount: number | null
+    deliveredCount: number | null
+    failedCount: number | null
+    bouncedCount: number | null
+    openedCount: number | null
+  }
+
+  export type PlatformEmailCampaignRunMinAggregateOutputType = {
+    runId: string | null
+    campaignId: string | null
+    runStatus: $Enums.PlatformEmailCampaignRunStatus | null
+    startedAt: Date | null
+    completedAt: Date | null
+    recipientCount: number | null
+    sentCount: number | null
+    deliveredCount: number | null
+    failedCount: number | null
+    bouncedCount: number | null
+    openedCount: number | null
+    createdAt: Date | null
+  }
+
+  export type PlatformEmailCampaignRunMaxAggregateOutputType = {
+    runId: string | null
+    campaignId: string | null
+    runStatus: $Enums.PlatformEmailCampaignRunStatus | null
+    startedAt: Date | null
+    completedAt: Date | null
+    recipientCount: number | null
+    sentCount: number | null
+    deliveredCount: number | null
+    failedCount: number | null
+    bouncedCount: number | null
+    openedCount: number | null
+    createdAt: Date | null
+  }
+
+  export type PlatformEmailCampaignRunCountAggregateOutputType = {
+    runId: number
+    campaignId: number
+    runStatus: number
+    startedAt: number
+    completedAt: number
+    recipientCount: number
+    sentCount: number
+    deliveredCount: number
+    failedCount: number
+    bouncedCount: number
+    openedCount: number
+    errorLog: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PlatformEmailCampaignRunAvgAggregateInputType = {
+    recipientCount?: true
+    sentCount?: true
+    deliveredCount?: true
+    failedCount?: true
+    bouncedCount?: true
+    openedCount?: true
+  }
+
+  export type PlatformEmailCampaignRunSumAggregateInputType = {
+    recipientCount?: true
+    sentCount?: true
+    deliveredCount?: true
+    failedCount?: true
+    bouncedCount?: true
+    openedCount?: true
+  }
+
+  export type PlatformEmailCampaignRunMinAggregateInputType = {
+    runId?: true
+    campaignId?: true
+    runStatus?: true
+    startedAt?: true
+    completedAt?: true
+    recipientCount?: true
+    sentCount?: true
+    deliveredCount?: true
+    failedCount?: true
+    bouncedCount?: true
+    openedCount?: true
+    createdAt?: true
+  }
+
+  export type PlatformEmailCampaignRunMaxAggregateInputType = {
+    runId?: true
+    campaignId?: true
+    runStatus?: true
+    startedAt?: true
+    completedAt?: true
+    recipientCount?: true
+    sentCount?: true
+    deliveredCount?: true
+    failedCount?: true
+    bouncedCount?: true
+    openedCount?: true
+    createdAt?: true
+  }
+
+  export type PlatformEmailCampaignRunCountAggregateInputType = {
+    runId?: true
+    campaignId?: true
+    runStatus?: true
+    startedAt?: true
+    completedAt?: true
+    recipientCount?: true
+    sentCount?: true
+    deliveredCount?: true
+    failedCount?: true
+    bouncedCount?: true
+    openedCount?: true
+    errorLog?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PlatformEmailCampaignRunAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformEmailCampaignRun to aggregate.
+     */
+    where?: PlatformEmailCampaignRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaignRuns to fetch.
+     */
+    orderBy?: PlatformEmailCampaignRunOrderByWithRelationInput | PlatformEmailCampaignRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlatformEmailCampaignRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaignRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaignRuns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlatformEmailCampaignRuns
+    **/
+    _count?: true | PlatformEmailCampaignRunCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlatformEmailCampaignRunAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlatformEmailCampaignRunSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlatformEmailCampaignRunMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlatformEmailCampaignRunMaxAggregateInputType
+  }
+
+  export type GetPlatformEmailCampaignRunAggregateType<T extends PlatformEmailCampaignRunAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlatformEmailCampaignRun]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlatformEmailCampaignRun[P]>
+      : GetScalarType<T[P], AggregatePlatformEmailCampaignRun[P]>
+  }
+
+
+
+
+  export type PlatformEmailCampaignRunGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformEmailCampaignRunWhereInput
+    orderBy?: PlatformEmailCampaignRunOrderByWithAggregationInput | PlatformEmailCampaignRunOrderByWithAggregationInput[]
+    by: PlatformEmailCampaignRunScalarFieldEnum[] | PlatformEmailCampaignRunScalarFieldEnum
+    having?: PlatformEmailCampaignRunScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlatformEmailCampaignRunCountAggregateInputType | true
+    _avg?: PlatformEmailCampaignRunAvgAggregateInputType
+    _sum?: PlatformEmailCampaignRunSumAggregateInputType
+    _min?: PlatformEmailCampaignRunMinAggregateInputType
+    _max?: PlatformEmailCampaignRunMaxAggregateInputType
+  }
+
+  export type PlatformEmailCampaignRunGroupByOutputType = {
+    runId: string
+    campaignId: string
+    runStatus: $Enums.PlatformEmailCampaignRunStatus
+    startedAt: Date | null
+    completedAt: Date | null
+    recipientCount: number
+    sentCount: number
+    deliveredCount: number
+    failedCount: number
+    bouncedCount: number
+    openedCount: number
+    errorLog: JsonValue | null
+    createdAt: Date
+    _count: PlatformEmailCampaignRunCountAggregateOutputType | null
+    _avg: PlatformEmailCampaignRunAvgAggregateOutputType | null
+    _sum: PlatformEmailCampaignRunSumAggregateOutputType | null
+    _min: PlatformEmailCampaignRunMinAggregateOutputType | null
+    _max: PlatformEmailCampaignRunMaxAggregateOutputType | null
+  }
+
+  type GetPlatformEmailCampaignRunGroupByPayload<T extends PlatformEmailCampaignRunGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlatformEmailCampaignRunGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlatformEmailCampaignRunGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlatformEmailCampaignRunGroupByOutputType[P]>
+            : GetScalarType<T[P], PlatformEmailCampaignRunGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlatformEmailCampaignRunSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    runId?: boolean
+    campaignId?: boolean
+    runStatus?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    recipientCount?: boolean
+    sentCount?: boolean
+    deliveredCount?: boolean
+    failedCount?: boolean
+    bouncedCount?: boolean
+    openedCount?: boolean
+    errorLog?: boolean
+    createdAt?: boolean
+    campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
+    recipients?: boolean | PlatformEmailCampaignRun$recipientsArgs<ExtArgs>
+    _count?: boolean | PlatformEmailCampaignRunCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformEmailCampaignRun"]>
+
+  export type PlatformEmailCampaignRunSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    runId?: boolean
+    campaignId?: boolean
+    runStatus?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    recipientCount?: boolean
+    sentCount?: boolean
+    deliveredCount?: boolean
+    failedCount?: boolean
+    bouncedCount?: boolean
+    openedCount?: boolean
+    errorLog?: boolean
+    createdAt?: boolean
+    campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformEmailCampaignRun"]>
+
+  export type PlatformEmailCampaignRunSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    runId?: boolean
+    campaignId?: boolean
+    runStatus?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    recipientCount?: boolean
+    sentCount?: boolean
+    deliveredCount?: boolean
+    failedCount?: boolean
+    bouncedCount?: boolean
+    openedCount?: boolean
+    errorLog?: boolean
+    createdAt?: boolean
+    campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformEmailCampaignRun"]>
+
+  export type PlatformEmailCampaignRunSelectScalar = {
+    runId?: boolean
+    campaignId?: boolean
+    runStatus?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    recipientCount?: boolean
+    sentCount?: boolean
+    deliveredCount?: boolean
+    failedCount?: boolean
+    bouncedCount?: boolean
+    openedCount?: boolean
+    errorLog?: boolean
+    createdAt?: boolean
+  }
+
+  export type PlatformEmailCampaignRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"runId" | "campaignId" | "runStatus" | "startedAt" | "completedAt" | "recipientCount" | "sentCount" | "deliveredCount" | "failedCount" | "bouncedCount" | "openedCount" | "errorLog" | "createdAt", ExtArgs["result"]["platformEmailCampaignRun"]>
+  export type PlatformEmailCampaignRunInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
+    recipients?: boolean | PlatformEmailCampaignRun$recipientsArgs<ExtArgs>
+    _count?: boolean | PlatformEmailCampaignRunCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PlatformEmailCampaignRunIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
+  }
+  export type PlatformEmailCampaignRunIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
+  }
+
+  export type $PlatformEmailCampaignRunPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlatformEmailCampaignRun"
+    objects: {
+      campaign: Prisma.$PlatformEmailCampaignPayload<ExtArgs>
+      recipients: Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      runId: string
+      campaignId: string
+      runStatus: $Enums.PlatformEmailCampaignRunStatus
+      startedAt: Date | null
+      completedAt: Date | null
+      recipientCount: number
+      sentCount: number
+      deliveredCount: number
+      failedCount: number
+      bouncedCount: number
+      openedCount: number
+      errorLog: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["platformEmailCampaignRun"]>
+    composites: {}
+  }
+
+  type PlatformEmailCampaignRunGetPayload<S extends boolean | null | undefined | PlatformEmailCampaignRunDefaultArgs> = $Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload, S>
+
+  type PlatformEmailCampaignRunCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlatformEmailCampaignRunFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlatformEmailCampaignRunCountAggregateInputType | true
+    }
+
+  export interface PlatformEmailCampaignRunDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlatformEmailCampaignRun'], meta: { name: 'PlatformEmailCampaignRun' } }
+    /**
+     * Find zero or one PlatformEmailCampaignRun that matches the filter.
+     * @param {PlatformEmailCampaignRunFindUniqueArgs} args - Arguments to find a PlatformEmailCampaignRun
+     * @example
+     * // Get one PlatformEmailCampaignRun
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlatformEmailCampaignRunFindUniqueArgs>(args: SelectSubset<T, PlatformEmailCampaignRunFindUniqueArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRunClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlatformEmailCampaignRun that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlatformEmailCampaignRunFindUniqueOrThrowArgs} args - Arguments to find a PlatformEmailCampaignRun
+     * @example
+     * // Get one PlatformEmailCampaignRun
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlatformEmailCampaignRunFindUniqueOrThrowArgs>(args: SelectSubset<T, PlatformEmailCampaignRunFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRunClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformEmailCampaignRun that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRunFindFirstArgs} args - Arguments to find a PlatformEmailCampaignRun
+     * @example
+     * // Get one PlatformEmailCampaignRun
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlatformEmailCampaignRunFindFirstArgs>(args?: SelectSubset<T, PlatformEmailCampaignRunFindFirstArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRunClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformEmailCampaignRun that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRunFindFirstOrThrowArgs} args - Arguments to find a PlatformEmailCampaignRun
+     * @example
+     * // Get one PlatformEmailCampaignRun
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlatformEmailCampaignRunFindFirstOrThrowArgs>(args?: SelectSubset<T, PlatformEmailCampaignRunFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRunClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlatformEmailCampaignRuns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRunFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlatformEmailCampaignRuns
+     * const platformEmailCampaignRuns = await prisma.platformEmailCampaignRun.findMany()
+     * 
+     * // Get first 10 PlatformEmailCampaignRuns
+     * const platformEmailCampaignRuns = await prisma.platformEmailCampaignRun.findMany({ take: 10 })
+     * 
+     * // Only select the `runId`
+     * const platformEmailCampaignRunWithRunIdOnly = await prisma.platformEmailCampaignRun.findMany({ select: { runId: true } })
+     * 
+     */
+    findMany<T extends PlatformEmailCampaignRunFindManyArgs>(args?: SelectSubset<T, PlatformEmailCampaignRunFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlatformEmailCampaignRun.
+     * @param {PlatformEmailCampaignRunCreateArgs} args - Arguments to create a PlatformEmailCampaignRun.
+     * @example
+     * // Create one PlatformEmailCampaignRun
+     * const PlatformEmailCampaignRun = await prisma.platformEmailCampaignRun.create({
+     *   data: {
+     *     // ... data to create a PlatformEmailCampaignRun
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlatformEmailCampaignRunCreateArgs>(args: SelectSubset<T, PlatformEmailCampaignRunCreateArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRunClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlatformEmailCampaignRuns.
+     * @param {PlatformEmailCampaignRunCreateManyArgs} args - Arguments to create many PlatformEmailCampaignRuns.
+     * @example
+     * // Create many PlatformEmailCampaignRuns
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlatformEmailCampaignRunCreateManyArgs>(args?: SelectSubset<T, PlatformEmailCampaignRunCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlatformEmailCampaignRuns and returns the data saved in the database.
+     * @param {PlatformEmailCampaignRunCreateManyAndReturnArgs} args - Arguments to create many PlatformEmailCampaignRuns.
+     * @example
+     * // Create many PlatformEmailCampaignRuns
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlatformEmailCampaignRuns and only return the `runId`
+     * const platformEmailCampaignRunWithRunIdOnly = await prisma.platformEmailCampaignRun.createManyAndReturn({
+     *   select: { runId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlatformEmailCampaignRunCreateManyAndReturnArgs>(args?: SelectSubset<T, PlatformEmailCampaignRunCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PlatformEmailCampaignRun.
+     * @param {PlatformEmailCampaignRunDeleteArgs} args - Arguments to delete one PlatformEmailCampaignRun.
+     * @example
+     * // Delete one PlatformEmailCampaignRun
+     * const PlatformEmailCampaignRun = await prisma.platformEmailCampaignRun.delete({
+     *   where: {
+     *     // ... filter to delete one PlatformEmailCampaignRun
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlatformEmailCampaignRunDeleteArgs>(args: SelectSubset<T, PlatformEmailCampaignRunDeleteArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRunClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlatformEmailCampaignRun.
+     * @param {PlatformEmailCampaignRunUpdateArgs} args - Arguments to update one PlatformEmailCampaignRun.
+     * @example
+     * // Update one PlatformEmailCampaignRun
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlatformEmailCampaignRunUpdateArgs>(args: SelectSubset<T, PlatformEmailCampaignRunUpdateArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRunClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlatformEmailCampaignRuns.
+     * @param {PlatformEmailCampaignRunDeleteManyArgs} args - Arguments to filter PlatformEmailCampaignRuns to delete.
+     * @example
+     * // Delete a few PlatformEmailCampaignRuns
+     * const { count } = await prisma.platformEmailCampaignRun.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlatformEmailCampaignRunDeleteManyArgs>(args?: SelectSubset<T, PlatformEmailCampaignRunDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformEmailCampaignRuns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRunUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlatformEmailCampaignRuns
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlatformEmailCampaignRunUpdateManyArgs>(args: SelectSubset<T, PlatformEmailCampaignRunUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformEmailCampaignRuns and returns the data updated in the database.
+     * @param {PlatformEmailCampaignRunUpdateManyAndReturnArgs} args - Arguments to update many PlatformEmailCampaignRuns.
+     * @example
+     * // Update many PlatformEmailCampaignRuns
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PlatformEmailCampaignRuns and only return the `runId`
+     * const platformEmailCampaignRunWithRunIdOnly = await prisma.platformEmailCampaignRun.updateManyAndReturn({
+     *   select: { runId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PlatformEmailCampaignRunUpdateManyAndReturnArgs>(args: SelectSubset<T, PlatformEmailCampaignRunUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PlatformEmailCampaignRun.
+     * @param {PlatformEmailCampaignRunUpsertArgs} args - Arguments to update or create a PlatformEmailCampaignRun.
+     * @example
+     * // Update or create a PlatformEmailCampaignRun
+     * const platformEmailCampaignRun = await prisma.platformEmailCampaignRun.upsert({
+     *   create: {
+     *     // ... data to create a PlatformEmailCampaignRun
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlatformEmailCampaignRun we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlatformEmailCampaignRunUpsertArgs>(args: SelectSubset<T, PlatformEmailCampaignRunUpsertArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRunClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlatformEmailCampaignRuns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRunCountArgs} args - Arguments to filter PlatformEmailCampaignRuns to count.
+     * @example
+     * // Count the number of PlatformEmailCampaignRuns
+     * const count = await prisma.platformEmailCampaignRun.count({
+     *   where: {
+     *     // ... the filter for the PlatformEmailCampaignRuns we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlatformEmailCampaignRunCountArgs>(
+      args?: Subset<T, PlatformEmailCampaignRunCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlatformEmailCampaignRunCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlatformEmailCampaignRun.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRunAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlatformEmailCampaignRunAggregateArgs>(args: Subset<T, PlatformEmailCampaignRunAggregateArgs>): Prisma.PrismaPromise<GetPlatformEmailCampaignRunAggregateType<T>>
+
+    /**
+     * Group by PlatformEmailCampaignRun.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRunGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlatformEmailCampaignRunGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlatformEmailCampaignRunGroupByArgs['orderBy'] }
+        : { orderBy?: PlatformEmailCampaignRunGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlatformEmailCampaignRunGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlatformEmailCampaignRunGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlatformEmailCampaignRun model
+   */
+  readonly fields: PlatformEmailCampaignRunFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlatformEmailCampaignRun.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlatformEmailCampaignRunClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    campaign<T extends PlatformEmailCampaignDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlatformEmailCampaignDefaultArgs<ExtArgs>>): Prisma__PlatformEmailCampaignClient<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    recipients<T extends PlatformEmailCampaignRun$recipientsArgs<ExtArgs> = {}>(args?: Subset<T, PlatformEmailCampaignRun$recipientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlatformEmailCampaignRun model
+   */
+  interface PlatformEmailCampaignRunFieldRefs {
+    readonly runId: FieldRef<"PlatformEmailCampaignRun", 'String'>
+    readonly campaignId: FieldRef<"PlatformEmailCampaignRun", 'String'>
+    readonly runStatus: FieldRef<"PlatformEmailCampaignRun", 'PlatformEmailCampaignRunStatus'>
+    readonly startedAt: FieldRef<"PlatformEmailCampaignRun", 'DateTime'>
+    readonly completedAt: FieldRef<"PlatformEmailCampaignRun", 'DateTime'>
+    readonly recipientCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
+    readonly sentCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
+    readonly deliveredCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
+    readonly failedCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
+    readonly bouncedCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
+    readonly openedCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
+    readonly errorLog: FieldRef<"PlatformEmailCampaignRun", 'Json'>
+    readonly createdAt: FieldRef<"PlatformEmailCampaignRun", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlatformEmailCampaignRun findUnique
+   */
+  export type PlatformEmailCampaignRunFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRun to fetch.
+     */
+    where: PlatformEmailCampaignRunWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaignRun findUniqueOrThrow
+   */
+  export type PlatformEmailCampaignRunFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRun to fetch.
+     */
+    where: PlatformEmailCampaignRunWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaignRun findFirst
+   */
+  export type PlatformEmailCampaignRunFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRun to fetch.
+     */
+    where?: PlatformEmailCampaignRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaignRuns to fetch.
+     */
+    orderBy?: PlatformEmailCampaignRunOrderByWithRelationInput | PlatformEmailCampaignRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformEmailCampaignRuns.
+     */
+    cursor?: PlatformEmailCampaignRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaignRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaignRuns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformEmailCampaignRuns.
+     */
+    distinct?: PlatformEmailCampaignRunScalarFieldEnum | PlatformEmailCampaignRunScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaignRun findFirstOrThrow
+   */
+  export type PlatformEmailCampaignRunFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRun to fetch.
+     */
+    where?: PlatformEmailCampaignRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaignRuns to fetch.
+     */
+    orderBy?: PlatformEmailCampaignRunOrderByWithRelationInput | PlatformEmailCampaignRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformEmailCampaignRuns.
+     */
+    cursor?: PlatformEmailCampaignRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaignRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaignRuns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformEmailCampaignRuns.
+     */
+    distinct?: PlatformEmailCampaignRunScalarFieldEnum | PlatformEmailCampaignRunScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaignRun findMany
+   */
+  export type PlatformEmailCampaignRunFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRuns to fetch.
+     */
+    where?: PlatformEmailCampaignRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaignRuns to fetch.
+     */
+    orderBy?: PlatformEmailCampaignRunOrderByWithRelationInput | PlatformEmailCampaignRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlatformEmailCampaignRuns.
+     */
+    cursor?: PlatformEmailCampaignRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaignRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaignRuns.
+     */
+    skip?: number
+    distinct?: PlatformEmailCampaignRunScalarFieldEnum | PlatformEmailCampaignRunScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaignRun create
+   */
+  export type PlatformEmailCampaignRunCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlatformEmailCampaignRun.
+     */
+    data: XOR<PlatformEmailCampaignRunCreateInput, PlatformEmailCampaignRunUncheckedCreateInput>
+  }
+
+  /**
+   * PlatformEmailCampaignRun createMany
+   */
+  export type PlatformEmailCampaignRunCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlatformEmailCampaignRuns.
+     */
+    data: PlatformEmailCampaignRunCreateManyInput | PlatformEmailCampaignRunCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformEmailCampaignRun createManyAndReturn
+   */
+  export type PlatformEmailCampaignRunCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * The data used to create many PlatformEmailCampaignRuns.
+     */
+    data: PlatformEmailCampaignRunCreateManyInput | PlatformEmailCampaignRunCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlatformEmailCampaignRun update
+   */
+  export type PlatformEmailCampaignRunUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlatformEmailCampaignRun.
+     */
+    data: XOR<PlatformEmailCampaignRunUpdateInput, PlatformEmailCampaignRunUncheckedUpdateInput>
+    /**
+     * Choose, which PlatformEmailCampaignRun to update.
+     */
+    where: PlatformEmailCampaignRunWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaignRun updateMany
+   */
+  export type PlatformEmailCampaignRunUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlatformEmailCampaignRuns.
+     */
+    data: XOR<PlatformEmailCampaignRunUpdateManyMutationInput, PlatformEmailCampaignRunUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformEmailCampaignRuns to update
+     */
+    where?: PlatformEmailCampaignRunWhereInput
+    /**
+     * Limit how many PlatformEmailCampaignRuns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformEmailCampaignRun updateManyAndReturn
+   */
+  export type PlatformEmailCampaignRunUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * The data used to update PlatformEmailCampaignRuns.
+     */
+    data: XOR<PlatformEmailCampaignRunUpdateManyMutationInput, PlatformEmailCampaignRunUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformEmailCampaignRuns to update
+     */
+    where?: PlatformEmailCampaignRunWhereInput
+    /**
+     * Limit how many PlatformEmailCampaignRuns to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlatformEmailCampaignRun upsert
+   */
+  export type PlatformEmailCampaignRunUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlatformEmailCampaignRun to update in case it exists.
+     */
+    where: PlatformEmailCampaignRunWhereUniqueInput
+    /**
+     * In case the PlatformEmailCampaignRun found by the `where` argument doesn't exist, create a new PlatformEmailCampaignRun with this data.
+     */
+    create: XOR<PlatformEmailCampaignRunCreateInput, PlatformEmailCampaignRunUncheckedCreateInput>
+    /**
+     * In case the PlatformEmailCampaignRun was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlatformEmailCampaignRunUpdateInput, PlatformEmailCampaignRunUncheckedUpdateInput>
+  }
+
+  /**
+   * PlatformEmailCampaignRun delete
+   */
+  export type PlatformEmailCampaignRunDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+    /**
+     * Filter which PlatformEmailCampaignRun to delete.
+     */
+    where: PlatformEmailCampaignRunWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaignRun deleteMany
+   */
+  export type PlatformEmailCampaignRunDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformEmailCampaignRuns to delete
+     */
+    where?: PlatformEmailCampaignRunWhereInput
+    /**
+     * Limit how many PlatformEmailCampaignRuns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformEmailCampaignRun.recipients
+   */
+  export type PlatformEmailCampaignRun$recipientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    where?: PlatformEmailCampaignRecipientWhereInput
+    orderBy?: PlatformEmailCampaignRecipientOrderByWithRelationInput | PlatformEmailCampaignRecipientOrderByWithRelationInput[]
+    cursor?: PlatformEmailCampaignRecipientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlatformEmailCampaignRecipientScalarFieldEnum | PlatformEmailCampaignRecipientScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaignRun without action
+   */
+  export type PlatformEmailCampaignRunDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRun
+     */
+    select?: PlatformEmailCampaignRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRun
+     */
+    omit?: PlatformEmailCampaignRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRunInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PlatformEmailCampaignRecipient
+   */
+
+  export type AggregatePlatformEmailCampaignRecipient = {
+    _count: PlatformEmailCampaignRecipientCountAggregateOutputType | null
+    _avg: PlatformEmailCampaignRecipientAvgAggregateOutputType | null
+    _sum: PlatformEmailCampaignRecipientSumAggregateOutputType | null
+    _min: PlatformEmailCampaignRecipientMinAggregateOutputType | null
+    _max: PlatformEmailCampaignRecipientMaxAggregateOutputType | null
+  }
+
+  export type PlatformEmailCampaignRecipientAvgAggregateOutputType = {
+    openCount: number | null
+  }
+
+  export type PlatformEmailCampaignRecipientSumAggregateOutputType = {
+    openCount: number | null
+  }
+
+  export type PlatformEmailCampaignRecipientMinAggregateOutputType = {
+    recipientId: string | null
+    runId: string | null
+    userId: string | null
+    businessId: string | null
+    recipientEmail: string | null
+    recipientName: string | null
+    businessName: string | null
+    deliveryStatus: $Enums.PlatformEmailRecipientStatus | null
+    providerMessageId: string | null
+    errorMessage: string | null
+    sentAt: Date | null
+    deliveredAt: Date | null
+    bouncedAt: Date | null
+    openedAt: Date | null
+    openCount: number | null
+    createdAt: Date | null
+  }
+
+  export type PlatformEmailCampaignRecipientMaxAggregateOutputType = {
+    recipientId: string | null
+    runId: string | null
+    userId: string | null
+    businessId: string | null
+    recipientEmail: string | null
+    recipientName: string | null
+    businessName: string | null
+    deliveryStatus: $Enums.PlatformEmailRecipientStatus | null
+    providerMessageId: string | null
+    errorMessage: string | null
+    sentAt: Date | null
+    deliveredAt: Date | null
+    bouncedAt: Date | null
+    openedAt: Date | null
+    openCount: number | null
+    createdAt: Date | null
+  }
+
+  export type PlatformEmailCampaignRecipientCountAggregateOutputType = {
+    recipientId: number
+    runId: number
+    userId: number
+    businessId: number
+    recipientEmail: number
+    recipientName: number
+    businessName: number
+    deliveryStatus: number
+    providerMessageId: number
+    errorMessage: number
+    sentAt: number
+    deliveredAt: number
+    bouncedAt: number
+    openedAt: number
+    openCount: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PlatformEmailCampaignRecipientAvgAggregateInputType = {
+    openCount?: true
+  }
+
+  export type PlatformEmailCampaignRecipientSumAggregateInputType = {
+    openCount?: true
+  }
+
+  export type PlatformEmailCampaignRecipientMinAggregateInputType = {
+    recipientId?: true
+    runId?: true
+    userId?: true
+    businessId?: true
+    recipientEmail?: true
+    recipientName?: true
+    businessName?: true
+    deliveryStatus?: true
+    providerMessageId?: true
+    errorMessage?: true
+    sentAt?: true
+    deliveredAt?: true
+    bouncedAt?: true
+    openedAt?: true
+    openCount?: true
+    createdAt?: true
+  }
+
+  export type PlatformEmailCampaignRecipientMaxAggregateInputType = {
+    recipientId?: true
+    runId?: true
+    userId?: true
+    businessId?: true
+    recipientEmail?: true
+    recipientName?: true
+    businessName?: true
+    deliveryStatus?: true
+    providerMessageId?: true
+    errorMessage?: true
+    sentAt?: true
+    deliveredAt?: true
+    bouncedAt?: true
+    openedAt?: true
+    openCount?: true
+    createdAt?: true
+  }
+
+  export type PlatformEmailCampaignRecipientCountAggregateInputType = {
+    recipientId?: true
+    runId?: true
+    userId?: true
+    businessId?: true
+    recipientEmail?: true
+    recipientName?: true
+    businessName?: true
+    deliveryStatus?: true
+    providerMessageId?: true
+    errorMessage?: true
+    sentAt?: true
+    deliveredAt?: true
+    bouncedAt?: true
+    openedAt?: true
+    openCount?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PlatformEmailCampaignRecipientAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformEmailCampaignRecipient to aggregate.
+     */
+    where?: PlatformEmailCampaignRecipientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaignRecipients to fetch.
+     */
+    orderBy?: PlatformEmailCampaignRecipientOrderByWithRelationInput | PlatformEmailCampaignRecipientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlatformEmailCampaignRecipientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaignRecipients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaignRecipients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlatformEmailCampaignRecipients
+    **/
+    _count?: true | PlatformEmailCampaignRecipientCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PlatformEmailCampaignRecipientAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PlatformEmailCampaignRecipientSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlatformEmailCampaignRecipientMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlatformEmailCampaignRecipientMaxAggregateInputType
+  }
+
+  export type GetPlatformEmailCampaignRecipientAggregateType<T extends PlatformEmailCampaignRecipientAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlatformEmailCampaignRecipient]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlatformEmailCampaignRecipient[P]>
+      : GetScalarType<T[P], AggregatePlatformEmailCampaignRecipient[P]>
+  }
+
+
+
+
+  export type PlatformEmailCampaignRecipientGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformEmailCampaignRecipientWhereInput
+    orderBy?: PlatformEmailCampaignRecipientOrderByWithAggregationInput | PlatformEmailCampaignRecipientOrderByWithAggregationInput[]
+    by: PlatformEmailCampaignRecipientScalarFieldEnum[] | PlatformEmailCampaignRecipientScalarFieldEnum
+    having?: PlatformEmailCampaignRecipientScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlatformEmailCampaignRecipientCountAggregateInputType | true
+    _avg?: PlatformEmailCampaignRecipientAvgAggregateInputType
+    _sum?: PlatformEmailCampaignRecipientSumAggregateInputType
+    _min?: PlatformEmailCampaignRecipientMinAggregateInputType
+    _max?: PlatformEmailCampaignRecipientMaxAggregateInputType
+  }
+
+  export type PlatformEmailCampaignRecipientGroupByOutputType = {
+    recipientId: string
+    runId: string
+    userId: string
+    businessId: string | null
+    recipientEmail: string
+    recipientName: string | null
+    businessName: string | null
+    deliveryStatus: $Enums.PlatformEmailRecipientStatus
+    providerMessageId: string | null
+    errorMessage: string | null
+    sentAt: Date | null
+    deliveredAt: Date | null
+    bouncedAt: Date | null
+    openedAt: Date | null
+    openCount: number
+    createdAt: Date
+    _count: PlatformEmailCampaignRecipientCountAggregateOutputType | null
+    _avg: PlatformEmailCampaignRecipientAvgAggregateOutputType | null
+    _sum: PlatformEmailCampaignRecipientSumAggregateOutputType | null
+    _min: PlatformEmailCampaignRecipientMinAggregateOutputType | null
+    _max: PlatformEmailCampaignRecipientMaxAggregateOutputType | null
+  }
+
+  type GetPlatformEmailCampaignRecipientGroupByPayload<T extends PlatformEmailCampaignRecipientGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlatformEmailCampaignRecipientGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlatformEmailCampaignRecipientGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlatformEmailCampaignRecipientGroupByOutputType[P]>
+            : GetScalarType<T[P], PlatformEmailCampaignRecipientGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlatformEmailCampaignRecipientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    recipientId?: boolean
+    runId?: boolean
+    userId?: boolean
+    businessId?: boolean
+    recipientEmail?: boolean
+    recipientName?: boolean
+    businessName?: boolean
+    deliveryStatus?: boolean
+    providerMessageId?: boolean
+    errorMessage?: boolean
+    sentAt?: boolean
+    deliveredAt?: boolean
+    bouncedAt?: boolean
+    openedAt?: boolean
+    openCount?: boolean
+    createdAt?: boolean
+    run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformEmailCampaignRecipient"]>
+
+  export type PlatformEmailCampaignRecipientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    recipientId?: boolean
+    runId?: boolean
+    userId?: boolean
+    businessId?: boolean
+    recipientEmail?: boolean
+    recipientName?: boolean
+    businessName?: boolean
+    deliveryStatus?: boolean
+    providerMessageId?: boolean
+    errorMessage?: boolean
+    sentAt?: boolean
+    deliveredAt?: boolean
+    bouncedAt?: boolean
+    openedAt?: boolean
+    openCount?: boolean
+    createdAt?: boolean
+    run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformEmailCampaignRecipient"]>
+
+  export type PlatformEmailCampaignRecipientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    recipientId?: boolean
+    runId?: boolean
+    userId?: boolean
+    businessId?: boolean
+    recipientEmail?: boolean
+    recipientName?: boolean
+    businessName?: boolean
+    deliveryStatus?: boolean
+    providerMessageId?: boolean
+    errorMessage?: boolean
+    sentAt?: boolean
+    deliveredAt?: boolean
+    bouncedAt?: boolean
+    openedAt?: boolean
+    openCount?: boolean
+    createdAt?: boolean
+    run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformEmailCampaignRecipient"]>
+
+  export type PlatformEmailCampaignRecipientSelectScalar = {
+    recipientId?: boolean
+    runId?: boolean
+    userId?: boolean
+    businessId?: boolean
+    recipientEmail?: boolean
+    recipientName?: boolean
+    businessName?: boolean
+    deliveryStatus?: boolean
+    providerMessageId?: boolean
+    errorMessage?: boolean
+    sentAt?: boolean
+    deliveredAt?: boolean
+    bouncedAt?: boolean
+    openedAt?: boolean
+    openCount?: boolean
+    createdAt?: boolean
+  }
+
+  export type PlatformEmailCampaignRecipientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"recipientId" | "runId" | "userId" | "businessId" | "recipientEmail" | "recipientName" | "businessName" | "deliveryStatus" | "providerMessageId" | "errorMessage" | "sentAt" | "deliveredAt" | "bouncedAt" | "openedAt" | "openCount" | "createdAt", ExtArgs["result"]["platformEmailCampaignRecipient"]>
+  export type PlatformEmailCampaignRecipientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
+  }
+  export type PlatformEmailCampaignRecipientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
+  }
+  export type PlatformEmailCampaignRecipientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
+  }
+
+  export type $PlatformEmailCampaignRecipientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlatformEmailCampaignRecipient"
+    objects: {
+      run: Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      recipientId: string
+      runId: string
+      userId: string
+      businessId: string | null
+      recipientEmail: string
+      recipientName: string | null
+      businessName: string | null
+      deliveryStatus: $Enums.PlatformEmailRecipientStatus
+      providerMessageId: string | null
+      errorMessage: string | null
+      sentAt: Date | null
+      deliveredAt: Date | null
+      bouncedAt: Date | null
+      openedAt: Date | null
+      openCount: number
+      createdAt: Date
+    }, ExtArgs["result"]["platformEmailCampaignRecipient"]>
+    composites: {}
+  }
+
+  type PlatformEmailCampaignRecipientGetPayload<S extends boolean | null | undefined | PlatformEmailCampaignRecipientDefaultArgs> = $Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload, S>
+
+  type PlatformEmailCampaignRecipientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlatformEmailCampaignRecipientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlatformEmailCampaignRecipientCountAggregateInputType | true
+    }
+
+  export interface PlatformEmailCampaignRecipientDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlatformEmailCampaignRecipient'], meta: { name: 'PlatformEmailCampaignRecipient' } }
+    /**
+     * Find zero or one PlatformEmailCampaignRecipient that matches the filter.
+     * @param {PlatformEmailCampaignRecipientFindUniqueArgs} args - Arguments to find a PlatformEmailCampaignRecipient
+     * @example
+     * // Get one PlatformEmailCampaignRecipient
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlatformEmailCampaignRecipientFindUniqueArgs>(args: SelectSubset<T, PlatformEmailCampaignRecipientFindUniqueArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRecipientClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlatformEmailCampaignRecipient that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlatformEmailCampaignRecipientFindUniqueOrThrowArgs} args - Arguments to find a PlatformEmailCampaignRecipient
+     * @example
+     * // Get one PlatformEmailCampaignRecipient
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlatformEmailCampaignRecipientFindUniqueOrThrowArgs>(args: SelectSubset<T, PlatformEmailCampaignRecipientFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRecipientClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformEmailCampaignRecipient that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRecipientFindFirstArgs} args - Arguments to find a PlatformEmailCampaignRecipient
+     * @example
+     * // Get one PlatformEmailCampaignRecipient
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlatformEmailCampaignRecipientFindFirstArgs>(args?: SelectSubset<T, PlatformEmailCampaignRecipientFindFirstArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRecipientClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformEmailCampaignRecipient that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRecipientFindFirstOrThrowArgs} args - Arguments to find a PlatformEmailCampaignRecipient
+     * @example
+     * // Get one PlatformEmailCampaignRecipient
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlatformEmailCampaignRecipientFindFirstOrThrowArgs>(args?: SelectSubset<T, PlatformEmailCampaignRecipientFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRecipientClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlatformEmailCampaignRecipients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRecipientFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlatformEmailCampaignRecipients
+     * const platformEmailCampaignRecipients = await prisma.platformEmailCampaignRecipient.findMany()
+     * 
+     * // Get first 10 PlatformEmailCampaignRecipients
+     * const platformEmailCampaignRecipients = await prisma.platformEmailCampaignRecipient.findMany({ take: 10 })
+     * 
+     * // Only select the `recipientId`
+     * const platformEmailCampaignRecipientWithRecipientIdOnly = await prisma.platformEmailCampaignRecipient.findMany({ select: { recipientId: true } })
+     * 
+     */
+    findMany<T extends PlatformEmailCampaignRecipientFindManyArgs>(args?: SelectSubset<T, PlatformEmailCampaignRecipientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlatformEmailCampaignRecipient.
+     * @param {PlatformEmailCampaignRecipientCreateArgs} args - Arguments to create a PlatformEmailCampaignRecipient.
+     * @example
+     * // Create one PlatformEmailCampaignRecipient
+     * const PlatformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.create({
+     *   data: {
+     *     // ... data to create a PlatformEmailCampaignRecipient
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlatformEmailCampaignRecipientCreateArgs>(args: SelectSubset<T, PlatformEmailCampaignRecipientCreateArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRecipientClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlatformEmailCampaignRecipients.
+     * @param {PlatformEmailCampaignRecipientCreateManyArgs} args - Arguments to create many PlatformEmailCampaignRecipients.
+     * @example
+     * // Create many PlatformEmailCampaignRecipients
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlatformEmailCampaignRecipientCreateManyArgs>(args?: SelectSubset<T, PlatformEmailCampaignRecipientCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlatformEmailCampaignRecipients and returns the data saved in the database.
+     * @param {PlatformEmailCampaignRecipientCreateManyAndReturnArgs} args - Arguments to create many PlatformEmailCampaignRecipients.
+     * @example
+     * // Create many PlatformEmailCampaignRecipients
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlatformEmailCampaignRecipients and only return the `recipientId`
+     * const platformEmailCampaignRecipientWithRecipientIdOnly = await prisma.platformEmailCampaignRecipient.createManyAndReturn({
+     *   select: { recipientId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlatformEmailCampaignRecipientCreateManyAndReturnArgs>(args?: SelectSubset<T, PlatformEmailCampaignRecipientCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PlatformEmailCampaignRecipient.
+     * @param {PlatformEmailCampaignRecipientDeleteArgs} args - Arguments to delete one PlatformEmailCampaignRecipient.
+     * @example
+     * // Delete one PlatformEmailCampaignRecipient
+     * const PlatformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.delete({
+     *   where: {
+     *     // ... filter to delete one PlatformEmailCampaignRecipient
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlatformEmailCampaignRecipientDeleteArgs>(args: SelectSubset<T, PlatformEmailCampaignRecipientDeleteArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRecipientClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlatformEmailCampaignRecipient.
+     * @param {PlatformEmailCampaignRecipientUpdateArgs} args - Arguments to update one PlatformEmailCampaignRecipient.
+     * @example
+     * // Update one PlatformEmailCampaignRecipient
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlatformEmailCampaignRecipientUpdateArgs>(args: SelectSubset<T, PlatformEmailCampaignRecipientUpdateArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRecipientClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlatformEmailCampaignRecipients.
+     * @param {PlatformEmailCampaignRecipientDeleteManyArgs} args - Arguments to filter PlatformEmailCampaignRecipients to delete.
+     * @example
+     * // Delete a few PlatformEmailCampaignRecipients
+     * const { count } = await prisma.platformEmailCampaignRecipient.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlatformEmailCampaignRecipientDeleteManyArgs>(args?: SelectSubset<T, PlatformEmailCampaignRecipientDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformEmailCampaignRecipients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRecipientUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlatformEmailCampaignRecipients
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlatformEmailCampaignRecipientUpdateManyArgs>(args: SelectSubset<T, PlatformEmailCampaignRecipientUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformEmailCampaignRecipients and returns the data updated in the database.
+     * @param {PlatformEmailCampaignRecipientUpdateManyAndReturnArgs} args - Arguments to update many PlatformEmailCampaignRecipients.
+     * @example
+     * // Update many PlatformEmailCampaignRecipients
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PlatformEmailCampaignRecipients and only return the `recipientId`
+     * const platformEmailCampaignRecipientWithRecipientIdOnly = await prisma.platformEmailCampaignRecipient.updateManyAndReturn({
+     *   select: { recipientId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PlatformEmailCampaignRecipientUpdateManyAndReturnArgs>(args: SelectSubset<T, PlatformEmailCampaignRecipientUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PlatformEmailCampaignRecipient.
+     * @param {PlatformEmailCampaignRecipientUpsertArgs} args - Arguments to update or create a PlatformEmailCampaignRecipient.
+     * @example
+     * // Update or create a PlatformEmailCampaignRecipient
+     * const platformEmailCampaignRecipient = await prisma.platformEmailCampaignRecipient.upsert({
+     *   create: {
+     *     // ... data to create a PlatformEmailCampaignRecipient
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlatformEmailCampaignRecipient we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlatformEmailCampaignRecipientUpsertArgs>(args: SelectSubset<T, PlatformEmailCampaignRecipientUpsertArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRecipientClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRecipientPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlatformEmailCampaignRecipients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRecipientCountArgs} args - Arguments to filter PlatformEmailCampaignRecipients to count.
+     * @example
+     * // Count the number of PlatformEmailCampaignRecipients
+     * const count = await prisma.platformEmailCampaignRecipient.count({
+     *   where: {
+     *     // ... the filter for the PlatformEmailCampaignRecipients we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlatformEmailCampaignRecipientCountArgs>(
+      args?: Subset<T, PlatformEmailCampaignRecipientCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlatformEmailCampaignRecipientCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlatformEmailCampaignRecipient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRecipientAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlatformEmailCampaignRecipientAggregateArgs>(args: Subset<T, PlatformEmailCampaignRecipientAggregateArgs>): Prisma.PrismaPromise<GetPlatformEmailCampaignRecipientAggregateType<T>>
+
+    /**
+     * Group by PlatformEmailCampaignRecipient.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformEmailCampaignRecipientGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlatformEmailCampaignRecipientGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlatformEmailCampaignRecipientGroupByArgs['orderBy'] }
+        : { orderBy?: PlatformEmailCampaignRecipientGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlatformEmailCampaignRecipientGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlatformEmailCampaignRecipientGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlatformEmailCampaignRecipient model
+   */
+  readonly fields: PlatformEmailCampaignRecipientFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlatformEmailCampaignRecipient.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlatformEmailCampaignRecipientClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    run<T extends PlatformEmailCampaignRunDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PlatformEmailCampaignRunDefaultArgs<ExtArgs>>): Prisma__PlatformEmailCampaignRunClient<$Result.GetResult<Prisma.$PlatformEmailCampaignRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlatformEmailCampaignRecipient model
+   */
+  interface PlatformEmailCampaignRecipientFieldRefs {
+    readonly recipientId: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
+    readonly runId: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
+    readonly userId: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
+    readonly businessId: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
+    readonly recipientEmail: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
+    readonly recipientName: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
+    readonly businessName: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
+    readonly deliveryStatus: FieldRef<"PlatformEmailCampaignRecipient", 'PlatformEmailRecipientStatus'>
+    readonly providerMessageId: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
+    readonly errorMessage: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
+    readonly sentAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
+    readonly deliveredAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
+    readonly bouncedAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
+    readonly openedAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
+    readonly openCount: FieldRef<"PlatformEmailCampaignRecipient", 'Int'>
+    readonly createdAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlatformEmailCampaignRecipient findUnique
+   */
+  export type PlatformEmailCampaignRecipientFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRecipient to fetch.
+     */
+    where: PlatformEmailCampaignRecipientWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient findUniqueOrThrow
+   */
+  export type PlatformEmailCampaignRecipientFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRecipient to fetch.
+     */
+    where: PlatformEmailCampaignRecipientWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient findFirst
+   */
+  export type PlatformEmailCampaignRecipientFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRecipient to fetch.
+     */
+    where?: PlatformEmailCampaignRecipientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaignRecipients to fetch.
+     */
+    orderBy?: PlatformEmailCampaignRecipientOrderByWithRelationInput | PlatformEmailCampaignRecipientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformEmailCampaignRecipients.
+     */
+    cursor?: PlatformEmailCampaignRecipientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaignRecipients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaignRecipients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformEmailCampaignRecipients.
+     */
+    distinct?: PlatformEmailCampaignRecipientScalarFieldEnum | PlatformEmailCampaignRecipientScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient findFirstOrThrow
+   */
+  export type PlatformEmailCampaignRecipientFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRecipient to fetch.
+     */
+    where?: PlatformEmailCampaignRecipientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaignRecipients to fetch.
+     */
+    orderBy?: PlatformEmailCampaignRecipientOrderByWithRelationInput | PlatformEmailCampaignRecipientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformEmailCampaignRecipients.
+     */
+    cursor?: PlatformEmailCampaignRecipientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaignRecipients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaignRecipients.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformEmailCampaignRecipients.
+     */
+    distinct?: PlatformEmailCampaignRecipientScalarFieldEnum | PlatformEmailCampaignRecipientScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient findMany
+   */
+  export type PlatformEmailCampaignRecipientFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformEmailCampaignRecipients to fetch.
+     */
+    where?: PlatformEmailCampaignRecipientWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformEmailCampaignRecipients to fetch.
+     */
+    orderBy?: PlatformEmailCampaignRecipientOrderByWithRelationInput | PlatformEmailCampaignRecipientOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlatformEmailCampaignRecipients.
+     */
+    cursor?: PlatformEmailCampaignRecipientWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformEmailCampaignRecipients from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformEmailCampaignRecipients.
+     */
+    skip?: number
+    distinct?: PlatformEmailCampaignRecipientScalarFieldEnum | PlatformEmailCampaignRecipientScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient create
+   */
+  export type PlatformEmailCampaignRecipientCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlatformEmailCampaignRecipient.
+     */
+    data: XOR<PlatformEmailCampaignRecipientCreateInput, PlatformEmailCampaignRecipientUncheckedCreateInput>
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient createMany
+   */
+  export type PlatformEmailCampaignRecipientCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlatformEmailCampaignRecipients.
+     */
+    data: PlatformEmailCampaignRecipientCreateManyInput | PlatformEmailCampaignRecipientCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient createManyAndReturn
+   */
+  export type PlatformEmailCampaignRecipientCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * The data used to create many PlatformEmailCampaignRecipients.
+     */
+    data: PlatformEmailCampaignRecipientCreateManyInput | PlatformEmailCampaignRecipientCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient update
+   */
+  export type PlatformEmailCampaignRecipientUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlatformEmailCampaignRecipient.
+     */
+    data: XOR<PlatformEmailCampaignRecipientUpdateInput, PlatformEmailCampaignRecipientUncheckedUpdateInput>
+    /**
+     * Choose, which PlatformEmailCampaignRecipient to update.
+     */
+    where: PlatformEmailCampaignRecipientWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient updateMany
+   */
+  export type PlatformEmailCampaignRecipientUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlatformEmailCampaignRecipients.
+     */
+    data: XOR<PlatformEmailCampaignRecipientUpdateManyMutationInput, PlatformEmailCampaignRecipientUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformEmailCampaignRecipients to update
+     */
+    where?: PlatformEmailCampaignRecipientWhereInput
+    /**
+     * Limit how many PlatformEmailCampaignRecipients to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient updateManyAndReturn
+   */
+  export type PlatformEmailCampaignRecipientUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * The data used to update PlatformEmailCampaignRecipients.
+     */
+    data: XOR<PlatformEmailCampaignRecipientUpdateManyMutationInput, PlatformEmailCampaignRecipientUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformEmailCampaignRecipients to update
+     */
+    where?: PlatformEmailCampaignRecipientWhereInput
+    /**
+     * Limit how many PlatformEmailCampaignRecipients to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient upsert
+   */
+  export type PlatformEmailCampaignRecipientUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlatformEmailCampaignRecipient to update in case it exists.
+     */
+    where: PlatformEmailCampaignRecipientWhereUniqueInput
+    /**
+     * In case the PlatformEmailCampaignRecipient found by the `where` argument doesn't exist, create a new PlatformEmailCampaignRecipient with this data.
+     */
+    create: XOR<PlatformEmailCampaignRecipientCreateInput, PlatformEmailCampaignRecipientUncheckedCreateInput>
+    /**
+     * In case the PlatformEmailCampaignRecipient was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlatformEmailCampaignRecipientUpdateInput, PlatformEmailCampaignRecipientUncheckedUpdateInput>
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient delete
+   */
+  export type PlatformEmailCampaignRecipientDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+    /**
+     * Filter which PlatformEmailCampaignRecipient to delete.
+     */
+    where: PlatformEmailCampaignRecipientWhereUniqueInput
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient deleteMany
+   */
+  export type PlatformEmailCampaignRecipientDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformEmailCampaignRecipients to delete
+     */
+    where?: PlatformEmailCampaignRecipientWhereInput
+    /**
+     * Limit how many PlatformEmailCampaignRecipients to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformEmailCampaignRecipient without action
+   */
+  export type PlatformEmailCampaignRecipientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformEmailCampaignRecipient
+     */
+    select?: PlatformEmailCampaignRecipientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformEmailCampaignRecipient
+     */
+    omit?: PlatformEmailCampaignRecipientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformEmailCampaignRecipientInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PlatformAdminNotification
+   */
+
+  export type AggregatePlatformAdminNotification = {
+    _count: PlatformAdminNotificationCountAggregateOutputType | null
+    _min: PlatformAdminNotificationMinAggregateOutputType | null
+    _max: PlatformAdminNotificationMaxAggregateOutputType | null
+  }
+
+  export type PlatformAdminNotificationMinAggregateOutputType = {
+    notificationId: string | null
+    notificationType: $Enums.PlatformAdminNotificationType | null
+    title: string | null
+    message: string | null
+    campaignId: string | null
+    isRead: boolean | null
+    createdAt: Date | null
+  }
+
+  export type PlatformAdminNotificationMaxAggregateOutputType = {
+    notificationId: string | null
+    notificationType: $Enums.PlatformAdminNotificationType | null
+    title: string | null
+    message: string | null
+    campaignId: string | null
+    isRead: boolean | null
+    createdAt: Date | null
+  }
+
+  export type PlatformAdminNotificationCountAggregateOutputType = {
+    notificationId: number
+    notificationType: number
+    title: number
+    message: number
+    payload: number
+    campaignId: number
+    isRead: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PlatformAdminNotificationMinAggregateInputType = {
+    notificationId?: true
+    notificationType?: true
+    title?: true
+    message?: true
+    campaignId?: true
+    isRead?: true
+    createdAt?: true
+  }
+
+  export type PlatformAdminNotificationMaxAggregateInputType = {
+    notificationId?: true
+    notificationType?: true
+    title?: true
+    message?: true
+    campaignId?: true
+    isRead?: true
+    createdAt?: true
+  }
+
+  export type PlatformAdminNotificationCountAggregateInputType = {
+    notificationId?: true
+    notificationType?: true
+    title?: true
+    message?: true
+    payload?: true
+    campaignId?: true
+    isRead?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PlatformAdminNotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformAdminNotification to aggregate.
+     */
+    where?: PlatformAdminNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformAdminNotifications to fetch.
+     */
+    orderBy?: PlatformAdminNotificationOrderByWithRelationInput | PlatformAdminNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlatformAdminNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformAdminNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformAdminNotifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlatformAdminNotifications
+    **/
+    _count?: true | PlatformAdminNotificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlatformAdminNotificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlatformAdminNotificationMaxAggregateInputType
+  }
+
+  export type GetPlatformAdminNotificationAggregateType<T extends PlatformAdminNotificationAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlatformAdminNotification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlatformAdminNotification[P]>
+      : GetScalarType<T[P], AggregatePlatformAdminNotification[P]>
+  }
+
+
+
+
+  export type PlatformAdminNotificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformAdminNotificationWhereInput
+    orderBy?: PlatformAdminNotificationOrderByWithAggregationInput | PlatformAdminNotificationOrderByWithAggregationInput[]
+    by: PlatformAdminNotificationScalarFieldEnum[] | PlatformAdminNotificationScalarFieldEnum
+    having?: PlatformAdminNotificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlatformAdminNotificationCountAggregateInputType | true
+    _min?: PlatformAdminNotificationMinAggregateInputType
+    _max?: PlatformAdminNotificationMaxAggregateInputType
+  }
+
+  export type PlatformAdminNotificationGroupByOutputType = {
+    notificationId: string
+    notificationType: $Enums.PlatformAdminNotificationType
+    title: string
+    message: string
+    payload: JsonValue | null
+    campaignId: string | null
+    isRead: boolean
+    createdAt: Date
+    _count: PlatformAdminNotificationCountAggregateOutputType | null
+    _min: PlatformAdminNotificationMinAggregateOutputType | null
+    _max: PlatformAdminNotificationMaxAggregateOutputType | null
+  }
+
+  type GetPlatformAdminNotificationGroupByPayload<T extends PlatformAdminNotificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlatformAdminNotificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlatformAdminNotificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlatformAdminNotificationGroupByOutputType[P]>
+            : GetScalarType<T[P], PlatformAdminNotificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlatformAdminNotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    notificationId?: boolean
+    notificationType?: boolean
+    title?: boolean
+    message?: boolean
+    payload?: boolean
+    campaignId?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["platformAdminNotification"]>
+
+  export type PlatformAdminNotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    notificationId?: boolean
+    notificationType?: boolean
+    title?: boolean
+    message?: boolean
+    payload?: boolean
+    campaignId?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["platformAdminNotification"]>
+
+  export type PlatformAdminNotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    notificationId?: boolean
+    notificationType?: boolean
+    title?: boolean
+    message?: boolean
+    payload?: boolean
+    campaignId?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["platformAdminNotification"]>
+
+  export type PlatformAdminNotificationSelectScalar = {
+    notificationId?: boolean
+    notificationType?: boolean
+    title?: boolean
+    message?: boolean
+    payload?: boolean
+    campaignId?: boolean
+    isRead?: boolean
+    createdAt?: boolean
+  }
+
+  export type PlatformAdminNotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"notificationId" | "notificationType" | "title" | "message" | "payload" | "campaignId" | "isRead" | "createdAt", ExtArgs["result"]["platformAdminNotification"]>
+
+  export type $PlatformAdminNotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlatformAdminNotification"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      notificationId: string
+      notificationType: $Enums.PlatformAdminNotificationType
+      title: string
+      message: string
+      payload: Prisma.JsonValue | null
+      campaignId: string | null
+      isRead: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["platformAdminNotification"]>
+    composites: {}
+  }
+
+  type PlatformAdminNotificationGetPayload<S extends boolean | null | undefined | PlatformAdminNotificationDefaultArgs> = $Result.GetResult<Prisma.$PlatformAdminNotificationPayload, S>
+
+  type PlatformAdminNotificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlatformAdminNotificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlatformAdminNotificationCountAggregateInputType | true
+    }
+
+  export interface PlatformAdminNotificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlatformAdminNotification'], meta: { name: 'PlatformAdminNotification' } }
+    /**
+     * Find zero or one PlatformAdminNotification that matches the filter.
+     * @param {PlatformAdminNotificationFindUniqueArgs} args - Arguments to find a PlatformAdminNotification
+     * @example
+     * // Get one PlatformAdminNotification
+     * const platformAdminNotification = await prisma.platformAdminNotification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlatformAdminNotificationFindUniqueArgs>(args: SelectSubset<T, PlatformAdminNotificationFindUniqueArgs<ExtArgs>>): Prisma__PlatformAdminNotificationClient<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlatformAdminNotification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlatformAdminNotificationFindUniqueOrThrowArgs} args - Arguments to find a PlatformAdminNotification
+     * @example
+     * // Get one PlatformAdminNotification
+     * const platformAdminNotification = await prisma.platformAdminNotification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlatformAdminNotificationFindUniqueOrThrowArgs>(args: SelectSubset<T, PlatformAdminNotificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlatformAdminNotificationClient<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformAdminNotification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAdminNotificationFindFirstArgs} args - Arguments to find a PlatformAdminNotification
+     * @example
+     * // Get one PlatformAdminNotification
+     * const platformAdminNotification = await prisma.platformAdminNotification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlatformAdminNotificationFindFirstArgs>(args?: SelectSubset<T, PlatformAdminNotificationFindFirstArgs<ExtArgs>>): Prisma__PlatformAdminNotificationClient<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformAdminNotification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAdminNotificationFindFirstOrThrowArgs} args - Arguments to find a PlatformAdminNotification
+     * @example
+     * // Get one PlatformAdminNotification
+     * const platformAdminNotification = await prisma.platformAdminNotification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlatformAdminNotificationFindFirstOrThrowArgs>(args?: SelectSubset<T, PlatformAdminNotificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlatformAdminNotificationClient<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlatformAdminNotifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAdminNotificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlatformAdminNotifications
+     * const platformAdminNotifications = await prisma.platformAdminNotification.findMany()
+     * 
+     * // Get first 10 PlatformAdminNotifications
+     * const platformAdminNotifications = await prisma.platformAdminNotification.findMany({ take: 10 })
+     * 
+     * // Only select the `notificationId`
+     * const platformAdminNotificationWithNotificationIdOnly = await prisma.platformAdminNotification.findMany({ select: { notificationId: true } })
+     * 
+     */
+    findMany<T extends PlatformAdminNotificationFindManyArgs>(args?: SelectSubset<T, PlatformAdminNotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlatformAdminNotification.
+     * @param {PlatformAdminNotificationCreateArgs} args - Arguments to create a PlatformAdminNotification.
+     * @example
+     * // Create one PlatformAdminNotification
+     * const PlatformAdminNotification = await prisma.platformAdminNotification.create({
+     *   data: {
+     *     // ... data to create a PlatformAdminNotification
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlatformAdminNotificationCreateArgs>(args: SelectSubset<T, PlatformAdminNotificationCreateArgs<ExtArgs>>): Prisma__PlatformAdminNotificationClient<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlatformAdminNotifications.
+     * @param {PlatformAdminNotificationCreateManyArgs} args - Arguments to create many PlatformAdminNotifications.
+     * @example
+     * // Create many PlatformAdminNotifications
+     * const platformAdminNotification = await prisma.platformAdminNotification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlatformAdminNotificationCreateManyArgs>(args?: SelectSubset<T, PlatformAdminNotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlatformAdminNotifications and returns the data saved in the database.
+     * @param {PlatformAdminNotificationCreateManyAndReturnArgs} args - Arguments to create many PlatformAdminNotifications.
+     * @example
+     * // Create many PlatformAdminNotifications
+     * const platformAdminNotification = await prisma.platformAdminNotification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlatformAdminNotifications and only return the `notificationId`
+     * const platformAdminNotificationWithNotificationIdOnly = await prisma.platformAdminNotification.createManyAndReturn({
+     *   select: { notificationId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlatformAdminNotificationCreateManyAndReturnArgs>(args?: SelectSubset<T, PlatformAdminNotificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PlatformAdminNotification.
+     * @param {PlatformAdminNotificationDeleteArgs} args - Arguments to delete one PlatformAdminNotification.
+     * @example
+     * // Delete one PlatformAdminNotification
+     * const PlatformAdminNotification = await prisma.platformAdminNotification.delete({
+     *   where: {
+     *     // ... filter to delete one PlatformAdminNotification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlatformAdminNotificationDeleteArgs>(args: SelectSubset<T, PlatformAdminNotificationDeleteArgs<ExtArgs>>): Prisma__PlatformAdminNotificationClient<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlatformAdminNotification.
+     * @param {PlatformAdminNotificationUpdateArgs} args - Arguments to update one PlatformAdminNotification.
+     * @example
+     * // Update one PlatformAdminNotification
+     * const platformAdminNotification = await prisma.platformAdminNotification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlatformAdminNotificationUpdateArgs>(args: SelectSubset<T, PlatformAdminNotificationUpdateArgs<ExtArgs>>): Prisma__PlatformAdminNotificationClient<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlatformAdminNotifications.
+     * @param {PlatformAdminNotificationDeleteManyArgs} args - Arguments to filter PlatformAdminNotifications to delete.
+     * @example
+     * // Delete a few PlatformAdminNotifications
+     * const { count } = await prisma.platformAdminNotification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlatformAdminNotificationDeleteManyArgs>(args?: SelectSubset<T, PlatformAdminNotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformAdminNotifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAdminNotificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlatformAdminNotifications
+     * const platformAdminNotification = await prisma.platformAdminNotification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlatformAdminNotificationUpdateManyArgs>(args: SelectSubset<T, PlatformAdminNotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformAdminNotifications and returns the data updated in the database.
+     * @param {PlatformAdminNotificationUpdateManyAndReturnArgs} args - Arguments to update many PlatformAdminNotifications.
+     * @example
+     * // Update many PlatformAdminNotifications
+     * const platformAdminNotification = await prisma.platformAdminNotification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PlatformAdminNotifications and only return the `notificationId`
+     * const platformAdminNotificationWithNotificationIdOnly = await prisma.platformAdminNotification.updateManyAndReturn({
+     *   select: { notificationId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PlatformAdminNotificationUpdateManyAndReturnArgs>(args: SelectSubset<T, PlatformAdminNotificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PlatformAdminNotification.
+     * @param {PlatformAdminNotificationUpsertArgs} args - Arguments to update or create a PlatformAdminNotification.
+     * @example
+     * // Update or create a PlatformAdminNotification
+     * const platformAdminNotification = await prisma.platformAdminNotification.upsert({
+     *   create: {
+     *     // ... data to create a PlatformAdminNotification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlatformAdminNotification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlatformAdminNotificationUpsertArgs>(args: SelectSubset<T, PlatformAdminNotificationUpsertArgs<ExtArgs>>): Prisma__PlatformAdminNotificationClient<$Result.GetResult<Prisma.$PlatformAdminNotificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlatformAdminNotifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAdminNotificationCountArgs} args - Arguments to filter PlatformAdminNotifications to count.
+     * @example
+     * // Count the number of PlatformAdminNotifications
+     * const count = await prisma.platformAdminNotification.count({
+     *   where: {
+     *     // ... the filter for the PlatformAdminNotifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlatformAdminNotificationCountArgs>(
+      args?: Subset<T, PlatformAdminNotificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlatformAdminNotificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlatformAdminNotification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAdminNotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlatformAdminNotificationAggregateArgs>(args: Subset<T, PlatformAdminNotificationAggregateArgs>): Prisma.PrismaPromise<GetPlatformAdminNotificationAggregateType<T>>
+
+    /**
+     * Group by PlatformAdminNotification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAdminNotificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlatformAdminNotificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlatformAdminNotificationGroupByArgs['orderBy'] }
+        : { orderBy?: PlatformAdminNotificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlatformAdminNotificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlatformAdminNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlatformAdminNotification model
+   */
+  readonly fields: PlatformAdminNotificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlatformAdminNotification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlatformAdminNotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlatformAdminNotification model
+   */
+  interface PlatformAdminNotificationFieldRefs {
+    readonly notificationId: FieldRef<"PlatformAdminNotification", 'String'>
+    readonly notificationType: FieldRef<"PlatformAdminNotification", 'PlatformAdminNotificationType'>
+    readonly title: FieldRef<"PlatformAdminNotification", 'String'>
+    readonly message: FieldRef<"PlatformAdminNotification", 'String'>
+    readonly payload: FieldRef<"PlatformAdminNotification", 'Json'>
+    readonly campaignId: FieldRef<"PlatformAdminNotification", 'String'>
+    readonly isRead: FieldRef<"PlatformAdminNotification", 'Boolean'>
+    readonly createdAt: FieldRef<"PlatformAdminNotification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlatformAdminNotification findUnique
+   */
+  export type PlatformAdminNotificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformAdminNotification to fetch.
+     */
+    where: PlatformAdminNotificationWhereUniqueInput
+  }
+
+  /**
+   * PlatformAdminNotification findUniqueOrThrow
+   */
+  export type PlatformAdminNotificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformAdminNotification to fetch.
+     */
+    where: PlatformAdminNotificationWhereUniqueInput
+  }
+
+  /**
+   * PlatformAdminNotification findFirst
+   */
+  export type PlatformAdminNotificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformAdminNotification to fetch.
+     */
+    where?: PlatformAdminNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformAdminNotifications to fetch.
+     */
+    orderBy?: PlatformAdminNotificationOrderByWithRelationInput | PlatformAdminNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformAdminNotifications.
+     */
+    cursor?: PlatformAdminNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformAdminNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformAdminNotifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformAdminNotifications.
+     */
+    distinct?: PlatformAdminNotificationScalarFieldEnum | PlatformAdminNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformAdminNotification findFirstOrThrow
+   */
+  export type PlatformAdminNotificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformAdminNotification to fetch.
+     */
+    where?: PlatformAdminNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformAdminNotifications to fetch.
+     */
+    orderBy?: PlatformAdminNotificationOrderByWithRelationInput | PlatformAdminNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformAdminNotifications.
+     */
+    cursor?: PlatformAdminNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformAdminNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformAdminNotifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformAdminNotifications.
+     */
+    distinct?: PlatformAdminNotificationScalarFieldEnum | PlatformAdminNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformAdminNotification findMany
+   */
+  export type PlatformAdminNotificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * Filter, which PlatformAdminNotifications to fetch.
+     */
+    where?: PlatformAdminNotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformAdminNotifications to fetch.
+     */
+    orderBy?: PlatformAdminNotificationOrderByWithRelationInput | PlatformAdminNotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlatformAdminNotifications.
+     */
+    cursor?: PlatformAdminNotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformAdminNotifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformAdminNotifications.
+     */
+    skip?: number
+    distinct?: PlatformAdminNotificationScalarFieldEnum | PlatformAdminNotificationScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformAdminNotification create
+   */
+  export type PlatformAdminNotificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PlatformAdminNotification.
+     */
+    data: XOR<PlatformAdminNotificationCreateInput, PlatformAdminNotificationUncheckedCreateInput>
+  }
+
+  /**
+   * PlatformAdminNotification createMany
+   */
+  export type PlatformAdminNotificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlatformAdminNotifications.
+     */
+    data: PlatformAdminNotificationCreateManyInput | PlatformAdminNotificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformAdminNotification createManyAndReturn
+   */
+  export type PlatformAdminNotificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many PlatformAdminNotifications.
+     */
+    data: PlatformAdminNotificationCreateManyInput | PlatformAdminNotificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformAdminNotification update
+   */
+  export type PlatformAdminNotificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PlatformAdminNotification.
+     */
+    data: XOR<PlatformAdminNotificationUpdateInput, PlatformAdminNotificationUncheckedUpdateInput>
+    /**
+     * Choose, which PlatformAdminNotification to update.
+     */
+    where: PlatformAdminNotificationWhereUniqueInput
+  }
+
+  /**
+   * PlatformAdminNotification updateMany
+   */
+  export type PlatformAdminNotificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlatformAdminNotifications.
+     */
+    data: XOR<PlatformAdminNotificationUpdateManyMutationInput, PlatformAdminNotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformAdminNotifications to update
+     */
+    where?: PlatformAdminNotificationWhereInput
+    /**
+     * Limit how many PlatformAdminNotifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformAdminNotification updateManyAndReturn
+   */
+  export type PlatformAdminNotificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * The data used to update PlatformAdminNotifications.
+     */
+    data: XOR<PlatformAdminNotificationUpdateManyMutationInput, PlatformAdminNotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformAdminNotifications to update
+     */
+    where?: PlatformAdminNotificationWhereInput
+    /**
+     * Limit how many PlatformAdminNotifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformAdminNotification upsert
+   */
+  export type PlatformAdminNotificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PlatformAdminNotification to update in case it exists.
+     */
+    where: PlatformAdminNotificationWhereUniqueInput
+    /**
+     * In case the PlatformAdminNotification found by the `where` argument doesn't exist, create a new PlatformAdminNotification with this data.
+     */
+    create: XOR<PlatformAdminNotificationCreateInput, PlatformAdminNotificationUncheckedCreateInput>
+    /**
+     * In case the PlatformAdminNotification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlatformAdminNotificationUpdateInput, PlatformAdminNotificationUncheckedUpdateInput>
+  }
+
+  /**
+   * PlatformAdminNotification delete
+   */
+  export type PlatformAdminNotificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+    /**
+     * Filter which PlatformAdminNotification to delete.
+     */
+    where: PlatformAdminNotificationWhereUniqueInput
+  }
+
+  /**
+   * PlatformAdminNotification deleteMany
+   */
+  export type PlatformAdminNotificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformAdminNotifications to delete
+     */
+    where?: PlatformAdminNotificationWhereInput
+    /**
+     * Limit how many PlatformAdminNotifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformAdminNotification without action
+   */
+  export type PlatformAdminNotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAdminNotification
+     */
+    select?: PlatformAdminNotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAdminNotification
+     */
+    omit?: PlatformAdminNotificationOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -15598,6 +22369,116 @@ export namespace Prisma {
   };
 
   export type NewsletterSubscriberScalarFieldEnum = (typeof NewsletterSubscriberScalarFieldEnum)[keyof typeof NewsletterSubscriberScalarFieldEnum]
+
+
+  export const PlatformEmailProspectScalarFieldEnum: {
+    prospectId: 'prospectId',
+    email: 'email',
+    firstName: 'firstName',
+    lastName: 'lastName',
+    companyName: 'companyName',
+    status: 'status',
+    unsubscribeToken: 'unsubscribeToken',
+    unsubscribedAt: 'unsubscribedAt',
+    source: 'source',
+    notes: 'notes',
+    convertedUserId: 'convertedUserId',
+    convertedAt: 'convertedAt',
+    outreachEmailsSent: 'outreachEmailsSent',
+    firstOutreachAt: 'firstOutreachAt',
+    lastOutreachAt: 'lastOutreachAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PlatformEmailProspectScalarFieldEnum = (typeof PlatformEmailProspectScalarFieldEnum)[keyof typeof PlatformEmailProspectScalarFieldEnum]
+
+
+  export const PlatformEmailCampaignScalarFieldEnum: {
+    campaignId: 'campaignId',
+    campaignKey: 'campaignKey',
+    campaignName: 'campaignName',
+    campaignDescription: 'campaignDescription',
+    campaignStatus: 'campaignStatus',
+    audienceType: 'audienceType',
+    audienceParams: 'audienceParams',
+    scheduleFrequency: 'scheduleFrequency',
+    emailSubject: 'emailSubject',
+    emailHtml: 'emailHtml',
+    emailText: 'emailText',
+    messageIntent: 'messageIntent',
+    senderEmail: 'senderEmail',
+    senderName: 'senderName',
+    scheduledAt: 'scheduledAt',
+    sentAt: 'sentAt',
+    lastRunAt: 'lastRunAt',
+    totalRecipients: 'totalRecipients',
+    totalSent: 'totalSent',
+    totalDelivered: 'totalDelivered',
+    totalFailed: 'totalFailed',
+    totalBounced: 'totalBounced',
+    totalOpened: 'totalOpened',
+    createdByUserId: 'createdByUserId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PlatformEmailCampaignScalarFieldEnum = (typeof PlatformEmailCampaignScalarFieldEnum)[keyof typeof PlatformEmailCampaignScalarFieldEnum]
+
+
+  export const PlatformEmailCampaignRunScalarFieldEnum: {
+    runId: 'runId',
+    campaignId: 'campaignId',
+    runStatus: 'runStatus',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    recipientCount: 'recipientCount',
+    sentCount: 'sentCount',
+    deliveredCount: 'deliveredCount',
+    failedCount: 'failedCount',
+    bouncedCount: 'bouncedCount',
+    openedCount: 'openedCount',
+    errorLog: 'errorLog',
+    createdAt: 'createdAt'
+  };
+
+  export type PlatformEmailCampaignRunScalarFieldEnum = (typeof PlatformEmailCampaignRunScalarFieldEnum)[keyof typeof PlatformEmailCampaignRunScalarFieldEnum]
+
+
+  export const PlatformEmailCampaignRecipientScalarFieldEnum: {
+    recipientId: 'recipientId',
+    runId: 'runId',
+    userId: 'userId',
+    businessId: 'businessId',
+    recipientEmail: 'recipientEmail',
+    recipientName: 'recipientName',
+    businessName: 'businessName',
+    deliveryStatus: 'deliveryStatus',
+    providerMessageId: 'providerMessageId',
+    errorMessage: 'errorMessage',
+    sentAt: 'sentAt',
+    deliveredAt: 'deliveredAt',
+    bouncedAt: 'bouncedAt',
+    openedAt: 'openedAt',
+    openCount: 'openCount',
+    createdAt: 'createdAt'
+  };
+
+  export type PlatformEmailCampaignRecipientScalarFieldEnum = (typeof PlatformEmailCampaignRecipientScalarFieldEnum)[keyof typeof PlatformEmailCampaignRecipientScalarFieldEnum]
+
+
+  export const PlatformAdminNotificationScalarFieldEnum: {
+    notificationId: 'notificationId',
+    notificationType: 'notificationType',
+    title: 'title',
+    message: 'message',
+    payload: 'payload',
+    campaignId: 'campaignId',
+    isRead: 'isRead',
+    createdAt: 'createdAt'
+  };
+
+  export type PlatformAdminNotificationScalarFieldEnum = (typeof PlatformAdminNotificationScalarFieldEnum)[keyof typeof PlatformAdminNotificationScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -15868,6 +22749,104 @@ export namespace Prisma {
    */
   export type ListEnumTicketDetailOriginFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TicketDetailOrigin[]'>
     
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailProspectStatus'
+   */
+  export type EnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailProspectStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailProspectStatus[]'
+   */
+  export type ListEnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailProspectStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailCampaignStatus'
+   */
+  export type EnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailCampaignStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailCampaignStatus[]'
+   */
+  export type ListEnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailCampaignStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailAudienceType'
+   */
+  export type EnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailAudienceType'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailAudienceType[]'
+   */
+  export type ListEnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailAudienceType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailScheduleFrequency'
+   */
+  export type EnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailScheduleFrequency'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailScheduleFrequency[]'
+   */
+  export type ListEnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailScheduleFrequency[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailCampaignRunStatus'
+   */
+  export type EnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailCampaignRunStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailCampaignRunStatus[]'
+   */
+  export type ListEnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailCampaignRunStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailRecipientStatus'
+   */
+  export type EnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailRecipientStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformEmailRecipientStatus[]'
+   */
+  export type ListEnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformEmailRecipientStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformAdminNotificationType'
+   */
+  export type EnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformAdminNotificationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformAdminNotificationType[]'
+   */
+  export type ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformAdminNotificationType[]'>
+    
   /**
    * Deep Input Types
    */
@@ -15898,6 +22877,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationListRelationFilter
     tickets?: TicketListRelationFilter
     ticketDetails?: TicketDetailListRelationFilter
+    platformEmailCampaigns?: PlatformEmailCampaignListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -15922,6 +22902,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationOrderByRelationAggregateInput
     tickets?: TicketOrderByRelationAggregateInput
     ticketDetails?: TicketDetailOrderByRelationAggregateInput
+    platformEmailCampaigns?: PlatformEmailCampaignOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -15949,6 +22930,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationListRelationFilter
     tickets?: TicketListRelationFilter
     ticketDetails?: TicketDetailListRelationFilter
+    platformEmailCampaigns?: PlatformEmailCampaignListRelationFilter
   }, "userId" | "userEmail">
 
   export type UserOrderByWithAggregationInput = {
@@ -16917,6 +23899,564 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"newsletterSubscriber"> | Date | string
   }
 
+  export type PlatformEmailProspectWhereInput = {
+    AND?: PlatformEmailProspectWhereInput | PlatformEmailProspectWhereInput[]
+    OR?: PlatformEmailProspectWhereInput[]
+    NOT?: PlatformEmailProspectWhereInput | PlatformEmailProspectWhereInput[]
+    prospectId?: StringFilter<"PlatformEmailProspect"> | string
+    email?: StringFilter<"PlatformEmailProspect"> | string
+    firstName?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    lastName?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    companyName?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    status?: EnumPlatformEmailProspectStatusFilter<"PlatformEmailProspect"> | $Enums.PlatformEmailProspectStatus
+    unsubscribeToken?: StringFilter<"PlatformEmailProspect"> | string
+    unsubscribedAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
+    source?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    notes?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    convertedUserId?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    convertedAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
+    outreachEmailsSent?: IntFilter<"PlatformEmailProspect"> | number
+    firstOutreachAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
+    lastOutreachAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
+    createdAt?: DateTimeFilter<"PlatformEmailProspect"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformEmailProspect"> | Date | string
+  }
+
+  export type PlatformEmailProspectOrderByWithRelationInput = {
+    prospectId?: SortOrder
+    email?: SortOrder
+    firstName?: SortOrderInput | SortOrder
+    lastName?: SortOrderInput | SortOrder
+    companyName?: SortOrderInput | SortOrder
+    status?: SortOrder
+    unsubscribeToken?: SortOrder
+    unsubscribedAt?: SortOrderInput | SortOrder
+    source?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    convertedUserId?: SortOrderInput | SortOrder
+    convertedAt?: SortOrderInput | SortOrder
+    outreachEmailsSent?: SortOrder
+    firstOutreachAt?: SortOrderInput | SortOrder
+    lastOutreachAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformEmailProspectWhereUniqueInput = Prisma.AtLeast<{
+    prospectId?: string
+    email?: string
+    unsubscribeToken?: string
+    AND?: PlatformEmailProspectWhereInput | PlatformEmailProspectWhereInput[]
+    OR?: PlatformEmailProspectWhereInput[]
+    NOT?: PlatformEmailProspectWhereInput | PlatformEmailProspectWhereInput[]
+    firstName?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    lastName?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    companyName?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    status?: EnumPlatformEmailProspectStatusFilter<"PlatformEmailProspect"> | $Enums.PlatformEmailProspectStatus
+    unsubscribedAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
+    source?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    notes?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    convertedUserId?: StringNullableFilter<"PlatformEmailProspect"> | string | null
+    convertedAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
+    outreachEmailsSent?: IntFilter<"PlatformEmailProspect"> | number
+    firstOutreachAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
+    lastOutreachAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
+    createdAt?: DateTimeFilter<"PlatformEmailProspect"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformEmailProspect"> | Date | string
+  }, "prospectId" | "email" | "unsubscribeToken">
+
+  export type PlatformEmailProspectOrderByWithAggregationInput = {
+    prospectId?: SortOrder
+    email?: SortOrder
+    firstName?: SortOrderInput | SortOrder
+    lastName?: SortOrderInput | SortOrder
+    companyName?: SortOrderInput | SortOrder
+    status?: SortOrder
+    unsubscribeToken?: SortOrder
+    unsubscribedAt?: SortOrderInput | SortOrder
+    source?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    convertedUserId?: SortOrderInput | SortOrder
+    convertedAt?: SortOrderInput | SortOrder
+    outreachEmailsSent?: SortOrder
+    firstOutreachAt?: SortOrderInput | SortOrder
+    lastOutreachAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PlatformEmailProspectCountOrderByAggregateInput
+    _avg?: PlatformEmailProspectAvgOrderByAggregateInput
+    _max?: PlatformEmailProspectMaxOrderByAggregateInput
+    _min?: PlatformEmailProspectMinOrderByAggregateInput
+    _sum?: PlatformEmailProspectSumOrderByAggregateInput
+  }
+
+  export type PlatformEmailProspectScalarWhereWithAggregatesInput = {
+    AND?: PlatformEmailProspectScalarWhereWithAggregatesInput | PlatformEmailProspectScalarWhereWithAggregatesInput[]
+    OR?: PlatformEmailProspectScalarWhereWithAggregatesInput[]
+    NOT?: PlatformEmailProspectScalarWhereWithAggregatesInput | PlatformEmailProspectScalarWhereWithAggregatesInput[]
+    prospectId?: StringWithAggregatesFilter<"PlatformEmailProspect"> | string
+    email?: StringWithAggregatesFilter<"PlatformEmailProspect"> | string
+    firstName?: StringNullableWithAggregatesFilter<"PlatformEmailProspect"> | string | null
+    lastName?: StringNullableWithAggregatesFilter<"PlatformEmailProspect"> | string | null
+    companyName?: StringNullableWithAggregatesFilter<"PlatformEmailProspect"> | string | null
+    status?: EnumPlatformEmailProspectStatusWithAggregatesFilter<"PlatformEmailProspect"> | $Enums.PlatformEmailProspectStatus
+    unsubscribeToken?: StringWithAggregatesFilter<"PlatformEmailProspect"> | string
+    unsubscribedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailProspect"> | Date | string | null
+    source?: StringNullableWithAggregatesFilter<"PlatformEmailProspect"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"PlatformEmailProspect"> | string | null
+    convertedUserId?: StringNullableWithAggregatesFilter<"PlatformEmailProspect"> | string | null
+    convertedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailProspect"> | Date | string | null
+    outreachEmailsSent?: IntWithAggregatesFilter<"PlatformEmailProspect"> | number
+    firstOutreachAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailProspect"> | Date | string | null
+    lastOutreachAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailProspect"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailProspect"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PlatformEmailProspect"> | Date | string
+  }
+
+  export type PlatformEmailCampaignWhereInput = {
+    AND?: PlatformEmailCampaignWhereInput | PlatformEmailCampaignWhereInput[]
+    OR?: PlatformEmailCampaignWhereInput[]
+    NOT?: PlatformEmailCampaignWhereInput | PlatformEmailCampaignWhereInput[]
+    campaignId?: StringFilter<"PlatformEmailCampaign"> | string
+    campaignKey?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    campaignName?: StringFilter<"PlatformEmailCampaign"> | string
+    campaignDescription?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailAudienceType
+    audienceParams?: JsonNullableFilter<"PlatformEmailCampaign">
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    emailHtml?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    emailText?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    messageIntent?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    senderEmail?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    senderName?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    scheduledAt?: DateTimeNullableFilter<"PlatformEmailCampaign"> | Date | string | null
+    sentAt?: DateTimeNullableFilter<"PlatformEmailCampaign"> | Date | string | null
+    lastRunAt?: DateTimeNullableFilter<"PlatformEmailCampaign"> | Date | string | null
+    totalRecipients?: IntFilter<"PlatformEmailCampaign"> | number
+    totalSent?: IntFilter<"PlatformEmailCampaign"> | number
+    totalDelivered?: IntFilter<"PlatformEmailCampaign"> | number
+    totalFailed?: IntFilter<"PlatformEmailCampaign"> | number
+    totalBounced?: IntFilter<"PlatformEmailCampaign"> | number
+    totalOpened?: IntFilter<"PlatformEmailCampaign"> | number
+    createdByUserId?: StringFilter<"PlatformEmailCampaign"> | string
+    createdAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    runs?: PlatformEmailCampaignRunListRelationFilter
+  }
+
+  export type PlatformEmailCampaignOrderByWithRelationInput = {
+    campaignId?: SortOrder
+    campaignKey?: SortOrderInput | SortOrder
+    campaignName?: SortOrder
+    campaignDescription?: SortOrderInput | SortOrder
+    campaignStatus?: SortOrder
+    audienceType?: SortOrder
+    audienceParams?: SortOrderInput | SortOrder
+    scheduleFrequency?: SortOrder
+    emailSubject?: SortOrderInput | SortOrder
+    emailHtml?: SortOrderInput | SortOrder
+    emailText?: SortOrderInput | SortOrder
+    messageIntent?: SortOrderInput | SortOrder
+    senderEmail?: SortOrderInput | SortOrder
+    senderName?: SortOrderInput | SortOrder
+    scheduledAt?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    lastRunAt?: SortOrderInput | SortOrder
+    totalRecipients?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    totalBounced?: SortOrder
+    totalOpened?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdBy?: UserOrderByWithRelationInput
+    runs?: PlatformEmailCampaignRunOrderByRelationAggregateInput
+  }
+
+  export type PlatformEmailCampaignWhereUniqueInput = Prisma.AtLeast<{
+    campaignId?: string
+    campaignKey?: string
+    AND?: PlatformEmailCampaignWhereInput | PlatformEmailCampaignWhereInput[]
+    OR?: PlatformEmailCampaignWhereInput[]
+    NOT?: PlatformEmailCampaignWhereInput | PlatformEmailCampaignWhereInput[]
+    campaignName?: StringFilter<"PlatformEmailCampaign"> | string
+    campaignDescription?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailAudienceType
+    audienceParams?: JsonNullableFilter<"PlatformEmailCampaign">
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    emailHtml?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    emailText?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    messageIntent?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    senderEmail?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    senderName?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    scheduledAt?: DateTimeNullableFilter<"PlatformEmailCampaign"> | Date | string | null
+    sentAt?: DateTimeNullableFilter<"PlatformEmailCampaign"> | Date | string | null
+    lastRunAt?: DateTimeNullableFilter<"PlatformEmailCampaign"> | Date | string | null
+    totalRecipients?: IntFilter<"PlatformEmailCampaign"> | number
+    totalSent?: IntFilter<"PlatformEmailCampaign"> | number
+    totalDelivered?: IntFilter<"PlatformEmailCampaign"> | number
+    totalFailed?: IntFilter<"PlatformEmailCampaign"> | number
+    totalBounced?: IntFilter<"PlatformEmailCampaign"> | number
+    totalOpened?: IntFilter<"PlatformEmailCampaign"> | number
+    createdByUserId?: StringFilter<"PlatformEmailCampaign"> | string
+    createdAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    runs?: PlatformEmailCampaignRunListRelationFilter
+  }, "campaignId" | "campaignKey">
+
+  export type PlatformEmailCampaignOrderByWithAggregationInput = {
+    campaignId?: SortOrder
+    campaignKey?: SortOrderInput | SortOrder
+    campaignName?: SortOrder
+    campaignDescription?: SortOrderInput | SortOrder
+    campaignStatus?: SortOrder
+    audienceType?: SortOrder
+    audienceParams?: SortOrderInput | SortOrder
+    scheduleFrequency?: SortOrder
+    emailSubject?: SortOrderInput | SortOrder
+    emailHtml?: SortOrderInput | SortOrder
+    emailText?: SortOrderInput | SortOrder
+    messageIntent?: SortOrderInput | SortOrder
+    senderEmail?: SortOrderInput | SortOrder
+    senderName?: SortOrderInput | SortOrder
+    scheduledAt?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    lastRunAt?: SortOrderInput | SortOrder
+    totalRecipients?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    totalBounced?: SortOrder
+    totalOpened?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PlatformEmailCampaignCountOrderByAggregateInput
+    _avg?: PlatformEmailCampaignAvgOrderByAggregateInput
+    _max?: PlatformEmailCampaignMaxOrderByAggregateInput
+    _min?: PlatformEmailCampaignMinOrderByAggregateInput
+    _sum?: PlatformEmailCampaignSumOrderByAggregateInput
+  }
+
+  export type PlatformEmailCampaignScalarWhereWithAggregatesInput = {
+    AND?: PlatformEmailCampaignScalarWhereWithAggregatesInput | PlatformEmailCampaignScalarWhereWithAggregatesInput[]
+    OR?: PlatformEmailCampaignScalarWhereWithAggregatesInput[]
+    NOT?: PlatformEmailCampaignScalarWhereWithAggregatesInput | PlatformEmailCampaignScalarWhereWithAggregatesInput[]
+    campaignId?: StringWithAggregatesFilter<"PlatformEmailCampaign"> | string
+    campaignKey?: StringNullableWithAggregatesFilter<"PlatformEmailCampaign"> | string | null
+    campaignName?: StringWithAggregatesFilter<"PlatformEmailCampaign"> | string
+    campaignDescription?: StringNullableWithAggregatesFilter<"PlatformEmailCampaign"> | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusWithAggregatesFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeWithAggregatesFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailAudienceType
+    audienceParams?: JsonNullableWithAggregatesFilter<"PlatformEmailCampaign">
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyWithAggregatesFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: StringNullableWithAggregatesFilter<"PlatformEmailCampaign"> | string | null
+    emailHtml?: StringNullableWithAggregatesFilter<"PlatformEmailCampaign"> | string | null
+    emailText?: StringNullableWithAggregatesFilter<"PlatformEmailCampaign"> | string | null
+    messageIntent?: StringNullableWithAggregatesFilter<"PlatformEmailCampaign"> | string | null
+    senderEmail?: StringNullableWithAggregatesFilter<"PlatformEmailCampaign"> | string | null
+    senderName?: StringNullableWithAggregatesFilter<"PlatformEmailCampaign"> | string | null
+    scheduledAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaign"> | Date | string | null
+    sentAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaign"> | Date | string | null
+    lastRunAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaign"> | Date | string | null
+    totalRecipients?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
+    totalSent?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
+    totalDelivered?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
+    totalFailed?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
+    totalBounced?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
+    totalOpened?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
+    createdByUserId?: StringWithAggregatesFilter<"PlatformEmailCampaign"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaign"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaign"> | Date | string
+  }
+
+  export type PlatformEmailCampaignRunWhereInput = {
+    AND?: PlatformEmailCampaignRunWhereInput | PlatformEmailCampaignRunWhereInput[]
+    OR?: PlatformEmailCampaignRunWhereInput[]
+    NOT?: PlatformEmailCampaignRunWhereInput | PlatformEmailCampaignRunWhereInput[]
+    runId?: StringFilter<"PlatformEmailCampaignRun"> | string
+    campaignId?: StringFilter<"PlatformEmailCampaignRun"> | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFilter<"PlatformEmailCampaignRun"> | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRun"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRun"> | Date | string | null
+    recipientCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    sentCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    deliveredCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    failedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    bouncedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    openedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    errorLog?: JsonNullableFilter<"PlatformEmailCampaignRun">
+    createdAt?: DateTimeFilter<"PlatformEmailCampaignRun"> | Date | string
+    campaign?: XOR<PlatformEmailCampaignScalarRelationFilter, PlatformEmailCampaignWhereInput>
+    recipients?: PlatformEmailCampaignRecipientListRelationFilter
+  }
+
+  export type PlatformEmailCampaignRunOrderByWithRelationInput = {
+    runId?: SortOrder
+    campaignId?: SortOrder
+    runStatus?: SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    recipientCount?: SortOrder
+    sentCount?: SortOrder
+    deliveredCount?: SortOrder
+    failedCount?: SortOrder
+    bouncedCount?: SortOrder
+    openedCount?: SortOrder
+    errorLog?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    campaign?: PlatformEmailCampaignOrderByWithRelationInput
+    recipients?: PlatformEmailCampaignRecipientOrderByRelationAggregateInput
+  }
+
+  export type PlatformEmailCampaignRunWhereUniqueInput = Prisma.AtLeast<{
+    runId?: string
+    AND?: PlatformEmailCampaignRunWhereInput | PlatformEmailCampaignRunWhereInput[]
+    OR?: PlatformEmailCampaignRunWhereInput[]
+    NOT?: PlatformEmailCampaignRunWhereInput | PlatformEmailCampaignRunWhereInput[]
+    campaignId?: StringFilter<"PlatformEmailCampaignRun"> | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFilter<"PlatformEmailCampaignRun"> | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRun"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRun"> | Date | string | null
+    recipientCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    sentCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    deliveredCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    failedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    bouncedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    openedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    errorLog?: JsonNullableFilter<"PlatformEmailCampaignRun">
+    createdAt?: DateTimeFilter<"PlatformEmailCampaignRun"> | Date | string
+    campaign?: XOR<PlatformEmailCampaignScalarRelationFilter, PlatformEmailCampaignWhereInput>
+    recipients?: PlatformEmailCampaignRecipientListRelationFilter
+  }, "runId">
+
+  export type PlatformEmailCampaignRunOrderByWithAggregationInput = {
+    runId?: SortOrder
+    campaignId?: SortOrder
+    runStatus?: SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    recipientCount?: SortOrder
+    sentCount?: SortOrder
+    deliveredCount?: SortOrder
+    failedCount?: SortOrder
+    bouncedCount?: SortOrder
+    openedCount?: SortOrder
+    errorLog?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: PlatformEmailCampaignRunCountOrderByAggregateInput
+    _avg?: PlatformEmailCampaignRunAvgOrderByAggregateInput
+    _max?: PlatformEmailCampaignRunMaxOrderByAggregateInput
+    _min?: PlatformEmailCampaignRunMinOrderByAggregateInput
+    _sum?: PlatformEmailCampaignRunSumOrderByAggregateInput
+  }
+
+  export type PlatformEmailCampaignRunScalarWhereWithAggregatesInput = {
+    AND?: PlatformEmailCampaignRunScalarWhereWithAggregatesInput | PlatformEmailCampaignRunScalarWhereWithAggregatesInput[]
+    OR?: PlatformEmailCampaignRunScalarWhereWithAggregatesInput[]
+    NOT?: PlatformEmailCampaignRunScalarWhereWithAggregatesInput | PlatformEmailCampaignRunScalarWhereWithAggregatesInput[]
+    runId?: StringWithAggregatesFilter<"PlatformEmailCampaignRun"> | string
+    campaignId?: StringWithAggregatesFilter<"PlatformEmailCampaignRun"> | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusWithAggregatesFilter<"PlatformEmailCampaignRun"> | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRun"> | Date | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRun"> | Date | string | null
+    recipientCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
+    sentCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
+    deliveredCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
+    failedCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
+    bouncedCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
+    openedCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
+    errorLog?: JsonNullableWithAggregatesFilter<"PlatformEmailCampaignRun">
+    createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaignRun"> | Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientWhereInput = {
+    AND?: PlatformEmailCampaignRecipientWhereInput | PlatformEmailCampaignRecipientWhereInput[]
+    OR?: PlatformEmailCampaignRecipientWhereInput[]
+    NOT?: PlatformEmailCampaignRecipientWhereInput | PlatformEmailCampaignRecipientWhereInput[]
+    recipientId?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    runId?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    userId?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    businessId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    recipientEmail?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    recipientName?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    businessName?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFilter<"PlatformEmailCampaignRecipient"> | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    errorMessage?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    sentAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    bouncedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    openedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    openCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
+    createdAt?: DateTimeFilter<"PlatformEmailCampaignRecipient"> | Date | string
+    run?: XOR<PlatformEmailCampaignRunScalarRelationFilter, PlatformEmailCampaignRunWhereInput>
+  }
+
+  export type PlatformEmailCampaignRecipientOrderByWithRelationInput = {
+    recipientId?: SortOrder
+    runId?: SortOrder
+    userId?: SortOrder
+    businessId?: SortOrderInput | SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrderInput | SortOrder
+    businessName?: SortOrderInput | SortOrder
+    deliveryStatus?: SortOrder
+    providerMessageId?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    bouncedAt?: SortOrderInput | SortOrder
+    openedAt?: SortOrderInput | SortOrder
+    openCount?: SortOrder
+    createdAt?: SortOrder
+    run?: PlatformEmailCampaignRunOrderByWithRelationInput
+  }
+
+  export type PlatformEmailCampaignRecipientWhereUniqueInput = Prisma.AtLeast<{
+    recipientId?: string
+    AND?: PlatformEmailCampaignRecipientWhereInput | PlatformEmailCampaignRecipientWhereInput[]
+    OR?: PlatformEmailCampaignRecipientWhereInput[]
+    NOT?: PlatformEmailCampaignRecipientWhereInput | PlatformEmailCampaignRecipientWhereInput[]
+    runId?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    userId?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    businessId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    recipientEmail?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    recipientName?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    businessName?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFilter<"PlatformEmailCampaignRecipient"> | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    errorMessage?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    sentAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    bouncedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    openedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    openCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
+    createdAt?: DateTimeFilter<"PlatformEmailCampaignRecipient"> | Date | string
+    run?: XOR<PlatformEmailCampaignRunScalarRelationFilter, PlatformEmailCampaignRunWhereInput>
+  }, "recipientId">
+
+  export type PlatformEmailCampaignRecipientOrderByWithAggregationInput = {
+    recipientId?: SortOrder
+    runId?: SortOrder
+    userId?: SortOrder
+    businessId?: SortOrderInput | SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrderInput | SortOrder
+    businessName?: SortOrderInput | SortOrder
+    deliveryStatus?: SortOrder
+    providerMessageId?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    deliveredAt?: SortOrderInput | SortOrder
+    bouncedAt?: SortOrderInput | SortOrder
+    openedAt?: SortOrderInput | SortOrder
+    openCount?: SortOrder
+    createdAt?: SortOrder
+    _count?: PlatformEmailCampaignRecipientCountOrderByAggregateInput
+    _avg?: PlatformEmailCampaignRecipientAvgOrderByAggregateInput
+    _max?: PlatformEmailCampaignRecipientMaxOrderByAggregateInput
+    _min?: PlatformEmailCampaignRecipientMinOrderByAggregateInput
+    _sum?: PlatformEmailCampaignRecipientSumOrderByAggregateInput
+  }
+
+  export type PlatformEmailCampaignRecipientScalarWhereWithAggregatesInput = {
+    AND?: PlatformEmailCampaignRecipientScalarWhereWithAggregatesInput | PlatformEmailCampaignRecipientScalarWhereWithAggregatesInput[]
+    OR?: PlatformEmailCampaignRecipientScalarWhereWithAggregatesInput[]
+    NOT?: PlatformEmailCampaignRecipientScalarWhereWithAggregatesInput | PlatformEmailCampaignRecipientScalarWhereWithAggregatesInput[]
+    recipientId?: StringWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string
+    runId?: StringWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string
+    userId?: StringWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string
+    businessId?: StringNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string | null
+    recipientEmail?: StringWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string
+    recipientName?: StringNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string | null
+    businessName?: StringNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: StringNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string | null
+    errorMessage?: StringNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string | null
+    sentAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    deliveredAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    bouncedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    openedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    openCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string
+  }
+
+  export type PlatformAdminNotificationWhereInput = {
+    AND?: PlatformAdminNotificationWhereInput | PlatformAdminNotificationWhereInput[]
+    OR?: PlatformAdminNotificationWhereInput[]
+    NOT?: PlatformAdminNotificationWhereInput | PlatformAdminNotificationWhereInput[]
+    notificationId?: StringFilter<"PlatformAdminNotification"> | string
+    notificationType?: EnumPlatformAdminNotificationTypeFilter<"PlatformAdminNotification"> | $Enums.PlatformAdminNotificationType
+    title?: StringFilter<"PlatformAdminNotification"> | string
+    message?: StringFilter<"PlatformAdminNotification"> | string
+    payload?: JsonNullableFilter<"PlatformAdminNotification">
+    campaignId?: StringNullableFilter<"PlatformAdminNotification"> | string | null
+    isRead?: BoolFilter<"PlatformAdminNotification"> | boolean
+    createdAt?: DateTimeFilter<"PlatformAdminNotification"> | Date | string
+  }
+
+  export type PlatformAdminNotificationOrderByWithRelationInput = {
+    notificationId?: SortOrder
+    notificationType?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    payload?: SortOrderInput | SortOrder
+    campaignId?: SortOrderInput | SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PlatformAdminNotificationWhereUniqueInput = Prisma.AtLeast<{
+    notificationId?: string
+    AND?: PlatformAdminNotificationWhereInput | PlatformAdminNotificationWhereInput[]
+    OR?: PlatformAdminNotificationWhereInput[]
+    NOT?: PlatformAdminNotificationWhereInput | PlatformAdminNotificationWhereInput[]
+    notificationType?: EnumPlatformAdminNotificationTypeFilter<"PlatformAdminNotification"> | $Enums.PlatformAdminNotificationType
+    title?: StringFilter<"PlatformAdminNotification"> | string
+    message?: StringFilter<"PlatformAdminNotification"> | string
+    payload?: JsonNullableFilter<"PlatformAdminNotification">
+    campaignId?: StringNullableFilter<"PlatformAdminNotification"> | string | null
+    isRead?: BoolFilter<"PlatformAdminNotification"> | boolean
+    createdAt?: DateTimeFilter<"PlatformAdminNotification"> | Date | string
+  }, "notificationId">
+
+  export type PlatformAdminNotificationOrderByWithAggregationInput = {
+    notificationId?: SortOrder
+    notificationType?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    payload?: SortOrderInput | SortOrder
+    campaignId?: SortOrderInput | SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+    _count?: PlatformAdminNotificationCountOrderByAggregateInput
+    _max?: PlatformAdminNotificationMaxOrderByAggregateInput
+    _min?: PlatformAdminNotificationMinOrderByAggregateInput
+  }
+
+  export type PlatformAdminNotificationScalarWhereWithAggregatesInput = {
+    AND?: PlatformAdminNotificationScalarWhereWithAggregatesInput | PlatformAdminNotificationScalarWhereWithAggregatesInput[]
+    OR?: PlatformAdminNotificationScalarWhereWithAggregatesInput[]
+    NOT?: PlatformAdminNotificationScalarWhereWithAggregatesInput | PlatformAdminNotificationScalarWhereWithAggregatesInput[]
+    notificationId?: StringWithAggregatesFilter<"PlatformAdminNotification"> | string
+    notificationType?: EnumPlatformAdminNotificationTypeWithAggregatesFilter<"PlatformAdminNotification"> | $Enums.PlatformAdminNotificationType
+    title?: StringWithAggregatesFilter<"PlatformAdminNotification"> | string
+    message?: StringWithAggregatesFilter<"PlatformAdminNotification"> | string
+    payload?: JsonNullableWithAggregatesFilter<"PlatformAdminNotification">
+    campaignId?: StringNullableWithAggregatesFilter<"PlatformAdminNotification"> | string | null
+    isRead?: BoolWithAggregatesFilter<"PlatformAdminNotification"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PlatformAdminNotification"> | Date | string
+  }
+
   export type UserCreateInput = {
     userId?: string
     userFirstName: string
@@ -16939,6 +24479,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -16963,6 +24504,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -16987,6 +24529,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -17011,6 +24554,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -18084,6 +25628,676 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PlatformEmailProspectCreateInput = {
+    prospectId?: string
+    email: string
+    firstName?: string | null
+    lastName?: string | null
+    companyName?: string | null
+    status?: $Enums.PlatformEmailProspectStatus
+    unsubscribeToken?: string
+    unsubscribedAt?: Date | string | null
+    source?: string | null
+    notes?: string | null
+    convertedUserId?: string | null
+    convertedAt?: Date | string | null
+    outreachEmailsSent?: number
+    firstOutreachAt?: Date | string | null
+    lastOutreachAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformEmailProspectUncheckedCreateInput = {
+    prospectId?: string
+    email: string
+    firstName?: string | null
+    lastName?: string | null
+    companyName?: string | null
+    status?: $Enums.PlatformEmailProspectStatus
+    unsubscribeToken?: string
+    unsubscribedAt?: Date | string | null
+    source?: string | null
+    notes?: string | null
+    convertedUserId?: string | null
+    convertedAt?: Date | string | null
+    outreachEmailsSent?: number
+    firstOutreachAt?: Date | string | null
+    lastOutreachAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformEmailProspectUpdateInput = {
+    prospectId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPlatformEmailProspectStatusFieldUpdateOperationsInput | $Enums.PlatformEmailProspectStatus
+    unsubscribeToken?: StringFieldUpdateOperationsInput | string
+    unsubscribedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    convertedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    convertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outreachEmailsSent?: IntFieldUpdateOperationsInput | number
+    firstOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailProspectUncheckedUpdateInput = {
+    prospectId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPlatformEmailProspectStatusFieldUpdateOperationsInput | $Enums.PlatformEmailProspectStatus
+    unsubscribeToken?: StringFieldUpdateOperationsInput | string
+    unsubscribedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    convertedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    convertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outreachEmailsSent?: IntFieldUpdateOperationsInput | number
+    firstOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailProspectCreateManyInput = {
+    prospectId?: string
+    email: string
+    firstName?: string | null
+    lastName?: string | null
+    companyName?: string | null
+    status?: $Enums.PlatformEmailProspectStatus
+    unsubscribeToken?: string
+    unsubscribedAt?: Date | string | null
+    source?: string | null
+    notes?: string | null
+    convertedUserId?: string | null
+    convertedAt?: Date | string | null
+    outreachEmailsSent?: number
+    firstOutreachAt?: Date | string | null
+    lastOutreachAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformEmailProspectUpdateManyMutationInput = {
+    prospectId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPlatformEmailProspectStatusFieldUpdateOperationsInput | $Enums.PlatformEmailProspectStatus
+    unsubscribeToken?: StringFieldUpdateOperationsInput | string
+    unsubscribedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    convertedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    convertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outreachEmailsSent?: IntFieldUpdateOperationsInput | number
+    firstOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailProspectUncheckedUpdateManyInput = {
+    prospectId?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    companyName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumPlatformEmailProspectStatusFieldUpdateOperationsInput | $Enums.PlatformEmailProspectStatus
+    unsubscribeToken?: StringFieldUpdateOperationsInput | string
+    unsubscribedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    source?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    convertedUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    convertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    outreachEmailsSent?: IntFieldUpdateOperationsInput | number
+    firstOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignCreateInput = {
+    campaignId?: string
+    campaignKey?: string | null
+    campaignName: string
+    campaignDescription?: string | null
+    campaignStatus?: $Enums.PlatformEmailCampaignStatus
+    audienceType?: $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: string | null
+    emailHtml?: string | null
+    emailText?: string | null
+    messageIntent?: string | null
+    senderEmail?: string | null
+    senderName?: string | null
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    totalRecipients?: number
+    totalSent?: number
+    totalDelivered?: number
+    totalFailed?: number
+    totalBounced?: number
+    totalOpened?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutPlatformEmailCampaignsInput
+    runs?: PlatformEmailCampaignRunCreateNestedManyWithoutCampaignInput
+  }
+
+  export type PlatformEmailCampaignUncheckedCreateInput = {
+    campaignId?: string
+    campaignKey?: string | null
+    campaignName: string
+    campaignDescription?: string | null
+    campaignStatus?: $Enums.PlatformEmailCampaignStatus
+    audienceType?: $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: string | null
+    emailHtml?: string | null
+    emailText?: string | null
+    messageIntent?: string | null
+    senderEmail?: string | null
+    senderName?: string | null
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    totalRecipients?: number
+    totalSent?: number
+    totalDelivered?: number
+    totalFailed?: number
+    totalBounced?: number
+    totalOpened?: number
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    runs?: PlatformEmailCampaignRunUncheckedCreateNestedManyWithoutCampaignInput
+  }
+
+  export type PlatformEmailCampaignUpdateInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignKey?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput | $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    emailHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailText?: NullableStringFieldUpdateOperationsInput | string | null
+    messageIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    totalSent?: IntFieldUpdateOperationsInput | number
+    totalDelivered?: IntFieldUpdateOperationsInput | number
+    totalFailed?: IntFieldUpdateOperationsInput | number
+    totalBounced?: IntFieldUpdateOperationsInput | number
+    totalOpened?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutPlatformEmailCampaignsNestedInput
+    runs?: PlatformEmailCampaignRunUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type PlatformEmailCampaignUncheckedUpdateInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignKey?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput | $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    emailHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailText?: NullableStringFieldUpdateOperationsInput | string | null
+    messageIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    totalSent?: IntFieldUpdateOperationsInput | number
+    totalDelivered?: IntFieldUpdateOperationsInput | number
+    totalFailed?: IntFieldUpdateOperationsInput | number
+    totalBounced?: IntFieldUpdateOperationsInput | number
+    totalOpened?: IntFieldUpdateOperationsInput | number
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runs?: PlatformEmailCampaignRunUncheckedUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type PlatformEmailCampaignCreateManyInput = {
+    campaignId?: string
+    campaignKey?: string | null
+    campaignName: string
+    campaignDescription?: string | null
+    campaignStatus?: $Enums.PlatformEmailCampaignStatus
+    audienceType?: $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: string | null
+    emailHtml?: string | null
+    emailText?: string | null
+    messageIntent?: string | null
+    senderEmail?: string | null
+    senderName?: string | null
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    totalRecipients?: number
+    totalSent?: number
+    totalDelivered?: number
+    totalFailed?: number
+    totalBounced?: number
+    totalOpened?: number
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignUpdateManyMutationInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignKey?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput | $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    emailHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailText?: NullableStringFieldUpdateOperationsInput | string | null
+    messageIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    totalSent?: IntFieldUpdateOperationsInput | number
+    totalDelivered?: IntFieldUpdateOperationsInput | number
+    totalFailed?: IntFieldUpdateOperationsInput | number
+    totalBounced?: IntFieldUpdateOperationsInput | number
+    totalOpened?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignUncheckedUpdateManyInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignKey?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput | $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    emailHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailText?: NullableStringFieldUpdateOperationsInput | string | null
+    messageIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    totalSent?: IntFieldUpdateOperationsInput | number
+    totalDelivered?: IntFieldUpdateOperationsInput | number
+    totalFailed?: IntFieldUpdateOperationsInput | number
+    totalBounced?: IntFieldUpdateOperationsInput | number
+    totalOpened?: IntFieldUpdateOperationsInput | number
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRunCreateInput = {
+    runId?: string
+    runStatus?: $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    recipientCount?: number
+    sentCount?: number
+    deliveredCount?: number
+    failedCount?: number
+    bouncedCount?: number
+    openedCount?: number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    campaign: PlatformEmailCampaignCreateNestedOneWithoutRunsInput
+    recipients?: PlatformEmailCampaignRecipientCreateNestedManyWithoutRunInput
+  }
+
+  export type PlatformEmailCampaignRunUncheckedCreateInput = {
+    runId?: string
+    campaignId: string
+    runStatus?: $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    recipientCount?: number
+    sentCount?: number
+    deliveredCount?: number
+    failedCount?: number
+    bouncedCount?: number
+    openedCount?: number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    recipients?: PlatformEmailCampaignRecipientUncheckedCreateNestedManyWithoutRunInput
+  }
+
+  export type PlatformEmailCampaignRunUpdateInput = {
+    runId?: StringFieldUpdateOperationsInput | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recipientCount?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    deliveredCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    bouncedCount?: IntFieldUpdateOperationsInput | number
+    openedCount?: IntFieldUpdateOperationsInput | number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    campaign?: PlatformEmailCampaignUpdateOneRequiredWithoutRunsNestedInput
+    recipients?: PlatformEmailCampaignRecipientUpdateManyWithoutRunNestedInput
+  }
+
+  export type PlatformEmailCampaignRunUncheckedUpdateInput = {
+    runId?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recipientCount?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    deliveredCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    bouncedCount?: IntFieldUpdateOperationsInput | number
+    openedCount?: IntFieldUpdateOperationsInput | number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recipients?: PlatformEmailCampaignRecipientUncheckedUpdateManyWithoutRunNestedInput
+  }
+
+  export type PlatformEmailCampaignRunCreateManyInput = {
+    runId?: string
+    campaignId: string
+    runStatus?: $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    recipientCount?: number
+    sentCount?: number
+    deliveredCount?: number
+    failedCount?: number
+    bouncedCount?: number
+    openedCount?: number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignRunUpdateManyMutationInput = {
+    runId?: StringFieldUpdateOperationsInput | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recipientCount?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    deliveredCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    bouncedCount?: IntFieldUpdateOperationsInput | number
+    openedCount?: IntFieldUpdateOperationsInput | number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRunUncheckedUpdateManyInput = {
+    runId?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recipientCount?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    deliveredCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    bouncedCount?: IntFieldUpdateOperationsInput | number
+    openedCount?: IntFieldUpdateOperationsInput | number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientCreateInput = {
+    recipientId?: string
+    userId: string
+    businessId?: string | null
+    recipientEmail: string
+    recipientName?: string | null
+    businessName?: string | null
+    deliveryStatus?: $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: string | null
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    openedAt?: Date | string | null
+    openCount?: number
+    createdAt?: Date | string
+    run: PlatformEmailCampaignRunCreateNestedOneWithoutRecipientsInput
+  }
+
+  export type PlatformEmailCampaignRecipientUncheckedCreateInput = {
+    recipientId?: string
+    runId: string
+    userId: string
+    businessId?: string | null
+    recipientEmail: string
+    recipientName?: string | null
+    businessName?: string | null
+    deliveryStatus?: $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: string | null
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    openedAt?: Date | string | null
+    openCount?: number
+    createdAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientUpdateInput = {
+    recipientId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    businessId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessName?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFieldUpdateOperationsInput | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    run?: PlatformEmailCampaignRunUpdateOneRequiredWithoutRecipientsNestedInput
+  }
+
+  export type PlatformEmailCampaignRecipientUncheckedUpdateInput = {
+    recipientId?: StringFieldUpdateOperationsInput | string
+    runId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    businessId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessName?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFieldUpdateOperationsInput | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientCreateManyInput = {
+    recipientId?: string
+    runId: string
+    userId: string
+    businessId?: string | null
+    recipientEmail: string
+    recipientName?: string | null
+    businessName?: string | null
+    deliveryStatus?: $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: string | null
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    openedAt?: Date | string | null
+    openCount?: number
+    createdAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientUpdateManyMutationInput = {
+    recipientId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    businessId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessName?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFieldUpdateOperationsInput | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientUncheckedUpdateManyInput = {
+    recipientId?: StringFieldUpdateOperationsInput | string
+    runId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    businessId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessName?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFieldUpdateOperationsInput | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformAdminNotificationCreateInput = {
+    notificationId?: string
+    notificationType?: $Enums.PlatformAdminNotificationType
+    title: string
+    message: string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    campaignId?: string | null
+    isRead?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PlatformAdminNotificationUncheckedCreateInput = {
+    notificationId?: string
+    notificationType?: $Enums.PlatformAdminNotificationType
+    title: string
+    message: string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    campaignId?: string | null
+    isRead?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PlatformAdminNotificationUpdateInput = {
+    notificationId?: StringFieldUpdateOperationsInput | string
+    notificationType?: EnumPlatformAdminNotificationTypeFieldUpdateOperationsInput | $Enums.PlatformAdminNotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    campaignId?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformAdminNotificationUncheckedUpdateInput = {
+    notificationId?: StringFieldUpdateOperationsInput | string
+    notificationType?: EnumPlatformAdminNotificationTypeFieldUpdateOperationsInput | $Enums.PlatformAdminNotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    campaignId?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformAdminNotificationCreateManyInput = {
+    notificationId?: string
+    notificationType?: $Enums.PlatformAdminNotificationType
+    title: string
+    message: string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    campaignId?: string | null
+    isRead?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PlatformAdminNotificationUpdateManyMutationInput = {
+    notificationId?: StringFieldUpdateOperationsInput | string
+    notificationType?: EnumPlatformAdminNotificationTypeFieldUpdateOperationsInput | $Enums.PlatformAdminNotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    campaignId?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformAdminNotificationUncheckedUpdateManyInput = {
+    notificationId?: StringFieldUpdateOperationsInput | string
+    notificationType?: EnumPlatformAdminNotificationTypeFieldUpdateOperationsInput | $Enums.PlatformAdminNotificationType
+    title?: StringFieldUpdateOperationsInput | string
+    message?: StringFieldUpdateOperationsInput | string
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    campaignId?: NullableStringFieldUpdateOperationsInput | string | null
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -18174,6 +26388,12 @@ export namespace Prisma {
     none?: TicketDetailWhereInput
   }
 
+  export type PlatformEmailCampaignListRelationFilter = {
+    every?: PlatformEmailCampaignWhereInput
+    some?: PlatformEmailCampaignWhereInput
+    none?: PlatformEmailCampaignWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -18208,6 +26428,10 @@ export namespace Prisma {
   }
 
   export type TicketDetailOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PlatformEmailCampaignOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19165,6 +27389,486 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumPlatformEmailProspectStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailProspectStatus | EnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailProspectStatus[] | ListEnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailProspectStatus[] | ListEnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailProspectStatusFilter<$PrismaModel> | $Enums.PlatformEmailProspectStatus
+  }
+
+  export type PlatformEmailProspectCountOrderByAggregateInput = {
+    prospectId?: SortOrder
+    email?: SortOrder
+    firstName?: SortOrder
+    lastName?: SortOrder
+    companyName?: SortOrder
+    status?: SortOrder
+    unsubscribeToken?: SortOrder
+    unsubscribedAt?: SortOrder
+    source?: SortOrder
+    notes?: SortOrder
+    convertedUserId?: SortOrder
+    convertedAt?: SortOrder
+    outreachEmailsSent?: SortOrder
+    firstOutreachAt?: SortOrder
+    lastOutreachAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformEmailProspectAvgOrderByAggregateInput = {
+    outreachEmailsSent?: SortOrder
+  }
+
+  export type PlatformEmailProspectMaxOrderByAggregateInput = {
+    prospectId?: SortOrder
+    email?: SortOrder
+    firstName?: SortOrder
+    lastName?: SortOrder
+    companyName?: SortOrder
+    status?: SortOrder
+    unsubscribeToken?: SortOrder
+    unsubscribedAt?: SortOrder
+    source?: SortOrder
+    notes?: SortOrder
+    convertedUserId?: SortOrder
+    convertedAt?: SortOrder
+    outreachEmailsSent?: SortOrder
+    firstOutreachAt?: SortOrder
+    lastOutreachAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformEmailProspectMinOrderByAggregateInput = {
+    prospectId?: SortOrder
+    email?: SortOrder
+    firstName?: SortOrder
+    lastName?: SortOrder
+    companyName?: SortOrder
+    status?: SortOrder
+    unsubscribeToken?: SortOrder
+    unsubscribedAt?: SortOrder
+    source?: SortOrder
+    notes?: SortOrder
+    convertedUserId?: SortOrder
+    convertedAt?: SortOrder
+    outreachEmailsSent?: SortOrder
+    firstOutreachAt?: SortOrder
+    lastOutreachAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformEmailProspectSumOrderByAggregateInput = {
+    outreachEmailsSent?: SortOrder
+  }
+
+  export type EnumPlatformEmailProspectStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailProspectStatus | EnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailProspectStatus[] | ListEnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailProspectStatus[] | ListEnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailProspectStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailProspectStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailProspectStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailProspectStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPlatformEmailCampaignStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailCampaignStatus | EnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailCampaignStatus[] | ListEnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailCampaignStatus[] | ListEnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailCampaignStatusFilter<$PrismaModel> | $Enums.PlatformEmailCampaignStatus
+  }
+
+  export type EnumPlatformEmailAudienceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailAudienceType | EnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailAudienceType[] | ListEnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailAudienceType[] | ListEnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailAudienceTypeFilter<$PrismaModel> | $Enums.PlatformEmailAudienceType
+  }
+
+  export type EnumPlatformEmailScheduleFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailScheduleFrequency | EnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailScheduleFrequency[] | ListEnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailScheduleFrequency[] | ListEnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailScheduleFrequencyFilter<$PrismaModel> | $Enums.PlatformEmailScheduleFrequency
+  }
+
+  export type PlatformEmailCampaignRunListRelationFilter = {
+    every?: PlatformEmailCampaignRunWhereInput
+    some?: PlatformEmailCampaignRunWhereInput
+    none?: PlatformEmailCampaignRunWhereInput
+  }
+
+  export type PlatformEmailCampaignRunOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PlatformEmailCampaignCountOrderByAggregateInput = {
+    campaignId?: SortOrder
+    campaignKey?: SortOrder
+    campaignName?: SortOrder
+    campaignDescription?: SortOrder
+    campaignStatus?: SortOrder
+    audienceType?: SortOrder
+    audienceParams?: SortOrder
+    scheduleFrequency?: SortOrder
+    emailSubject?: SortOrder
+    emailHtml?: SortOrder
+    emailText?: SortOrder
+    messageIntent?: SortOrder
+    senderEmail?: SortOrder
+    senderName?: SortOrder
+    scheduledAt?: SortOrder
+    sentAt?: SortOrder
+    lastRunAt?: SortOrder
+    totalRecipients?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    totalBounced?: SortOrder
+    totalOpened?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformEmailCampaignAvgOrderByAggregateInput = {
+    totalRecipients?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    totalBounced?: SortOrder
+    totalOpened?: SortOrder
+  }
+
+  export type PlatformEmailCampaignMaxOrderByAggregateInput = {
+    campaignId?: SortOrder
+    campaignKey?: SortOrder
+    campaignName?: SortOrder
+    campaignDescription?: SortOrder
+    campaignStatus?: SortOrder
+    audienceType?: SortOrder
+    scheduleFrequency?: SortOrder
+    emailSubject?: SortOrder
+    emailHtml?: SortOrder
+    emailText?: SortOrder
+    messageIntent?: SortOrder
+    senderEmail?: SortOrder
+    senderName?: SortOrder
+    scheduledAt?: SortOrder
+    sentAt?: SortOrder
+    lastRunAt?: SortOrder
+    totalRecipients?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    totalBounced?: SortOrder
+    totalOpened?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformEmailCampaignMinOrderByAggregateInput = {
+    campaignId?: SortOrder
+    campaignKey?: SortOrder
+    campaignName?: SortOrder
+    campaignDescription?: SortOrder
+    campaignStatus?: SortOrder
+    audienceType?: SortOrder
+    scheduleFrequency?: SortOrder
+    emailSubject?: SortOrder
+    emailHtml?: SortOrder
+    emailText?: SortOrder
+    messageIntent?: SortOrder
+    senderEmail?: SortOrder
+    senderName?: SortOrder
+    scheduledAt?: SortOrder
+    sentAt?: SortOrder
+    lastRunAt?: SortOrder
+    totalRecipients?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    totalBounced?: SortOrder
+    totalOpened?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformEmailCampaignSumOrderByAggregateInput = {
+    totalRecipients?: SortOrder
+    totalSent?: SortOrder
+    totalDelivered?: SortOrder
+    totalFailed?: SortOrder
+    totalBounced?: SortOrder
+    totalOpened?: SortOrder
+  }
+
+  export type EnumPlatformEmailCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailCampaignStatus | EnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailCampaignStatus[] | ListEnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailCampaignStatus[] | ListEnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailCampaignStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailCampaignStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailCampaignStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailCampaignStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPlatformEmailAudienceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailAudienceType | EnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailAudienceType[] | ListEnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailAudienceType[] | ListEnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailAudienceTypeWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailAudienceType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailAudienceTypeFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailAudienceTypeFilter<$PrismaModel>
+  }
+
+  export type EnumPlatformEmailScheduleFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailScheduleFrequency | EnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailScheduleFrequency[] | ListEnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailScheduleFrequency[] | ListEnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailScheduleFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailScheduleFrequency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailScheduleFrequencyFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailScheduleFrequencyFilter<$PrismaModel>
+  }
+
+  export type EnumPlatformEmailCampaignRunStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailCampaignRunStatus | EnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailCampaignRunStatus[] | ListEnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailCampaignRunStatus[] | ListEnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailCampaignRunStatusFilter<$PrismaModel> | $Enums.PlatformEmailCampaignRunStatus
+  }
+
+  export type PlatformEmailCampaignScalarRelationFilter = {
+    is?: PlatformEmailCampaignWhereInput
+    isNot?: PlatformEmailCampaignWhereInput
+  }
+
+  export type PlatformEmailCampaignRecipientListRelationFilter = {
+    every?: PlatformEmailCampaignRecipientWhereInput
+    some?: PlatformEmailCampaignRecipientWhereInput
+    none?: PlatformEmailCampaignRecipientWhereInput
+  }
+
+  export type PlatformEmailCampaignRecipientOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PlatformEmailCampaignRunCountOrderByAggregateInput = {
+    runId?: SortOrder
+    campaignId?: SortOrder
+    runStatus?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    recipientCount?: SortOrder
+    sentCount?: SortOrder
+    deliveredCount?: SortOrder
+    failedCount?: SortOrder
+    bouncedCount?: SortOrder
+    openedCount?: SortOrder
+    errorLog?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PlatformEmailCampaignRunAvgOrderByAggregateInput = {
+    recipientCount?: SortOrder
+    sentCount?: SortOrder
+    deliveredCount?: SortOrder
+    failedCount?: SortOrder
+    bouncedCount?: SortOrder
+    openedCount?: SortOrder
+  }
+
+  export type PlatformEmailCampaignRunMaxOrderByAggregateInput = {
+    runId?: SortOrder
+    campaignId?: SortOrder
+    runStatus?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    recipientCount?: SortOrder
+    sentCount?: SortOrder
+    deliveredCount?: SortOrder
+    failedCount?: SortOrder
+    bouncedCount?: SortOrder
+    openedCount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PlatformEmailCampaignRunMinOrderByAggregateInput = {
+    runId?: SortOrder
+    campaignId?: SortOrder
+    runStatus?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    recipientCount?: SortOrder
+    sentCount?: SortOrder
+    deliveredCount?: SortOrder
+    failedCount?: SortOrder
+    bouncedCount?: SortOrder
+    openedCount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PlatformEmailCampaignRunSumOrderByAggregateInput = {
+    recipientCount?: SortOrder
+    sentCount?: SortOrder
+    deliveredCount?: SortOrder
+    failedCount?: SortOrder
+    bouncedCount?: SortOrder
+    openedCount?: SortOrder
+  }
+
+  export type EnumPlatformEmailCampaignRunStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailCampaignRunStatus | EnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailCampaignRunStatus[] | ListEnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailCampaignRunStatus[] | ListEnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailCampaignRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailCampaignRunStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailCampaignRunStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailCampaignRunStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPlatformEmailRecipientStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailRecipientStatus | EnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailRecipientStatus[] | ListEnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailRecipientStatus[] | ListEnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailRecipientStatusFilter<$PrismaModel> | $Enums.PlatformEmailRecipientStatus
+  }
+
+  export type PlatformEmailCampaignRunScalarRelationFilter = {
+    is?: PlatformEmailCampaignRunWhereInput
+    isNot?: PlatformEmailCampaignRunWhereInput
+  }
+
+  export type PlatformEmailCampaignRecipientCountOrderByAggregateInput = {
+    recipientId?: SortOrder
+    runId?: SortOrder
+    userId?: SortOrder
+    businessId?: SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrder
+    businessName?: SortOrder
+    deliveryStatus?: SortOrder
+    providerMessageId?: SortOrder
+    errorMessage?: SortOrder
+    sentAt?: SortOrder
+    deliveredAt?: SortOrder
+    bouncedAt?: SortOrder
+    openedAt?: SortOrder
+    openCount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PlatformEmailCampaignRecipientAvgOrderByAggregateInput = {
+    openCount?: SortOrder
+  }
+
+  export type PlatformEmailCampaignRecipientMaxOrderByAggregateInput = {
+    recipientId?: SortOrder
+    runId?: SortOrder
+    userId?: SortOrder
+    businessId?: SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrder
+    businessName?: SortOrder
+    deliveryStatus?: SortOrder
+    providerMessageId?: SortOrder
+    errorMessage?: SortOrder
+    sentAt?: SortOrder
+    deliveredAt?: SortOrder
+    bouncedAt?: SortOrder
+    openedAt?: SortOrder
+    openCount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PlatformEmailCampaignRecipientMinOrderByAggregateInput = {
+    recipientId?: SortOrder
+    runId?: SortOrder
+    userId?: SortOrder
+    businessId?: SortOrder
+    recipientEmail?: SortOrder
+    recipientName?: SortOrder
+    businessName?: SortOrder
+    deliveryStatus?: SortOrder
+    providerMessageId?: SortOrder
+    errorMessage?: SortOrder
+    sentAt?: SortOrder
+    deliveredAt?: SortOrder
+    bouncedAt?: SortOrder
+    openedAt?: SortOrder
+    openCount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PlatformEmailCampaignRecipientSumOrderByAggregateInput = {
+    openCount?: SortOrder
+  }
+
+  export type EnumPlatformEmailRecipientStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailRecipientStatus | EnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailRecipientStatus[] | ListEnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailRecipientStatus[] | ListEnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailRecipientStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailRecipientStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailRecipientStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailRecipientStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPlatformAdminNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAdminNotificationType | EnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAdminNotificationType[] | ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAdminNotificationType[] | ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAdminNotificationTypeFilter<$PrismaModel> | $Enums.PlatformAdminNotificationType
+  }
+
+  export type PlatformAdminNotificationCountOrderByAggregateInput = {
+    notificationId?: SortOrder
+    notificationType?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    payload?: SortOrder
+    campaignId?: SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PlatformAdminNotificationMaxOrderByAggregateInput = {
+    notificationId?: SortOrder
+    notificationType?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    campaignId?: SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PlatformAdminNotificationMinOrderByAggregateInput = {
+    notificationId?: SortOrder
+    notificationType?: SortOrder
+    title?: SortOrder
+    message?: SortOrder
+    campaignId?: SortOrder
+    isRead?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumPlatformAdminNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAdminNotificationType | EnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAdminNotificationType[] | ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAdminNotificationType[] | ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAdminNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAdminNotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformAdminNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumPlatformAdminNotificationTypeFilter<$PrismaModel>
+  }
+
   export type UserBusinessCreateNestedManyWithoutUserInput = {
     create?: XOR<UserBusinessCreateWithoutUserInput, UserBusinessUncheckedCreateWithoutUserInput> | UserBusinessCreateWithoutUserInput[] | UserBusinessUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserBusinessCreateOrConnectWithoutUserInput | UserBusinessCreateOrConnectWithoutUserInput[]
@@ -19221,6 +27925,13 @@ export namespace Prisma {
     connect?: TicketDetailWhereUniqueInput | TicketDetailWhereUniqueInput[]
   }
 
+  export type PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<PlatformEmailCampaignCreateWithoutCreatedByInput, PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput> | PlatformEmailCampaignCreateWithoutCreatedByInput[] | PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput | PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput[]
+    createMany?: PlatformEmailCampaignCreateManyCreatedByInputEnvelope
+    connect?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+  }
+
   export type UserBusinessUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<UserBusinessCreateWithoutUserInput, UserBusinessUncheckedCreateWithoutUserInput> | UserBusinessCreateWithoutUserInput[] | UserBusinessUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserBusinessCreateOrConnectWithoutUserInput | UserBusinessCreateOrConnectWithoutUserInput[]
@@ -19275,6 +27986,13 @@ export namespace Prisma {
     connectOrCreate?: TicketDetailCreateOrConnectWithoutCreatedByInput | TicketDetailCreateOrConnectWithoutCreatedByInput[]
     createMany?: TicketDetailCreateManyCreatedByInputEnvelope
     connect?: TicketDetailWhereUniqueInput | TicketDetailWhereUniqueInput[]
+  }
+
+  export type PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<PlatformEmailCampaignCreateWithoutCreatedByInput, PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput> | PlatformEmailCampaignCreateWithoutCreatedByInput[] | PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput | PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput[]
+    createMany?: PlatformEmailCampaignCreateManyCreatedByInputEnvelope
+    connect?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -19405,6 +28123,20 @@ export namespace Prisma {
     deleteMany?: TicketDetailScalarWhereInput | TicketDetailScalarWhereInput[]
   }
 
+  export type PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<PlatformEmailCampaignCreateWithoutCreatedByInput, PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput> | PlatformEmailCampaignCreateWithoutCreatedByInput[] | PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput | PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput[]
+    upsert?: PlatformEmailCampaignUpsertWithWhereUniqueWithoutCreatedByInput | PlatformEmailCampaignUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: PlatformEmailCampaignCreateManyCreatedByInputEnvelope
+    set?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+    disconnect?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+    delete?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+    connect?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+    update?: PlatformEmailCampaignUpdateWithWhereUniqueWithoutCreatedByInput | PlatformEmailCampaignUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: PlatformEmailCampaignUpdateManyWithWhereWithoutCreatedByInput | PlatformEmailCampaignUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: PlatformEmailCampaignScalarWhereInput | PlatformEmailCampaignScalarWhereInput[]
+  }
+
   export type UserBusinessUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserBusinessCreateWithoutUserInput, UserBusinessUncheckedCreateWithoutUserInput> | UserBusinessCreateWithoutUserInput[] | UserBusinessUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserBusinessCreateOrConnectWithoutUserInput | UserBusinessCreateOrConnectWithoutUserInput[]
@@ -19515,6 +28247,20 @@ export namespace Prisma {
     update?: TicketDetailUpdateWithWhereUniqueWithoutCreatedByInput | TicketDetailUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: TicketDetailUpdateManyWithWhereWithoutCreatedByInput | TicketDetailUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: TicketDetailScalarWhereInput | TicketDetailScalarWhereInput[]
+  }
+
+  export type PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<PlatformEmailCampaignCreateWithoutCreatedByInput, PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput> | PlatformEmailCampaignCreateWithoutCreatedByInput[] | PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput | PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput[]
+    upsert?: PlatformEmailCampaignUpsertWithWhereUniqueWithoutCreatedByInput | PlatformEmailCampaignUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: PlatformEmailCampaignCreateManyCreatedByInputEnvelope
+    set?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+    disconnect?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+    delete?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+    connect?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+    update?: PlatformEmailCampaignUpdateWithWhereUniqueWithoutCreatedByInput | PlatformEmailCampaignUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: PlatformEmailCampaignUpdateManyWithWhereWithoutCreatedByInput | PlatformEmailCampaignUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: PlatformEmailCampaignScalarWhereInput | PlatformEmailCampaignScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutBusinessesInput = {
@@ -20280,6 +29026,160 @@ export namespace Prisma {
     update?: XOR<XOR<TicketUpdateToOneWithWhereWithoutTicketDetailsInput, TicketUpdateWithoutTicketDetailsInput>, TicketUncheckedUpdateWithoutTicketDetailsInput>
   }
 
+  export type EnumPlatformEmailProspectStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformEmailProspectStatus
+  }
+
+  export type UserCreateNestedOneWithoutPlatformEmailCampaignsInput = {
+    create?: XOR<UserCreateWithoutPlatformEmailCampaignsInput, UserUncheckedCreateWithoutPlatformEmailCampaignsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlatformEmailCampaignsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PlatformEmailCampaignRunCreateNestedManyWithoutCampaignInput = {
+    create?: XOR<PlatformEmailCampaignRunCreateWithoutCampaignInput, PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput> | PlatformEmailCampaignRunCreateWithoutCampaignInput[] | PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: PlatformEmailCampaignRunCreateOrConnectWithoutCampaignInput | PlatformEmailCampaignRunCreateOrConnectWithoutCampaignInput[]
+    createMany?: PlatformEmailCampaignRunCreateManyCampaignInputEnvelope
+    connect?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+  }
+
+  export type PlatformEmailCampaignRunUncheckedCreateNestedManyWithoutCampaignInput = {
+    create?: XOR<PlatformEmailCampaignRunCreateWithoutCampaignInput, PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput> | PlatformEmailCampaignRunCreateWithoutCampaignInput[] | PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: PlatformEmailCampaignRunCreateOrConnectWithoutCampaignInput | PlatformEmailCampaignRunCreateOrConnectWithoutCampaignInput[]
+    createMany?: PlatformEmailCampaignRunCreateManyCampaignInputEnvelope
+    connect?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+  }
+
+  export type EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformEmailCampaignStatus
+  }
+
+  export type EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformEmailAudienceType
+  }
+
+  export type EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformEmailScheduleFrequency
+  }
+
+  export type UserUpdateOneRequiredWithoutPlatformEmailCampaignsNestedInput = {
+    create?: XOR<UserCreateWithoutPlatformEmailCampaignsInput, UserUncheckedCreateWithoutPlatformEmailCampaignsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPlatformEmailCampaignsInput
+    upsert?: UserUpsertWithoutPlatformEmailCampaignsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPlatformEmailCampaignsInput, UserUpdateWithoutPlatformEmailCampaignsInput>, UserUncheckedUpdateWithoutPlatformEmailCampaignsInput>
+  }
+
+  export type PlatformEmailCampaignRunUpdateManyWithoutCampaignNestedInput = {
+    create?: XOR<PlatformEmailCampaignRunCreateWithoutCampaignInput, PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput> | PlatformEmailCampaignRunCreateWithoutCampaignInput[] | PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: PlatformEmailCampaignRunCreateOrConnectWithoutCampaignInput | PlatformEmailCampaignRunCreateOrConnectWithoutCampaignInput[]
+    upsert?: PlatformEmailCampaignRunUpsertWithWhereUniqueWithoutCampaignInput | PlatformEmailCampaignRunUpsertWithWhereUniqueWithoutCampaignInput[]
+    createMany?: PlatformEmailCampaignRunCreateManyCampaignInputEnvelope
+    set?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+    disconnect?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+    delete?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+    connect?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+    update?: PlatformEmailCampaignRunUpdateWithWhereUniqueWithoutCampaignInput | PlatformEmailCampaignRunUpdateWithWhereUniqueWithoutCampaignInput[]
+    updateMany?: PlatformEmailCampaignRunUpdateManyWithWhereWithoutCampaignInput | PlatformEmailCampaignRunUpdateManyWithWhereWithoutCampaignInput[]
+    deleteMany?: PlatformEmailCampaignRunScalarWhereInput | PlatformEmailCampaignRunScalarWhereInput[]
+  }
+
+  export type PlatformEmailCampaignRunUncheckedUpdateManyWithoutCampaignNestedInput = {
+    create?: XOR<PlatformEmailCampaignRunCreateWithoutCampaignInput, PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput> | PlatformEmailCampaignRunCreateWithoutCampaignInput[] | PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: PlatformEmailCampaignRunCreateOrConnectWithoutCampaignInput | PlatformEmailCampaignRunCreateOrConnectWithoutCampaignInput[]
+    upsert?: PlatformEmailCampaignRunUpsertWithWhereUniqueWithoutCampaignInput | PlatformEmailCampaignRunUpsertWithWhereUniqueWithoutCampaignInput[]
+    createMany?: PlatformEmailCampaignRunCreateManyCampaignInputEnvelope
+    set?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+    disconnect?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+    delete?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+    connect?: PlatformEmailCampaignRunWhereUniqueInput | PlatformEmailCampaignRunWhereUniqueInput[]
+    update?: PlatformEmailCampaignRunUpdateWithWhereUniqueWithoutCampaignInput | PlatformEmailCampaignRunUpdateWithWhereUniqueWithoutCampaignInput[]
+    updateMany?: PlatformEmailCampaignRunUpdateManyWithWhereWithoutCampaignInput | PlatformEmailCampaignRunUpdateManyWithWhereWithoutCampaignInput[]
+    deleteMany?: PlatformEmailCampaignRunScalarWhereInput | PlatformEmailCampaignRunScalarWhereInput[]
+  }
+
+  export type PlatformEmailCampaignCreateNestedOneWithoutRunsInput = {
+    create?: XOR<PlatformEmailCampaignCreateWithoutRunsInput, PlatformEmailCampaignUncheckedCreateWithoutRunsInput>
+    connectOrCreate?: PlatformEmailCampaignCreateOrConnectWithoutRunsInput
+    connect?: PlatformEmailCampaignWhereUniqueInput
+  }
+
+  export type PlatformEmailCampaignRecipientCreateNestedManyWithoutRunInput = {
+    create?: XOR<PlatformEmailCampaignRecipientCreateWithoutRunInput, PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput> | PlatformEmailCampaignRecipientCreateWithoutRunInput[] | PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput[]
+    connectOrCreate?: PlatformEmailCampaignRecipientCreateOrConnectWithoutRunInput | PlatformEmailCampaignRecipientCreateOrConnectWithoutRunInput[]
+    createMany?: PlatformEmailCampaignRecipientCreateManyRunInputEnvelope
+    connect?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+  }
+
+  export type PlatformEmailCampaignRecipientUncheckedCreateNestedManyWithoutRunInput = {
+    create?: XOR<PlatformEmailCampaignRecipientCreateWithoutRunInput, PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput> | PlatformEmailCampaignRecipientCreateWithoutRunInput[] | PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput[]
+    connectOrCreate?: PlatformEmailCampaignRecipientCreateOrConnectWithoutRunInput | PlatformEmailCampaignRecipientCreateOrConnectWithoutRunInput[]
+    createMany?: PlatformEmailCampaignRecipientCreateManyRunInputEnvelope
+    connect?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+  }
+
+  export type EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformEmailCampaignRunStatus
+  }
+
+  export type PlatformEmailCampaignUpdateOneRequiredWithoutRunsNestedInput = {
+    create?: XOR<PlatformEmailCampaignCreateWithoutRunsInput, PlatformEmailCampaignUncheckedCreateWithoutRunsInput>
+    connectOrCreate?: PlatformEmailCampaignCreateOrConnectWithoutRunsInput
+    upsert?: PlatformEmailCampaignUpsertWithoutRunsInput
+    connect?: PlatformEmailCampaignWhereUniqueInput
+    update?: XOR<XOR<PlatformEmailCampaignUpdateToOneWithWhereWithoutRunsInput, PlatformEmailCampaignUpdateWithoutRunsInput>, PlatformEmailCampaignUncheckedUpdateWithoutRunsInput>
+  }
+
+  export type PlatformEmailCampaignRecipientUpdateManyWithoutRunNestedInput = {
+    create?: XOR<PlatformEmailCampaignRecipientCreateWithoutRunInput, PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput> | PlatformEmailCampaignRecipientCreateWithoutRunInput[] | PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput[]
+    connectOrCreate?: PlatformEmailCampaignRecipientCreateOrConnectWithoutRunInput | PlatformEmailCampaignRecipientCreateOrConnectWithoutRunInput[]
+    upsert?: PlatformEmailCampaignRecipientUpsertWithWhereUniqueWithoutRunInput | PlatformEmailCampaignRecipientUpsertWithWhereUniqueWithoutRunInput[]
+    createMany?: PlatformEmailCampaignRecipientCreateManyRunInputEnvelope
+    set?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+    disconnect?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+    delete?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+    connect?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+    update?: PlatformEmailCampaignRecipientUpdateWithWhereUniqueWithoutRunInput | PlatformEmailCampaignRecipientUpdateWithWhereUniqueWithoutRunInput[]
+    updateMany?: PlatformEmailCampaignRecipientUpdateManyWithWhereWithoutRunInput | PlatformEmailCampaignRecipientUpdateManyWithWhereWithoutRunInput[]
+    deleteMany?: PlatformEmailCampaignRecipientScalarWhereInput | PlatformEmailCampaignRecipientScalarWhereInput[]
+  }
+
+  export type PlatformEmailCampaignRecipientUncheckedUpdateManyWithoutRunNestedInput = {
+    create?: XOR<PlatformEmailCampaignRecipientCreateWithoutRunInput, PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput> | PlatformEmailCampaignRecipientCreateWithoutRunInput[] | PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput[]
+    connectOrCreate?: PlatformEmailCampaignRecipientCreateOrConnectWithoutRunInput | PlatformEmailCampaignRecipientCreateOrConnectWithoutRunInput[]
+    upsert?: PlatformEmailCampaignRecipientUpsertWithWhereUniqueWithoutRunInput | PlatformEmailCampaignRecipientUpsertWithWhereUniqueWithoutRunInput[]
+    createMany?: PlatformEmailCampaignRecipientCreateManyRunInputEnvelope
+    set?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+    disconnect?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+    delete?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+    connect?: PlatformEmailCampaignRecipientWhereUniqueInput | PlatformEmailCampaignRecipientWhereUniqueInput[]
+    update?: PlatformEmailCampaignRecipientUpdateWithWhereUniqueWithoutRunInput | PlatformEmailCampaignRecipientUpdateWithWhereUniqueWithoutRunInput[]
+    updateMany?: PlatformEmailCampaignRecipientUpdateManyWithWhereWithoutRunInput | PlatformEmailCampaignRecipientUpdateManyWithWhereWithoutRunInput[]
+    deleteMany?: PlatformEmailCampaignRecipientScalarWhereInput | PlatformEmailCampaignRecipientScalarWhereInput[]
+  }
+
+  export type PlatformEmailCampaignRunCreateNestedOneWithoutRecipientsInput = {
+    create?: XOR<PlatformEmailCampaignRunCreateWithoutRecipientsInput, PlatformEmailCampaignRunUncheckedCreateWithoutRecipientsInput>
+    connectOrCreate?: PlatformEmailCampaignRunCreateOrConnectWithoutRecipientsInput
+    connect?: PlatformEmailCampaignRunWhereUniqueInput
+  }
+
+  export type EnumPlatformEmailRecipientStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformEmailRecipientStatus
+  }
+
+  export type PlatformEmailCampaignRunUpdateOneRequiredWithoutRecipientsNestedInput = {
+    create?: XOR<PlatformEmailCampaignRunCreateWithoutRecipientsInput, PlatformEmailCampaignRunUncheckedCreateWithoutRecipientsInput>
+    connectOrCreate?: PlatformEmailCampaignRunCreateOrConnectWithoutRecipientsInput
+    upsert?: PlatformEmailCampaignRunUpsertWithoutRecipientsInput
+    connect?: PlatformEmailCampaignRunWhereUniqueInput
+    update?: XOR<XOR<PlatformEmailCampaignRunUpdateToOneWithWhereWithoutRecipientsInput, PlatformEmailCampaignRunUpdateWithoutRecipientsInput>, PlatformEmailCampaignRunUncheckedUpdateWithoutRecipientsInput>
+  }
+
+  export type EnumPlatformAdminNotificationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformAdminNotificationType
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -20686,6 +29586,125 @@ export namespace Prisma {
     _max?: NestedEnumTicketDetailOriginFilter<$PrismaModel>
   }
 
+  export type NestedEnumPlatformEmailProspectStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailProspectStatus | EnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailProspectStatus[] | ListEnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailProspectStatus[] | ListEnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailProspectStatusFilter<$PrismaModel> | $Enums.PlatformEmailProspectStatus
+  }
+
+  export type NestedEnumPlatformEmailProspectStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailProspectStatus | EnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailProspectStatus[] | ListEnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailProspectStatus[] | ListEnumPlatformEmailProspectStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailProspectStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailProspectStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailProspectStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailProspectStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPlatformEmailCampaignStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailCampaignStatus | EnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailCampaignStatus[] | ListEnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailCampaignStatus[] | ListEnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailCampaignStatusFilter<$PrismaModel> | $Enums.PlatformEmailCampaignStatus
+  }
+
+  export type NestedEnumPlatformEmailAudienceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailAudienceType | EnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailAudienceType[] | ListEnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailAudienceType[] | ListEnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailAudienceTypeFilter<$PrismaModel> | $Enums.PlatformEmailAudienceType
+  }
+
+  export type NestedEnumPlatformEmailScheduleFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailScheduleFrequency | EnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailScheduleFrequency[] | ListEnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailScheduleFrequency[] | ListEnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailScheduleFrequencyFilter<$PrismaModel> | $Enums.PlatformEmailScheduleFrequency
+  }
+
+  export type NestedEnumPlatformEmailCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailCampaignStatus | EnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailCampaignStatus[] | ListEnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailCampaignStatus[] | ListEnumPlatformEmailCampaignStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailCampaignStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailCampaignStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailCampaignStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailCampaignStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPlatformEmailAudienceTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailAudienceType | EnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailAudienceType[] | ListEnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailAudienceType[] | ListEnumPlatformEmailAudienceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailAudienceTypeWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailAudienceType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailAudienceTypeFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailAudienceTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPlatformEmailScheduleFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailScheduleFrequency | EnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailScheduleFrequency[] | ListEnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailScheduleFrequency[] | ListEnumPlatformEmailScheduleFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailScheduleFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailScheduleFrequency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailScheduleFrequencyFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailScheduleFrequencyFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPlatformEmailCampaignRunStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailCampaignRunStatus | EnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailCampaignRunStatus[] | ListEnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailCampaignRunStatus[] | ListEnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailCampaignRunStatusFilter<$PrismaModel> | $Enums.PlatformEmailCampaignRunStatus
+  }
+
+  export type NestedEnumPlatformEmailCampaignRunStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailCampaignRunStatus | EnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailCampaignRunStatus[] | ListEnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailCampaignRunStatus[] | ListEnumPlatformEmailCampaignRunStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailCampaignRunStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailCampaignRunStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailCampaignRunStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailCampaignRunStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPlatformEmailRecipientStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailRecipientStatus | EnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailRecipientStatus[] | ListEnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailRecipientStatus[] | ListEnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailRecipientStatusFilter<$PrismaModel> | $Enums.PlatformEmailRecipientStatus
+  }
+
+  export type NestedEnumPlatformEmailRecipientStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformEmailRecipientStatus | EnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformEmailRecipientStatus[] | ListEnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformEmailRecipientStatus[] | ListEnumPlatformEmailRecipientStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformEmailRecipientStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformEmailRecipientStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformEmailRecipientStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformEmailRecipientStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPlatformAdminNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAdminNotificationType | EnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAdminNotificationType[] | ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAdminNotificationType[] | ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAdminNotificationTypeFilter<$PrismaModel> | $Enums.PlatformAdminNotificationType
+  }
+
+  export type NestedEnumPlatformAdminNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAdminNotificationType | EnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAdminNotificationType[] | ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAdminNotificationType[] | ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAdminNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAdminNotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformAdminNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumPlatformAdminNotificationTypeFilter<$PrismaModel>
+  }
+
   export type UserBusinessCreateWithoutUserInput = {
     userBusinessRole: $Enums.Role
     createdAt?: Date | string
@@ -21012,6 +30031,74 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PlatformEmailCampaignCreateWithoutCreatedByInput = {
+    campaignId?: string
+    campaignKey?: string | null
+    campaignName: string
+    campaignDescription?: string | null
+    campaignStatus?: $Enums.PlatformEmailCampaignStatus
+    audienceType?: $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: string | null
+    emailHtml?: string | null
+    emailText?: string | null
+    messageIntent?: string | null
+    senderEmail?: string | null
+    senderName?: string | null
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    totalRecipients?: number
+    totalSent?: number
+    totalDelivered?: number
+    totalFailed?: number
+    totalBounced?: number
+    totalOpened?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    runs?: PlatformEmailCampaignRunCreateNestedManyWithoutCampaignInput
+  }
+
+  export type PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput = {
+    campaignId?: string
+    campaignKey?: string | null
+    campaignName: string
+    campaignDescription?: string | null
+    campaignStatus?: $Enums.PlatformEmailCampaignStatus
+    audienceType?: $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: string | null
+    emailHtml?: string | null
+    emailText?: string | null
+    messageIntent?: string | null
+    senderEmail?: string | null
+    senderName?: string | null
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    totalRecipients?: number
+    totalSent?: number
+    totalDelivered?: number
+    totalFailed?: number
+    totalBounced?: number
+    totalOpened?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    runs?: PlatformEmailCampaignRunUncheckedCreateNestedManyWithoutCampaignInput
+  }
+
+  export type PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput = {
+    where: PlatformEmailCampaignWhereUniqueInput
+    create: XOR<PlatformEmailCampaignCreateWithoutCreatedByInput, PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type PlatformEmailCampaignCreateManyCreatedByInputEnvelope = {
+    data: PlatformEmailCampaignCreateManyCreatedByInput | PlatformEmailCampaignCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserBusinessUpsertWithWhereUniqueWithoutUserInput = {
     where: UserBusinessWhereUniqueInput
     update: XOR<UserBusinessUpdateWithoutUserInput, UserBusinessUncheckedUpdateWithoutUserInput>
@@ -21287,6 +30374,54 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"TicketDetail"> | Date | string
   }
 
+  export type PlatformEmailCampaignUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: PlatformEmailCampaignWhereUniqueInput
+    update: XOR<PlatformEmailCampaignUpdateWithoutCreatedByInput, PlatformEmailCampaignUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<PlatformEmailCampaignCreateWithoutCreatedByInput, PlatformEmailCampaignUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type PlatformEmailCampaignUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: PlatformEmailCampaignWhereUniqueInput
+    data: XOR<PlatformEmailCampaignUpdateWithoutCreatedByInput, PlatformEmailCampaignUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type PlatformEmailCampaignUpdateManyWithWhereWithoutCreatedByInput = {
+    where: PlatformEmailCampaignScalarWhereInput
+    data: XOR<PlatformEmailCampaignUpdateManyMutationInput, PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type PlatformEmailCampaignScalarWhereInput = {
+    AND?: PlatformEmailCampaignScalarWhereInput | PlatformEmailCampaignScalarWhereInput[]
+    OR?: PlatformEmailCampaignScalarWhereInput[]
+    NOT?: PlatformEmailCampaignScalarWhereInput | PlatformEmailCampaignScalarWhereInput[]
+    campaignId?: StringFilter<"PlatformEmailCampaign"> | string
+    campaignKey?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    campaignName?: StringFilter<"PlatformEmailCampaign"> | string
+    campaignDescription?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailAudienceType
+    audienceParams?: JsonNullableFilter<"PlatformEmailCampaign">
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFilter<"PlatformEmailCampaign"> | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    emailHtml?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    emailText?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    messageIntent?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    senderEmail?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    senderName?: StringNullableFilter<"PlatformEmailCampaign"> | string | null
+    scheduledAt?: DateTimeNullableFilter<"PlatformEmailCampaign"> | Date | string | null
+    sentAt?: DateTimeNullableFilter<"PlatformEmailCampaign"> | Date | string | null
+    lastRunAt?: DateTimeNullableFilter<"PlatformEmailCampaign"> | Date | string | null
+    totalRecipients?: IntFilter<"PlatformEmailCampaign"> | number
+    totalSent?: IntFilter<"PlatformEmailCampaign"> | number
+    totalDelivered?: IntFilter<"PlatformEmailCampaign"> | number
+    totalFailed?: IntFilter<"PlatformEmailCampaign"> | number
+    totalBounced?: IntFilter<"PlatformEmailCampaign"> | number
+    totalOpened?: IntFilter<"PlatformEmailCampaign"> | number
+    createdByUserId?: StringFilter<"PlatformEmailCampaign"> | string
+    createdAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
+  }
+
   export type UserCreateWithoutBusinessesInput = {
     userId?: string
     userFirstName: string
@@ -21308,6 +30443,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutBusinessesInput = {
@@ -21331,6 +30467,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutBusinessesInput = {
@@ -21568,6 +30705,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBusinessesInput = {
@@ -21591,6 +30729,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserGuestUpsertWithWhereUniqueWithoutBusinessInput = {
@@ -21694,6 +30833,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutUserBusinessInput = {
@@ -21717,6 +30857,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutUserBusinessInput = {
@@ -21811,6 +30952,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserBusinessInput = {
@@ -21834,6 +30976,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BusinessUpsertWithoutUserBusinessInput = {
@@ -21918,6 +31061,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutUserGuestInput = {
@@ -21941,6 +31085,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutUserGuestInput = {
@@ -22035,6 +31180,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserGuestInput = {
@@ -22058,6 +31204,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BusinessUpsertWithoutUserGuestInput = {
@@ -22270,6 +31417,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -22293,6 +31441,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -22512,6 +31661,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -22535,6 +31685,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type PlanUpsertWithoutSubscriptionsInput = {
@@ -22792,6 +31943,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionCancellationsInput = {
@@ -22815,6 +31967,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionCancellationsInput = {
@@ -22968,6 +32121,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionCancellationsInput = {
@@ -22991,6 +32145,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type SubscriptionCreateWithoutPaymentsInput = {
@@ -23149,6 +32304,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionPaymentsInput = {
@@ -23172,6 +32328,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionPaymentsInput = {
@@ -23364,6 +32521,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionPaymentsInput = {
@@ -23387,6 +32545,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TicketDetailCreateWithoutTicketInput = {
@@ -23444,6 +32603,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutTicketsInput = {
@@ -23467,6 +32627,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutTicketsInput = {
@@ -23522,6 +32683,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTicketsInput = {
@@ -23545,6 +32707,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutTicketDetailsInput = {
@@ -23568,6 +32731,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutTicketDetailsInput = {
@@ -23591,6 +32755,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutTicketDetailsInput = {
@@ -23659,6 +32824,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTicketDetailsInput = {
@@ -23682,6 +32848,7 @@ export namespace Prisma {
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TicketUpsertWithoutTicketDetailsInput = {
@@ -23717,6 +32884,491 @@ export namespace Prisma {
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateWithoutPlatformEmailCampaignsInput = {
+    userId?: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userConfirmEmail?: boolean
+    userPassword: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
+    UserGuest?: UserGuestCreateNestedManyWithoutUserInput
+    businesses?: BusinessCreateNestedManyWithoutCreatedByInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
+    subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
+    tickets?: TicketCreateNestedManyWithoutCreatedByInput
+    ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutPlatformEmailCampaignsInput = {
+    userId?: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userConfirmEmail?: boolean
+    userPassword: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
+    UserGuest?: UserGuestUncheckedCreateNestedManyWithoutUserInput
+    businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutPlatformEmailCampaignsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPlatformEmailCampaignsInput, UserUncheckedCreateWithoutPlatformEmailCampaignsInput>
+  }
+
+  export type PlatformEmailCampaignRunCreateWithoutCampaignInput = {
+    runId?: string
+    runStatus?: $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    recipientCount?: number
+    sentCount?: number
+    deliveredCount?: number
+    failedCount?: number
+    bouncedCount?: number
+    openedCount?: number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    recipients?: PlatformEmailCampaignRecipientCreateNestedManyWithoutRunInput
+  }
+
+  export type PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput = {
+    runId?: string
+    runStatus?: $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    recipientCount?: number
+    sentCount?: number
+    deliveredCount?: number
+    failedCount?: number
+    bouncedCount?: number
+    openedCount?: number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    recipients?: PlatformEmailCampaignRecipientUncheckedCreateNestedManyWithoutRunInput
+  }
+
+  export type PlatformEmailCampaignRunCreateOrConnectWithoutCampaignInput = {
+    where: PlatformEmailCampaignRunWhereUniqueInput
+    create: XOR<PlatformEmailCampaignRunCreateWithoutCampaignInput, PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput>
+  }
+
+  export type PlatformEmailCampaignRunCreateManyCampaignInputEnvelope = {
+    data: PlatformEmailCampaignRunCreateManyCampaignInput | PlatformEmailCampaignRunCreateManyCampaignInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutPlatformEmailCampaignsInput = {
+    update: XOR<UserUpdateWithoutPlatformEmailCampaignsInput, UserUncheckedUpdateWithoutPlatformEmailCampaignsInput>
+    create: XOR<UserCreateWithoutPlatformEmailCampaignsInput, UserUncheckedCreateWithoutPlatformEmailCampaignsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPlatformEmailCampaignsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPlatformEmailCampaignsInput, UserUncheckedUpdateWithoutPlatformEmailCampaignsInput>
+  }
+
+  export type UserUpdateWithoutPlatformEmailCampaignsInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userConfirmEmail?: BoolFieldUpdateOperationsInput | boolean
+    userPassword?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
+    UserGuest?: UserGuestUpdateManyWithoutUserNestedInput
+    businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
+    subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
+    tickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPlatformEmailCampaignsInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userConfirmEmail?: BoolFieldUpdateOperationsInput | boolean
+    userPassword?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
+    UserGuest?: UserGuestUncheckedUpdateManyWithoutUserNestedInput
+    businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type PlatformEmailCampaignRunUpsertWithWhereUniqueWithoutCampaignInput = {
+    where: PlatformEmailCampaignRunWhereUniqueInput
+    update: XOR<PlatformEmailCampaignRunUpdateWithoutCampaignInput, PlatformEmailCampaignRunUncheckedUpdateWithoutCampaignInput>
+    create: XOR<PlatformEmailCampaignRunCreateWithoutCampaignInput, PlatformEmailCampaignRunUncheckedCreateWithoutCampaignInput>
+  }
+
+  export type PlatformEmailCampaignRunUpdateWithWhereUniqueWithoutCampaignInput = {
+    where: PlatformEmailCampaignRunWhereUniqueInput
+    data: XOR<PlatformEmailCampaignRunUpdateWithoutCampaignInput, PlatformEmailCampaignRunUncheckedUpdateWithoutCampaignInput>
+  }
+
+  export type PlatformEmailCampaignRunUpdateManyWithWhereWithoutCampaignInput = {
+    where: PlatformEmailCampaignRunScalarWhereInput
+    data: XOR<PlatformEmailCampaignRunUpdateManyMutationInput, PlatformEmailCampaignRunUncheckedUpdateManyWithoutCampaignInput>
+  }
+
+  export type PlatformEmailCampaignRunScalarWhereInput = {
+    AND?: PlatformEmailCampaignRunScalarWhereInput | PlatformEmailCampaignRunScalarWhereInput[]
+    OR?: PlatformEmailCampaignRunScalarWhereInput[]
+    NOT?: PlatformEmailCampaignRunScalarWhereInput | PlatformEmailCampaignRunScalarWhereInput[]
+    runId?: StringFilter<"PlatformEmailCampaignRun"> | string
+    campaignId?: StringFilter<"PlatformEmailCampaignRun"> | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFilter<"PlatformEmailCampaignRun"> | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRun"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRun"> | Date | string | null
+    recipientCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    sentCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    deliveredCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    failedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    bouncedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    openedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    errorLog?: JsonNullableFilter<"PlatformEmailCampaignRun">
+    createdAt?: DateTimeFilter<"PlatformEmailCampaignRun"> | Date | string
+  }
+
+  export type PlatformEmailCampaignCreateWithoutRunsInput = {
+    campaignId?: string
+    campaignKey?: string | null
+    campaignName: string
+    campaignDescription?: string | null
+    campaignStatus?: $Enums.PlatformEmailCampaignStatus
+    audienceType?: $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: string | null
+    emailHtml?: string | null
+    emailText?: string | null
+    messageIntent?: string | null
+    senderEmail?: string | null
+    senderName?: string | null
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    totalRecipients?: number
+    totalSent?: number
+    totalDelivered?: number
+    totalFailed?: number
+    totalBounced?: number
+    totalOpened?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutPlatformEmailCampaignsInput
+  }
+
+  export type PlatformEmailCampaignUncheckedCreateWithoutRunsInput = {
+    campaignId?: string
+    campaignKey?: string | null
+    campaignName: string
+    campaignDescription?: string | null
+    campaignStatus?: $Enums.PlatformEmailCampaignStatus
+    audienceType?: $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: string | null
+    emailHtml?: string | null
+    emailText?: string | null
+    messageIntent?: string | null
+    senderEmail?: string | null
+    senderName?: string | null
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    totalRecipients?: number
+    totalSent?: number
+    totalDelivered?: number
+    totalFailed?: number
+    totalBounced?: number
+    totalOpened?: number
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignCreateOrConnectWithoutRunsInput = {
+    where: PlatformEmailCampaignWhereUniqueInput
+    create: XOR<PlatformEmailCampaignCreateWithoutRunsInput, PlatformEmailCampaignUncheckedCreateWithoutRunsInput>
+  }
+
+  export type PlatformEmailCampaignRecipientCreateWithoutRunInput = {
+    recipientId?: string
+    userId: string
+    businessId?: string | null
+    recipientEmail: string
+    recipientName?: string | null
+    businessName?: string | null
+    deliveryStatus?: $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: string | null
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    openedAt?: Date | string | null
+    openCount?: number
+    createdAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput = {
+    recipientId?: string
+    userId: string
+    businessId?: string | null
+    recipientEmail: string
+    recipientName?: string | null
+    businessName?: string | null
+    deliveryStatus?: $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: string | null
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    openedAt?: Date | string | null
+    openCount?: number
+    createdAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientCreateOrConnectWithoutRunInput = {
+    where: PlatformEmailCampaignRecipientWhereUniqueInput
+    create: XOR<PlatformEmailCampaignRecipientCreateWithoutRunInput, PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput>
+  }
+
+  export type PlatformEmailCampaignRecipientCreateManyRunInputEnvelope = {
+    data: PlatformEmailCampaignRecipientCreateManyRunInput | PlatformEmailCampaignRecipientCreateManyRunInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PlatformEmailCampaignUpsertWithoutRunsInput = {
+    update: XOR<PlatformEmailCampaignUpdateWithoutRunsInput, PlatformEmailCampaignUncheckedUpdateWithoutRunsInput>
+    create: XOR<PlatformEmailCampaignCreateWithoutRunsInput, PlatformEmailCampaignUncheckedCreateWithoutRunsInput>
+    where?: PlatformEmailCampaignWhereInput
+  }
+
+  export type PlatformEmailCampaignUpdateToOneWithWhereWithoutRunsInput = {
+    where?: PlatformEmailCampaignWhereInput
+    data: XOR<PlatformEmailCampaignUpdateWithoutRunsInput, PlatformEmailCampaignUncheckedUpdateWithoutRunsInput>
+  }
+
+  export type PlatformEmailCampaignUpdateWithoutRunsInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignKey?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput | $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    emailHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailText?: NullableStringFieldUpdateOperationsInput | string | null
+    messageIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    totalSent?: IntFieldUpdateOperationsInput | number
+    totalDelivered?: IntFieldUpdateOperationsInput | number
+    totalFailed?: IntFieldUpdateOperationsInput | number
+    totalBounced?: IntFieldUpdateOperationsInput | number
+    totalOpened?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutPlatformEmailCampaignsNestedInput
+  }
+
+  export type PlatformEmailCampaignUncheckedUpdateWithoutRunsInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignKey?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput | $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    emailHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailText?: NullableStringFieldUpdateOperationsInput | string | null
+    messageIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    totalSent?: IntFieldUpdateOperationsInput | number
+    totalDelivered?: IntFieldUpdateOperationsInput | number
+    totalFailed?: IntFieldUpdateOperationsInput | number
+    totalBounced?: IntFieldUpdateOperationsInput | number
+    totalOpened?: IntFieldUpdateOperationsInput | number
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientUpsertWithWhereUniqueWithoutRunInput = {
+    where: PlatformEmailCampaignRecipientWhereUniqueInput
+    update: XOR<PlatformEmailCampaignRecipientUpdateWithoutRunInput, PlatformEmailCampaignRecipientUncheckedUpdateWithoutRunInput>
+    create: XOR<PlatformEmailCampaignRecipientCreateWithoutRunInput, PlatformEmailCampaignRecipientUncheckedCreateWithoutRunInput>
+  }
+
+  export type PlatformEmailCampaignRecipientUpdateWithWhereUniqueWithoutRunInput = {
+    where: PlatformEmailCampaignRecipientWhereUniqueInput
+    data: XOR<PlatformEmailCampaignRecipientUpdateWithoutRunInput, PlatformEmailCampaignRecipientUncheckedUpdateWithoutRunInput>
+  }
+
+  export type PlatformEmailCampaignRecipientUpdateManyWithWhereWithoutRunInput = {
+    where: PlatformEmailCampaignRecipientScalarWhereInput
+    data: XOR<PlatformEmailCampaignRecipientUpdateManyMutationInput, PlatformEmailCampaignRecipientUncheckedUpdateManyWithoutRunInput>
+  }
+
+  export type PlatformEmailCampaignRecipientScalarWhereInput = {
+    AND?: PlatformEmailCampaignRecipientScalarWhereInput | PlatformEmailCampaignRecipientScalarWhereInput[]
+    OR?: PlatformEmailCampaignRecipientScalarWhereInput[]
+    NOT?: PlatformEmailCampaignRecipientScalarWhereInput | PlatformEmailCampaignRecipientScalarWhereInput[]
+    recipientId?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    runId?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    userId?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    businessId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    recipientEmail?: StringFilter<"PlatformEmailCampaignRecipient"> | string
+    recipientName?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    businessName?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFilter<"PlatformEmailCampaignRecipient"> | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    errorMessage?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
+    sentAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    deliveredAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    bouncedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    openedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    openCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
+    createdAt?: DateTimeFilter<"PlatformEmailCampaignRecipient"> | Date | string
+  }
+
+  export type PlatformEmailCampaignRunCreateWithoutRecipientsInput = {
+    runId?: string
+    runStatus?: $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    recipientCount?: number
+    sentCount?: number
+    deliveredCount?: number
+    failedCount?: number
+    bouncedCount?: number
+    openedCount?: number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    campaign: PlatformEmailCampaignCreateNestedOneWithoutRunsInput
+  }
+
+  export type PlatformEmailCampaignRunUncheckedCreateWithoutRecipientsInput = {
+    runId?: string
+    campaignId: string
+    runStatus?: $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    recipientCount?: number
+    sentCount?: number
+    deliveredCount?: number
+    failedCount?: number
+    bouncedCount?: number
+    openedCount?: number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignRunCreateOrConnectWithoutRecipientsInput = {
+    where: PlatformEmailCampaignRunWhereUniqueInput
+    create: XOR<PlatformEmailCampaignRunCreateWithoutRecipientsInput, PlatformEmailCampaignRunUncheckedCreateWithoutRecipientsInput>
+  }
+
+  export type PlatformEmailCampaignRunUpsertWithoutRecipientsInput = {
+    update: XOR<PlatformEmailCampaignRunUpdateWithoutRecipientsInput, PlatformEmailCampaignRunUncheckedUpdateWithoutRecipientsInput>
+    create: XOR<PlatformEmailCampaignRunCreateWithoutRecipientsInput, PlatformEmailCampaignRunUncheckedCreateWithoutRecipientsInput>
+    where?: PlatformEmailCampaignRunWhereInput
+  }
+
+  export type PlatformEmailCampaignRunUpdateToOneWithWhereWithoutRecipientsInput = {
+    where?: PlatformEmailCampaignRunWhereInput
+    data: XOR<PlatformEmailCampaignRunUpdateWithoutRecipientsInput, PlatformEmailCampaignRunUncheckedUpdateWithoutRecipientsInput>
+  }
+
+  export type PlatformEmailCampaignRunUpdateWithoutRecipientsInput = {
+    runId?: StringFieldUpdateOperationsInput | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recipientCount?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    deliveredCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    bouncedCount?: IntFieldUpdateOperationsInput | number
+    openedCount?: IntFieldUpdateOperationsInput | number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    campaign?: PlatformEmailCampaignUpdateOneRequiredWithoutRunsNestedInput
+  }
+
+  export type PlatformEmailCampaignRunUncheckedUpdateWithoutRecipientsInput = {
+    runId?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recipientCount?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    deliveredCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    bouncedCount?: IntFieldUpdateOperationsInput | number
+    openedCount?: IntFieldUpdateOperationsInput | number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserBusinessCreateManyUserInput = {
@@ -23830,6 +33482,34 @@ export namespace Prisma {
     ticketDetailImage?: TicketDetailCreateticketDetailImageInput | string[]
     ticketAssociatedTo?: TicketDetailCreateticketAssociatedToInput | string[]
     ticketDetailOrigin: $Enums.TicketDetailOrigin
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignCreateManyCreatedByInput = {
+    campaignId?: string
+    campaignKey?: string | null
+    campaignName: string
+    campaignDescription?: string | null
+    campaignStatus?: $Enums.PlatformEmailCampaignStatus
+    audienceType?: $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: string | null
+    emailHtml?: string | null
+    emailText?: string | null
+    messageIntent?: string | null
+    senderEmail?: string | null
+    senderName?: string | null
+    scheduledAt?: Date | string | null
+    sentAt?: Date | string | null
+    lastRunAt?: Date | string | null
+    totalRecipients?: number
+    totalSent?: number
+    totalDelivered?: number
+    totalFailed?: number
+    totalBounced?: number
+    totalOpened?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24191,6 +33871,92 @@ export namespace Prisma {
     ticketDetailImage?: TicketDetailUpdateticketDetailImageInput | string[]
     ticketAssociatedTo?: TicketDetailUpdateticketAssociatedToInput | string[]
     ticketDetailOrigin?: EnumTicketDetailOriginFieldUpdateOperationsInput | $Enums.TicketDetailOrigin
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignUpdateWithoutCreatedByInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignKey?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput | $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    emailHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailText?: NullableStringFieldUpdateOperationsInput | string | null
+    messageIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    totalSent?: IntFieldUpdateOperationsInput | number
+    totalDelivered?: IntFieldUpdateOperationsInput | number
+    totalFailed?: IntFieldUpdateOperationsInput | number
+    totalBounced?: IntFieldUpdateOperationsInput | number
+    totalOpened?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runs?: PlatformEmailCampaignRunUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type PlatformEmailCampaignUncheckedUpdateWithoutCreatedByInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignKey?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput | $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    emailHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailText?: NullableStringFieldUpdateOperationsInput | string | null
+    messageIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    totalSent?: IntFieldUpdateOperationsInput | number
+    totalDelivered?: IntFieldUpdateOperationsInput | number
+    totalFailed?: IntFieldUpdateOperationsInput | number
+    totalBounced?: IntFieldUpdateOperationsInput | number
+    totalOpened?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    runs?: PlatformEmailCampaignRunUncheckedUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByInput = {
+    campaignId?: StringFieldUpdateOperationsInput | string
+    campaignKey?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignName?: StringFieldUpdateOperationsInput | string
+    campaignDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    campaignStatus?: EnumPlatformEmailCampaignStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignStatus
+    audienceType?: EnumPlatformEmailAudienceTypeFieldUpdateOperationsInput | $Enums.PlatformEmailAudienceType
+    audienceParams?: NullableJsonNullValueInput | InputJsonValue
+    scheduleFrequency?: EnumPlatformEmailScheduleFrequencyFieldUpdateOperationsInput | $Enums.PlatformEmailScheduleFrequency
+    emailSubject?: NullableStringFieldUpdateOperationsInput | string | null
+    emailHtml?: NullableStringFieldUpdateOperationsInput | string | null
+    emailText?: NullableStringFieldUpdateOperationsInput | string | null
+    messageIntent?: NullableStringFieldUpdateOperationsInput | string | null
+    senderEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    senderName?: NullableStringFieldUpdateOperationsInput | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastRunAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecipients?: IntFieldUpdateOperationsInput | number
+    totalSent?: IntFieldUpdateOperationsInput | number
+    totalDelivered?: IntFieldUpdateOperationsInput | number
+    totalFailed?: IntFieldUpdateOperationsInput | number
+    totalBounced?: IntFieldUpdateOperationsInput | number
+    totalOpened?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24825,6 +34591,140 @@ export namespace Prisma {
     ticketDetailOrigin?: EnumTicketDetailOriginFieldUpdateOperationsInput | $Enums.TicketDetailOrigin
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRunCreateManyCampaignInput = {
+    runId?: string
+    runStatus?: $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    recipientCount?: number
+    sentCount?: number
+    deliveredCount?: number
+    failedCount?: number
+    bouncedCount?: number
+    openedCount?: number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignRunUpdateWithoutCampaignInput = {
+    runId?: StringFieldUpdateOperationsInput | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recipientCount?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    deliveredCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    bouncedCount?: IntFieldUpdateOperationsInput | number
+    openedCount?: IntFieldUpdateOperationsInput | number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recipients?: PlatformEmailCampaignRecipientUpdateManyWithoutRunNestedInput
+  }
+
+  export type PlatformEmailCampaignRunUncheckedUpdateWithoutCampaignInput = {
+    runId?: StringFieldUpdateOperationsInput | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recipientCount?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    deliveredCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    bouncedCount?: IntFieldUpdateOperationsInput | number
+    openedCount?: IntFieldUpdateOperationsInput | number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recipients?: PlatformEmailCampaignRecipientUncheckedUpdateManyWithoutRunNestedInput
+  }
+
+  export type PlatformEmailCampaignRunUncheckedUpdateManyWithoutCampaignInput = {
+    runId?: StringFieldUpdateOperationsInput | string
+    runStatus?: EnumPlatformEmailCampaignRunStatusFieldUpdateOperationsInput | $Enums.PlatformEmailCampaignRunStatus
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recipientCount?: IntFieldUpdateOperationsInput | number
+    sentCount?: IntFieldUpdateOperationsInput | number
+    deliveredCount?: IntFieldUpdateOperationsInput | number
+    failedCount?: IntFieldUpdateOperationsInput | number
+    bouncedCount?: IntFieldUpdateOperationsInput | number
+    openedCount?: IntFieldUpdateOperationsInput | number
+    errorLog?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientCreateManyRunInput = {
+    recipientId?: string
+    userId: string
+    businessId?: string | null
+    recipientEmail: string
+    recipientName?: string | null
+    businessName?: string | null
+    deliveryStatus?: $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: string | null
+    errorMessage?: string | null
+    sentAt?: Date | string | null
+    deliveredAt?: Date | string | null
+    bouncedAt?: Date | string | null
+    openedAt?: Date | string | null
+    openCount?: number
+    createdAt?: Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientUpdateWithoutRunInput = {
+    recipientId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    businessId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessName?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFieldUpdateOperationsInput | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientUncheckedUpdateWithoutRunInput = {
+    recipientId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    businessId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessName?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFieldUpdateOperationsInput | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformEmailCampaignRecipientUncheckedUpdateManyWithoutRunInput = {
+    recipientId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    businessId?: NullableStringFieldUpdateOperationsInput | string | null
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    recipientName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessName?: NullableStringFieldUpdateOperationsInput | string | null
+    deliveryStatus?: EnumPlatformEmailRecipientStatusFieldUpdateOperationsInput | $Enums.PlatformEmailRecipientStatus
+    providerMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    openCount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

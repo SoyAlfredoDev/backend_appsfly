@@ -280,6 +280,101 @@ exports.Prisma.NewsletterSubscriberScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PlatformEmailProspectScalarFieldEnum = {
+  prospectId: 'prospectId',
+  email: 'email',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  companyName: 'companyName',
+  status: 'status',
+  unsubscribeToken: 'unsubscribeToken',
+  unsubscribedAt: 'unsubscribedAt',
+  source: 'source',
+  notes: 'notes',
+  convertedUserId: 'convertedUserId',
+  convertedAt: 'convertedAt',
+  outreachEmailsSent: 'outreachEmailsSent',
+  firstOutreachAt: 'firstOutreachAt',
+  lastOutreachAt: 'lastOutreachAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PlatformEmailCampaignScalarFieldEnum = {
+  campaignId: 'campaignId',
+  campaignKey: 'campaignKey',
+  campaignName: 'campaignName',
+  campaignDescription: 'campaignDescription',
+  campaignStatus: 'campaignStatus',
+  audienceType: 'audienceType',
+  audienceParams: 'audienceParams',
+  scheduleFrequency: 'scheduleFrequency',
+  emailSubject: 'emailSubject',
+  emailHtml: 'emailHtml',
+  emailText: 'emailText',
+  messageIntent: 'messageIntent',
+  senderEmail: 'senderEmail',
+  senderName: 'senderName',
+  scheduledAt: 'scheduledAt',
+  sentAt: 'sentAt',
+  lastRunAt: 'lastRunAt',
+  totalRecipients: 'totalRecipients',
+  totalSent: 'totalSent',
+  totalDelivered: 'totalDelivered',
+  totalFailed: 'totalFailed',
+  totalBounced: 'totalBounced',
+  totalOpened: 'totalOpened',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PlatformEmailCampaignRunScalarFieldEnum = {
+  runId: 'runId',
+  campaignId: 'campaignId',
+  runStatus: 'runStatus',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  recipientCount: 'recipientCount',
+  sentCount: 'sentCount',
+  deliveredCount: 'deliveredCount',
+  failedCount: 'failedCount',
+  bouncedCount: 'bouncedCount',
+  openedCount: 'openedCount',
+  errorLog: 'errorLog',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PlatformEmailCampaignRecipientScalarFieldEnum = {
+  recipientId: 'recipientId',
+  runId: 'runId',
+  userId: 'userId',
+  businessId: 'businessId',
+  recipientEmail: 'recipientEmail',
+  recipientName: 'recipientName',
+  businessName: 'businessName',
+  deliveryStatus: 'deliveryStatus',
+  providerMessageId: 'providerMessageId',
+  errorMessage: 'errorMessage',
+  sentAt: 'sentAt',
+  deliveredAt: 'deliveredAt',
+  bouncedAt: 'bouncedAt',
+  openedAt: 'openedAt',
+  openCount: 'openCount',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PlatformAdminNotificationScalarFieldEnum = {
+  notificationId: 'notificationId',
+  notificationType: 'notificationType',
+  title: 'title',
+  message: 'message',
+  payload: 'payload',
+  campaignId: 'campaignId',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -371,6 +466,65 @@ exports.TicketDetailOrigin = exports.$Enums.TicketDetailOrigin = {
   APPSFLY: 'APPSFLY'
 };
 
+exports.PlatformEmailProspectStatus = exports.$Enums.PlatformEmailProspectStatus = {
+  ACTIVE: 'ACTIVE',
+  UNSUBSCRIBED: 'UNSUBSCRIBED',
+  CONVERTED: 'CONVERTED'
+};
+
+exports.PlatformEmailCampaignStatus = exports.$Enums.PlatformEmailCampaignStatus = {
+  DRAFT: 'DRAFT',
+  SCHEDULED: 'SCHEDULED',
+  SENDING: 'SENDING',
+  SENT: 'SENT',
+  FAILED: 'FAILED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+exports.PlatformEmailAudienceType = exports.$Enums.PlatformEmailAudienceType = {
+  ALL_USERS: 'ALL_USERS',
+  CONFIRMED_EMAIL: 'CONFIRMED_EMAIL',
+  PENDING_EMAIL: 'PENDING_EMAIL',
+  ACTIVE_SUBSCRIPTION: 'ACTIVE_SUBSCRIPTION',
+  EXPIRED_SUBSCRIPTION: 'EXPIRED_SUBSCRIPTION',
+  NEWSLETTER_SUBSCRIBERS: 'NEWSLETTER_SUBSCRIBERS',
+  SUSPENDED_BUSINESS_ADMINS: 'SUSPENDED_BUSINESS_ADMINS',
+  BUSINESS_ADMINS_PLAN_EXPIRING_5D: 'BUSINESS_ADMINS_PLAN_EXPIRING_5D',
+  BUSINESS_ADMINS_PLAN_EXPIRING_TODAY: 'BUSINESS_ADMINS_PLAN_EXPIRING_TODAY',
+  PLATFORM_PROSPECTS: 'PLATFORM_PROSPECTS',
+  CUSTOM_SEGMENT: 'CUSTOM_SEGMENT'
+};
+
+exports.PlatformEmailScheduleFrequency = exports.$Enums.PlatformEmailScheduleFrequency = {
+  MANUAL: 'MANUAL',
+  MONTHLY: 'MONTHLY',
+  DAILY: 'DAILY',
+  WEEKLY: 'WEEKLY'
+};
+
+exports.PlatformEmailCampaignRunStatus = exports.$Enums.PlatformEmailCampaignRunStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.PlatformEmailRecipientStatus = exports.$Enums.PlatformEmailRecipientStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED'
+};
+
+exports.PlatformAdminNotificationType = exports.$Enums.PlatformAdminNotificationType = {
+  CAMPAIGN_SUCCESS: 'CAMPAIGN_SUCCESS',
+  CAMPAIGN_FAILED: 'CAMPAIGN_FAILED',
+  CAMPAIGN_SKIPPED: 'CAMPAIGN_SKIPPED',
+  CAMPAIGN_AUTO_RUN: 'CAMPAIGN_AUTO_RUN'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Business: 'Business',
@@ -382,7 +536,12 @@ exports.Prisma.ModelName = {
   SubscriptionPayment: 'SubscriptionPayment',
   Ticket: 'Ticket',
   TicketDetail: 'TicketDetail',
-  newsletterSubscriber: 'newsletterSubscriber'
+  newsletterSubscriber: 'newsletterSubscriber',
+  PlatformEmailProspect: 'PlatformEmailProspect',
+  PlatformEmailCampaign: 'PlatformEmailCampaign',
+  PlatformEmailCampaignRun: 'PlatformEmailCampaignRun',
+  PlatformEmailCampaignRecipient: 'PlatformEmailCampaignRecipient',
+  PlatformAdminNotification: 'PlatformAdminNotification'
 };
 
 /**
