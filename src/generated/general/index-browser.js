@@ -375,6 +375,21 @@ exports.Prisma.PlatformAdminNotificationScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.PlatformAgentTaskScalarFieldEnum = {
+  taskId: 'taskId',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  priority: 'priority',
+  safetyStatus: 'safetyStatus',
+  safetyReason: 'safetyReason',
+  createdByUserId: 'createdByUserId',
+  executionNotes: 'executionNotes',
+  executedAt: 'executedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -525,6 +540,25 @@ exports.PlatformAdminNotificationType = exports.$Enums.PlatformAdminNotification
   CAMPAIGN_AUTO_RUN: 'CAMPAIGN_AUTO_RUN'
 };
 
+exports.PlatformAgentTaskStatus = exports.$Enums.PlatformAgentTaskStatus = {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  BLOCKED: 'BLOCKED'
+};
+
+exports.PlatformAgentTaskPriority = exports.$Enums.PlatformAgentTaskPriority = {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH'
+};
+
+exports.PlatformAgentTaskSafety = exports.$Enums.PlatformAgentTaskSafety = {
+  APPROVED: 'APPROVED',
+  BLOCKED: 'BLOCKED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Business: 'Business',
@@ -541,7 +575,8 @@ exports.Prisma.ModelName = {
   PlatformEmailCampaign: 'PlatformEmailCampaign',
   PlatformEmailCampaignRun: 'PlatformEmailCampaignRun',
   PlatformEmailCampaignRecipient: 'PlatformEmailCampaignRecipient',
-  PlatformAdminNotification: 'PlatformAdminNotification'
+  PlatformAdminNotification: 'PlatformAdminNotification',
+  PlatformAgentTask: 'PlatformAgentTask'
 };
 
 /**

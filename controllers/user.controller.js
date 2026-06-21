@@ -1,5 +1,6 @@
 import { getUsers, validateUserRutExists, getUserById, updateUserConfirmEmail } from "../services/usersService.js";
 import userSuperAdmin from '../superAdmin.js';
+import { isUserPlatformOwner } from '../middlewares/platformOwnerMiddleware.js';
 import { sendConfirmEmail } from "../emails/dispatchers/confirmEmail.dispatcher.js";
 export const getUsersController = async (req, res) => {
     try {
@@ -53,6 +54,20 @@ export const userIsSuperAdminController = (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
+export const userIsPlatformOwnerController = async (req, res) => {
+    try {
+        const userId = req.user?.payload?.id;
+        if (!userId) {
+            return res.status(200).json({ isPlatformOwner: false });
+        }
+        const isPlatformOwner = await isUserPlatformOwner(userId);
+        return res.status(200).json({ isPlatformOwner });
+    } catch (error) {
+        console.error("(user.controller.js): Error checking platform owner:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
 
 export const sendUserConfirmEmailController = async (req, res) => {
     try {

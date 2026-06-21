@@ -4,6 +4,7 @@ import {
     validateRutExists,
     getUserByIdController,
     userIsSuperAdminController,
+    userIsPlatformOwnerController,
     updateUserConfirmEmailController,
     countUsersController,
     sendUserConfirmEmailController,
@@ -21,6 +22,7 @@ router.get('/users/validateRutExists/:rut', authRequired, validateRutExists);
 
 // Es vital que esta vaya ANTES de /users/:id para que "isSuperAdmin" no se confunda con un ID
 router.get('/users/isSuperAdmin', authRequired, userIsSuperAdminController);
+router.get('/users/isPlatformOwner', authRequired, userIsPlatformOwnerController);
 
 // Rutas con middleware especial (Multi-tenancy)
 router.get('/db/users', authRequired, dbSelectorMiddleware, getUsersControllerBusinessDB);

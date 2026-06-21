@@ -36,6 +36,7 @@ model User {
     tickets       Ticket[]
     ticketDetails TicketDetail[]
     platformEmailCampaigns PlatformEmailCampaign[]
+    agentTasks             PlatformAgentTask[]
 
 }
 
@@ -359,6 +360,46 @@ model PlatformAdminNotification {
 
     @@index([isRead])
     @@index([createdAt])
+}
+
+/** Cola de tareas para ejecutar con el agente (Cursor) — solo propietario de plataforma */
+model PlatformAgentTask {
+    taskId          String                    @id @default(uuid())
+    title           String
+    description     String
+    status          PlatformAgentTaskStatus   @default(PENDING)
+    priority        PlatformAgentTaskPriority @default(NORMAL)
+    safetyStatus    PlatformAgentTaskSafety   @default(APPROVED)
+    safetyReason    String?
+    createdByUserId String
+    createdBy       User                      @relation(fields: [createdByUserId], references: [userId], onDelete: Cascade)
+    executionNotes  String?
+    executedAt      DateTime?
+    createdAt       DateTime                  @default(now())
+    updatedAt       DateTime                  @updatedAt
+
+    @@index([status])
+    @@index([createdAt])
+    @@index([createdByUserId])
+}
+
+enum PlatformAgentTaskStatus {
+    PENDING
+    IN_PROGRESS
+    COMPLETED
+    CANCELLED
+    BLOCKED
+}
+
+enum PlatformAgentTaskPriority {
+    LOW
+    NORMAL
+    HIGH
+}
+
+enum PlatformAgentTaskSafety {
+    APPROVED
+    BLOCKED
 }
 
 enum PlatformAdminNotificationType {

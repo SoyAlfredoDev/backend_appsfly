@@ -93,6 +93,11 @@ export type PlatformEmailCampaignRecipient = $Result.DefaultSelection<Prisma.$Pl
  * 
  */
 export type PlatformAdminNotification = $Result.DefaultSelection<Prisma.$PlatformAdminNotificationPayload>
+/**
+ * Model PlatformAgentTask
+ * * Cola de tareas para ejecutar con el agente (Cursor) — solo propietario de plataforma
+ */
+export type PlatformAgentTask = $Result.DefaultSelection<Prisma.$PlatformAgentTaskPayload>
 
 /**
  * Enums
@@ -105,6 +110,34 @@ export namespace $Enums {
 };
 
 export type PlatformEmailProspectStatus = (typeof PlatformEmailProspectStatus)[keyof typeof PlatformEmailProspectStatus]
+
+
+export const PlatformAgentTaskStatus: {
+  PENDING: 'PENDING',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  BLOCKED: 'BLOCKED'
+};
+
+export type PlatformAgentTaskStatus = (typeof PlatformAgentTaskStatus)[keyof typeof PlatformAgentTaskStatus]
+
+
+export const PlatformAgentTaskPriority: {
+  LOW: 'LOW',
+  NORMAL: 'NORMAL',
+  HIGH: 'HIGH'
+};
+
+export type PlatformAgentTaskPriority = (typeof PlatformAgentTaskPriority)[keyof typeof PlatformAgentTaskPriority]
+
+
+export const PlatformAgentTaskSafety: {
+  APPROVED: 'APPROVED',
+  BLOCKED: 'BLOCKED'
+};
+
+export type PlatformAgentTaskSafety = (typeof PlatformAgentTaskSafety)[keyof typeof PlatformAgentTaskSafety]
 
 
 export const PlatformAdminNotificationType: {
@@ -274,6 +307,18 @@ export type TicketDetailOrigin = (typeof TicketDetailOrigin)[keyof typeof Ticket
 export type PlatformEmailProspectStatus = $Enums.PlatformEmailProspectStatus
 
 export const PlatformEmailProspectStatus: typeof $Enums.PlatformEmailProspectStatus
+
+export type PlatformAgentTaskStatus = $Enums.PlatformAgentTaskStatus
+
+export const PlatformAgentTaskStatus: typeof $Enums.PlatformAgentTaskStatus
+
+export type PlatformAgentTaskPriority = $Enums.PlatformAgentTaskPriority
+
+export const PlatformAgentTaskPriority: typeof $Enums.PlatformAgentTaskPriority
+
+export type PlatformAgentTaskSafety = $Enums.PlatformAgentTaskSafety
+
+export const PlatformAgentTaskSafety: typeof $Enums.PlatformAgentTaskSafety
 
 export type PlatformAdminNotificationType = $Enums.PlatformAdminNotificationType
 
@@ -616,6 +661,16 @@ export class PrismaClient<
     * ```
     */
   get platformAdminNotification(): Prisma.PlatformAdminNotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.platformAgentTask`: Exposes CRUD operations for the **PlatformAgentTask** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PlatformAgentTasks
+    * const platformAgentTasks = await prisma.platformAgentTask.findMany()
+    * ```
+    */
+  get platformAgentTask(): Prisma.PlatformAgentTaskDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1072,7 +1127,8 @@ export namespace Prisma {
     PlatformEmailCampaign: 'PlatformEmailCampaign',
     PlatformEmailCampaignRun: 'PlatformEmailCampaignRun',
     PlatformEmailCampaignRecipient: 'PlatformEmailCampaignRecipient',
-    PlatformAdminNotification: 'PlatformAdminNotification'
+    PlatformAdminNotification: 'PlatformAdminNotification',
+    PlatformAgentTask: 'PlatformAgentTask'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1091,7 +1147,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "business" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber" | "platformEmailProspect" | "platformEmailCampaign" | "platformEmailCampaignRun" | "platformEmailCampaignRecipient" | "platformAdminNotification"
+      modelProps: "user" | "business" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber" | "platformEmailProspect" | "platformEmailCampaign" | "platformEmailCampaignRun" | "platformEmailCampaignRecipient" | "platformAdminNotification" | "platformAgentTask"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2279,6 +2335,80 @@ export namespace Prisma {
           }
         }
       }
+      PlatformAgentTask: {
+        payload: Prisma.$PlatformAgentTaskPayload<ExtArgs>
+        fields: Prisma.PlatformAgentTaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PlatformAgentTaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PlatformAgentTaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload>
+          }
+          findFirst: {
+            args: Prisma.PlatformAgentTaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PlatformAgentTaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload>
+          }
+          findMany: {
+            args: Prisma.PlatformAgentTaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload>[]
+          }
+          create: {
+            args: Prisma.PlatformAgentTaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload>
+          }
+          createMany: {
+            args: Prisma.PlatformAgentTaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PlatformAgentTaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload>[]
+          }
+          delete: {
+            args: Prisma.PlatformAgentTaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload>
+          }
+          update: {
+            args: Prisma.PlatformAgentTaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.PlatformAgentTaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PlatformAgentTaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PlatformAgentTaskUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload>[]
+          }
+          upsert: {
+            args: Prisma.PlatformAgentTaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PlatformAgentTaskPayload>
+          }
+          aggregate: {
+            args: Prisma.PlatformAgentTaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePlatformAgentTask>
+          }
+          groupBy: {
+            args: Prisma.PlatformAgentTaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PlatformAgentTaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PlatformAgentTaskCountArgs<ExtArgs>
+            result: $Utils.Optional<PlatformAgentTaskCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2391,6 +2521,7 @@ export namespace Prisma {
     platformEmailCampaignRun?: PlatformEmailCampaignRunOmit
     platformEmailCampaignRecipient?: PlatformEmailCampaignRecipientOmit
     platformAdminNotification?: PlatformAdminNotificationOmit
+    platformAgentTask?: PlatformAgentTaskOmit
   }
 
   /* Types for Logging */
@@ -2480,6 +2611,7 @@ export namespace Prisma {
     tickets: number
     ticketDetails: number
     platformEmailCampaigns: number
+    agentTasks: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2492,6 +2624,7 @@ export namespace Prisma {
     tickets?: boolean | UserCountOutputTypeCountTicketsArgs
     ticketDetails?: boolean | UserCountOutputTypeCountTicketDetailsArgs
     platformEmailCampaigns?: boolean | UserCountOutputTypeCountPlatformEmailCampaignsArgs
+    agentTasks?: boolean | UserCountOutputTypeCountAgentTasksArgs
   }
 
   // Custom InputTypes
@@ -2566,6 +2699,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPlatformEmailCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PlatformEmailCampaignWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAgentTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformAgentTaskWhereInput
   }
 
 
@@ -3050,6 +3190,7 @@ export namespace Prisma {
     tickets?: boolean | User$ticketsArgs<ExtArgs>
     ticketDetails?: boolean | User$ticketDetailsArgs<ExtArgs>
     platformEmailCampaigns?: boolean | User$platformEmailCampaignsArgs<ExtArgs>
+    agentTasks?: boolean | User$agentTasksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3112,6 +3253,7 @@ export namespace Prisma {
     tickets?: boolean | User$ticketsArgs<ExtArgs>
     ticketDetails?: boolean | User$ticketDetailsArgs<ExtArgs>
     platformEmailCampaigns?: boolean | User$platformEmailCampaignsArgs<ExtArgs>
+    agentTasks?: boolean | User$agentTasksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3129,6 +3271,7 @@ export namespace Prisma {
       tickets: Prisma.$TicketPayload<ExtArgs>[]
       ticketDetails: Prisma.$TicketDetailPayload<ExtArgs>[]
       platformEmailCampaigns: Prisma.$PlatformEmailCampaignPayload<ExtArgs>[]
+      agentTasks: Prisma.$PlatformAgentTaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       userId: string
@@ -3547,6 +3690,7 @@ export namespace Prisma {
     tickets<T extends User$ticketsArgs<ExtArgs> = {}>(args?: Subset<T, User$ticketsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ticketDetails<T extends User$ticketDetailsArgs<ExtArgs> = {}>(args?: Subset<T, User$ticketDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TicketDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     platformEmailCampaigns<T extends User$platformEmailCampaignsArgs<ExtArgs> = {}>(args?: Subset<T, User$platformEmailCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformEmailCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    agentTasks<T extends User$agentTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$agentTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4190,6 +4334,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PlatformEmailCampaignScalarFieldEnum | PlatformEmailCampaignScalarFieldEnum[]
+  }
+
+  /**
+   * User.agentTasks
+   */
+  export type User$agentTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    where?: PlatformAgentTaskWhereInput
+    orderBy?: PlatformAgentTaskOrderByWithRelationInput | PlatformAgentTaskOrderByWithRelationInput[]
+    cursor?: PlatformAgentTaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PlatformAgentTaskScalarFieldEnum | PlatformAgentTaskScalarFieldEnum[]
   }
 
   /**
@@ -22166,6 +22334,1155 @@ export namespace Prisma {
 
 
   /**
+   * Model PlatformAgentTask
+   */
+
+  export type AggregatePlatformAgentTask = {
+    _count: PlatformAgentTaskCountAggregateOutputType | null
+    _min: PlatformAgentTaskMinAggregateOutputType | null
+    _max: PlatformAgentTaskMaxAggregateOutputType | null
+  }
+
+  export type PlatformAgentTaskMinAggregateOutputType = {
+    taskId: string | null
+    title: string | null
+    description: string | null
+    status: $Enums.PlatformAgentTaskStatus | null
+    priority: $Enums.PlatformAgentTaskPriority | null
+    safetyStatus: $Enums.PlatformAgentTaskSafety | null
+    safetyReason: string | null
+    createdByUserId: string | null
+    executionNotes: string | null
+    executedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformAgentTaskMaxAggregateOutputType = {
+    taskId: string | null
+    title: string | null
+    description: string | null
+    status: $Enums.PlatformAgentTaskStatus | null
+    priority: $Enums.PlatformAgentTaskPriority | null
+    safetyStatus: $Enums.PlatformAgentTaskSafety | null
+    safetyReason: string | null
+    createdByUserId: string | null
+    executionNotes: string | null
+    executedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PlatformAgentTaskCountAggregateOutputType = {
+    taskId: number
+    title: number
+    description: number
+    status: number
+    priority: number
+    safetyStatus: number
+    safetyReason: number
+    createdByUserId: number
+    executionNotes: number
+    executedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PlatformAgentTaskMinAggregateInputType = {
+    taskId?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
+    safetyStatus?: true
+    safetyReason?: true
+    createdByUserId?: true
+    executionNotes?: true
+    executedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlatformAgentTaskMaxAggregateInputType = {
+    taskId?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
+    safetyStatus?: true
+    safetyReason?: true
+    createdByUserId?: true
+    executionNotes?: true
+    executedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PlatformAgentTaskCountAggregateInputType = {
+    taskId?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
+    safetyStatus?: true
+    safetyReason?: true
+    createdByUserId?: true
+    executionNotes?: true
+    executedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PlatformAgentTaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformAgentTask to aggregate.
+     */
+    where?: PlatformAgentTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformAgentTasks to fetch.
+     */
+    orderBy?: PlatformAgentTaskOrderByWithRelationInput | PlatformAgentTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PlatformAgentTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformAgentTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformAgentTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PlatformAgentTasks
+    **/
+    _count?: true | PlatformAgentTaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PlatformAgentTaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PlatformAgentTaskMaxAggregateInputType
+  }
+
+  export type GetPlatformAgentTaskAggregateType<T extends PlatformAgentTaskAggregateArgs> = {
+        [P in keyof T & keyof AggregatePlatformAgentTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePlatformAgentTask[P]>
+      : GetScalarType<T[P], AggregatePlatformAgentTask[P]>
+  }
+
+
+
+
+  export type PlatformAgentTaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PlatformAgentTaskWhereInput
+    orderBy?: PlatformAgentTaskOrderByWithAggregationInput | PlatformAgentTaskOrderByWithAggregationInput[]
+    by: PlatformAgentTaskScalarFieldEnum[] | PlatformAgentTaskScalarFieldEnum
+    having?: PlatformAgentTaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PlatformAgentTaskCountAggregateInputType | true
+    _min?: PlatformAgentTaskMinAggregateInputType
+    _max?: PlatformAgentTaskMaxAggregateInputType
+  }
+
+  export type PlatformAgentTaskGroupByOutputType = {
+    taskId: string
+    title: string
+    description: string
+    status: $Enums.PlatformAgentTaskStatus
+    priority: $Enums.PlatformAgentTaskPriority
+    safetyStatus: $Enums.PlatformAgentTaskSafety
+    safetyReason: string | null
+    createdByUserId: string
+    executionNotes: string | null
+    executedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PlatformAgentTaskCountAggregateOutputType | null
+    _min: PlatformAgentTaskMinAggregateOutputType | null
+    _max: PlatformAgentTaskMaxAggregateOutputType | null
+  }
+
+  type GetPlatformAgentTaskGroupByPayload<T extends PlatformAgentTaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PlatformAgentTaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PlatformAgentTaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PlatformAgentTaskGroupByOutputType[P]>
+            : GetScalarType<T[P], PlatformAgentTaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PlatformAgentTaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    taskId?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    safetyStatus?: boolean
+    safetyReason?: boolean
+    createdByUserId?: boolean
+    executionNotes?: boolean
+    executedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformAgentTask"]>
+
+  export type PlatformAgentTaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    taskId?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    safetyStatus?: boolean
+    safetyReason?: boolean
+    createdByUserId?: boolean
+    executionNotes?: boolean
+    executedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformAgentTask"]>
+
+  export type PlatformAgentTaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    taskId?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    safetyStatus?: boolean
+    safetyReason?: boolean
+    createdByUserId?: boolean
+    executionNotes?: boolean
+    executedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["platformAgentTask"]>
+
+  export type PlatformAgentTaskSelectScalar = {
+    taskId?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    safetyStatus?: boolean
+    safetyReason?: boolean
+    createdByUserId?: boolean
+    executionNotes?: boolean
+    executedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PlatformAgentTaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"taskId" | "title" | "description" | "status" | "priority" | "safetyStatus" | "safetyReason" | "createdByUserId" | "executionNotes" | "executedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["platformAgentTask"]>
+  export type PlatformAgentTaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PlatformAgentTaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PlatformAgentTaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PlatformAgentTaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PlatformAgentTask"
+    objects: {
+      createdBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      taskId: string
+      title: string
+      description: string
+      status: $Enums.PlatformAgentTaskStatus
+      priority: $Enums.PlatformAgentTaskPriority
+      safetyStatus: $Enums.PlatformAgentTaskSafety
+      safetyReason: string | null
+      createdByUserId: string
+      executionNotes: string | null
+      executedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["platformAgentTask"]>
+    composites: {}
+  }
+
+  type PlatformAgentTaskGetPayload<S extends boolean | null | undefined | PlatformAgentTaskDefaultArgs> = $Result.GetResult<Prisma.$PlatformAgentTaskPayload, S>
+
+  type PlatformAgentTaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PlatformAgentTaskFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PlatformAgentTaskCountAggregateInputType | true
+    }
+
+  export interface PlatformAgentTaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PlatformAgentTask'], meta: { name: 'PlatformAgentTask' } }
+    /**
+     * Find zero or one PlatformAgentTask that matches the filter.
+     * @param {PlatformAgentTaskFindUniqueArgs} args - Arguments to find a PlatformAgentTask
+     * @example
+     * // Get one PlatformAgentTask
+     * const platformAgentTask = await prisma.platformAgentTask.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PlatformAgentTaskFindUniqueArgs>(args: SelectSubset<T, PlatformAgentTaskFindUniqueArgs<ExtArgs>>): Prisma__PlatformAgentTaskClient<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PlatformAgentTask that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PlatformAgentTaskFindUniqueOrThrowArgs} args - Arguments to find a PlatformAgentTask
+     * @example
+     * // Get one PlatformAgentTask
+     * const platformAgentTask = await prisma.platformAgentTask.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PlatformAgentTaskFindUniqueOrThrowArgs>(args: SelectSubset<T, PlatformAgentTaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PlatformAgentTaskClient<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformAgentTask that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAgentTaskFindFirstArgs} args - Arguments to find a PlatformAgentTask
+     * @example
+     * // Get one PlatformAgentTask
+     * const platformAgentTask = await prisma.platformAgentTask.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PlatformAgentTaskFindFirstArgs>(args?: SelectSubset<T, PlatformAgentTaskFindFirstArgs<ExtArgs>>): Prisma__PlatformAgentTaskClient<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PlatformAgentTask that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAgentTaskFindFirstOrThrowArgs} args - Arguments to find a PlatformAgentTask
+     * @example
+     * // Get one PlatformAgentTask
+     * const platformAgentTask = await prisma.platformAgentTask.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PlatformAgentTaskFindFirstOrThrowArgs>(args?: SelectSubset<T, PlatformAgentTaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__PlatformAgentTaskClient<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PlatformAgentTasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAgentTaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PlatformAgentTasks
+     * const platformAgentTasks = await prisma.platformAgentTask.findMany()
+     * 
+     * // Get first 10 PlatformAgentTasks
+     * const platformAgentTasks = await prisma.platformAgentTask.findMany({ take: 10 })
+     * 
+     * // Only select the `taskId`
+     * const platformAgentTaskWithTaskIdOnly = await prisma.platformAgentTask.findMany({ select: { taskId: true } })
+     * 
+     */
+    findMany<T extends PlatformAgentTaskFindManyArgs>(args?: SelectSubset<T, PlatformAgentTaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PlatformAgentTask.
+     * @param {PlatformAgentTaskCreateArgs} args - Arguments to create a PlatformAgentTask.
+     * @example
+     * // Create one PlatformAgentTask
+     * const PlatformAgentTask = await prisma.platformAgentTask.create({
+     *   data: {
+     *     // ... data to create a PlatformAgentTask
+     *   }
+     * })
+     * 
+     */
+    create<T extends PlatformAgentTaskCreateArgs>(args: SelectSubset<T, PlatformAgentTaskCreateArgs<ExtArgs>>): Prisma__PlatformAgentTaskClient<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PlatformAgentTasks.
+     * @param {PlatformAgentTaskCreateManyArgs} args - Arguments to create many PlatformAgentTasks.
+     * @example
+     * // Create many PlatformAgentTasks
+     * const platformAgentTask = await prisma.platformAgentTask.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PlatformAgentTaskCreateManyArgs>(args?: SelectSubset<T, PlatformAgentTaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PlatformAgentTasks and returns the data saved in the database.
+     * @param {PlatformAgentTaskCreateManyAndReturnArgs} args - Arguments to create many PlatformAgentTasks.
+     * @example
+     * // Create many PlatformAgentTasks
+     * const platformAgentTask = await prisma.platformAgentTask.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PlatformAgentTasks and only return the `taskId`
+     * const platformAgentTaskWithTaskIdOnly = await prisma.platformAgentTask.createManyAndReturn({
+     *   select: { taskId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PlatformAgentTaskCreateManyAndReturnArgs>(args?: SelectSubset<T, PlatformAgentTaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PlatformAgentTask.
+     * @param {PlatformAgentTaskDeleteArgs} args - Arguments to delete one PlatformAgentTask.
+     * @example
+     * // Delete one PlatformAgentTask
+     * const PlatformAgentTask = await prisma.platformAgentTask.delete({
+     *   where: {
+     *     // ... filter to delete one PlatformAgentTask
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PlatformAgentTaskDeleteArgs>(args: SelectSubset<T, PlatformAgentTaskDeleteArgs<ExtArgs>>): Prisma__PlatformAgentTaskClient<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PlatformAgentTask.
+     * @param {PlatformAgentTaskUpdateArgs} args - Arguments to update one PlatformAgentTask.
+     * @example
+     * // Update one PlatformAgentTask
+     * const platformAgentTask = await prisma.platformAgentTask.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PlatformAgentTaskUpdateArgs>(args: SelectSubset<T, PlatformAgentTaskUpdateArgs<ExtArgs>>): Prisma__PlatformAgentTaskClient<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PlatformAgentTasks.
+     * @param {PlatformAgentTaskDeleteManyArgs} args - Arguments to filter PlatformAgentTasks to delete.
+     * @example
+     * // Delete a few PlatformAgentTasks
+     * const { count } = await prisma.platformAgentTask.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PlatformAgentTaskDeleteManyArgs>(args?: SelectSubset<T, PlatformAgentTaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformAgentTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAgentTaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PlatformAgentTasks
+     * const platformAgentTask = await prisma.platformAgentTask.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PlatformAgentTaskUpdateManyArgs>(args: SelectSubset<T, PlatformAgentTaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PlatformAgentTasks and returns the data updated in the database.
+     * @param {PlatformAgentTaskUpdateManyAndReturnArgs} args - Arguments to update many PlatformAgentTasks.
+     * @example
+     * // Update many PlatformAgentTasks
+     * const platformAgentTask = await prisma.platformAgentTask.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PlatformAgentTasks and only return the `taskId`
+     * const platformAgentTaskWithTaskIdOnly = await prisma.platformAgentTask.updateManyAndReturn({
+     *   select: { taskId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PlatformAgentTaskUpdateManyAndReturnArgs>(args: SelectSubset<T, PlatformAgentTaskUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PlatformAgentTask.
+     * @param {PlatformAgentTaskUpsertArgs} args - Arguments to update or create a PlatformAgentTask.
+     * @example
+     * // Update or create a PlatformAgentTask
+     * const platformAgentTask = await prisma.platformAgentTask.upsert({
+     *   create: {
+     *     // ... data to create a PlatformAgentTask
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PlatformAgentTask we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PlatformAgentTaskUpsertArgs>(args: SelectSubset<T, PlatformAgentTaskUpsertArgs<ExtArgs>>): Prisma__PlatformAgentTaskClient<$Result.GetResult<Prisma.$PlatformAgentTaskPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PlatformAgentTasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAgentTaskCountArgs} args - Arguments to filter PlatformAgentTasks to count.
+     * @example
+     * // Count the number of PlatformAgentTasks
+     * const count = await prisma.platformAgentTask.count({
+     *   where: {
+     *     // ... the filter for the PlatformAgentTasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends PlatformAgentTaskCountArgs>(
+      args?: Subset<T, PlatformAgentTaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PlatformAgentTaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PlatformAgentTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAgentTaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PlatformAgentTaskAggregateArgs>(args: Subset<T, PlatformAgentTaskAggregateArgs>): Prisma.PrismaPromise<GetPlatformAgentTaskAggregateType<T>>
+
+    /**
+     * Group by PlatformAgentTask.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PlatformAgentTaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PlatformAgentTaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PlatformAgentTaskGroupByArgs['orderBy'] }
+        : { orderBy?: PlatformAgentTaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PlatformAgentTaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPlatformAgentTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PlatformAgentTask model
+   */
+  readonly fields: PlatformAgentTaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PlatformAgentTask.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PlatformAgentTaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PlatformAgentTask model
+   */
+  interface PlatformAgentTaskFieldRefs {
+    readonly taskId: FieldRef<"PlatformAgentTask", 'String'>
+    readonly title: FieldRef<"PlatformAgentTask", 'String'>
+    readonly description: FieldRef<"PlatformAgentTask", 'String'>
+    readonly status: FieldRef<"PlatformAgentTask", 'PlatformAgentTaskStatus'>
+    readonly priority: FieldRef<"PlatformAgentTask", 'PlatformAgentTaskPriority'>
+    readonly safetyStatus: FieldRef<"PlatformAgentTask", 'PlatformAgentTaskSafety'>
+    readonly safetyReason: FieldRef<"PlatformAgentTask", 'String'>
+    readonly createdByUserId: FieldRef<"PlatformAgentTask", 'String'>
+    readonly executionNotes: FieldRef<"PlatformAgentTask", 'String'>
+    readonly executedAt: FieldRef<"PlatformAgentTask", 'DateTime'>
+    readonly createdAt: FieldRef<"PlatformAgentTask", 'DateTime'>
+    readonly updatedAt: FieldRef<"PlatformAgentTask", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PlatformAgentTask findUnique
+   */
+  export type PlatformAgentTaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformAgentTask to fetch.
+     */
+    where: PlatformAgentTaskWhereUniqueInput
+  }
+
+  /**
+   * PlatformAgentTask findUniqueOrThrow
+   */
+  export type PlatformAgentTaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformAgentTask to fetch.
+     */
+    where: PlatformAgentTaskWhereUniqueInput
+  }
+
+  /**
+   * PlatformAgentTask findFirst
+   */
+  export type PlatformAgentTaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformAgentTask to fetch.
+     */
+    where?: PlatformAgentTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformAgentTasks to fetch.
+     */
+    orderBy?: PlatformAgentTaskOrderByWithRelationInput | PlatformAgentTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformAgentTasks.
+     */
+    cursor?: PlatformAgentTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformAgentTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformAgentTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformAgentTasks.
+     */
+    distinct?: PlatformAgentTaskScalarFieldEnum | PlatformAgentTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformAgentTask findFirstOrThrow
+   */
+  export type PlatformAgentTaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformAgentTask to fetch.
+     */
+    where?: PlatformAgentTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformAgentTasks to fetch.
+     */
+    orderBy?: PlatformAgentTaskOrderByWithRelationInput | PlatformAgentTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PlatformAgentTasks.
+     */
+    cursor?: PlatformAgentTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformAgentTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformAgentTasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PlatformAgentTasks.
+     */
+    distinct?: PlatformAgentTaskScalarFieldEnum | PlatformAgentTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformAgentTask findMany
+   */
+  export type PlatformAgentTaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    /**
+     * Filter, which PlatformAgentTasks to fetch.
+     */
+    where?: PlatformAgentTaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PlatformAgentTasks to fetch.
+     */
+    orderBy?: PlatformAgentTaskOrderByWithRelationInput | PlatformAgentTaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PlatformAgentTasks.
+     */
+    cursor?: PlatformAgentTaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PlatformAgentTasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PlatformAgentTasks.
+     */
+    skip?: number
+    distinct?: PlatformAgentTaskScalarFieldEnum | PlatformAgentTaskScalarFieldEnum[]
+  }
+
+  /**
+   * PlatformAgentTask create
+   */
+  export type PlatformAgentTaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PlatformAgentTask.
+     */
+    data: XOR<PlatformAgentTaskCreateInput, PlatformAgentTaskUncheckedCreateInput>
+  }
+
+  /**
+   * PlatformAgentTask createMany
+   */
+  export type PlatformAgentTaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PlatformAgentTasks.
+     */
+    data: PlatformAgentTaskCreateManyInput | PlatformAgentTaskCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PlatformAgentTask createManyAndReturn
+   */
+  export type PlatformAgentTaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * The data used to create many PlatformAgentTasks.
+     */
+    data: PlatformAgentTaskCreateManyInput | PlatformAgentTaskCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlatformAgentTask update
+   */
+  export type PlatformAgentTaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PlatformAgentTask.
+     */
+    data: XOR<PlatformAgentTaskUpdateInput, PlatformAgentTaskUncheckedUpdateInput>
+    /**
+     * Choose, which PlatformAgentTask to update.
+     */
+    where: PlatformAgentTaskWhereUniqueInput
+  }
+
+  /**
+   * PlatformAgentTask updateMany
+   */
+  export type PlatformAgentTaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PlatformAgentTasks.
+     */
+    data: XOR<PlatformAgentTaskUpdateManyMutationInput, PlatformAgentTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformAgentTasks to update
+     */
+    where?: PlatformAgentTaskWhereInput
+    /**
+     * Limit how many PlatformAgentTasks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformAgentTask updateManyAndReturn
+   */
+  export type PlatformAgentTaskUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * The data used to update PlatformAgentTasks.
+     */
+    data: XOR<PlatformAgentTaskUpdateManyMutationInput, PlatformAgentTaskUncheckedUpdateManyInput>
+    /**
+     * Filter which PlatformAgentTasks to update
+     */
+    where?: PlatformAgentTaskWhereInput
+    /**
+     * Limit how many PlatformAgentTasks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PlatformAgentTask upsert
+   */
+  export type PlatformAgentTaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PlatformAgentTask to update in case it exists.
+     */
+    where: PlatformAgentTaskWhereUniqueInput
+    /**
+     * In case the PlatformAgentTask found by the `where` argument doesn't exist, create a new PlatformAgentTask with this data.
+     */
+    create: XOR<PlatformAgentTaskCreateInput, PlatformAgentTaskUncheckedCreateInput>
+    /**
+     * In case the PlatformAgentTask was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PlatformAgentTaskUpdateInput, PlatformAgentTaskUncheckedUpdateInput>
+  }
+
+  /**
+   * PlatformAgentTask delete
+   */
+  export type PlatformAgentTaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+    /**
+     * Filter which PlatformAgentTask to delete.
+     */
+    where: PlatformAgentTaskWhereUniqueInput
+  }
+
+  /**
+   * PlatformAgentTask deleteMany
+   */
+  export type PlatformAgentTaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PlatformAgentTasks to delete
+     */
+    where?: PlatformAgentTaskWhereInput
+    /**
+     * Limit how many PlatformAgentTasks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PlatformAgentTask without action
+   */
+  export type PlatformAgentTaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PlatformAgentTask
+     */
+    select?: PlatformAgentTaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PlatformAgentTask
+     */
+    omit?: PlatformAgentTaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PlatformAgentTaskInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -22479,6 +23796,24 @@ export namespace Prisma {
   };
 
   export type PlatformAdminNotificationScalarFieldEnum = (typeof PlatformAdminNotificationScalarFieldEnum)[keyof typeof PlatformAdminNotificationScalarFieldEnum]
+
+
+  export const PlatformAgentTaskScalarFieldEnum: {
+    taskId: 'taskId',
+    title: 'title',
+    description: 'description',
+    status: 'status',
+    priority: 'priority',
+    safetyStatus: 'safetyStatus',
+    safetyReason: 'safetyReason',
+    createdByUserId: 'createdByUserId',
+    executionNotes: 'executionNotes',
+    executedAt: 'executedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PlatformAgentTaskScalarFieldEnum = (typeof PlatformAgentTaskScalarFieldEnum)[keyof typeof PlatformAgentTaskScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -22847,6 +24182,48 @@ export namespace Prisma {
    */
   export type ListEnumPlatformAdminNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformAdminNotificationType[]'>
     
+
+
+  /**
+   * Reference to a field of type 'PlatformAgentTaskStatus'
+   */
+  export type EnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformAgentTaskStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformAgentTaskStatus[]'
+   */
+  export type ListEnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformAgentTaskStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformAgentTaskPriority'
+   */
+  export type EnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformAgentTaskPriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformAgentTaskPriority[]'
+   */
+  export type ListEnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformAgentTaskPriority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformAgentTaskSafety'
+   */
+  export type EnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformAgentTaskSafety'>
+    
+
+
+  /**
+   * Reference to a field of type 'PlatformAgentTaskSafety[]'
+   */
+  export type ListEnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PlatformAgentTaskSafety[]'>
+    
   /**
    * Deep Input Types
    */
@@ -22878,6 +24255,7 @@ export namespace Prisma {
     tickets?: TicketListRelationFilter
     ticketDetails?: TicketDetailListRelationFilter
     platformEmailCampaigns?: PlatformEmailCampaignListRelationFilter
+    agentTasks?: PlatformAgentTaskListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -22903,6 +24281,7 @@ export namespace Prisma {
     tickets?: TicketOrderByRelationAggregateInput
     ticketDetails?: TicketDetailOrderByRelationAggregateInput
     platformEmailCampaigns?: PlatformEmailCampaignOrderByRelationAggregateInput
+    agentTasks?: PlatformAgentTaskOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -22931,6 +24310,7 @@ export namespace Prisma {
     tickets?: TicketListRelationFilter
     ticketDetails?: TicketDetailListRelationFilter
     platformEmailCampaigns?: PlatformEmailCampaignListRelationFilter
+    agentTasks?: PlatformAgentTaskListRelationFilter
   }, "userId" | "userEmail">
 
   export type UserOrderByWithAggregationInput = {
@@ -24457,6 +25837,96 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"PlatformAdminNotification"> | Date | string
   }
 
+  export type PlatformAgentTaskWhereInput = {
+    AND?: PlatformAgentTaskWhereInput | PlatformAgentTaskWhereInput[]
+    OR?: PlatformAgentTaskWhereInput[]
+    NOT?: PlatformAgentTaskWhereInput | PlatformAgentTaskWhereInput[]
+    taskId?: StringFilter<"PlatformAgentTask"> | string
+    title?: StringFilter<"PlatformAgentTask"> | string
+    description?: StringFilter<"PlatformAgentTask"> | string
+    status?: EnumPlatformAgentTaskStatusFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskSafety
+    safetyReason?: StringNullableFilter<"PlatformAgentTask"> | string | null
+    createdByUserId?: StringFilter<"PlatformAgentTask"> | string
+    executionNotes?: StringNullableFilter<"PlatformAgentTask"> | string | null
+    executedAt?: DateTimeNullableFilter<"PlatformAgentTask"> | Date | string | null
+    createdAt?: DateTimeFilter<"PlatformAgentTask"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformAgentTask"> | Date | string
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type PlatformAgentTaskOrderByWithRelationInput = {
+    taskId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    safetyStatus?: SortOrder
+    safetyReason?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    executionNotes?: SortOrderInput | SortOrder
+    executedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdBy?: UserOrderByWithRelationInput
+  }
+
+  export type PlatformAgentTaskWhereUniqueInput = Prisma.AtLeast<{
+    taskId?: string
+    AND?: PlatformAgentTaskWhereInput | PlatformAgentTaskWhereInput[]
+    OR?: PlatformAgentTaskWhereInput[]
+    NOT?: PlatformAgentTaskWhereInput | PlatformAgentTaskWhereInput[]
+    title?: StringFilter<"PlatformAgentTask"> | string
+    description?: StringFilter<"PlatformAgentTask"> | string
+    status?: EnumPlatformAgentTaskStatusFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskSafety
+    safetyReason?: StringNullableFilter<"PlatformAgentTask"> | string | null
+    createdByUserId?: StringFilter<"PlatformAgentTask"> | string
+    executionNotes?: StringNullableFilter<"PlatformAgentTask"> | string | null
+    executedAt?: DateTimeNullableFilter<"PlatformAgentTask"> | Date | string | null
+    createdAt?: DateTimeFilter<"PlatformAgentTask"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformAgentTask"> | Date | string
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "taskId">
+
+  export type PlatformAgentTaskOrderByWithAggregationInput = {
+    taskId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    safetyStatus?: SortOrder
+    safetyReason?: SortOrderInput | SortOrder
+    createdByUserId?: SortOrder
+    executionNotes?: SortOrderInput | SortOrder
+    executedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PlatformAgentTaskCountOrderByAggregateInput
+    _max?: PlatformAgentTaskMaxOrderByAggregateInput
+    _min?: PlatformAgentTaskMinOrderByAggregateInput
+  }
+
+  export type PlatformAgentTaskScalarWhereWithAggregatesInput = {
+    AND?: PlatformAgentTaskScalarWhereWithAggregatesInput | PlatformAgentTaskScalarWhereWithAggregatesInput[]
+    OR?: PlatformAgentTaskScalarWhereWithAggregatesInput[]
+    NOT?: PlatformAgentTaskScalarWhereWithAggregatesInput | PlatformAgentTaskScalarWhereWithAggregatesInput[]
+    taskId?: StringWithAggregatesFilter<"PlatformAgentTask"> | string
+    title?: StringWithAggregatesFilter<"PlatformAgentTask"> | string
+    description?: StringWithAggregatesFilter<"PlatformAgentTask"> | string
+    status?: EnumPlatformAgentTaskStatusWithAggregatesFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityWithAggregatesFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyWithAggregatesFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskSafety
+    safetyReason?: StringNullableWithAggregatesFilter<"PlatformAgentTask"> | string | null
+    createdByUserId?: StringWithAggregatesFilter<"PlatformAgentTask"> | string
+    executionNotes?: StringNullableWithAggregatesFilter<"PlatformAgentTask"> | string | null
+    executedAt?: DateTimeNullableWithAggregatesFilter<"PlatformAgentTask"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PlatformAgentTask"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PlatformAgentTask"> | Date | string
+  }
+
   export type UserCreateInput = {
     userId?: string
     userFirstName: string
@@ -24480,6 +25950,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -24505,6 +25976,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUpdateInput = {
@@ -24530,6 +26002,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -24555,6 +26028,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -26298,6 +27772,110 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PlatformAgentTaskCreateInput = {
+    taskId?: string
+    title: string
+    description: string
+    status?: $Enums.PlatformAgentTaskStatus
+    priority?: $Enums.PlatformAgentTaskPriority
+    safetyStatus?: $Enums.PlatformAgentTaskSafety
+    safetyReason?: string | null
+    executionNotes?: string | null
+    executedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutAgentTasksInput
+  }
+
+  export type PlatformAgentTaskUncheckedCreateInput = {
+    taskId?: string
+    title: string
+    description: string
+    status?: $Enums.PlatformAgentTaskStatus
+    priority?: $Enums.PlatformAgentTaskPriority
+    safetyStatus?: $Enums.PlatformAgentTaskSafety
+    safetyReason?: string | null
+    createdByUserId: string
+    executionNotes?: string | null
+    executedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformAgentTaskUpdateInput = {
+    taskId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: EnumPlatformAgentTaskStatusFieldUpdateOperationsInput | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFieldUpdateOperationsInput | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFieldUpdateOperationsInput | $Enums.PlatformAgentTaskSafety
+    safetyReason?: NullableStringFieldUpdateOperationsInput | string | null
+    executionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutAgentTasksNestedInput
+  }
+
+  export type PlatformAgentTaskUncheckedUpdateInput = {
+    taskId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: EnumPlatformAgentTaskStatusFieldUpdateOperationsInput | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFieldUpdateOperationsInput | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFieldUpdateOperationsInput | $Enums.PlatformAgentTaskSafety
+    safetyReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    executionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformAgentTaskCreateManyInput = {
+    taskId?: string
+    title: string
+    description: string
+    status?: $Enums.PlatformAgentTaskStatus
+    priority?: $Enums.PlatformAgentTaskPriority
+    safetyStatus?: $Enums.PlatformAgentTaskSafety
+    safetyReason?: string | null
+    createdByUserId: string
+    executionNotes?: string | null
+    executedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformAgentTaskUpdateManyMutationInput = {
+    taskId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: EnumPlatformAgentTaskStatusFieldUpdateOperationsInput | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFieldUpdateOperationsInput | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFieldUpdateOperationsInput | $Enums.PlatformAgentTaskSafety
+    safetyReason?: NullableStringFieldUpdateOperationsInput | string | null
+    executionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformAgentTaskUncheckedUpdateManyInput = {
+    taskId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: EnumPlatformAgentTaskStatusFieldUpdateOperationsInput | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFieldUpdateOperationsInput | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFieldUpdateOperationsInput | $Enums.PlatformAgentTaskSafety
+    safetyReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    executionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -26394,6 +27972,12 @@ export namespace Prisma {
     none?: PlatformEmailCampaignWhereInput
   }
 
+  export type PlatformAgentTaskListRelationFilter = {
+    every?: PlatformAgentTaskWhereInput
+    some?: PlatformAgentTaskWhereInput
+    none?: PlatformAgentTaskWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -26432,6 +28016,10 @@ export namespace Prisma {
   }
 
   export type PlatformEmailCampaignOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PlatformAgentTaskOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -27869,6 +29457,102 @@ export namespace Prisma {
     _max?: NestedEnumPlatformAdminNotificationTypeFilter<$PrismaModel>
   }
 
+  export type EnumPlatformAgentTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskStatus | EnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskStatus[] | ListEnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskStatus[] | ListEnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskStatusFilter<$PrismaModel> | $Enums.PlatformAgentTaskStatus
+  }
+
+  export type EnumPlatformAgentTaskPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskPriority | EnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskPriority[] | ListEnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskPriority[] | ListEnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskPriorityFilter<$PrismaModel> | $Enums.PlatformAgentTaskPriority
+  }
+
+  export type EnumPlatformAgentTaskSafetyFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskSafety | EnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskSafety[] | ListEnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskSafety[] | ListEnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskSafetyFilter<$PrismaModel> | $Enums.PlatformAgentTaskSafety
+  }
+
+  export type PlatformAgentTaskCountOrderByAggregateInput = {
+    taskId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    safetyStatus?: SortOrder
+    safetyReason?: SortOrder
+    createdByUserId?: SortOrder
+    executionNotes?: SortOrder
+    executedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformAgentTaskMaxOrderByAggregateInput = {
+    taskId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    safetyStatus?: SortOrder
+    safetyReason?: SortOrder
+    createdByUserId?: SortOrder
+    executionNotes?: SortOrder
+    executedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PlatformAgentTaskMinOrderByAggregateInput = {
+    taskId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    safetyStatus?: SortOrder
+    safetyReason?: SortOrder
+    createdByUserId?: SortOrder
+    executionNotes?: SortOrder
+    executedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumPlatformAgentTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskStatus | EnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskStatus[] | ListEnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskStatus[] | ListEnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAgentTaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformAgentTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformAgentTaskStatusFilter<$PrismaModel>
+  }
+
+  export type EnumPlatformAgentTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskPriority | EnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskPriority[] | ListEnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskPriority[] | ListEnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskPriorityWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAgentTaskPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformAgentTaskPriorityFilter<$PrismaModel>
+    _max?: NestedEnumPlatformAgentTaskPriorityFilter<$PrismaModel>
+  }
+
+  export type EnumPlatformAgentTaskSafetyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskSafety | EnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskSafety[] | ListEnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskSafety[] | ListEnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskSafetyWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAgentTaskSafety
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformAgentTaskSafetyFilter<$PrismaModel>
+    _max?: NestedEnumPlatformAgentTaskSafetyFilter<$PrismaModel>
+  }
+
   export type UserBusinessCreateNestedManyWithoutUserInput = {
     create?: XOR<UserBusinessCreateWithoutUserInput, UserBusinessUncheckedCreateWithoutUserInput> | UserBusinessCreateWithoutUserInput[] | UserBusinessUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserBusinessCreateOrConnectWithoutUserInput | UserBusinessCreateOrConnectWithoutUserInput[]
@@ -27932,6 +29616,13 @@ export namespace Prisma {
     connect?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
   }
 
+  export type PlatformAgentTaskCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<PlatformAgentTaskCreateWithoutCreatedByInput, PlatformAgentTaskUncheckedCreateWithoutCreatedByInput> | PlatformAgentTaskCreateWithoutCreatedByInput[] | PlatformAgentTaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlatformAgentTaskCreateOrConnectWithoutCreatedByInput | PlatformAgentTaskCreateOrConnectWithoutCreatedByInput[]
+    createMany?: PlatformAgentTaskCreateManyCreatedByInputEnvelope
+    connect?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
+  }
+
   export type UserBusinessUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<UserBusinessCreateWithoutUserInput, UserBusinessUncheckedCreateWithoutUserInput> | UserBusinessCreateWithoutUserInput[] | UserBusinessUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserBusinessCreateOrConnectWithoutUserInput | UserBusinessCreateOrConnectWithoutUserInput[]
@@ -27993,6 +29684,13 @@ export namespace Prisma {
     connectOrCreate?: PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput | PlatformEmailCampaignCreateOrConnectWithoutCreatedByInput[]
     createMany?: PlatformEmailCampaignCreateManyCreatedByInputEnvelope
     connect?: PlatformEmailCampaignWhereUniqueInput | PlatformEmailCampaignWhereUniqueInput[]
+  }
+
+  export type PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<PlatformAgentTaskCreateWithoutCreatedByInput, PlatformAgentTaskUncheckedCreateWithoutCreatedByInput> | PlatformAgentTaskCreateWithoutCreatedByInput[] | PlatformAgentTaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlatformAgentTaskCreateOrConnectWithoutCreatedByInput | PlatformAgentTaskCreateOrConnectWithoutCreatedByInput[]
+    createMany?: PlatformAgentTaskCreateManyCreatedByInputEnvelope
+    connect?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -28137,6 +29835,20 @@ export namespace Prisma {
     deleteMany?: PlatformEmailCampaignScalarWhereInput | PlatformEmailCampaignScalarWhereInput[]
   }
 
+  export type PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<PlatformAgentTaskCreateWithoutCreatedByInput, PlatformAgentTaskUncheckedCreateWithoutCreatedByInput> | PlatformAgentTaskCreateWithoutCreatedByInput[] | PlatformAgentTaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlatformAgentTaskCreateOrConnectWithoutCreatedByInput | PlatformAgentTaskCreateOrConnectWithoutCreatedByInput[]
+    upsert?: PlatformAgentTaskUpsertWithWhereUniqueWithoutCreatedByInput | PlatformAgentTaskUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: PlatformAgentTaskCreateManyCreatedByInputEnvelope
+    set?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
+    disconnect?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
+    delete?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
+    connect?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
+    update?: PlatformAgentTaskUpdateWithWhereUniqueWithoutCreatedByInput | PlatformAgentTaskUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: PlatformAgentTaskUpdateManyWithWhereWithoutCreatedByInput | PlatformAgentTaskUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: PlatformAgentTaskScalarWhereInput | PlatformAgentTaskScalarWhereInput[]
+  }
+
   export type UserBusinessUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserBusinessCreateWithoutUserInput, UserBusinessUncheckedCreateWithoutUserInput> | UserBusinessCreateWithoutUserInput[] | UserBusinessUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserBusinessCreateOrConnectWithoutUserInput | UserBusinessCreateOrConnectWithoutUserInput[]
@@ -28261,6 +29973,20 @@ export namespace Prisma {
     update?: PlatformEmailCampaignUpdateWithWhereUniqueWithoutCreatedByInput | PlatformEmailCampaignUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: PlatformEmailCampaignUpdateManyWithWhereWithoutCreatedByInput | PlatformEmailCampaignUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: PlatformEmailCampaignScalarWhereInput | PlatformEmailCampaignScalarWhereInput[]
+  }
+
+  export type PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<PlatformAgentTaskCreateWithoutCreatedByInput, PlatformAgentTaskUncheckedCreateWithoutCreatedByInput> | PlatformAgentTaskCreateWithoutCreatedByInput[] | PlatformAgentTaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: PlatformAgentTaskCreateOrConnectWithoutCreatedByInput | PlatformAgentTaskCreateOrConnectWithoutCreatedByInput[]
+    upsert?: PlatformAgentTaskUpsertWithWhereUniqueWithoutCreatedByInput | PlatformAgentTaskUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: PlatformAgentTaskCreateManyCreatedByInputEnvelope
+    set?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
+    disconnect?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
+    delete?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
+    connect?: PlatformAgentTaskWhereUniqueInput | PlatformAgentTaskWhereUniqueInput[]
+    update?: PlatformAgentTaskUpdateWithWhereUniqueWithoutCreatedByInput | PlatformAgentTaskUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: PlatformAgentTaskUpdateManyWithWhereWithoutCreatedByInput | PlatformAgentTaskUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: PlatformAgentTaskScalarWhereInput | PlatformAgentTaskScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutBusinessesInput = {
@@ -29180,6 +30906,32 @@ export namespace Prisma {
     set?: $Enums.PlatformAdminNotificationType
   }
 
+  export type UserCreateNestedOneWithoutAgentTasksInput = {
+    create?: XOR<UserCreateWithoutAgentTasksInput, UserUncheckedCreateWithoutAgentTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAgentTasksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumPlatformAgentTaskStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformAgentTaskStatus
+  }
+
+  export type EnumPlatformAgentTaskPriorityFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformAgentTaskPriority
+  }
+
+  export type EnumPlatformAgentTaskSafetyFieldUpdateOperationsInput = {
+    set?: $Enums.PlatformAgentTaskSafety
+  }
+
+  export type UserUpdateOneRequiredWithoutAgentTasksNestedInput = {
+    create?: XOR<UserCreateWithoutAgentTasksInput, UserUncheckedCreateWithoutAgentTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAgentTasksInput
+    upsert?: UserUpsertWithoutAgentTasksInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAgentTasksInput, UserUpdateWithoutAgentTasksInput>, UserUncheckedUpdateWithoutAgentTasksInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -29705,6 +31457,57 @@ export namespace Prisma {
     _max?: NestedEnumPlatformAdminNotificationTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumPlatformAgentTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskStatus | EnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskStatus[] | ListEnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskStatus[] | ListEnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskStatusFilter<$PrismaModel> | $Enums.PlatformAgentTaskStatus
+  }
+
+  export type NestedEnumPlatformAgentTaskPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskPriority | EnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskPriority[] | ListEnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskPriority[] | ListEnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskPriorityFilter<$PrismaModel> | $Enums.PlatformAgentTaskPriority
+  }
+
+  export type NestedEnumPlatformAgentTaskSafetyFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskSafety | EnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskSafety[] | ListEnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskSafety[] | ListEnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskSafetyFilter<$PrismaModel> | $Enums.PlatformAgentTaskSafety
+  }
+
+  export type NestedEnumPlatformAgentTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskStatus | EnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskStatus[] | ListEnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskStatus[] | ListEnumPlatformAgentTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAgentTaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformAgentTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumPlatformAgentTaskStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPlatformAgentTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskPriority | EnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskPriority[] | ListEnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskPriority[] | ListEnumPlatformAgentTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskPriorityWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAgentTaskPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformAgentTaskPriorityFilter<$PrismaModel>
+    _max?: NestedEnumPlatformAgentTaskPriorityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPlatformAgentTaskSafetyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PlatformAgentTaskSafety | EnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    in?: $Enums.PlatformAgentTaskSafety[] | ListEnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PlatformAgentTaskSafety[] | ListEnumPlatformAgentTaskSafetyFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlatformAgentTaskSafetyWithAggregatesFilter<$PrismaModel> | $Enums.PlatformAgentTaskSafety
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlatformAgentTaskSafetyFilter<$PrismaModel>
+    _max?: NestedEnumPlatformAgentTaskSafetyFilter<$PrismaModel>
+  }
+
   export type UserBusinessCreateWithoutUserInput = {
     userBusinessRole: $Enums.Role
     createdAt?: Date | string
@@ -30099,6 +31902,44 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PlatformAgentTaskCreateWithoutCreatedByInput = {
+    taskId?: string
+    title: string
+    description: string
+    status?: $Enums.PlatformAgentTaskStatus
+    priority?: $Enums.PlatformAgentTaskPriority
+    safetyStatus?: $Enums.PlatformAgentTaskSafety
+    safetyReason?: string | null
+    executionNotes?: string | null
+    executedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformAgentTaskUncheckedCreateWithoutCreatedByInput = {
+    taskId?: string
+    title: string
+    description: string
+    status?: $Enums.PlatformAgentTaskStatus
+    priority?: $Enums.PlatformAgentTaskPriority
+    safetyStatus?: $Enums.PlatformAgentTaskSafety
+    safetyReason?: string | null
+    executionNotes?: string | null
+    executedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformAgentTaskCreateOrConnectWithoutCreatedByInput = {
+    where: PlatformAgentTaskWhereUniqueInput
+    create: XOR<PlatformAgentTaskCreateWithoutCreatedByInput, PlatformAgentTaskUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type PlatformAgentTaskCreateManyCreatedByInputEnvelope = {
+    data: PlatformAgentTaskCreateManyCreatedByInput | PlatformAgentTaskCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserBusinessUpsertWithWhereUniqueWithoutUserInput = {
     where: UserBusinessWhereUniqueInput
     update: XOR<UserBusinessUpdateWithoutUserInput, UserBusinessUncheckedUpdateWithoutUserInput>
@@ -30422,6 +32263,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
   }
 
+  export type PlatformAgentTaskUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: PlatformAgentTaskWhereUniqueInput
+    update: XOR<PlatformAgentTaskUpdateWithoutCreatedByInput, PlatformAgentTaskUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<PlatformAgentTaskCreateWithoutCreatedByInput, PlatformAgentTaskUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type PlatformAgentTaskUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: PlatformAgentTaskWhereUniqueInput
+    data: XOR<PlatformAgentTaskUpdateWithoutCreatedByInput, PlatformAgentTaskUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type PlatformAgentTaskUpdateManyWithWhereWithoutCreatedByInput = {
+    where: PlatformAgentTaskScalarWhereInput
+    data: XOR<PlatformAgentTaskUpdateManyMutationInput, PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type PlatformAgentTaskScalarWhereInput = {
+    AND?: PlatformAgentTaskScalarWhereInput | PlatformAgentTaskScalarWhereInput[]
+    OR?: PlatformAgentTaskScalarWhereInput[]
+    NOT?: PlatformAgentTaskScalarWhereInput | PlatformAgentTaskScalarWhereInput[]
+    taskId?: StringFilter<"PlatformAgentTask"> | string
+    title?: StringFilter<"PlatformAgentTask"> | string
+    description?: StringFilter<"PlatformAgentTask"> | string
+    status?: EnumPlatformAgentTaskStatusFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFilter<"PlatformAgentTask"> | $Enums.PlatformAgentTaskSafety
+    safetyReason?: StringNullableFilter<"PlatformAgentTask"> | string | null
+    createdByUserId?: StringFilter<"PlatformAgentTask"> | string
+    executionNotes?: StringNullableFilter<"PlatformAgentTask"> | string | null
+    executedAt?: DateTimeNullableFilter<"PlatformAgentTask"> | Date | string | null
+    createdAt?: DateTimeFilter<"PlatformAgentTask"> | Date | string
+    updatedAt?: DateTimeFilter<"PlatformAgentTask"> | Date | string
+  }
+
   export type UserCreateWithoutBusinessesInput = {
     userId?: string
     userFirstName: string
@@ -30444,6 +32319,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutBusinessesInput = {
@@ -30468,6 +32344,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutBusinessesInput = {
@@ -30706,6 +32583,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBusinessesInput = {
@@ -30730,6 +32608,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserGuestUpsertWithWhereUniqueWithoutBusinessInput = {
@@ -30834,6 +32713,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutUserBusinessInput = {
@@ -30858,6 +32738,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutUserBusinessInput = {
@@ -30953,6 +32834,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserBusinessInput = {
@@ -30977,6 +32859,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BusinessUpsertWithoutUserBusinessInput = {
@@ -31062,6 +32945,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutUserGuestInput = {
@@ -31086,6 +32970,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutUserGuestInput = {
@@ -31181,6 +33066,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserGuestInput = {
@@ -31205,6 +33091,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type BusinessUpsertWithoutUserGuestInput = {
@@ -31418,6 +33305,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -31442,6 +33330,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
@@ -31662,6 +33551,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -31686,6 +33576,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type PlanUpsertWithoutSubscriptionsInput = {
@@ -31944,6 +33835,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionCancellationsInput = {
@@ -31968,6 +33860,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionCancellationsInput = {
@@ -32122,6 +34015,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionCancellationsInput = {
@@ -32146,6 +34040,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type SubscriptionCreateWithoutPaymentsInput = {
@@ -32305,6 +34200,7 @@ export namespace Prisma {
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionPaymentsInput = {
@@ -32329,6 +34225,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionPaymentsInput = {
@@ -32522,6 +34419,7 @@ export namespace Prisma {
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionPaymentsInput = {
@@ -32546,6 +34444,7 @@ export namespace Prisma {
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TicketDetailCreateWithoutTicketInput = {
@@ -32604,6 +34503,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutTicketsInput = {
@@ -32628,6 +34528,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutTicketsInput = {
@@ -32684,6 +34585,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTicketsInput = {
@@ -32708,6 +34610,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserCreateWithoutTicketDetailsInput = {
@@ -32732,6 +34635,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutTicketDetailsInput = {
@@ -32756,6 +34660,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutTicketDetailsInput = {
@@ -32825,6 +34730,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTicketDetailsInput = {
@@ -32849,6 +34755,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type TicketUpsertWithoutTicketDetailsInput = {
@@ -32908,6 +34815,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
     tickets?: TicketCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserUncheckedCreateWithoutPlatformEmailCampaignsInput = {
@@ -32932,6 +34840,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
     tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
     ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    agentTasks?: PlatformAgentTaskUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
   export type UserCreateOrConnectWithoutPlatformEmailCampaignsInput = {
@@ -33014,6 +34923,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUpdateManyWithoutCreatedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPlatformEmailCampaignsInput = {
@@ -33038,6 +34948,7 @@ export namespace Prisma {
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
     tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
     ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    agentTasks?: PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
   export type PlatformEmailCampaignRunUpsertWithWhereUniqueWithoutCampaignInput = {
@@ -33371,6 +35282,122 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserCreateWithoutAgentTasksInput = {
+    userId?: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userConfirmEmail?: boolean
+    userPassword: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
+    UserGuest?: UserGuestCreateNestedManyWithoutUserInput
+    businesses?: BusinessCreateNestedManyWithoutCreatedByInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutCreatedByInput
+    subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutCancelledByInput
+    tickets?: TicketCreateNestedManyWithoutCreatedByInput
+    ticketDetails?: TicketDetailCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutAgentTasksInput = {
+    userId?: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userConfirmEmail?: boolean
+    userPassword: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber: string
+    userPhoneNumber: string
+    userDocumentType: string
+    userDocumentNumber: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
+    UserGuest?: UserGuestUncheckedCreateNestedManyWithoutUserInput
+    businesses?: BusinessUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutCreatedByInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutCancelledByInput
+    tickets?: TicketUncheckedCreateNestedManyWithoutCreatedByInput
+    ticketDetails?: TicketDetailUncheckedCreateNestedManyWithoutCreatedByInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutAgentTasksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAgentTasksInput, UserUncheckedCreateWithoutAgentTasksInput>
+  }
+
+  export type UserUpsertWithoutAgentTasksInput = {
+    update: XOR<UserUpdateWithoutAgentTasksInput, UserUncheckedUpdateWithoutAgentTasksInput>
+    create: XOR<UserCreateWithoutAgentTasksInput, UserUncheckedCreateWithoutAgentTasksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAgentTasksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAgentTasksInput, UserUncheckedUpdateWithoutAgentTasksInput>
+  }
+
+  export type UserUpdateWithoutAgentTasksInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userConfirmEmail?: BoolFieldUpdateOperationsInput | boolean
+    userPassword?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
+    UserGuest?: UserGuestUpdateManyWithoutUserNestedInput
+    businesses?: BusinessUpdateManyWithoutCreatedByNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutCreatedByNestedInput
+    subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutCancelledByNestedInput
+    tickets?: TicketUpdateManyWithoutCreatedByNestedInput
+    ticketDetails?: TicketDetailUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAgentTasksInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userConfirmEmail?: BoolFieldUpdateOperationsInput | boolean
+    userPassword?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    userPhoneNumber?: StringFieldUpdateOperationsInput | string
+    userDocumentType?: StringFieldUpdateOperationsInput | string
+    userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
+    UserGuest?: UserGuestUncheckedUpdateManyWithoutUserNestedInput
+    businesses?: BusinessUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutCreatedByNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutCancelledByNestedInput
+    tickets?: TicketUncheckedUpdateManyWithoutCreatedByNestedInput
+    ticketDetails?: TicketDetailUncheckedUpdateManyWithoutCreatedByNestedInput
+    platformEmailCampaigns?: PlatformEmailCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
   export type UserBusinessCreateManyUserInput = {
     userBusinessBusinessId: string
     userBusinessRole: $Enums.Role
@@ -33510,6 +35537,20 @@ export namespace Prisma {
     totalFailed?: number
     totalBounced?: number
     totalOpened?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PlatformAgentTaskCreateManyCreatedByInput = {
+    taskId?: string
+    title: string
+    description: string
+    status?: $Enums.PlatformAgentTaskStatus
+    priority?: $Enums.PlatformAgentTaskPriority
+    safetyStatus?: $Enums.PlatformAgentTaskSafety
+    safetyReason?: string | null
+    executionNotes?: string | null
+    executedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -33957,6 +35998,48 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformAgentTaskUpdateWithoutCreatedByInput = {
+    taskId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: EnumPlatformAgentTaskStatusFieldUpdateOperationsInput | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFieldUpdateOperationsInput | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFieldUpdateOperationsInput | $Enums.PlatformAgentTaskSafety
+    safetyReason?: NullableStringFieldUpdateOperationsInput | string | null
+    executionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformAgentTaskUncheckedUpdateWithoutCreatedByInput = {
+    taskId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: EnumPlatformAgentTaskStatusFieldUpdateOperationsInput | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFieldUpdateOperationsInput | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFieldUpdateOperationsInput | $Enums.PlatformAgentTaskSafety
+    safetyReason?: NullableStringFieldUpdateOperationsInput | string | null
+    executionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PlatformAgentTaskUncheckedUpdateManyWithoutCreatedByInput = {
+    taskId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: EnumPlatformAgentTaskStatusFieldUpdateOperationsInput | $Enums.PlatformAgentTaskStatus
+    priority?: EnumPlatformAgentTaskPriorityFieldUpdateOperationsInput | $Enums.PlatformAgentTaskPriority
+    safetyStatus?: EnumPlatformAgentTaskSafetyFieldUpdateOperationsInput | $Enums.PlatformAgentTaskSafety
+    safetyReason?: NullableStringFieldUpdateOperationsInput | string | null
+    executionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    executedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
