@@ -1,29 +1,49 @@
 import {
-    buildCursorExecutionPrompt,
+    buildAgentExecutionSummary,
     createAgentTask,
     deleteAgentTask,
     getAgentTaskById,
     getAgentTaskStats,
     listAgentTasks,
+    listPendingAgentTasksByPriority,
     updateAgentTaskStatus,
 } from "../services/agentTask/agentTaskService.js";
 import { getAgentTaskSafetyRulesForDisplay } from "../services/agentTask/agentTaskSafety.js";
+import {
+    hasValidAgentTasksLocalToken,
+    isAgentTasksLocalTokenConfigured,
+} from "../middlewares/agentTasksLocalTokenMiddleware.js";
 
 function getUserId(req) {
     return req.user?.payload?.id;
 }
+
+export const getAgentTaskAccessController = async (req, res) => {
+    try {
+        const localTokenRequired = isAgentTasksLocalTokenConfigured();
+        return res.json({
+            localTokenRequired,
+            hasLocalAccess: hasValidAgentTasksLocalToken(req),
+            canCreateTasks: true,
+            canManageQueue: !localTokenRequired || hasValidAgentTasksLocalToken(req),
+        });
+    } catch (error) {
+        console.error("(agentTask.access):", error);
+        return res.status(500).json({ message: "No se pudo verificar acceso." });
+    }
+};
 
 export const listAgentTasksController = async (req, res) => {
     try {
         const status = req.query.status?.toUpperCase();
         const tasks = await listAgentTasks({ status });
         const stats = await getAgentTaskStats();
-        const cursorPrompt = buildCursorExecutionPrompt(tasks);
+        const executionQueue = buildAgentExecutionSummary(tasks);
 
         return res.json({
             tasks,
             stats,
-            cursorPrompt,
+            executionQueue,
             safetyRules: getAgentTaskSafetyRulesForDisplay(),
         });
     } catch (error) {
@@ -97,18 +117,27 @@ export const deleteAgentTaskController = async (req, res) => {
     }
 };
 
+export const getAgentTaskQueueController = async (_req, res) => {
+    try {
+        const tasks = await listPendingAgentTasksByPriority();
+        return res.json(buildAgentExecutionSummary(tasks));
+    } catch (error) {
+        console.error("(agentTask.queue):", error);
+        return res.status(500).json({ message: "No se pudo obtener la cola de ejecución." });
+    }
+};
+
 export const getAgentTaskCursorPromptController = async (_req, res) => {
     try {
-        const tasks = await listAgentTasks();
+        const tasks = await listPendingAgentTasksByPriority();
+        const queue = buildAgentExecutionSummary(tasks);
         return res.json({
-            prompt: buildCursorExecutionPrompt(tasks),
-            pendingCount: tasks.filter(
-                (t) => t.status === "PENDING" && t.safetyStatus === "APPROVED",
-            ).length,
+            pendingCount: queue.pendingCount,
+            executionQueue: queue,
         });
     } catch (error) {
-        console.error("(agentTask.cursorPrompt):", error);
-        return res.status(500).json({ message: "No se pudo generar el prompt." });
+        console.error("(agentTask.queue):", error);
+        return res.status(500).json({ message: "No se pudo obtener la cola." });
     }
 };
 

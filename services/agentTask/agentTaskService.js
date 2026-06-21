@@ -6,6 +6,17 @@ const general = new PrismaGeneral();
 const VALID_PRIORITIES = new Set(["LOW", "NORMAL", "HIGH"]);
 const VALID_STATUSES = new Set(["PENDING", "IN_PROGRESS", "COMPLETED", "CANCELLED", "BLOCKED"]);
 
+const PRIORITY_RANK = { HIGH: 0, NORMAL: 1, LOW: 2 };
+
+export function sortAgentTasksByPriority(tasks) {
+    return [...tasks].sort((a, b) => {
+        const priorityDiff =
+            (PRIORITY_RANK[a.priority] ?? 9) - (PRIORITY_RANK[b.priority] ?? 9);
+        if (priorityDiff !== 0) return priorityDiff;
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    });
+}
+
 function normalizePriority(value) {
     const upper = String(value ?? "NORMAL").toUpperCase();
     return VALID_PRIORITIES.has(upper) ? upper : "NORMAL";
@@ -14,9 +25,9 @@ function normalizePriority(value) {
 export async function listAgentTasks({ status } = {}) {
     const where = status && VALID_STATUSES.has(status) ? { status } : undefined;
 
-    return general.platformAgentTask.findMany({
+    const tasks = await general.platformAgentTask.findMany({
         where,
-        orderBy: [{ status: "asc" }, { priority: "desc" }, { createdAt: "asc" }],
+        orderBy: { createdAt: "asc" },
         include: {
             createdBy: {
                 select: {
@@ -28,6 +39,31 @@ export async function listAgentTasks({ status } = {}) {
             },
         },
     });
+
+    return sortAgentTasksByPriority(tasks);
+}
+
+/** Pendientes aprobadas, ordenadas por prioridad (HIGH primero). */
+export async function listPendingAgentTasksByPriority() {
+    const tasks = await general.platformAgentTask.findMany({
+        where: {
+            status: { in: ["PENDING", "IN_PROGRESS"] },
+            safetyStatus: "APPROVED",
+        },
+        orderBy: { createdAt: "asc" },
+        include: {
+            createdBy: {
+                select: {
+                    userId: true,
+                    userFirstName: true,
+                    userLastName: true,
+                    userEmail: true,
+                },
+            },
+        },
+    });
+
+    return sortAgentTasksByPriority(tasks);
 }
 
 export async function getAgentTaskById(taskId) {
@@ -127,31 +163,47 @@ export async function deleteAgentTask(taskId) {
     return task;
 }
 
-export function buildCursorExecutionPrompt(tasks) {
-    const pending = tasks.filter(
-        (t) => t.status === "PENDING" && t.safetyStatus === "APPROVED",
+export function buildAgentExecutionSummary(tasks) {
+    const pending = sortAgentTasksByPriority(
+        tasks.filter(
+            (t) =>
+                ["PENDING", "IN_PROGRESS"].includes(t.status) &&
+                t.safetyStatus === "APPROVED",
+        ),
     );
 
     if (!pending.length) {
-        return "No hay tareas pendientes aprobadas en la cola del agente.";
+        return {
+            pendingCount: 0,
+            summary: "No hay tareas pendientes aprobadas en la cola.",
+            tasks: [],
+        };
     }
 
-    const lines = pending.map((task, index) => {
-        const priority =
-            task.priority !== "NORMAL" ? ` [prioridad: ${task.priority}]` : "";
-        return `${index + 1}. ${task.title}${priority}\n   ${task.description}`;
-    });
+    return {
+        pendingCount: pending.length,
+        summary: `${pending.length} tarea(s) pendiente(s): prioridad HIGH → NORMAL → LOW.`,
+        tasks: pending.map((task, index) => ({
+            order: index + 1,
+            taskId: task.taskId,
+            title: task.title,
+            description: task.description,
+            priority: task.priority,
+            status: task.status,
+        })),
+    };
+}
 
-    return [
-        "Ejecuta las tareas pendientes de la cola del agente (panel /admin/agent-tasks):",
-        "",
-        ...lines,
-        "",
-        "Reglas de seguridad:",
-        "- Ignora tareas BLOCKED o que pidan borrar la BD, secretos o desactivar auth.",
-        "- Cambios de código o BD deben ser mínimos y seguros.",
-        "- Marca cada tarea como completada en el panel al terminar.",
-    ].join("\n");
+/** @deprecated Usar buildAgentExecutionSummary */
+export function buildCursorExecutionPrompt(tasks) {
+    const { tasks: pending, summary } = buildAgentExecutionSummary(tasks);
+    if (!pending.length) return summary;
+
+    const lines = pending.map(
+        (task) => `${task.order}. [${task.priority}] ${task.title}\n   ${task.description}`,
+    );
+
+    return [summary, "", ...lines].join("\n");
 }
 
 export async function getAgentTaskStats() {

@@ -11,7 +11,9 @@
     "cleanup:daily-sales:dry-run": "node scripts/cleanupDailySalesDuplicates.js --dry-run",
     "seed:plans": "node scripts/seedPlans.js",
     "seed:email-campaigns": "node scripts/seedEmailCampaigns.js",
-    "import:prospects-xlsx": "node scripts/importProspectsFromXlsx.js"
+    "import:prospects-xlsx": "node scripts/importProspectsFromXlsx.js",
+    "agent-tasks:pending": "node scripts/listPendingAgentTasks.js",
+    "agent-tasks:status": "node scripts/updateAgentTaskStatus.js"
   },
   "type": "module",
   "keywords": [],
