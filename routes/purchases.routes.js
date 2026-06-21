@@ -16,43 +16,21 @@ import {
 
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 
 const router = Router();
+const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin];
 
-/* ----------------------------
-   PURCHASE ROUTES (ordered)
------------------------------ */
-
-// 1. Specific utility routes
-router.get("/purchases/monthNow", authRequired, dbSelectorMiddleware, getMonthlyPurchasesNowController);
-
-router.get("/purchases/provider/:providerId", authRequired, dbSelectorMiddleware, getPurchasesByProviderIdController);
-
-// 2. Counting monthly purchases
-router.get("/purchases/count/:month/:year", authRequired, dbSelectorMiddleware, countPurchasesMonthController);
-
-// 3. Monthly purchases
-router.get("/purchases/month/:month/:year", authRequired, dbSelectorMiddleware, getMonthlyPurchasesController);
-
-// 4. Daily purchases
-router.get("/purchases/day/:day/:month/:year", authRequired, dbSelectorMiddleware, getDayPurchasesController);
-
-// 5. Main list of purchases
-router.get("/purchases", authRequired, dbSelectorMiddleware, getPurchasesController);
-
-// 6. Create purchase with details + inventory (recommended)
-router.post("/purchases/complete", authRequired, dbSelectorMiddleware, createPurchaseCompleteController);
-
-// 7. Create purchase (header only — legacy)
-router.post("/purchases", authRequired, dbSelectorMiddleware, createPurchaseController);
-
-// 8. Get purchase by ID
-router.get("/purchases/:id", authRequired, dbSelectorMiddleware, getPurchaseByIdController);
-
-// 9. Update purchase header
-router.put("/purchases/:id", authRequired, dbSelectorMiddleware, updatePurchaseController);
-
-// 10. Cancel purchase + reverse inventory
-router.post("/purchases/:id/cancel", authRequired, dbSelectorMiddleware, cancelPurchaseController);
+router.get("/purchases/monthNow", ...admin, getMonthlyPurchasesNowController);
+router.get("/purchases/provider/:providerId", ...admin, getPurchasesByProviderIdController);
+router.get("/purchases/count/:month/:year", ...admin, countPurchasesMonthController);
+router.get("/purchases/month/:month/:year", ...admin, getMonthlyPurchasesController);
+router.get("/purchases/day/:day/:month/:year", ...admin, getDayPurchasesController);
+router.get("/purchases", ...admin, getPurchasesController);
+router.post("/purchases/complete", ...admin, createPurchaseCompleteController);
+router.post("/purchases", ...admin, createPurchaseController);
+router.get("/purchases/:id", ...admin, getPurchaseByIdController);
+router.put("/purchases/:id", ...admin, updatePurchaseController);
+router.post("/purchases/:id/cancel", ...admin, cancelPurchaseController);
 
 export default router;

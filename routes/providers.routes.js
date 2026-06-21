@@ -9,38 +9,15 @@ import {
 
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 
 const router = Router();
+const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin];
 
-router.post(
-  "/providers",
-  authRequired,
-  dbSelectorMiddleware,
-  createProviderController,
-);
-router.get(
-  "/providers",
-  authRequired,
-  dbSelectorMiddleware,
-  getProvidersController,
-);
-router.get(
-  "/providers/:id",
-  authRequired,
-  dbSelectorMiddleware,
-  getProviderByIdController,
-);
-router.put(
-  "/providers/:id",
-  authRequired,
-  dbSelectorMiddleware,
-  updateProviderController,
-);
-router.delete(
-  "/providers/:id",
-  authRequired,
-  dbSelectorMiddleware,
-  deleteProviderController,
-);
+router.post("/providers", ...admin, createProviderController);
+router.get("/providers", ...admin, getProvidersController);
+router.get("/providers/:id", ...admin, getProviderByIdController);
+router.put("/providers/:id", ...admin, updateProviderController);
+router.delete("/providers/:id", ...admin, deleteProviderController);
 
 export default router;

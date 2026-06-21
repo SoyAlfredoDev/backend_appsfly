@@ -12,6 +12,7 @@ import {
 import { getUsersControllerBusinessDB } from "../controllers/businessDB/user.controller.js";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 
 const router = Router();
 
@@ -25,7 +26,7 @@ router.get('/users/isSuperAdmin', authRequired, userIsSuperAdminController);
 router.get('/users/isPlatformOwner', authRequired, userIsPlatformOwnerController);
 
 // Rutas con middleware especial (Multi-tenancy)
-router.get('/db/users', authRequired, dbSelectorMiddleware, getUsersControllerBusinessDB);
+router.get('/db/users', authRequired, dbSelectorMiddleware, requireTenantAdmin, getUsersControllerBusinessDB);
 
 // Rutas de conteo
 router.get('/users/count', authRequired, countUsersController);

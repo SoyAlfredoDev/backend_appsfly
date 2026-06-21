@@ -10,16 +10,19 @@ import {
     getBusinessBillingController,
     cancelBusinessSubscriptionController,
 } from '../controllers/subscription.controller.js';
+import { ensureTenantRole, requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 
 const router = Router();
+const admin = [authRequired, ensureTenantRole, requireTenantAdmin];
 
-router.post('/subscriptions', authRequired, createSubscriptionController);
-router.post('/subscriptions/checkout', authRequired, createSubscriptionCheckoutController);
-router.post('/subscriptions/process-payment', authRequired, processSubscriptionPaymentBrickController);
+router.post('/subscriptions', ...admin, createSubscriptionController);
+router.post('/subscriptions/checkout', ...admin, createSubscriptionCheckoutController);
+router.post('/subscriptions/process-payment', ...admin, processSubscriptionPaymentBrickController);
+router.post('/subscriptions/payments/:paymentId/confirm', ...admin, confirmSubscriptionPaymentController);
+router.post('/subscriptions/billing/:businessId/cancel', ...admin, cancelBusinessSubscriptionController);
+
 router.get('/subscriptions/payments/:paymentId', authRequired, getSubscriptionPaymentStatusController);
-router.post('/subscriptions/payments/:paymentId/confirm', authRequired, confirmSubscriptionPaymentController);
-router.get('/subscriptions/billing/:businessId', authRequired, getBusinessBillingController);
-router.post('/subscriptions/billing/:businessId/cancel', authRequired, cancelBusinessSubscriptionController);
+router.get('/subscriptions/billing/:businessId', authRequired, ensureTenantRole, getBusinessBillingController);
 router.get('/subscriptions/:businessId', authRequired, checkActiveSubscription);
 
 export default router;

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
-import { requireTenantAdmin } from "../middlewares/requireTenantAdmin.middleware.js";
+import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 import {
     assistantChatController,
     assistantStatusController,

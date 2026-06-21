@@ -7,12 +7,14 @@ import {
 } from "../controllers/inventory.controller.js";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 
 const router = Router();
+const auth = [authRequired, dbSelectorMiddleware];
 
-router.get("/inventory/summary", authRequired, dbSelectorMiddleware, getInventorySummaryController);
-router.get("/inventory/stock", authRequired, dbSelectorMiddleware, getInventoryStockController);
-router.get("/inventory/movements", authRequired, dbSelectorMiddleware, getInventoryMovementsController);
-router.post("/inventory/adjustments", authRequired, dbSelectorMiddleware, createInventoryAdjustmentController);
+router.get("/inventory/summary", ...auth, getInventorySummaryController);
+router.get("/inventory/stock", ...auth, getInventoryStockController);
+router.get("/inventory/movements", ...auth, getInventoryMovementsController);
+router.post("/inventory/adjustments", ...auth, requireTenantAdmin, createInventoryAdjustmentController);
 
 export default router;

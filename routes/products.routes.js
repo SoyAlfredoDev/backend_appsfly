@@ -3,11 +3,13 @@ import { createProductController, getProductsController, getProductViewControlle
 
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 
 const router = Router();
+const auth = [authRequired, dbSelectorMiddleware];
 
-router.post('/products', authRequired, dbSelectorMiddleware, createProductController);
-router.get('/products', authRequired, dbSelectorMiddleware, getProductsController);
-router.get('/products/:id/view', authRequired, dbSelectorMiddleware, getProductViewController);
+router.post('/products', ...auth, requireTenantAdmin, createProductController);
+router.get('/products', ...auth, getProductsController);
+router.get('/products/:id/view', ...auth, getProductViewController);
 
 export default router;
