@@ -256,3 +256,164 @@ export async function getInventoryMovementsReport(
         rows,
     };
 }
+
+function formatSellerName(user) {
+    if (!user) return "Sin vendedor";
+    return `${user.userFirstName ?? ""} ${user.userLastName ?? ""}`.trim() || "Sin vendedor";
+}
+
+/**
+ * Ventas agrupadas por vendedor o detalle de un vendedor en un rango de fechas.
+ * @param {{ startDate: string, endDate: string, sellerId?: string | null }} filters
+ * @param {import('@prisma/client').PrismaClient} prisma
+ */
+export async function getSalesBySellerReport({ startDate, endDate, sellerId }, prisma) {
+    const { start, end } = parseDateRange(startDate, endDate);
+    const sellerFilter = sellerId?.trim() || null;
+
+    if (sellerFilter) {
+        const seller = await prisma.user.findUnique({
+            where: { userId: sellerFilter },
+            select: {
+                userId: true,
+                userFirstName: true,
+                userLastName: true,
+            },
+        });
+
+        if (!seller) {
+            throw new Error("INVALID_SELLER");
+        }
+
+        const sellerName = formatSellerName(seller);
+
+        const [aggregate, sales] = await Promise.all([
+            prisma.sale.aggregate({
+                _sum: {
+                    saleTotal: true,
+                    saleTotalPayments: true,
+                    salePendingAmount: true,
+                },
+                _count: { saleId: true },
+                where: {
+                    createdByUserId: sellerFilter,
+                    createdAt: { gte: start, lte: end },
+                },
+            }),
+            prisma.sale.findMany({
+                where: {
+                    createdByUserId: sellerFilter,
+                    createdAt: { gte: start, lte: end },
+                },
+                select: {
+                    saleId: true,
+                    saleNumber: true,
+                    saleTotal: true,
+                    saleTotalPayments: true,
+                    salePendingAmount: true,
+                    createdAt: true,
+                    customer: {
+                        select: {
+                            customerFirstName: true,
+                            customerLastName: true,
+                        },
+                    },
+                },
+                orderBy: { createdAt: "desc" },
+            }),
+        ]);
+
+        return {
+            reportType: "sales-by-seller",
+            viewMode: "detail",
+            period: {
+                startDate,
+                endDate,
+                sellerId: sellerFilter,
+                sellerName,
+            },
+            summary: {
+                totalSales: aggregate._sum.saleTotal ?? 0,
+                totalPaid: aggregate._sum.saleTotalPayments ?? 0,
+                totalPending: aggregate._sum.salePendingAmount ?? 0,
+                transactionCount: aggregate._count.saleId ?? 0,
+                sellerCount: 1,
+            },
+            rows: sales.map((sale) => ({
+                id: sale.saleId,
+                number: sale.saleNumber,
+                date: sale.createdAt,
+                sellerId: sellerFilter,
+                sellerName,
+                customer: `${sale.customer?.customerFirstName ?? ""} ${sale.customer?.customerLastName ?? ""}`.trim(),
+                total: sale.saleTotal,
+                paid: sale.saleTotalPayments,
+                pending: sale.salePendingAmount,
+            })),
+        };
+    }
+
+    const groups = await prisma.sale.groupBy({
+        by: ["createdByUserId"],
+        where: { createdAt: { gte: start, lte: end } },
+        _sum: {
+            saleTotal: true,
+            saleTotalPayments: true,
+            salePendingAmount: true,
+        },
+        _count: { saleId: true },
+    });
+
+    const userIds = groups.map((group) => group.createdByUserId);
+    const users = userIds.length
+        ? await prisma.user.findMany({
+              where: { userId: { in: userIds } },
+              select: {
+                  userId: true,
+                  userFirstName: true,
+                  userLastName: true,
+              },
+          })
+        : [];
+
+    const userMap = new Map(users.map((user) => [user.userId, user]));
+
+    const rows = groups
+        .map((group) => {
+            const user = userMap.get(group.createdByUserId);
+            return {
+                sellerId: group.createdByUserId,
+                sellerName: formatSellerName(user),
+                transactionCount: group._count.saleId ?? 0,
+                totalSales: group._sum.saleTotal ?? 0,
+                totalPaid: group._sum.saleTotalPayments ?? 0,
+                totalPending: group._sum.salePendingAmount ?? 0,
+            };
+        })
+        .sort((a, b) => b.totalSales - a.totalSales);
+
+    const summary = rows.reduce(
+        (acc, row) => ({
+            totalSales: acc.totalSales + row.totalSales,
+            totalPaid: acc.totalPaid + row.totalPaid,
+            totalPending: acc.totalPending + row.totalPending,
+            transactionCount: acc.transactionCount + row.transactionCount,
+            sellerCount: acc.sellerCount + 1,
+        }),
+        {
+            totalSales: 0,
+            totalPaid: 0,
+            totalPending: 0,
+            transactionCount: 0,
+            sellerCount: 0,
+        },
+    );
+
+    return {
+        reportType: "sales-by-seller",
+        viewMode: "summary",
+        period: { startDate, endDate, sellerId: null, sellerName: null },
+        summary,
+        rows,
+    };
+}

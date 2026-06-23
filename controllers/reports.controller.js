@@ -2,12 +2,15 @@ import {
     getMonthlySalesReport,
     getYearlySalesReport,
     getInventoryMovementsReport,
+    getSalesBySellerReport,
 } from "../services/reportsService.js";
+import { assertUserBelongsToBusiness } from "../services/userBusinessService.js";
 
 const REPORT_ERRORS = {
     INVALID_DATE_RANGE: "Rango de fechas inválido.",
     INVALID_DATE_ORDER: "La fecha de inicio debe ser anterior a la fecha de fin.",
     DATE_RANGE_TOO_LARGE: "El rango máximo permitido es de 366 días.",
+    INVALID_SELLER: "El vendedor seleccionado no pertenece a este negocio.",
 };
 
 export const generateReportController = async (req, res) => {
@@ -44,6 +47,41 @@ export const generateReportController = async (req, res) => {
                             startDate,
                             endDate,
                             categoryId: categoryId || null,
+                        },
+                        prisma,
+                    );
+                    return res.status(200).json(data);
+                } catch (rangeError) {
+                    const message = REPORT_ERRORS[rangeError.message];
+                    if (message) {
+                        return res.status(400).json({ error: message });
+                    }
+                    throw rangeError;
+                }
+            }
+            case "sales-by-seller": {
+                const { startDate, endDate, sellerId } = req.query;
+                if (!startDate || !endDate) {
+                    return res.status(400).json({ error: "Debes indicar fecha de inicio y fin." });
+                }
+
+                const trimmedSellerId = sellerId?.trim() || null;
+                if (trimmedSellerId) {
+                    const membership = await assertUserBelongsToBusiness(
+                        trimmedSellerId,
+                        req.tenantBusinessId,
+                    );
+                    if (!membership) {
+                        return res.status(400).json({ error: REPORT_ERRORS.INVALID_SELLER });
+                    }
+                }
+
+                try {
+                    const data = await getSalesBySellerReport(
+                        {
+                            startDate,
+                            endDate,
+                            sellerId: trimmedSellerId,
                         },
                         prisma,
                     );

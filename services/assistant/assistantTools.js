@@ -3,6 +3,11 @@ import {
     getYearlySalesReport,
     getInventoryMovementsReport,
 } from "../reportsService.js";
+import {
+    createTenantToolContext,
+    sanitizeToolArgs,
+    truncateToolResponseForModel,
+} from "./assistantSecurity.js";
 
 const MAX_RESULTS = 15;
 
@@ -314,43 +319,61 @@ async function getInventoryMovements({ startDate, endDate }, prisma) {
 /**
  * Ejecuta una tool permitida usando únicamente el Prisma del tenant actual.
  * Nunca acepta businessId ni accede a la DB general.
+ *
+ * @param {string} toolName
+ * @param {object} args
+ * @param {{ prisma: import('@prisma/client').PrismaClient, businessId: string }} tenantCtx
  */
-export async function executeAssistantTool(toolName, args, prisma) {
+export async function executeAssistantTool(toolName, args, tenantCtx) {
     if (!ALLOWED_TOOLS.has(toolName)) {
         return { error: `Herramienta no permitida: ${toolName}` };
     }
 
+    const ctx = createTenantToolContext(tenantCtx.prisma, tenantCtx.businessId);
+    const prisma = ctx.prisma;
+
+    const sanitized = sanitizeToolArgs(toolName, args);
+    if (sanitized?.error) {
+        return sanitized;
+    }
+
+    let result;
     switch (toolName) {
         case "search_customers":
-            return searchCustomers(args, prisma);
+            result = await searchCustomers(sanitized, prisma);
+            break;
         case "get_customer_detail":
-            return getCustomerDetail(args, prisma);
+            result = await getCustomerDetail(sanitized, prisma);
+            break;
         case "get_monthly_sales_report": {
-            const month = Number(args.month);
-            const year = Number(args.year);
-            if (!month || month < 1 || month > 12 || !year || year < 2000) {
-                return { error: "Mes (1-12) y año válidos son requeridos." };
-            }
-            const report = await getMonthlySalesReport(month, year, prisma);
-            return trimReportForLlm(report);
+            const report = await getMonthlySalesReport(
+                sanitized.month,
+                sanitized.year,
+                prisma,
+            );
+            result = trimReportForLlm(report);
+            break;
         }
         case "get_yearly_sales_report": {
-            const year = Number(args.year);
-            if (!year || year < 2000) {
-                return { error: "Año válido requerido." };
-            }
-            const report = await getYearlySalesReport(year, prisma);
-            return trimReportForLlm(report);
+            const report = await getYearlySalesReport(sanitized.year, prisma);
+            result = trimReportForLlm(report);
+            break;
         }
         case "get_low_stock_products":
-            return getLowStockProducts(args, prisma);
+            result = await getLowStockProducts(sanitized, prisma);
+            break;
         case "search_products":
-            return searchProducts(args, prisma);
+            result = await searchProducts(sanitized, prisma);
+            break;
         case "get_recent_sales":
-            return getRecentSales(args, prisma);
+            result = await getRecentSales(sanitized, prisma);
+            break;
         case "get_inventory_movements":
-            return getInventoryMovements(args, prisma);
+            result = await getInventoryMovements(sanitized, prisma);
+            break;
         default:
-            return { error: "Herramienta no implementada." };
+            result = { error: "Herramienta no implementada." };
     }
+
+    return truncateToolResponseForModel(result);
 }

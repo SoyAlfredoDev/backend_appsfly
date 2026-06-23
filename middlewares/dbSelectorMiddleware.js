@@ -1,5 +1,6 @@
 // middlewares/dbSelectorMiddleware.js
 import { getPrismaForBusinessId } from "../db.js";
+import { resolveTenantMembership } from "../libs/resolveTenantMembership.js";
 import { getUserBusinessById } from "../services/userBusinessService.js";
 
 export async function dbSelectorMiddleware(req, res, next) {
@@ -10,11 +11,22 @@ export async function dbSelectorMiddleware(req, res, next) {
     }
 
     const memberships = await getUserBusinessById(userId);
-    if (!memberships?.length) {
+    const requestedBusinessId =
+      req.headers["x-appsfly-business-id"] ||
+      req.headers["x-tenant-business-id"];
+
+    const resolved = resolveTenantMembership(memberships, requestedBusinessId);
+    if (resolved.error === "NO_MEMBERSHIP") {
       return res.status(403).json({ error: "No tienes un negocio asociado" });
     }
+    if (resolved.error === "FORBIDDEN_BUSINESS") {
+      return res.status(403).json({
+        error: "No tienes acceso a ese negocio.",
+        code: "TENANT_FORBIDDEN",
+      });
+    }
 
-    const membership = memberships[0];
+    const membership = resolved.membership;
     req.tenantBusinessId = membership.userBusinessBusinessId;
     req.tenantRole = membership.userBusinessRole;
 

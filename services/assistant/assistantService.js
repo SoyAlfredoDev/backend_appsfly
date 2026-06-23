@@ -3,6 +3,10 @@ import {
     executeAssistantTool,
 } from "./assistantTools.js";
 import {
+    assertSafeUserMessage,
+    AssistantSecurityError,
+} from "./assistantSecurity.js";
+import {
     appendFunctionResponse,
     appendModelFunctionCalls,
     buildSystemInstruction,
@@ -96,6 +100,13 @@ export async function processAssistantChat({
         };
     }
 
+    if (!prisma || !businessId) {
+        throw new AssistantSecurityError(
+            "TENANT_CONTEXT_INVALID",
+            "Contexto de negocio inválido.",
+        );
+    }
+
     const rateError = checkRateLimit(userId);
     if (rateError) {
         return { reply: rateError, toolsUsed: [], rateLimited: true };
@@ -106,12 +117,15 @@ export async function processAssistantChat({
         throw new Error("INVALID_MESSAGES");
     }
 
-    const systemInstruction = buildSystemInstruction(businessName);
+    assertSafeUserMessage(safeMessages.at(-1).content);
+
+    const systemInstruction = buildSystemInstruction(businessName, businessId);
     const { contents, systemInstruction: systemPayload } = toGeminiContents(
         systemInstruction,
         safeMessages,
     );
 
+    const tenantCtx = { prisma, businessId };
     const toolsUsed = [];
     let lastToolError = null;
 
@@ -145,7 +159,7 @@ export async function processAssistantChat({
                 toolResult = await executeAssistantTool(
                     call.name,
                     call.args,
-                    prisma,
+                    tenantCtx,
                 );
                 toolsUsed.push(call.name);
                 auditLog({

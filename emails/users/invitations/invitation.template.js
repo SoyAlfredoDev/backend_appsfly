@@ -4,9 +4,10 @@ import {
     primaryButton,
     wrapEmailLayout,
 } from "../../shared/layout.js";
+import { getTenantRoleLabel } from "../../../libs/tenantRoleLabels.js";
 
 function formatRoleLabel(role) {
-    return role === "ADMIN" ? "Administrador" : "Usuario";
+    return getTenantRoleLabel(role);
 }
 
 export function invitationEmailSubject({ businessName }) {
