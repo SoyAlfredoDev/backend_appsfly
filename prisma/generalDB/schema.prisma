@@ -249,6 +249,8 @@ model PlatformEmailProspect {
     convertedUserId    String?
     convertedAt        DateTime?
     outreachEmailsSent Int                         @default(0)
+    /** Última variante de mensaje enviada (overview | offer | team) */
+    lastOutreachVariantId String?
     firstOutreachAt    DateTime?
     lastOutreachAt     DateTime?
     createdAt          DateTime                    @default(now())
@@ -340,7 +342,11 @@ model PlatformEmailCampaignRecipient {
     bouncedAt         DateTime?
     openedAt          DateTime?
     openCount         Int                          @default(0)
+    /** Variante A/B/C del outreach (overview, offer, team) */
+    messageVariantId  String?
     createdAt         DateTime                     @default(now())
+
+    @@index([messageVariantId])
 
     @@index([runId])
     @@index([deliveryStatus])

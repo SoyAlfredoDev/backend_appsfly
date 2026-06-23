@@ -244,26 +244,30 @@ model newsletterSubscriber {
  * Prospectos externos (no usuarios AppsFly) para campaña de outreach
  */
 model PlatformEmailProspect {
-  prospectId         String                      @id @default(uuid())
-  email              String                      @unique
-  firstName          String?
-  lastName           String?
-  companyName        String?
-  status             PlatformEmailProspectStatus @default(ACTIVE)
-  unsubscribeToken   String                      @unique @default(uuid())
-  unsubscribedAt     DateTime?
-  source             String?
-  notes              String?
+  prospectId            String                      @id @default(uuid())
+  email                 String                      @unique
+  firstName             String?
+  lastName              String?
+  companyName           String?
+  status                PlatformEmailProspectStatus @default(ACTIVE)
+  unsubscribeToken      String                      @unique @default(uuid())
+  unsubscribedAt        DateTime?
+  source                String?
+  notes                 String?
   /**
    * Usuario AppsFly creado tras outreach
    */
-  convertedUserId    String?
-  convertedAt        DateTime?
-  outreachEmailsSent Int                         @default(0)
-  firstOutreachAt    DateTime?
-  lastOutreachAt     DateTime?
-  createdAt          DateTime                    @default(now())
-  updatedAt          DateTime                    @updatedAt
+  convertedUserId       String?
+  convertedAt           DateTime?
+  outreachEmailsSent    Int                         @default(0)
+  /**
+   * Última variante de mensaje enviada (overview | offer | team)
+   */
+  lastOutreachVariantId String?
+  firstOutreachAt       DateTime?
+  lastOutreachAt        DateTime?
+  createdAt             DateTime                    @default(now())
+  updatedAt             DateTime                    @updatedAt
 
   @@index([status])
   @@index([email])
@@ -355,8 +359,13 @@ model PlatformEmailCampaignRecipient {
   bouncedAt         DateTime?
   openedAt          DateTime?
   openCount         Int                          @default(0)
+  /**
+   * Variante A/B/C del outreach (overview, offer, team)
+   */
+  messageVariantId  String?
   createdAt         DateTime                     @default(now())
 
+  @@index([messageVariantId])
   @@index([runId])
   @@index([deliveryStatus])
   @@index([recipientEmail])

@@ -397,6 +397,8 @@ export async function resolvePlatformProspectRecipients() {
             lastName: prospect.lastName?.trim() || "",
             businessName: prospect.companyName?.trim() || "Tu negocio",
             emailConfirmed: false,
+            outreachEmailsSent: prospect.outreachEmailsSent ?? 0,
+            lastOutreachVariantId: prospect.lastOutreachVariantId ?? null,
             registerUrl,
             unsubscribeUrl: buildProspectUnsubscribeUrl(prospect.unsubscribeToken),
         });

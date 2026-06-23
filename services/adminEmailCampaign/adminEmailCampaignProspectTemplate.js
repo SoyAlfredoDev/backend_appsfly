@@ -4,6 +4,10 @@ import {
     primaryButton,
     wrapEmailLayout,
 } from "../../emails/shared/layout.js";
+import {
+    describeVariantPickStrategy,
+    pickProspectTemplateVariant,
+} from "./adminEmailCampaignProspectVariantPicker.js";
 
 function applyProspectTokens(template, data) {
     return String(template ?? "")
@@ -24,61 +28,65 @@ function unsubscribeFooter(unsubscribeUrl) {
 
 function variantOverviewHtml(data) {
     const name = escapeHtml(data.firstName);
-    const registerUrl = data.registerUrl ?? `${getFrontendBaseUrl()}/register`;
+    const registerUrl = data.registerUrl ?? `${getFrontendBaseUrl()}/register?from=prospect-email`;
     const unsubscribeUrl = data.unsubscribeUrl ?? "#";
 
     const bodyHtml = `
       <h1 class="email-heading" style="margin:0 0 16px;font-size:22px;line-height:1.3;color:#021f41;font-family:Arial,Helvetica,sans-serif;">
-        Gestiona tu negocio con AppsFly
+        Deja de perder ventas por desorden
       </h1>
       <p class="email-body-text" style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#374151;font-family:Arial,Helvetica,sans-serif;">
         Hola <strong>${name}</strong>,
       </p>
       <p class="email-body-text" style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#374151;font-family:Arial,Helvetica,sans-serif;">
-        <strong>AppsFly</strong> es un sistema en la nube para gestionar <strong>ventas, inventario, compras y finanzas</strong>
-        de tu negocio. Trabaja desde <strong>teléfono móvil o web</strong>, con varios usuarios en el mismo negocio,
-        con acceso seguro y datos protegidos.
+        Muchos negocios pierden dinero cada día porque venden en un lado, el stock lo llevan en otro
+        y las compras en una planilla distinta. <strong>AppsFly</strong> concentra ventas, inventario,
+        compras y finanzas en un solo sistema — desde el celular o la web, con datos seguros en la nube.
       </p>
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px;">
         <tr>
           <td style="background-color:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:16px;">
             <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#1d4ed8;font-family:Arial,Helvetica,sans-serif;">
-              ¿Qué puedes hacer con AppsFly?
+              Lo que resuelve AppsFly desde el día uno
             </p>
             <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.6;color:#1e3a8a;font-family:Arial,Helvetica,sans-serif;">
-              <li>Registrar y controlar ventas en tiempo real</li>
-              <li>Gestionar inventario y stock de productos</li>
-              <li>Registrar compras y proveedores</li>
-              <li>Ver reportes y finanzas de tu negocio</li>
+              <li>Registrar cada venta y saber cuánto vendiste hoy</li>
+              <li>Controlar stock antes de quedarte sin producto</li>
+              <li>Ordenar compras y proveedores sin planillas</li>
+              <li>Ver reportes claros para decidir con datos</li>
             </ul>
           </td>
         </tr>
       </table>
-      ${primaryButton(registerUrl, "Crear mi cuenta en AppsFly")}
+      <p class="email-body-text" style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#4b5563;font-family:Arial,Helvetica,sans-serif;">
+        Sin instalaciones complicadas. Empiezas en minutos y tu equipo puede sumarse cuando quieras.
+      </p>
+      ${primaryButton(registerUrl, "Quiero probar AppsFly gratis")}
       ${unsubscribeFooter(unsubscribeUrl)}`;
 
     return wrapEmailLayout({
-        title: "AppsFly — software para tu negocio",
-        preheader: "Ventas, inventario y reportes en un solo lugar.",
+        title: "AppsFly — ordena tu negocio",
+        preheader: "Ventas, stock y reportes en un solo lugar. Empieza gratis.",
         bodyHtml,
     });
 }
 
 function variantOfferHtml(data) {
     const name = escapeHtml(data.firstName);
-    const registerUrl = data.registerUrl ?? `${getFrontendBaseUrl()}/register`;
+    const registerUrl = data.registerUrl ?? `${getFrontendBaseUrl()}/register?from=prospect-email`;
     const unsubscribeUrl = data.unsubscribeUrl ?? "#";
 
     const bodyHtml = `
       <h1 class="email-heading" style="margin:0 0 16px;font-size:22px;line-height:1.3;color:#021f41;font-family:Arial,Helvetica,sans-serif;">
-        Prueba AppsFly 2 meses sin costo
+        2 meses gratis para ordenar tu negocio
       </h1>
       <p class="email-body-text" style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#374151;font-family:Arial,Helvetica,sans-serif;">
         Hola <strong>${name}</strong>,
       </p>
       <p class="email-body-text" style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#374151;font-family:Arial,Helvetica,sans-serif;">
-        Queremos que conozcas AppsFly con calma: <strong>2 meses gratis</strong> para probar ventas, inventario,
-        compras y reportes. Después, el plan es de <strong>$9.990 por mes</strong> — sin tarjeta para empezar.
+        Queremos que pruebes AppsFly con calma: <strong>2 meses sin costo</strong> para manejar ventas,
+        inventario y reportes. Después, el plan es de solo <strong>$9.990 al mes</strong> — menos que un
+        error de inventario mal anotado.
       </p>
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px;">
         <tr>
@@ -87,17 +95,18 @@ function variantOfferHtml(data) {
               Oferta de bienvenida
             </p>
             <p style="margin:0;font-size:14px;line-height:1.6;color:#78350f;font-family:Arial,Helvetica,sans-serif;">
-              Regístrate hoy y opera tu negocio online desde celular o computador, con datos seguros en la nube.
+              Regístrate hoy, opera desde celular o computador y decide con datos reales
+              si AppsFly es para tu negocio. Sin tarjeta para empezar.
             </p>
           </td>
         </tr>
       </table>
-      ${primaryButton(registerUrl, "Empezar mis 2 meses gratis")}
+      ${primaryButton(registerUrl, "Activar mis 2 meses gratis")}
       ${unsubscribeFooter(unsubscribeUrl)}`;
 
     return wrapEmailLayout({
         title: "AppsFly — 2 meses gratis",
-        preheader: "2 meses gratis, luego $9.990/mes. Sin tarjeta para empezar.",
+        preheader: "Prueba 2 meses sin costo. Luego $9.990/mes.",
         bodyHtml,
     });
 }
@@ -105,36 +114,40 @@ function variantOfferHtml(data) {
 function variantTeamHtml(data) {
     const name = escapeHtml(data.firstName);
     const business = escapeHtml(data.businessName);
-    const registerUrl = data.registerUrl ?? `${getFrontendBaseUrl()}/register`;
+    const registerUrl = data.registerUrl ?? `${getFrontendBaseUrl()}/register?from=prospect-email`;
     const unsubscribeUrl = data.unsubscribeUrl ?? "#";
 
     const bodyHtml = `
       <h1 class="email-heading" style="margin:0 0 16px;font-size:22px;line-height:1.3;color:#021f41;font-family:Arial,Helvetica,sans-serif;">
-        Tu equipo en un solo sistema
+        Tu equipo, un solo sistema
       </h1>
       <p class="email-body-text" style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#374151;font-family:Arial,Helvetica,sans-serif;">
         Hola <strong>${name}</strong>,
       </p>
       <p class="email-body-text" style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#374151;font-family:Arial,Helvetica,sans-serif;">
-        Con AppsFly, <strong>${business}</strong> puede trabajar con varios usuarios al mismo tiempo: ventas en caja,
-        control de stock, compras y reportes — todo sincronizado y accesible desde móvil o web.
+        Si en <strong>${business}</strong> vende una persona, compra otra y tú revisas los números a mano,
+        AppsFly les da a todos la misma información en tiempo real: caja, stock, compras y reportes
+        sincronizados desde móvil o web.
       </p>
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px;">
         <tr>
           <td style="background-color:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:16px;">
+            <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#166534;font-family:Arial,Helvetica,sans-serif;">
+              Pensado para equipos pequeños
+            </p>
             <p style="margin:0;font-size:14px;line-height:1.6;color:#166534;font-family:Arial,Helvetica,sans-serif;">
-              <strong>Seguro y protegido:</strong> roles y permisos por usuario, datos en servidores confiables
-              y buenas prácticas de seguridad en la plataforma.
+              Roles y permisos por usuario, historial de movimientos y datos protegidos en la nube.
+              Menos WhatsApps preguntando «¿cuánto queda?».
             </p>
           </td>
         </tr>
       </table>
-      ${primaryButton(registerUrl, "Invitar a mi equipo a AppsFly")}
+      ${primaryButton(registerUrl, "Crear cuenta para mi equipo")}
       ${unsubscribeFooter(unsubscribeUrl)}`;
 
     return wrapEmailLayout({
-        title: "AppsFly — equipo multi-usuario",
-        preheader: "Varios usuarios, un solo negocio. Ventas e inventario online.",
+        title: "AppsFly — equipo conectado",
+        preheader: "Varios usuarios, un negocio. Ventas e inventario al día.",
         bodyHtml,
     });
 }
@@ -142,14 +155,22 @@ function variantTeamHtml(data) {
 export const PROSPECT_OUTREACH_VARIANTS = [
     {
         id: "overview",
-        subject: "{{firstName}}, gestiona ventas e inventario con AppsFly",
+        name: "Propuesta de valor",
+        marketingAngle: "Dolor: desorden entre ventas, stock y planillas",
+        goal: "Despertar interés mostrando el problema que AppsFly resuelve",
+        subject: "{{firstName}}, ¿sigues llevando ventas e inventario aparte?",
+        preheader: "Un solo sistema para vender, controlar stock y ver reportes.",
         buildHtml: variantOverviewHtml,
         buildText: (data) => `Hola ${data.firstName ?? ""},
 
-AppsFly es un sistema en la nube para gestionar ventas, inventario, compras y finanzas de tu negocio.
-Trabaja desde teléfono móvil o web, con varios usuarios y acceso seguro.
+¿Sigues llevando ventas, inventario y compras en lugares distintos? AppsFly los concentra en un solo sistema en la nube — celular o web, con datos seguros.
 
-Crea tu cuenta: ${data.registerUrl ?? `${getFrontendBaseUrl()}/register`}
+• Registrar ventas en tiempo real
+• Controlar stock
+• Ordenar compras y proveedores
+• Ver reportes para decidir mejor
+
+Prueba gratis: ${data.registerUrl ?? `${getFrontendBaseUrl()}/register?from=prospect-email`}
 
 Darme de baja: ${data.unsubscribeUrl ?? "#"}
 
@@ -157,13 +178,17 @@ Equipo AppsFly`,
     },
     {
         id: "offer",
-        subject: "{{firstName}}, prueba AppsFly 2 meses sin costo",
+        name: "Oferta 2 meses gratis",
+        marketingAngle: "Incentivo de bajo riesgo + precio accesible",
+        goal: "Convertir con prueba gratuita y urgencia suave",
+        subject: "{{firstName}}, 2 meses gratis para probar AppsFly",
+        preheader: "Sin tarjeta para empezar. Luego $9.990/mes.",
         buildText: (data) => `Hola ${data.firstName ?? ""},
 
-Prueba AppsFly 2 meses gratis: ventas, inventario, compras y reportes.
-Luego $9.990/mes. No necesitas tarjeta para empezar.
+Prueba AppsFly 2 meses sin costo: ventas, inventario, compras y reportes.
+Después $9.990/mes. Sin tarjeta para empezar.
 
-Empezar: ${data.registerUrl ?? `${getFrontendBaseUrl()}/register`}
+Activar oferta: ${data.registerUrl ?? `${getFrontendBaseUrl()}/register?from=prospect-email`}
 
 Darme de baja: ${data.unsubscribeUrl ?? "#"}
 
@@ -172,12 +197,16 @@ Equipo AppsFly`,
     },
     {
         id: "team",
-        subject: "{{firstName}}, tu equipo en un solo sistema para {{businessName}}",
+        name: "Equipo multi-usuario",
+        marketingAngle: "Dolor: varias personas sin la misma información",
+        goal: "Atraer negocios con más de una persona operando",
+        subject: "{{firstName}}, conecta a tu equipo en {{businessName}}",
+        preheader: "Ventas, stock y reportes sincronizados para todo el equipo.",
         buildText: (data) => `Hola ${data.firstName ?? ""},
 
-Con AppsFly, ${data.businessName ?? "tu negocio"} puede operar con varios usuarios: ventas, stock, compras y reportes sincronizados.
+Con AppsFly, ${data.businessName ?? "tu negocio"} puede operar con varios usuarios: ventas, stock, compras y reportes sincronizados desde móvil o web.
 
-Regístrate: ${data.registerUrl ?? `${getFrontendBaseUrl()}/register`}
+Crear cuenta: ${data.registerUrl ?? `${getFrontendBaseUrl()}/register?from=prospect-email`}
 
 Darme de baja: ${data.unsubscribeUrl ?? "#"}
 
@@ -186,37 +215,42 @@ Equipo AppsFly`,
     },
 ];
 
-function hashEmailForVariant(email) {
-    const normalized = String(email ?? "").trim().toLowerCase();
-    let hash = 0;
-    for (let i = 0; i < normalized.length; i += 1) {
-        hash = (hash * 31 + normalized.charCodeAt(i)) >>> 0;
-    }
-    return hash;
+export function getProspectVariantById(variantId) {
+    return PROSPECT_OUTREACH_VARIANTS.find((variant) => variant.id === variantId) ?? null;
 }
 
-/** Elige variante estable por email (mismo prospecto = mismo ángulo). */
-export function pickProspectTemplateVariant(email) {
-    const index = hashEmailForVariant(email) % PROSPECT_OUTREACH_VARIANTS.length;
-    return PROSPECT_OUTREACH_VARIANTS[index];
-}
+export function renderProspectOutreachEmail(data, email, pickOptions = {}) {
+    const variant = pickProspectTemplateVariant({
+        ...pickOptions,
+    });
 
-export function renderProspectOutreachEmail(data, email) {
-    const variant = pickProspectTemplateVariant(email ?? data?.email);
     return {
         variantId: variant.id,
+        variantName: variant.name,
+        marketingAngle: variant.marketingAngle,
         subject: applyProspectTokens(variant.subject, data),
+        html: variant.buildHtml(data),
+        text: variant.buildText(data),
+        pickStrategy: describeVariantPickStrategy({
+            outreachEmailsSent: pickOptions.outreachEmailsSent ?? 0,
+            variantStats: pickOptions.variantStats ?? null,
+        }),
+    };
+}
+
+export function renderProspectOutreachPreview(variantId, data) {
+    const variant = getProspectVariantById(variantId);
+    if (!variant) return null;
+
+    return {
+        variantId: variant.id,
+        variantName: variant.name,
+        marketingAngle: variant.marketingAngle,
+        goal: variant.goal,
+        subject: applyProspectTokens(variant.subject, data),
+        preheader: variant.preheader,
         html: variant.buildHtml(data),
         text: variant.buildText(data),
     };
 }
 
-/** @deprecated Usar renderProspectOutreachEmail */
-export function buildProspectOutreachHtml(data) {
-    return renderProspectOutreachEmail(data, data?.email).html;
-}
-
-/** @deprecated Usar renderProspectOutreachEmail */
-export function buildProspectOutreachText(data) {
-    return renderProspectOutreachEmail(data, data?.email).text;
-}

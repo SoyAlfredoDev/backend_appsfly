@@ -45,7 +45,7 @@ export async function markProspectConvertedByEmail(email, userId) {
 /**
  * Incrementa contadores cuando un correo de outreach se envía al prospecto.
  */
-export async function trackProspectOutreachSend(prospectId) {
+export async function trackProspectOutreachSend(prospectId, variantId = null) {
     if (!prospectId) return;
 
     const prospect = await general.platformEmailProspect.findUnique({
@@ -62,6 +62,7 @@ export async function trackProspectOutreachSend(prospectId) {
             outreachEmailsSent: { increment: 1 },
             lastOutreachAt: now,
             firstOutreachAt: prospect.firstOutreachAt ?? now,
+            ...(variantId ? { lastOutreachVariantId: variantId } : {}),
         },
     });
 }

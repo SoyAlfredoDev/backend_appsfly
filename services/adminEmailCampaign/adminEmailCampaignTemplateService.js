@@ -407,7 +407,7 @@ function planExpiryTodayHtmlBody(data) {
 
 
 
-function defaultHtmlBody(campaign, data, recipientEmail = null) {
+function defaultHtmlBody(campaign, data, recipientEmail = null, renderOptions = {}) {
 
     const variant = getTemplateVariant(campaign);
 
@@ -415,6 +415,7 @@ function defaultHtmlBody(campaign, data, recipientEmail = null) {
         return renderProspectOutreachEmail(
             { ...data, email: recipientEmail ?? data.email },
             recipientEmail ?? data.email,
+            renderOptions,
         ).html;
     }
 
@@ -428,7 +429,7 @@ function defaultHtmlBody(campaign, data, recipientEmail = null) {
 
 
 
-function defaultTextBody(campaign, data, recipientEmail = null) {
+function defaultTextBody(campaign, data, recipientEmail = null, renderOptions = {}) {
 
     const variant = getTemplateVariant(campaign);
 
@@ -438,6 +439,7 @@ function defaultTextBody(campaign, data, recipientEmail = null) {
         return renderProspectOutreachEmail(
             { ...data, email: recipientEmail ?? data.email },
             recipientEmail ?? data.email,
+            renderOptions,
         ).text;
     }
 
@@ -555,7 +557,7 @@ function buildRecipientData(recipient) {
 
  */
 
-export function renderCampaignEmail(campaign, recipient = null) {
+export function renderCampaignEmail(campaign, recipient = null, renderOptions = {}) {
 
     const data = {
 
@@ -570,9 +572,30 @@ export function renderCampaignEmail(campaign, recipient = null) {
     const recipientEmail = recipient?.email ?? null;
     const isProspect = campaign?.audienceType === "PLATFORM_PROSPECTS";
 
-    const subject = isProspect && recipientEmail
-        ? renderProspectOutreachEmail(data, recipientEmail).subject
-        : applyTokens(campaign.emailSubject, data) ||
+    if (isProspect) {
+        const prospectPickOptions = {
+            sendIndexInBatch: renderOptions.sendIndexInBatch ?? 0,
+            outreachEmailsSent: recipient?.outreachEmailsSent ?? 0,
+            variantStats: renderOptions.variantStats ?? null,
+            forcedVariantId: renderOptions.forcedVariantId ?? null,
+        };
+        const rendered = renderProspectOutreachEmail(
+            { ...data, email: recipientEmail ?? data.email },
+            recipientEmail,
+            prospectPickOptions,
+        );
+        return {
+            subject: rendered.subject,
+            html: rendered.html,
+            text: rendered.text,
+            variantId: rendered.variantId,
+            variantName: rendered.variantName,
+            pickStrategy: rendered.pickStrategy,
+            sampleData: data,
+        };
+    }
+
+    const subject = applyTokens(campaign.emailSubject, data) ||
           applyTokens("Mensaje de AppsFly", data);
 
 
@@ -581,7 +604,7 @@ export function renderCampaignEmail(campaign, recipient = null) {
 
         ? applyTokens(campaign.emailHtml, data)
 
-        : defaultHtmlBody(campaign, data, recipientEmail);
+        : defaultHtmlBody(campaign, data, recipientEmail, renderOptions);
 
 
 
@@ -589,7 +612,7 @@ export function renderCampaignEmail(campaign, recipient = null) {
 
         ? applyTokens(campaign.emailText, data)
 
-        : defaultTextBody(campaign, data, recipientEmail);
+        : defaultTextBody(campaign, data, recipientEmail, renderOptions);
 
 
 

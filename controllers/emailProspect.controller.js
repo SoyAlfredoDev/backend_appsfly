@@ -9,6 +9,7 @@ import {
     unsubscribeEmailProspectByToken,
     buildProspectImportTemplateCsv,
 } from "../services/emailProspect/emailProspectService.js";
+import { getProspectOutreachVariantsForAdmin } from "../services/adminEmailCampaign/adminEmailCampaignProspectOutreachVariantsService.js";
 
 export async function listProspectsController(req, res) {
     try {
@@ -137,5 +138,15 @@ export async function unsubscribeProspectController(req, res) {
         }
         console.error("(emailProspect.unsubscribe):", error);
         return res.status(500).json({ message: "No se pudo procesar la baja." });
+    }
+}
+
+export async function getProspectOutreachVariantsController(req, res) {
+    try {
+        const data = await getProspectOutreachVariantsForAdmin();
+        return res.json(data);
+    } catch (error) {
+        console.error("(emailProspect.outreachVariants):", error);
+        return res.status(500).json({ message: "No se pudieron cargar las variantes de outreach." });
     }
 }

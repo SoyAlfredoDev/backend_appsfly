@@ -6,6 +6,7 @@ import {
     createProspectController,
     deleteProspectController,
     downloadProspectImportTemplateController,
+    getProspectOutreachVariantsController,
     getUnsubscribeInfoController,
     listProspectsController,
     resubscribeProspectController,
@@ -22,6 +23,13 @@ router.get(
     authRequired,
     superAdminRequired,
     listProspectsController,
+);
+
+router.get(
+    "/admin/email-prospects/outreach-variants",
+    authRequired,
+    superAdminRequired,
+    getProspectOutreachVariantsController,
 );
 
 router.post(

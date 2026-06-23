@@ -25,6 +25,7 @@ import {
 } from "./adminEmailCampaignProspectSendPolicy.js";
 import { trackProspectOutreachSend } from "../emailProspect/emailProspectConversionService.js";
 import { evaluateCampaignDue } from "./adminEmailCampaignSchedulerDue.js";
+import { getProspectOutreachVariantStats } from "./adminEmailCampaignProspectVariantStats.js";
 
 const general = new PrismaGeneral();
 
@@ -233,6 +234,12 @@ export async function executePlatformEmailCampaign(
     const defaultSenderFrom = resolveCampaignSenderFrom(campaign);
     const sendDelayMs = prospectLimits?.sendDelayMs ?? SEND_DELAY_MS;
 
+    let prospectVariantStats = null;
+    if (isProspectOutreachCampaign(campaign)) {
+        const statsResult = await getProspectOutreachVariantStats();
+        prospectVariantStats = statsResult.variants;
+    }
+
     for (let sendIndex = 0; sendIndex < recipients.length; sendIndex += 1) {
         const recipient = recipients[sendIndex];
         const senderFrom = prospectLimits
@@ -240,7 +247,10 @@ export async function executePlatformEmailCampaign(
             : defaultSenderFrom;
 
         const recipientId = crypto.randomUUID();
-        const { subject, html, text } = renderCampaignEmail(campaign, recipient);
+        const { subject, html, text, variantId } = renderCampaignEmail(campaign, recipient, {
+            sendIndexInBatch: sendIndex,
+            variantStats: prospectVariantStats,
+        });
 
         await general.platformEmailCampaignRecipient.create({
             data: {
@@ -252,6 +262,7 @@ export async function executePlatformEmailCampaign(
                 recipientName: `${recipient.firstName} ${recipient.lastName}`.trim(),
                 businessName: recipient.businessName,
                 deliveryStatus: "PENDING",
+                messageVariantId: variantId ?? null,
             },
         });
 
@@ -276,7 +287,7 @@ export async function executePlatformEmailCampaign(
             });
 
             if (isProspectOutreachCampaign(campaign) && recipient.userId) {
-                await trackProspectOutreachSend(recipient.userId);
+                await trackProspectOutreachSend(recipient.userId, variantId);
             }
         } catch (error) {
             failedCount += 1;

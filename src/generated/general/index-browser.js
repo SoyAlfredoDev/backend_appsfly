@@ -294,6 +294,7 @@ exports.Prisma.PlatformEmailProspectScalarFieldEnum = {
   convertedUserId: 'convertedUserId',
   convertedAt: 'convertedAt',
   outreachEmailsSent: 'outreachEmailsSent',
+  lastOutreachVariantId: 'lastOutreachVariantId',
   firstOutreachAt: 'firstOutreachAt',
   lastOutreachAt: 'lastOutreachAt',
   createdAt: 'createdAt',
@@ -361,6 +362,7 @@ exports.Prisma.PlatformEmailCampaignRecipientScalarFieldEnum = {
   bouncedAt: 'bouncedAt',
   openedAt: 'openedAt',
   openCount: 'openCount',
+  messageVariantId: 'messageVariantId',
   createdAt: 'createdAt'
 };
 

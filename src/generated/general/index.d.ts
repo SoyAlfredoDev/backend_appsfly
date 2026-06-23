@@ -16259,6 +16259,7 @@ export namespace Prisma {
     convertedUserId: string | null
     convertedAt: Date | null
     outreachEmailsSent: number | null
+    lastOutreachVariantId: string | null
     firstOutreachAt: Date | null
     lastOutreachAt: Date | null
     createdAt: Date | null
@@ -16279,6 +16280,7 @@ export namespace Prisma {
     convertedUserId: string | null
     convertedAt: Date | null
     outreachEmailsSent: number | null
+    lastOutreachVariantId: string | null
     firstOutreachAt: Date | null
     lastOutreachAt: Date | null
     createdAt: Date | null
@@ -16299,6 +16301,7 @@ export namespace Prisma {
     convertedUserId: number
     convertedAt: number
     outreachEmailsSent: number
+    lastOutreachVariantId: number
     firstOutreachAt: number
     lastOutreachAt: number
     createdAt: number
@@ -16329,6 +16332,7 @@ export namespace Prisma {
     convertedUserId?: true
     convertedAt?: true
     outreachEmailsSent?: true
+    lastOutreachVariantId?: true
     firstOutreachAt?: true
     lastOutreachAt?: true
     createdAt?: true
@@ -16349,6 +16353,7 @@ export namespace Prisma {
     convertedUserId?: true
     convertedAt?: true
     outreachEmailsSent?: true
+    lastOutreachVariantId?: true
     firstOutreachAt?: true
     lastOutreachAt?: true
     createdAt?: true
@@ -16369,6 +16374,7 @@ export namespace Prisma {
     convertedUserId?: true
     convertedAt?: true
     outreachEmailsSent?: true
+    lastOutreachVariantId?: true
     firstOutreachAt?: true
     lastOutreachAt?: true
     createdAt?: true
@@ -16476,6 +16482,7 @@ export namespace Prisma {
     convertedUserId: string | null
     convertedAt: Date | null
     outreachEmailsSent: number
+    lastOutreachVariantId: string | null
     firstOutreachAt: Date | null
     lastOutreachAt: Date | null
     createdAt: Date
@@ -16515,6 +16522,7 @@ export namespace Prisma {
     convertedUserId?: boolean
     convertedAt?: boolean
     outreachEmailsSent?: boolean
+    lastOutreachVariantId?: boolean
     firstOutreachAt?: boolean
     lastOutreachAt?: boolean
     createdAt?: boolean
@@ -16535,6 +16543,7 @@ export namespace Prisma {
     convertedUserId?: boolean
     convertedAt?: boolean
     outreachEmailsSent?: boolean
+    lastOutreachVariantId?: boolean
     firstOutreachAt?: boolean
     lastOutreachAt?: boolean
     createdAt?: boolean
@@ -16555,6 +16564,7 @@ export namespace Prisma {
     convertedUserId?: boolean
     convertedAt?: boolean
     outreachEmailsSent?: boolean
+    lastOutreachVariantId?: boolean
     firstOutreachAt?: boolean
     lastOutreachAt?: boolean
     createdAt?: boolean
@@ -16575,13 +16585,14 @@ export namespace Prisma {
     convertedUserId?: boolean
     convertedAt?: boolean
     outreachEmailsSent?: boolean
+    lastOutreachVariantId?: boolean
     firstOutreachAt?: boolean
     lastOutreachAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PlatformEmailProspectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"prospectId" | "email" | "firstName" | "lastName" | "companyName" | "status" | "unsubscribeToken" | "unsubscribedAt" | "source" | "notes" | "convertedUserId" | "convertedAt" | "outreachEmailsSent" | "firstOutreachAt" | "lastOutreachAt" | "createdAt" | "updatedAt", ExtArgs["result"]["platformEmailProspect"]>
+  export type PlatformEmailProspectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"prospectId" | "email" | "firstName" | "lastName" | "companyName" | "status" | "unsubscribeToken" | "unsubscribedAt" | "source" | "notes" | "convertedUserId" | "convertedAt" | "outreachEmailsSent" | "lastOutreachVariantId" | "firstOutreachAt" | "lastOutreachAt" | "createdAt" | "updatedAt", ExtArgs["result"]["platformEmailProspect"]>
 
   export type $PlatformEmailProspectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PlatformEmailProspect"
@@ -16603,6 +16614,10 @@ export namespace Prisma {
       convertedUserId: string | null
       convertedAt: Date | null
       outreachEmailsSent: number
+      /**
+       * * Última variante de mensaje enviada (overview | offer | team)
+       */
+      lastOutreachVariantId: string | null
       firstOutreachAt: Date | null
       lastOutreachAt: Date | null
       createdAt: Date
@@ -17043,6 +17058,7 @@ export namespace Prisma {
     readonly convertedUserId: FieldRef<"PlatformEmailProspect", 'String'>
     readonly convertedAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
     readonly outreachEmailsSent: FieldRef<"PlatformEmailProspect", 'Int'>
+    readonly lastOutreachVariantId: FieldRef<"PlatformEmailProspect", 'String'>
     readonly firstOutreachAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
     readonly lastOutreachAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
     readonly createdAt: FieldRef<"PlatformEmailProspect", 'DateTime'>
@@ -20105,6 +20121,7 @@ export namespace Prisma {
     bouncedAt: Date | null
     openedAt: Date | null
     openCount: number | null
+    messageVariantId: string | null
     createdAt: Date | null
   }
 
@@ -20124,6 +20141,7 @@ export namespace Prisma {
     bouncedAt: Date | null
     openedAt: Date | null
     openCount: number | null
+    messageVariantId: string | null
     createdAt: Date | null
   }
 
@@ -20143,6 +20161,7 @@ export namespace Prisma {
     bouncedAt: number
     openedAt: number
     openCount: number
+    messageVariantId: number
     createdAt: number
     _all: number
   }
@@ -20172,6 +20191,7 @@ export namespace Prisma {
     bouncedAt?: true
     openedAt?: true
     openCount?: true
+    messageVariantId?: true
     createdAt?: true
   }
 
@@ -20191,6 +20211,7 @@ export namespace Prisma {
     bouncedAt?: true
     openedAt?: true
     openCount?: true
+    messageVariantId?: true
     createdAt?: true
   }
 
@@ -20210,6 +20231,7 @@ export namespace Prisma {
     bouncedAt?: true
     openedAt?: true
     openCount?: true
+    messageVariantId?: true
     createdAt?: true
     _all?: true
   }
@@ -20316,6 +20338,7 @@ export namespace Prisma {
     bouncedAt: Date | null
     openedAt: Date | null
     openCount: number
+    messageVariantId: string | null
     createdAt: Date
     _count: PlatformEmailCampaignRecipientCountAggregateOutputType | null
     _avg: PlatformEmailCampaignRecipientAvgAggregateOutputType | null
@@ -20354,6 +20377,7 @@ export namespace Prisma {
     bouncedAt?: boolean
     openedAt?: boolean
     openCount?: boolean
+    messageVariantId?: boolean
     createdAt?: boolean
     run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["platformEmailCampaignRecipient"]>
@@ -20374,6 +20398,7 @@ export namespace Prisma {
     bouncedAt?: boolean
     openedAt?: boolean
     openCount?: boolean
+    messageVariantId?: boolean
     createdAt?: boolean
     run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["platformEmailCampaignRecipient"]>
@@ -20394,6 +20419,7 @@ export namespace Prisma {
     bouncedAt?: boolean
     openedAt?: boolean
     openCount?: boolean
+    messageVariantId?: boolean
     createdAt?: boolean
     run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["platformEmailCampaignRecipient"]>
@@ -20414,10 +20440,11 @@ export namespace Prisma {
     bouncedAt?: boolean
     openedAt?: boolean
     openCount?: boolean
+    messageVariantId?: boolean
     createdAt?: boolean
   }
 
-  export type PlatformEmailCampaignRecipientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"recipientId" | "runId" | "userId" | "businessId" | "recipientEmail" | "recipientName" | "businessName" | "deliveryStatus" | "providerMessageId" | "errorMessage" | "sentAt" | "deliveredAt" | "bouncedAt" | "openedAt" | "openCount" | "createdAt", ExtArgs["result"]["platformEmailCampaignRecipient"]>
+  export type PlatformEmailCampaignRecipientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"recipientId" | "runId" | "userId" | "businessId" | "recipientEmail" | "recipientName" | "businessName" | "deliveryStatus" | "providerMessageId" | "errorMessage" | "sentAt" | "deliveredAt" | "bouncedAt" | "openedAt" | "openCount" | "messageVariantId" | "createdAt", ExtArgs["result"]["platformEmailCampaignRecipient"]>
   export type PlatformEmailCampaignRecipientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
   }
@@ -20449,6 +20476,10 @@ export namespace Prisma {
       bouncedAt: Date | null
       openedAt: Date | null
       openCount: number
+      /**
+       * * Variante A/B/C del outreach (overview, offer, team)
+       */
+      messageVariantId: string | null
       createdAt: Date
     }, ExtArgs["result"]["platformEmailCampaignRecipient"]>
     composites: {}
@@ -20889,6 +20920,7 @@ export namespace Prisma {
     readonly bouncedAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
     readonly openedAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
     readonly openCount: FieldRef<"PlatformEmailCampaignRecipient", 'Int'>
+    readonly messageVariantId: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
     readonly createdAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
   }
     
@@ -23703,6 +23735,7 @@ export namespace Prisma {
     convertedUserId: 'convertedUserId',
     convertedAt: 'convertedAt',
     outreachEmailsSent: 'outreachEmailsSent',
+    lastOutreachVariantId: 'lastOutreachVariantId',
     firstOutreachAt: 'firstOutreachAt',
     lastOutreachAt: 'lastOutreachAt',
     createdAt: 'createdAt',
@@ -23779,6 +23812,7 @@ export namespace Prisma {
     bouncedAt: 'bouncedAt',
     openedAt: 'openedAt',
     openCount: 'openCount',
+    messageVariantId: 'messageVariantId',
     createdAt: 'createdAt'
   };
 
@@ -25297,6 +25331,7 @@ export namespace Prisma {
     convertedUserId?: StringNullableFilter<"PlatformEmailProspect"> | string | null
     convertedAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
     outreachEmailsSent?: IntFilter<"PlatformEmailProspect"> | number
+    lastOutreachVariantId?: StringNullableFilter<"PlatformEmailProspect"> | string | null
     firstOutreachAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
     lastOutreachAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
     createdAt?: DateTimeFilter<"PlatformEmailProspect"> | Date | string
@@ -25317,6 +25352,7 @@ export namespace Prisma {
     convertedUserId?: SortOrderInput | SortOrder
     convertedAt?: SortOrderInput | SortOrder
     outreachEmailsSent?: SortOrder
+    lastOutreachVariantId?: SortOrderInput | SortOrder
     firstOutreachAt?: SortOrderInput | SortOrder
     lastOutreachAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -25340,6 +25376,7 @@ export namespace Prisma {
     convertedUserId?: StringNullableFilter<"PlatformEmailProspect"> | string | null
     convertedAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
     outreachEmailsSent?: IntFilter<"PlatformEmailProspect"> | number
+    lastOutreachVariantId?: StringNullableFilter<"PlatformEmailProspect"> | string | null
     firstOutreachAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
     lastOutreachAt?: DateTimeNullableFilter<"PlatformEmailProspect"> | Date | string | null
     createdAt?: DateTimeFilter<"PlatformEmailProspect"> | Date | string
@@ -25360,6 +25397,7 @@ export namespace Prisma {
     convertedUserId?: SortOrderInput | SortOrder
     convertedAt?: SortOrderInput | SortOrder
     outreachEmailsSent?: SortOrder
+    lastOutreachVariantId?: SortOrderInput | SortOrder
     firstOutreachAt?: SortOrderInput | SortOrder
     lastOutreachAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -25388,6 +25426,7 @@ export namespace Prisma {
     convertedUserId?: StringNullableWithAggregatesFilter<"PlatformEmailProspect"> | string | null
     convertedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailProspect"> | Date | string | null
     outreachEmailsSent?: IntWithAggregatesFilter<"PlatformEmailProspect"> | number
+    lastOutreachVariantId?: StringNullableWithAggregatesFilter<"PlatformEmailProspect"> | string | null
     firstOutreachAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailProspect"> | Date | string | null
     lastOutreachAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailProspect"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailProspect"> | Date | string
@@ -25678,6 +25717,7 @@ export namespace Prisma {
     bouncedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
+    messageVariantId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
     createdAt?: DateTimeFilter<"PlatformEmailCampaignRecipient"> | Date | string
     run?: XOR<PlatformEmailCampaignRunScalarRelationFilter, PlatformEmailCampaignRunWhereInput>
   }
@@ -25698,6 +25738,7 @@ export namespace Prisma {
     bouncedAt?: SortOrderInput | SortOrder
     openedAt?: SortOrderInput | SortOrder
     openCount?: SortOrder
+    messageVariantId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     run?: PlatformEmailCampaignRunOrderByWithRelationInput
   }
@@ -25721,6 +25762,7 @@ export namespace Prisma {
     bouncedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
+    messageVariantId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
     createdAt?: DateTimeFilter<"PlatformEmailCampaignRecipient"> | Date | string
     run?: XOR<PlatformEmailCampaignRunScalarRelationFilter, PlatformEmailCampaignRunWhereInput>
   }, "recipientId">
@@ -25741,6 +25783,7 @@ export namespace Prisma {
     bouncedAt?: SortOrderInput | SortOrder
     openedAt?: SortOrderInput | SortOrder
     openCount?: SortOrder
+    messageVariantId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: PlatformEmailCampaignRecipientCountOrderByAggregateInput
     _avg?: PlatformEmailCampaignRecipientAvgOrderByAggregateInput
@@ -25768,6 +25811,7 @@ export namespace Prisma {
     bouncedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | number
+    messageVariantId?: StringNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string
   }
 
@@ -27117,6 +27161,7 @@ export namespace Prisma {
     convertedUserId?: string | null
     convertedAt?: Date | string | null
     outreachEmailsSent?: number
+    lastOutreachVariantId?: string | null
     firstOutreachAt?: Date | string | null
     lastOutreachAt?: Date | string | null
     createdAt?: Date | string
@@ -27137,6 +27182,7 @@ export namespace Prisma {
     convertedUserId?: string | null
     convertedAt?: Date | string | null
     outreachEmailsSent?: number
+    lastOutreachVariantId?: string | null
     firstOutreachAt?: Date | string | null
     lastOutreachAt?: Date | string | null
     createdAt?: Date | string
@@ -27157,6 +27203,7 @@ export namespace Prisma {
     convertedUserId?: NullableStringFieldUpdateOperationsInput | string | null
     convertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     outreachEmailsSent?: IntFieldUpdateOperationsInput | number
+    lastOutreachVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     firstOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27177,6 +27224,7 @@ export namespace Prisma {
     convertedUserId?: NullableStringFieldUpdateOperationsInput | string | null
     convertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     outreachEmailsSent?: IntFieldUpdateOperationsInput | number
+    lastOutreachVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     firstOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27197,6 +27245,7 @@ export namespace Prisma {
     convertedUserId?: string | null
     convertedAt?: Date | string | null
     outreachEmailsSent?: number
+    lastOutreachVariantId?: string | null
     firstOutreachAt?: Date | string | null
     lastOutreachAt?: Date | string | null
     createdAt?: Date | string
@@ -27217,6 +27266,7 @@ export namespace Prisma {
     convertedUserId?: NullableStringFieldUpdateOperationsInput | string | null
     convertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     outreachEmailsSent?: IntFieldUpdateOperationsInput | number
+    lastOutreachVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     firstOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27237,6 +27287,7 @@ export namespace Prisma {
     convertedUserId?: NullableStringFieldUpdateOperationsInput | string | null
     convertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     outreachEmailsSent?: IntFieldUpdateOperationsInput | number
+    lastOutreachVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     firstOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastOutreachAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27579,6 +27630,7 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    messageVariantId?: string | null
     createdAt?: Date | string
     run: PlatformEmailCampaignRunCreateNestedOneWithoutRecipientsInput
   }
@@ -27599,6 +27651,7 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    messageVariantId?: string | null
     createdAt?: Date | string
   }
 
@@ -27617,6 +27670,7 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     run?: PlatformEmailCampaignRunUpdateOneRequiredWithoutRecipientsNestedInput
   }
@@ -27637,6 +27691,7 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -27656,6 +27711,7 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    messageVariantId?: string | null
     createdAt?: Date | string
   }
 
@@ -27674,6 +27730,7 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -27693,6 +27750,7 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -28999,6 +29057,7 @@ export namespace Prisma {
     convertedUserId?: SortOrder
     convertedAt?: SortOrder
     outreachEmailsSent?: SortOrder
+    lastOutreachVariantId?: SortOrder
     firstOutreachAt?: SortOrder
     lastOutreachAt?: SortOrder
     createdAt?: SortOrder
@@ -29023,6 +29082,7 @@ export namespace Prisma {
     convertedUserId?: SortOrder
     convertedAt?: SortOrder
     outreachEmailsSent?: SortOrder
+    lastOutreachVariantId?: SortOrder
     firstOutreachAt?: SortOrder
     lastOutreachAt?: SortOrder
     createdAt?: SortOrder
@@ -29043,6 +29103,7 @@ export namespace Prisma {
     convertedUserId?: SortOrder
     convertedAt?: SortOrder
     outreachEmailsSent?: SortOrder
+    lastOutreachVariantId?: SortOrder
     firstOutreachAt?: SortOrder
     lastOutreachAt?: SortOrder
     createdAt?: SortOrder
@@ -29351,6 +29412,7 @@ export namespace Prisma {
     bouncedAt?: SortOrder
     openedAt?: SortOrder
     openCount?: SortOrder
+    messageVariantId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29374,6 +29436,7 @@ export namespace Prisma {
     bouncedAt?: SortOrder
     openedAt?: SortOrder
     openCount?: SortOrder
+    messageVariantId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29393,6 +29456,7 @@ export namespace Prisma {
     bouncedAt?: SortOrder
     openedAt?: SortOrder
     openCount?: SortOrder
+    messageVariantId?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -35065,6 +35129,7 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    messageVariantId?: string | null
     createdAt?: Date | string
   }
 
@@ -35083,6 +35148,7 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    messageVariantId?: string | null
     createdAt?: Date | string
   }
 
@@ -35200,6 +35266,7 @@ export namespace Prisma {
     bouncedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
+    messageVariantId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
     createdAt?: DateTimeFilter<"PlatformEmailCampaignRecipient"> | Date | string
   }
 
@@ -36754,6 +36821,7 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    messageVariantId?: string | null
     createdAt?: Date | string
   }
 
@@ -36772,6 +36840,7 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -36790,6 +36859,7 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -36808,6 +36878,7 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
