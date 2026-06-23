@@ -2,6 +2,7 @@ import {
     getTransactions,
     getTransactionById,
     getTransactionsSummary,
+    getCashAvailableDetail,
 } from "../services/transactionsService.js";
 import {
     recordFinancialTransaction,
@@ -87,6 +88,16 @@ export const getTransactionsSummaryController = async (req, res) => {
         res.status(200).json(summary);
     } catch (error) {
         console.error("(transactions.controller.js): Error fetching summary:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const getCashAvailableDetailController = async (req, res) => {
+    try {
+        const detail = await getCashAvailableDetail(req.prisma);
+        res.status(200).json(detail);
+    } catch (error) {
+        console.error("(transactions.controller.js): Error fetching cash detail:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };

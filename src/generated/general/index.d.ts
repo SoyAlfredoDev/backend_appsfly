@@ -144,7 +144,8 @@ export const PlatformAdminNotificationType: {
   CAMPAIGN_SUCCESS: 'CAMPAIGN_SUCCESS',
   CAMPAIGN_FAILED: 'CAMPAIGN_FAILED',
   CAMPAIGN_SKIPPED: 'CAMPAIGN_SKIPPED',
-  CAMPAIGN_AUTO_RUN: 'CAMPAIGN_AUTO_RUN'
+  CAMPAIGN_AUTO_RUN: 'CAMPAIGN_AUTO_RUN',
+  CAMPAIGN_MANUAL_REQUIRED: 'CAMPAIGN_MANUAL_REQUIRED'
 };
 
 export type PlatformAdminNotificationType = (typeof PlatformAdminNotificationType)[keyof typeof PlatformAdminNotificationType]

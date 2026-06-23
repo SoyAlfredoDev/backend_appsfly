@@ -1,4 +1,7 @@
 import { formatSenderFrom } from "../../emails/core/emailFrom.js";
+import {
+    PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN,
+} from "./adminEmailCampaignConstants.js";
 
 /**
  * Límites de envío para outreach a prospectos (contactos externos, no opt-in).
@@ -19,10 +22,14 @@ function envInt(name, fallback) {
     return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
 }
 
+const DEFAULT_MAX_PER_SENDER = Math.ceil(
+    PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN / PROSPECT_OUTREACH_SENDER_POOL.length,
+);
+
 export function getProspectOutreachLimits() {
     return {
-        maxPerRun: envInt("PROSPECT_OUTREACH_MAX_PER_RUN", 150),
-        maxPerSender: envInt("PROSPECT_OUTREACH_MAX_PER_SENDER", 50),
+        maxPerRun: envInt("PROSPECT_OUTREACH_MAX_PER_RUN", PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN),
+        maxPerSender: envInt("PROSPECT_OUTREACH_MAX_PER_SENDER", DEFAULT_MAX_PER_SENDER),
         sendDelayMs: envInt("PROSPECT_OUTREACH_SEND_DELAY_MS", 180),
         senderPool: PROSPECT_OUTREACH_SENDER_POOL,
     };
@@ -54,7 +61,7 @@ export function prepareProspectOutreachBatch(recipients, campaign) {
     };
 
     if (deferredCount > 0) {
-        meta.notice = `${deferredCount} prospecto(s) quedaron en cola por límite anti-spam (${limits.maxPerRun}/envío). Se incluirán en el próximo ciclo (lun, mié o dom) si aún no recibieron correo este mes.`;
+        meta.notice = `${deferredCount} prospecto(s) quedaron en cola por límite anti-spam (${limits.maxPerRun}/envío). Se incluirán en el próximo ciclo (lun, mié o vie) si aún no recibieron correo este mes.`;
     }
 
     return { recipients: batch, meta, limits };

@@ -9,12 +9,14 @@ import {
     getTransactionByIdController,
     createTransactionController,
     getTransactionsSummaryController,
+    getCashAvailableDetailController,
 } from "../controllers/transactions.controller.js";
 
 const router = Router();
 const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin];
 
 router.get("/transactions/summary", ...admin, getTransactionsSummaryController);
+router.get("/transactions/cash-detail", ...admin, getCashAvailableDetailController);
 router.get("/transactions", ...admin, getTransactionsController);
 router.get("/transactions/:id", ...admin, getTransactionByIdController);
 router.post("/transactions", ...admin, createTransactionController);

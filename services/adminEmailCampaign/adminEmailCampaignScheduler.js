@@ -2,10 +2,9 @@ import {
     executePlatformEmailCampaign,
     ensureSystemEmailCampaigns,
 } from "./adminEmailCampaignSendService.js";
-import { createAdminNotification } from "../adminNotificationService.js";
+import { createCampaignManualRequiredNotification, hasRecentManualRequiredNotification } from "../adminNotificationService.js";
 import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
 import userSuperAdmin from "../../superAdmin.js";
-import { PROSPECT_OUTREACH_WEEKDAYS } from "./adminEmailCampaignConstants.js";
 import {
     CHILE_TZ,
     getChileDateParts,
@@ -13,41 +12,13 @@ import {
     getDayKey,
     getMonthKey,
 } from "./adminEmailCampaignChileDate.js";
+import {
+    evaluateCampaignDue,
+    getAutoRunHour,
+} from "./adminEmailCampaignSchedulerDue.js";
 
 const general = new PrismaGeneral();
 const CHECK_INTERVAL_MS = 15 * 60 * 1000;
-
-function wasRunThisMonth(lastRunAt) {
-    if (!lastRunAt) return false;
-    return getMonthKey(new Date(lastRunAt)) === getMonthKey();
-}
-
-function wasRunToday(lastRunAt) {
-    if (!lastRunAt) return false;
-    return getDayKey(new Date(lastRunAt)) === getDayKey();
-}
-
-function getAutoRunDay(campaign) {
-    const params = campaign.audienceParams ?? {};
-    const fromCampaign = Number(params.autoRunDay);
-    if (fromCampaign >= 1 && fromCampaign <= 28) return fromCampaign;
-    const fromEnv = Number(process.env.AUTO_CAMPAIGN_RUN_DAY);
-    if (fromEnv >= 1 && fromEnv <= 28) return fromEnv;
-    return 5;
-}
-
-function getAutoRunWeekdays(campaign) {
-    const fromParams = campaign.audienceParams?.autoRunWeekdays;
-    if (Array.isArray(fromParams) && fromParams.length) {
-        return fromParams.filter((d) => Number.isInteger(d) && d >= 0 && d <= 6);
-    }
-    return PROSPECT_OUTREACH_WEEKDAYS;
-}
-
-function getAutoRunHour() {
-    const h = Number(process.env.AUTO_CAMPAIGN_RUN_HOUR);
-    return Number.isFinite(h) && h >= 0 && h <= 23 ? h : 9;
-}
 
 function isSchedulerEnabled() {
     return process.env.DISABLE_CAMPAIGN_SCHEDULER !== "true";
@@ -62,22 +33,33 @@ async function getSuperAdminUserId() {
     return process.env.SUPER_ADMIN_IDS?.split(",")?.[0]?.trim() ?? null;
 }
 
-async function runCampaignBatch(campaigns, { dryRun = false } = {}) {
+async function runCampaignBatch(campaigns, { dryRun = false, dueMetaById = {} } = {}) {
     const results = [];
 
     for (const campaign of campaigns) {
+        const dueMeta = dueMetaById[campaign.campaignId] ?? null;
+
         if (dryRun) {
             results.push({
                 campaignId: campaign.campaignId,
                 campaignKey: campaign.campaignKey,
                 dryRun: true,
+                dueMeta,
             });
             continue;
+        }
+
+        if (dueMeta?.reason === "CATCH_UP") {
+            console.info(
+                `[campaign-scheduler] Recuperación ${campaign.campaignKey ?? campaign.campaignId}:`,
+                dueMeta.slot?.dayKey ?? dueMeta.lastRunKey ?? "día anterior",
+            );
         }
 
         try {
             const result = await executePlatformEmailCampaign(campaign.campaignId, {
                 source: "auto",
+                dueMeta,
             });
             results.push({
                 campaignId: campaign.campaignId,
@@ -86,14 +68,26 @@ async function runCampaignBatch(campaigns, { dryRun = false } = {}) {
                 sent: result.run.sentCount,
                 delivered: result.run.deliveredCount,
                 failed: result.run.failedCount,
+                dueMeta,
             });
         } catch (error) {
             if (error.message === "NO_RECIPIENTS") {
+                if (
+                    dueMeta?.reason === "CATCH_UP"
+                    && !(await hasRecentManualRequiredNotification(campaign.campaignId))
+                ) {
+                    await createCampaignManualRequiredNotification(campaign, {
+                        reason: "CATCH_UP_FAILED",
+                        detail: `No se pudo recuperar el envío automático pendiente (${dueMeta.slot?.dayKey ?? "ciclo anterior"}): no había destinatarios elegibles.`,
+                        dueMeta,
+                    });
+                }
                 results.push({
                     campaignId: campaign.campaignId,
                     campaignKey: campaign.campaignKey,
                     skipped: true,
                     reason: "NO_RECIPIENTS",
+                    dueMeta,
                 });
                 continue;
             }
@@ -102,20 +96,17 @@ async function runCampaignBatch(campaigns, { dryRun = false } = {}) {
                 `[campaign-scheduler] Error en ${campaign.campaignKey ?? campaign.campaignId}:`,
                 error.message,
             );
-            await createAdminNotification({
-                notificationType: "CAMPAIGN_FAILED",
-                title: `Error automático: ${campaign.campaignName}`,
-                message: error.message ?? "No se pudo ejecutar la campaña programada.",
-                payload: {
-                    campaignId: campaign.campaignId,
-                    campaignKey: campaign.campaignKey,
-                    source: "auto",
-                },
-                campaignId: campaign.campaignId,
-            });
+            if (!(await hasRecentManualRequiredNotification(campaign.campaignId))) {
+                await createCampaignManualRequiredNotification(campaign, {
+                    reason: dueMeta?.reason === "CATCH_UP" ? "CATCH_UP_FAILED" : "AUTO_SEND_FAILED",
+                    dueMeta,
+                    errorMessage: error.message,
+                });
+            }
             results.push({
                 campaignId: campaign.campaignId,
                 error: error.message,
+                dueMeta,
             });
         }
     }
@@ -123,11 +114,54 @@ async function runCampaignBatch(campaigns, { dryRun = false } = {}) {
     return results;
 }
 
-function isRunHour(nowParts) {
-    return nowParts.hour === getAutoRunHour();
+async function loadAutomatedCampaigns(frequency) {
+    return general.platformEmailCampaign.findMany({
+        where: {
+            scheduleFrequency: frequency,
+            campaignStatus: { in: ["DRAFT", "SCHEDULED", "SENT"] },
+        },
+    });
 }
 
-export async function runScheduledMonthlyCampaigns({ dryRun = false } = {}) {
+/** Avisa si hay envíos pendientes y el programador está apagado. */
+export async function notifyPendingCampaignsWhenSchedulerDisabled() {
+    const superAdminId = await getSuperAdminUserId();
+    if (!superAdminId) return;
+
+    await ensureSystemEmailCampaigns(superAdminId);
+
+    const now = new Date();
+    for (const frequency of ["WEEKLY", "DAILY", "MONTHLY"]) {
+        const campaigns = await loadAutomatedCampaigns(frequency);
+        for (const campaign of campaigns) {
+            const evaluation = evaluateCampaignDue(campaign, now);
+            if (!evaluation.due) continue;
+            if (await hasRecentManualRequiredNotification(campaign.campaignId)) continue;
+
+            await createCampaignManualRequiredNotification(campaign, {
+                reason: "SCHEDULER_DISABLED",
+                dueMeta: evaluation,
+            });
+        }
+    }
+}
+
+function filterDueCampaigns(campaigns, now = new Date()) {
+    const dueCampaigns = [];
+    const dueMetaById = {};
+
+    for (const campaign of campaigns) {
+        const evaluation = evaluateCampaignDue(campaign, now);
+        if (evaluation.due) {
+            dueCampaigns.push(campaign);
+            dueMetaById[campaign.campaignId] = evaluation;
+        }
+    }
+
+    return { dueCampaigns, dueMetaById };
+}
+
+export async function runScheduledMonthlyCampaigns({ dryRun = false, now = new Date() } = {}) {
     const superAdminId = await getSuperAdminUserId();
     if (!superAdminId) {
         console.warn("[campaign-scheduler] Sin super admin para asegurar campañas.");
@@ -136,48 +170,33 @@ export async function runScheduledMonthlyCampaigns({ dryRun = false } = {}) {
 
     await ensureSystemEmailCampaigns(superAdminId);
 
-    const campaigns = await general.platformEmailCampaign.findMany({
-        where: {
-            scheduleFrequency: "MONTHLY",
-            campaignStatus: { in: ["DRAFT", "SCHEDULED", "SENT"] },
-        },
-    });
+    const campaigns = await loadAutomatedCampaigns("MONTHLY");
 
-    const nowParts = getChileDateParts();
-    const runHour = getAutoRunHour();
-
-    if (!isRunHour(nowParts)) {
-        return { skipped: true, reason: "NOT_RUN_HOUR", runHour, currentHour: nowParts.hour };
-    }
-
-    const dueCampaigns = campaigns.filter((campaign) => {
-        const runDay = getAutoRunDay(campaign);
-        if (nowParts.day !== runDay) return false;
-        if (wasRunThisMonth(campaign.lastRunAt)) return false;
-        return true;
-    });
+    const { dueCampaigns, dueMetaById } = filterDueCampaigns(campaigns, now);
 
     if (!dueCampaigns.length) {
+        const nowParts = getChileDateParts(now);
         return {
             skipped: true,
             reason: "NO_MONTHLY_DUE",
-            runHour,
+            runHour: getAutoRunHour(),
             today: nowParts.day,
+            currentHour: nowParts.hour,
         };
     }
 
-    const results = await runCampaignBatch(dueCampaigns, { dryRun });
+    const results = await runCampaignBatch(dueCampaigns, { dryRun, dueMetaById });
 
     return {
         skipped: false,
         frequency: "MONTHLY",
         results,
-        runHour,
-        monthKey: getMonthKey(),
+        runHour: getAutoRunHour(),
+        monthKey: getMonthKey(now),
     };
 }
 
-export async function runScheduledWeeklyCampaigns({ dryRun = false } = {}) {
+export async function runScheduledWeeklyCampaigns({ dryRun = false, now = new Date() } = {}) {
     const superAdminId = await getSuperAdminUserId();
     if (!superAdminId) {
         return { skipped: true, reason: "NO_SUPER_ADMIN" };
@@ -185,51 +204,35 @@ export async function runScheduledWeeklyCampaigns({ dryRun = false } = {}) {
 
     await ensureSystemEmailCampaigns(superAdminId);
 
-    const campaigns = await general.platformEmailCampaign.findMany({
-        where: {
-            scheduleFrequency: "WEEKLY",
-            campaignStatus: { in: ["DRAFT", "SCHEDULED", "SENT"] },
-        },
-    });
+    const campaigns = await loadAutomatedCampaigns("WEEKLY");
 
-    const nowParts = getChileDateParts();
-    const runHour = getAutoRunHour();
-    const weekday = getChileWeekday();
-
-    if (!isRunHour(nowParts)) {
-        return { skipped: true, reason: "NOT_RUN_HOUR", runHour, currentHour: nowParts.hour };
-    }
-
-    const dueCampaigns = campaigns.filter((campaign) => {
-        const runDays = getAutoRunWeekdays(campaign);
-        if (!runDays.includes(weekday)) return false;
-        if (wasRunToday(campaign.lastRunAt)) return false;
-        return true;
-    });
+    const { dueCampaigns, dueMetaById } = filterDueCampaigns(campaigns, now);
+    const nowParts = getChileDateParts(now);
 
     if (!dueCampaigns.length) {
         return {
             skipped: true,
             reason: "NO_WEEKLY_DUE",
-            runHour,
-            weekday,
-            dayKey: getDayKey(),
+            runHour: getAutoRunHour(),
+            weekday: getChileWeekday(now),
+            dayKey: getDayKey(now),
+            currentHour: nowParts.hour,
         };
     }
 
-    const results = await runCampaignBatch(dueCampaigns, { dryRun });
+    const results = await runCampaignBatch(dueCampaigns, { dryRun, dueMetaById });
 
     return {
         skipped: false,
         frequency: "WEEKLY",
         results,
-        runHour,
-        weekday,
-        dayKey: getDayKey(),
+        runHour: getAutoRunHour(),
+        weekday: getChileWeekday(now),
+        dayKey: getDayKey(now),
     };
 }
 
-export async function runScheduledDailyCampaigns({ dryRun = false } = {}) {
+export async function runScheduledDailyCampaigns({ dryRun = false, now = new Date() } = {}) {
     const superAdminId = await getSuperAdminUserId();
     if (!superAdminId) {
         return { skipped: true, reason: "NO_SUPER_ADMIN" };
@@ -237,39 +240,28 @@ export async function runScheduledDailyCampaigns({ dryRun = false } = {}) {
 
     await ensureSystemEmailCampaigns(superAdminId);
 
-    const campaigns = await general.platformEmailCampaign.findMany({
-        where: {
-            scheduleFrequency: "DAILY",
-            campaignStatus: { in: ["DRAFT", "SCHEDULED", "SENT"] },
-        },
-    });
+    const campaigns = await loadAutomatedCampaigns("DAILY");
 
-    const nowParts = getChileDateParts();
-    const runHour = getAutoRunHour();
-
-    if (!isRunHour(nowParts)) {
-        return { skipped: true, reason: "NOT_RUN_HOUR", runHour, currentHour: nowParts.hour };
-    }
-
-    const dueCampaigns = campaigns.filter((campaign) => !wasRunToday(campaign.lastRunAt));
+    const { dueCampaigns, dueMetaById } = filterDueCampaigns(campaigns, now);
 
     if (!dueCampaigns.length) {
         return {
             skipped: true,
             reason: "NO_DAILY_DUE",
-            runHour,
-            dayKey: getDayKey(),
+            runHour: getAutoRunHour(),
+            dayKey: getDayKey(now),
+            currentHour: getChileDateParts(now).hour,
         };
     }
 
-    const results = await runCampaignBatch(dueCampaigns, { dryRun });
+    const results = await runCampaignBatch(dueCampaigns, { dryRun, dueMetaById });
 
     return {
         skipped: false,
         frequency: "DAILY",
         results,
-        runHour,
-        dayKey: getDayKey(),
+        runHour: getAutoRunHour(),
+        dayKey: getDayKey(now),
     };
 }
 
@@ -301,13 +293,18 @@ async function tick() {
 export function startEmailCampaignScheduler() {
     if (!isSchedulerEnabled()) {
         console.info("[campaign-scheduler] Desactivado. Usa DISABLE_CAMPAIGN_SCHEDULER=false.");
+        setTimeout(() => {
+            notifyPendingCampaignsWhenSchedulerDisabled().catch((error) => {
+                console.error("[campaign-scheduler] notify disabled:", error);
+            });
+        }, 3000);
         return;
     }
 
     const runDay = Number(process.env.AUTO_CAMPAIGN_RUN_DAY) || 5;
     const runHour = getAutoRunHour();
     console.info(
-        `[campaign-scheduler] Activo — mensual día ${runDay}, semanal lun/mié/dom, diario todos los días a las ${runHour}:00 (${CHILE_TZ})`,
+        `[campaign-scheduler] Activo — mensual día ${runDay}, semanal lun/mié/vie (prospectos) con recuperación, diario con recuperación, hora objetivo ${runHour}:00 (${CHILE_TZ})`,
     );
 
     setTimeout(tick, 5000);

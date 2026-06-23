@@ -1,4 +1,8 @@
 import { PrismaClient as PrismaGeneral } from "../src/generated/general/index.js";
+import {
+    enrichNotificationWithManualAction,
+    buildCampaignManualRequiredNotification,
+} from "./adminEmailCampaign/adminEmailCampaignNotificationHelpers.js";
 
 const general = new PrismaGeneral();
 
@@ -78,6 +82,7 @@ export function buildCampaignSuccessNotification(campaign, run) {
             campaignId: campaign.campaignId,
             campaignKey: campaign.campaignKey,
             campaignName: name,
+            audienceType: campaign.audienceType,
             runId: run.runId,
             recipientCount: total,
             sentCount: sent,
@@ -91,4 +96,25 @@ export function buildCampaignSuccessNotification(campaign, run) {
         },
         campaignId: campaign.campaignId,
     };
+}
+
+export async function createCampaignNotification(campaign, notificationData) {
+    const enriched = enrichNotificationWithManualAction(notificationData, campaign);
+    return createAdminNotification(enriched);
+}
+
+export async function createCampaignManualRequiredNotification(campaign, options) {
+    return createAdminNotification(buildCampaignManualRequiredNotification(campaign, options));
+}
+
+export async function hasRecentManualRequiredNotification(campaignId, { hours = 12 } = {}) {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000);
+    const count = await general.platformAdminNotification.count({
+        where: {
+            campaignId,
+            notificationType: "CAMPAIGN_MANUAL_REQUIRED",
+            createdAt: { gte: since },
+        },
+    });
+    return count > 0;
 }

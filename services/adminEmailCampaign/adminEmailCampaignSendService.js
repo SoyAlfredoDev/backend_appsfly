@@ -11,9 +11,12 @@ import { resolveAudienceRecipients } from "./adminEmailCampaignAudienceService.j
 import { renderCampaignEmail } from "./adminEmailCampaignTemplateService.js";
 import { getPlatformEmailCampaignByIdService } from "./adminEmailCampaignService.js";
 import {
-    createAdminNotification,
     buildCampaignSuccessNotification,
+    createCampaignNotification,
+    createCampaignManualRequiredNotification,
+    hasRecentManualRequiredNotification,
 } from "../adminNotificationService.js";
+import { formatMissedSlotLabel } from "./adminEmailCampaignNotificationHelpers.js";
 import { syncRunMetricsFromRecipients, buildDeliveryTotals } from "./adminEmailCampaignMetricsService.js";
 import {
     isProspectOutreachCampaign,
@@ -21,6 +24,7 @@ import {
     resolveProspectOutreachSenderFrom,
 } from "./adminEmailCampaignProspectSendPolicy.js";
 import { trackProspectOutreachSend } from "../emailProspect/emailProspectConversionService.js";
+import { evaluateCampaignDue } from "./adminEmailCampaignSchedulerDue.js";
 
 const general = new PrismaGeneral();
 
@@ -93,6 +97,8 @@ export async function ensureSystemEmailCampaigns(createdByUserId) {
             await general.platformEmailCampaign.update({
                 where: { campaignKey: def.campaignKey },
                 data: {
+                    campaignName: def.campaignName,
+                    campaignDescription: def.campaignDescription,
                     scheduleFrequency: def.scheduleFrequency,
                     audienceType: def.audienceType,
                     audienceParams: buildAudienceParamsForDef(def, existing.audienceParams ?? {}),
@@ -132,7 +138,7 @@ export async function ensureSystemEmailCampaigns(createdByUserId) {
 
 export async function executePlatformEmailCampaign(
     campaignId,
-    { force = false, source = "manual" } = {},
+    { force = false, source = "manual", dueMeta = null } = {},
 ) {
     const campaign = await getPlatformEmailCampaignByIdService(campaignId);
     if (!campaign) {
@@ -180,7 +186,7 @@ export async function executePlatformEmailCampaign(
                         : campaign.audienceType === "PLATFORM_PROSPECTS"
                           ? "No había prospectos activos elegibles para este envío."
                           : "No había destinatarios para esta audiencia en este ciclo.";
-            await createAdminNotification({
+            await createCampaignNotification(campaign, {
                 notificationType: "CAMPAIGN_SKIPPED",
                 title: `Campaña sin destinatarios: ${campaign.campaignName}`,
                 message: skipMessage,
@@ -188,6 +194,7 @@ export async function executePlatformEmailCampaign(
                     campaignId: campaign.campaignId,
                     campaignKey: campaign.campaignKey,
                     source: "auto",
+                    dueMeta,
                 },
                 campaignId: campaign.campaignId,
             });
@@ -374,8 +381,17 @@ export async function executePlatformEmailCampaign(
     if (source === "auto") {
         notificationData.notificationType = "CAMPAIGN_AUTO_RUN";
         notificationData.title = `Envío automático: ${updatedCampaign.campaignName}`;
+        if (dueMeta?.reason === "CATCH_UP") {
+            const slotLabel = formatMissedSlotLabel(dueMeta);
+            notificationData.message = `Recuperación del envío pendiente (${slotLabel}). ${notificationData.message}`;
+            notificationData.payload = {
+                ...notificationData.payload,
+                dueMeta,
+                catchUp: true,
+            };
+        }
     }
-    await createAdminNotification(notificationData);
+    await createCampaignNotification(updatedCampaign, notificationData);
 
     return {
         campaign: updatedCampaign,
@@ -401,6 +417,7 @@ export async function getCampaignRunStats(campaignId) {
 
     const lastRun = campaign.runs[0] ?? null;
     const monthlyCheck = canRunMonthlyCampaign(campaign);
+    const scheduleEligibility = evaluateCampaignDue(campaign);
     const delivery = buildDeliveryTotals(campaign);
 
     return {
@@ -416,6 +433,7 @@ export async function getCampaignRunStats(campaignId) {
         },
         lastRun,
         monthlyEligibility: monthlyCheck,
+        scheduleEligibility,
         runs: campaign.runs,
         autoSchedule: {
             enabled: process.env.DISABLE_CAMPAIGN_SCHEDULER !== "true",

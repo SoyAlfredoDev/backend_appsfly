@@ -52,8 +52,14 @@ export const PLATFORM_EMAIL_STATUS_LABELS = {
 
 export const EDITABLE_CAMPAIGN_STATUSES = ["DRAFT", "SCHEDULED"];
 
-/** Días de la semana para outreach prospectos: 0=dom, 1=lun, 3=mié */
-export const PROSPECT_OUTREACH_WEEKDAYS = [1, 3, 0];
+/** Cupo diario Resend (plan gratuito) y reserva para otras campañas (avisos de plan, etc.) */
+export const RESEND_FREE_DAILY_EMAIL_LIMIT = 100;
+export const OTHER_CAMPAIGNS_DAILY_EMAIL_RESERVE = 30;
+export const PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN =
+    RESEND_FREE_DAILY_EMAIL_LIMIT - OTHER_CAMPAIGNS_DAILY_EMAIL_RESERVE;
+
+/** Días de la semana para outreach prospectos: 1=lun, 3=mié, 5=vie */
+export const PROSPECT_OUTREACH_WEEKDAYS = [1, 3, 5];
 
 export const MONTHLY_CAMPAIGN_MIN_DAYS = 28;
 
@@ -105,12 +111,12 @@ export const SYSTEM_CAMPAIGN_DAILY_PLAN_EXPIRY_TODAY = {
     senderEmail: "pagos@appsfly.app",
 };
 
-/** Campaña predefinida #4 — outreach semanal a prospectos (lun, mié, dom) */
+/** Campaña predefinida #4 — outreach semanal a prospectos (lun, mié, vie) */
 export const SYSTEM_CAMPAIGN_WEEKLY_PROSPECTS = {
     campaignKey: "monthly-prospect-outreach",
-    campaignName: "Outreach prospectos — lun, mié, dom",
+    campaignName: "Outreach prospectos — lun, mié, vie",
     campaignDescription:
-        "Correo automático lun/mié/dom a prospectos que aún no son clientes. Máximo 1 correo por prospecto al mes, cola justa y rotación de mensajes y remitentes para proteger deliverability.",
+        `Correo automático lun/mié/vie a prospectos que aún no son clientes. Hasta ${PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN} correos por ciclo (de ${RESEND_FREE_DAILY_EMAIL_LIMIT}/día en Resend; ${OTHER_CAMPAIGNS_DAILY_EMAIL_RESERVE} reservados para avisos de plan). Máximo 1 correo por prospecto al mes, cola justa y rotación de mensajes y remitentes.`,
     audienceType: "PLATFORM_PROSPECTS",
     scheduleFrequency: "WEEKLY",
     autoRunWeekdays: PROSPECT_OUTREACH_WEEKDAYS,

@@ -537,7 +537,8 @@ exports.PlatformAdminNotificationType = exports.$Enums.PlatformAdminNotification
   CAMPAIGN_SUCCESS: 'CAMPAIGN_SUCCESS',
   CAMPAIGN_FAILED: 'CAMPAIGN_FAILED',
   CAMPAIGN_SKIPPED: 'CAMPAIGN_SKIPPED',
-  CAMPAIGN_AUTO_RUN: 'CAMPAIGN_AUTO_RUN'
+  CAMPAIGN_AUTO_RUN: 'CAMPAIGN_AUTO_RUN',
+  CAMPAIGN_MANUAL_REQUIRED: 'CAMPAIGN_MANUAL_REQUIRED'
 };
 
 exports.PlatformAgentTaskStatus = exports.$Enums.PlatformAgentTaskStatus = {

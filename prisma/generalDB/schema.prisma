@@ -407,6 +407,7 @@ enum PlatformAdminNotificationType {
     CAMPAIGN_FAILED
     CAMPAIGN_SKIPPED
     CAMPAIGN_AUTO_RUN
+    CAMPAIGN_MANUAL_REQUIRED
 }
 
 enum PlatformEmailCampaignStatus {
