@@ -248,9 +248,11 @@ export async function executePlatformEmailCampaign(
             : defaultSenderFrom;
 
         const recipientId = crypto.randomUUID();
+        const isProspectSend = isProspectOutreachCampaign(campaign);
         const { subject, html, text, variantId } = renderCampaignEmail(campaign, recipient, {
             sendIndexInBatch: sendIndex,
             variantStats: prospectVariantStats,
+            campaignRecipientId: isProspectSend ? recipientId : null,
         });
 
         await general.platformEmailCampaignRecipient.create({
@@ -318,6 +320,7 @@ export async function executePlatformEmailCampaign(
     failedCount = syncedRun.failedCount;
     const bouncedCount = syncedRun.bouncedCount;
     const openedCount = syncedRun.openedCount;
+    const clickedCount = syncedRun.clickedCount;
 
     const runErrorLog = errors.length ? errors.slice(0, 50) : null;
     const errorLogPayload = prospectSendMeta
@@ -375,6 +378,7 @@ export async function executePlatformEmailCampaign(
         failedCount,
         bouncedCount,
         openedCount,
+        clickedCount,
         recipientCount: recipients.length,
         prospectSendMeta,
     };
@@ -451,6 +455,7 @@ export async function getCampaignRunStats(campaignId) {
             bounced: delivery.bounced,
             rejected: delivery.rejected,
             opened: delivery.opened,
+            clicked: delivery.clicked,
             notOpened: delivery.notOpened,
         },
         lastRun,

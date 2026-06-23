@@ -28,8 +28,10 @@ export async function getProspectOutreachVariantsForAdmin() {
             sent: 0,
             delivered: 0,
             opened: 0,
+            clicked: 0,
             failed: 0,
             openRate: 0,
+            clickRate: 0,
         };
 
         return {

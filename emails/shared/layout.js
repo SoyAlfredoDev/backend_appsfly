@@ -11,6 +11,19 @@ export function getFrontendBaseUrl() {
     return base;
 }
 
+export function getBackendBaseUrl() {
+    const isProduction =
+        process.env.APP_ENV === "production"
+        || process.env.NODE_ENV === "production"
+        || process.env.VERCEL === "1";
+
+    const base = isProduction
+        ? (process.env.BACKEND_URL_PRODUCTION || "https://api.appsfly.app")
+        : (process.env.BACKEND_URL || "http://localhost:3000");
+
+    return String(base).replace(/\/+$/, "");
+}
+
 export function getAppsFlyEmailLogoUrl() {
     if (process.env.APPSFLY_EMAIL_LOGO_URL?.trim()) {
         return process.env.APPSFLY_EMAIL_LOGO_URL.trim();

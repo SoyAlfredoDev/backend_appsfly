@@ -7,6 +7,7 @@ import {
 import {
     renderProspectOutreachEmail,
 } from "./adminEmailCampaignProspectTemplate.js";
+import { buildProspectRegisterClickUrl } from "../emailProspect/emailProspectService.js";
 
 
 
@@ -579,8 +580,17 @@ export function renderCampaignEmail(campaign, recipient = null, renderOptions = 
             variantStats: renderOptions.variantStats ?? null,
             forcedVariantId: renderOptions.forcedVariantId ?? null,
         };
+        const prospectData = {
+            ...data,
+            email: recipientEmail ?? data.email,
+        };
+        if (renderOptions.campaignRecipientId) {
+            prospectData.registerUrl = buildProspectRegisterClickUrl(
+                renderOptions.campaignRecipientId,
+            );
+        }
         const rendered = renderProspectOutreachEmail(
-            { ...data, email: recipientEmail ?? data.email },
+            prospectData,
             recipientEmail,
             prospectPickOptions,
         );

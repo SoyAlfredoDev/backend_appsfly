@@ -1,4 +1,4 @@
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-flash-latest";
 const GEMINI_BASE =
     "https://generativelanguage.googleapis.com/v1beta/models";
 
@@ -19,10 +19,13 @@ async function callGemini(payload) {
         throw new Error("GEMINI_NOT_CONFIGURED");
     }
 
-    const url = `${GEMINI_BASE}/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
+    const url = `${GEMINI_BASE}/${GEMINI_MODEL}:generateContent`;
     const response = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": apiKey,
+        },
         body: JSON.stringify(payload),
     });
 

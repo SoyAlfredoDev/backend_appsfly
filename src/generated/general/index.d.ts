@@ -17448,6 +17448,7 @@ export namespace Prisma {
     totalFailed: number | null
     totalBounced: number | null
     totalOpened: number | null
+    totalClicked: number | null
   }
 
   export type PlatformEmailCampaignSumAggregateOutputType = {
@@ -17457,6 +17458,7 @@ export namespace Prisma {
     totalFailed: number | null
     totalBounced: number | null
     totalOpened: number | null
+    totalClicked: number | null
   }
 
   export type PlatformEmailCampaignMinAggregateOutputType = {
@@ -17482,6 +17484,7 @@ export namespace Prisma {
     totalFailed: number | null
     totalBounced: number | null
     totalOpened: number | null
+    totalClicked: number | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -17510,6 +17513,7 @@ export namespace Prisma {
     totalFailed: number | null
     totalBounced: number | null
     totalOpened: number | null
+    totalClicked: number | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -17539,6 +17543,7 @@ export namespace Prisma {
     totalFailed: number
     totalBounced: number
     totalOpened: number
+    totalClicked: number
     createdByUserId: number
     createdAt: number
     updatedAt: number
@@ -17553,6 +17558,7 @@ export namespace Prisma {
     totalFailed?: true
     totalBounced?: true
     totalOpened?: true
+    totalClicked?: true
   }
 
   export type PlatformEmailCampaignSumAggregateInputType = {
@@ -17562,6 +17568,7 @@ export namespace Prisma {
     totalFailed?: true
     totalBounced?: true
     totalOpened?: true
+    totalClicked?: true
   }
 
   export type PlatformEmailCampaignMinAggregateInputType = {
@@ -17587,6 +17594,7 @@ export namespace Prisma {
     totalFailed?: true
     totalBounced?: true
     totalOpened?: true
+    totalClicked?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -17615,6 +17623,7 @@ export namespace Prisma {
     totalFailed?: true
     totalBounced?: true
     totalOpened?: true
+    totalClicked?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -17644,6 +17653,7 @@ export namespace Prisma {
     totalFailed?: true
     totalBounced?: true
     totalOpened?: true
+    totalClicked?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -17760,6 +17770,7 @@ export namespace Prisma {
     totalFailed: number
     totalBounced: number
     totalOpened: number
+    totalClicked: number
     createdByUserId: string
     createdAt: Date
     updatedAt: Date
@@ -17808,6 +17819,7 @@ export namespace Prisma {
     totalFailed?: boolean
     totalBounced?: boolean
     totalOpened?: boolean
+    totalClicked?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17840,6 +17852,7 @@ export namespace Prisma {
     totalFailed?: boolean
     totalBounced?: boolean
     totalOpened?: boolean
+    totalClicked?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17870,6 +17883,7 @@ export namespace Prisma {
     totalFailed?: boolean
     totalBounced?: boolean
     totalOpened?: boolean
+    totalClicked?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -17900,12 +17914,13 @@ export namespace Prisma {
     totalFailed?: boolean
     totalBounced?: boolean
     totalOpened?: boolean
+    totalClicked?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PlatformEmailCampaignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"campaignId" | "campaignKey" | "campaignName" | "campaignDescription" | "campaignStatus" | "audienceType" | "audienceParams" | "scheduleFrequency" | "emailSubject" | "emailHtml" | "emailText" | "messageIntent" | "senderEmail" | "senderName" | "scheduledAt" | "sentAt" | "lastRunAt" | "totalRecipients" | "totalSent" | "totalDelivered" | "totalFailed" | "totalBounced" | "totalOpened" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["platformEmailCampaign"]>
+  export type PlatformEmailCampaignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"campaignId" | "campaignKey" | "campaignName" | "campaignDescription" | "campaignStatus" | "audienceType" | "audienceParams" | "scheduleFrequency" | "emailSubject" | "emailHtml" | "emailText" | "messageIntent" | "senderEmail" | "senderName" | "scheduledAt" | "sentAt" | "lastRunAt" | "totalRecipients" | "totalSent" | "totalDelivered" | "totalFailed" | "totalBounced" | "totalOpened" | "totalClicked" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["platformEmailCampaign"]>
   export type PlatformEmailCampaignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     runs?: boolean | PlatformEmailCampaign$runsArgs<ExtArgs>
@@ -17951,6 +17966,7 @@ export namespace Prisma {
       totalFailed: number
       totalBounced: number
       totalOpened: number
+      totalClicked: number
       createdByUserId: string
       createdAt: Date
       updatedAt: Date
@@ -18402,6 +18418,7 @@ export namespace Prisma {
     readonly totalFailed: FieldRef<"PlatformEmailCampaign", 'Int'>
     readonly totalBounced: FieldRef<"PlatformEmailCampaign", 'Int'>
     readonly totalOpened: FieldRef<"PlatformEmailCampaign", 'Int'>
+    readonly totalClicked: FieldRef<"PlatformEmailCampaign", 'Int'>
     readonly createdByUserId: FieldRef<"PlatformEmailCampaign", 'String'>
     readonly createdAt: FieldRef<"PlatformEmailCampaign", 'DateTime'>
     readonly updatedAt: FieldRef<"PlatformEmailCampaign", 'DateTime'>
@@ -18862,6 +18879,7 @@ export namespace Prisma {
     failedCount: number | null
     bouncedCount: number | null
     openedCount: number | null
+    clickedCount: number | null
   }
 
   export type PlatformEmailCampaignRunSumAggregateOutputType = {
@@ -18871,6 +18889,7 @@ export namespace Prisma {
     failedCount: number | null
     bouncedCount: number | null
     openedCount: number | null
+    clickedCount: number | null
   }
 
   export type PlatformEmailCampaignRunMinAggregateOutputType = {
@@ -18885,6 +18904,7 @@ export namespace Prisma {
     failedCount: number | null
     bouncedCount: number | null
     openedCount: number | null
+    clickedCount: number | null
     createdAt: Date | null
   }
 
@@ -18900,6 +18920,7 @@ export namespace Prisma {
     failedCount: number | null
     bouncedCount: number | null
     openedCount: number | null
+    clickedCount: number | null
     createdAt: Date | null
   }
 
@@ -18915,6 +18936,7 @@ export namespace Prisma {
     failedCount: number
     bouncedCount: number
     openedCount: number
+    clickedCount: number
     errorLog: number
     createdAt: number
     _all: number
@@ -18928,6 +18950,7 @@ export namespace Prisma {
     failedCount?: true
     bouncedCount?: true
     openedCount?: true
+    clickedCount?: true
   }
 
   export type PlatformEmailCampaignRunSumAggregateInputType = {
@@ -18937,6 +18960,7 @@ export namespace Prisma {
     failedCount?: true
     bouncedCount?: true
     openedCount?: true
+    clickedCount?: true
   }
 
   export type PlatformEmailCampaignRunMinAggregateInputType = {
@@ -18951,6 +18975,7 @@ export namespace Prisma {
     failedCount?: true
     bouncedCount?: true
     openedCount?: true
+    clickedCount?: true
     createdAt?: true
   }
 
@@ -18966,6 +18991,7 @@ export namespace Prisma {
     failedCount?: true
     bouncedCount?: true
     openedCount?: true
+    clickedCount?: true
     createdAt?: true
   }
 
@@ -18981,6 +19007,7 @@ export namespace Prisma {
     failedCount?: true
     bouncedCount?: true
     openedCount?: true
+    clickedCount?: true
     errorLog?: true
     createdAt?: true
     _all?: true
@@ -19084,6 +19111,7 @@ export namespace Prisma {
     failedCount: number
     bouncedCount: number
     openedCount: number
+    clickedCount: number
     errorLog: JsonValue | null
     createdAt: Date
     _count: PlatformEmailCampaignRunCountAggregateOutputType | null
@@ -19119,6 +19147,7 @@ export namespace Prisma {
     failedCount?: boolean
     bouncedCount?: boolean
     openedCount?: boolean
+    clickedCount?: boolean
     errorLog?: boolean
     createdAt?: boolean
     campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
@@ -19138,6 +19167,7 @@ export namespace Prisma {
     failedCount?: boolean
     bouncedCount?: boolean
     openedCount?: boolean
+    clickedCount?: boolean
     errorLog?: boolean
     createdAt?: boolean
     campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
@@ -19155,6 +19185,7 @@ export namespace Prisma {
     failedCount?: boolean
     bouncedCount?: boolean
     openedCount?: boolean
+    clickedCount?: boolean
     errorLog?: boolean
     createdAt?: boolean
     campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
@@ -19172,11 +19203,12 @@ export namespace Prisma {
     failedCount?: boolean
     bouncedCount?: boolean
     openedCount?: boolean
+    clickedCount?: boolean
     errorLog?: boolean
     createdAt?: boolean
   }
 
-  export type PlatformEmailCampaignRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"runId" | "campaignId" | "runStatus" | "startedAt" | "completedAt" | "recipientCount" | "sentCount" | "deliveredCount" | "failedCount" | "bouncedCount" | "openedCount" | "errorLog" | "createdAt", ExtArgs["result"]["platformEmailCampaignRun"]>
+  export type PlatformEmailCampaignRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"runId" | "campaignId" | "runStatus" | "startedAt" | "completedAt" | "recipientCount" | "sentCount" | "deliveredCount" | "failedCount" | "bouncedCount" | "openedCount" | "clickedCount" | "errorLog" | "createdAt", ExtArgs["result"]["platformEmailCampaignRun"]>
   export type PlatformEmailCampaignRunInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     campaign?: boolean | PlatformEmailCampaignDefaultArgs<ExtArgs>
     recipients?: boolean | PlatformEmailCampaignRun$recipientsArgs<ExtArgs>
@@ -19207,6 +19239,7 @@ export namespace Prisma {
       failedCount: number
       bouncedCount: number
       openedCount: number
+      clickedCount: number
       errorLog: Prisma.JsonValue | null
       createdAt: Date
     }, ExtArgs["result"]["platformEmailCampaignRun"]>
@@ -19645,6 +19678,7 @@ export namespace Prisma {
     readonly failedCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
     readonly bouncedCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
     readonly openedCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
+    readonly clickedCount: FieldRef<"PlatformEmailCampaignRun", 'Int'>
     readonly errorLog: FieldRef<"PlatformEmailCampaignRun", 'Json'>
     readonly createdAt: FieldRef<"PlatformEmailCampaignRun", 'DateTime'>
   }
@@ -20099,10 +20133,12 @@ export namespace Prisma {
 
   export type PlatformEmailCampaignRecipientAvgAggregateOutputType = {
     openCount: number | null
+    clickCount: number | null
   }
 
   export type PlatformEmailCampaignRecipientSumAggregateOutputType = {
     openCount: number | null
+    clickCount: number | null
   }
 
   export type PlatformEmailCampaignRecipientMinAggregateOutputType = {
@@ -20121,6 +20157,8 @@ export namespace Prisma {
     bouncedAt: Date | null
     openedAt: Date | null
     openCount: number | null
+    clickedAt: Date | null
+    clickCount: number | null
     messageVariantId: string | null
     createdAt: Date | null
   }
@@ -20141,6 +20179,8 @@ export namespace Prisma {
     bouncedAt: Date | null
     openedAt: Date | null
     openCount: number | null
+    clickedAt: Date | null
+    clickCount: number | null
     messageVariantId: string | null
     createdAt: Date | null
   }
@@ -20161,6 +20201,8 @@ export namespace Prisma {
     bouncedAt: number
     openedAt: number
     openCount: number
+    clickedAt: number
+    clickCount: number
     messageVariantId: number
     createdAt: number
     _all: number
@@ -20169,10 +20211,12 @@ export namespace Prisma {
 
   export type PlatformEmailCampaignRecipientAvgAggregateInputType = {
     openCount?: true
+    clickCount?: true
   }
 
   export type PlatformEmailCampaignRecipientSumAggregateInputType = {
     openCount?: true
+    clickCount?: true
   }
 
   export type PlatformEmailCampaignRecipientMinAggregateInputType = {
@@ -20191,6 +20235,8 @@ export namespace Prisma {
     bouncedAt?: true
     openedAt?: true
     openCount?: true
+    clickedAt?: true
+    clickCount?: true
     messageVariantId?: true
     createdAt?: true
   }
@@ -20211,6 +20257,8 @@ export namespace Prisma {
     bouncedAt?: true
     openedAt?: true
     openCount?: true
+    clickedAt?: true
+    clickCount?: true
     messageVariantId?: true
     createdAt?: true
   }
@@ -20231,6 +20279,8 @@ export namespace Prisma {
     bouncedAt?: true
     openedAt?: true
     openCount?: true
+    clickedAt?: true
+    clickCount?: true
     messageVariantId?: true
     createdAt?: true
     _all?: true
@@ -20338,6 +20388,8 @@ export namespace Prisma {
     bouncedAt: Date | null
     openedAt: Date | null
     openCount: number
+    clickedAt: Date | null
+    clickCount: number
     messageVariantId: string | null
     createdAt: Date
     _count: PlatformEmailCampaignRecipientCountAggregateOutputType | null
@@ -20377,6 +20429,8 @@ export namespace Prisma {
     bouncedAt?: boolean
     openedAt?: boolean
     openCount?: boolean
+    clickedAt?: boolean
+    clickCount?: boolean
     messageVariantId?: boolean
     createdAt?: boolean
     run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
@@ -20398,6 +20452,8 @@ export namespace Prisma {
     bouncedAt?: boolean
     openedAt?: boolean
     openCount?: boolean
+    clickedAt?: boolean
+    clickCount?: boolean
     messageVariantId?: boolean
     createdAt?: boolean
     run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
@@ -20419,6 +20475,8 @@ export namespace Prisma {
     bouncedAt?: boolean
     openedAt?: boolean
     openCount?: boolean
+    clickedAt?: boolean
+    clickCount?: boolean
     messageVariantId?: boolean
     createdAt?: boolean
     run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
@@ -20440,11 +20498,13 @@ export namespace Prisma {
     bouncedAt?: boolean
     openedAt?: boolean
     openCount?: boolean
+    clickedAt?: boolean
+    clickCount?: boolean
     messageVariantId?: boolean
     createdAt?: boolean
   }
 
-  export type PlatformEmailCampaignRecipientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"recipientId" | "runId" | "userId" | "businessId" | "recipientEmail" | "recipientName" | "businessName" | "deliveryStatus" | "providerMessageId" | "errorMessage" | "sentAt" | "deliveredAt" | "bouncedAt" | "openedAt" | "openCount" | "messageVariantId" | "createdAt", ExtArgs["result"]["platformEmailCampaignRecipient"]>
+  export type PlatformEmailCampaignRecipientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"recipientId" | "runId" | "userId" | "businessId" | "recipientEmail" | "recipientName" | "businessName" | "deliveryStatus" | "providerMessageId" | "errorMessage" | "sentAt" | "deliveredAt" | "bouncedAt" | "openedAt" | "openCount" | "clickedAt" | "clickCount" | "messageVariantId" | "createdAt", ExtArgs["result"]["platformEmailCampaignRecipient"]>
   export type PlatformEmailCampaignRecipientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     run?: boolean | PlatformEmailCampaignRunDefaultArgs<ExtArgs>
   }
@@ -20476,6 +20536,8 @@ export namespace Prisma {
       bouncedAt: Date | null
       openedAt: Date | null
       openCount: number
+      clickedAt: Date | null
+      clickCount: number
       /**
        * * Variante A/B/C del outreach (overview, offer, team)
        */
@@ -20920,6 +20982,8 @@ export namespace Prisma {
     readonly bouncedAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
     readonly openedAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
     readonly openCount: FieldRef<"PlatformEmailCampaignRecipient", 'Int'>
+    readonly clickedAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
+    readonly clickCount: FieldRef<"PlatformEmailCampaignRecipient", 'Int'>
     readonly messageVariantId: FieldRef<"PlatformEmailCampaignRecipient", 'String'>
     readonly createdAt: FieldRef<"PlatformEmailCampaignRecipient", 'DateTime'>
   }
@@ -23769,6 +23833,7 @@ export namespace Prisma {
     totalFailed: 'totalFailed',
     totalBounced: 'totalBounced',
     totalOpened: 'totalOpened',
+    totalClicked: 'totalClicked',
     createdByUserId: 'createdByUserId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -23789,6 +23854,7 @@ export namespace Prisma {
     failedCount: 'failedCount',
     bouncedCount: 'bouncedCount',
     openedCount: 'openedCount',
+    clickedCount: 'clickedCount',
     errorLog: 'errorLog',
     createdAt: 'createdAt'
   };
@@ -23812,6 +23878,8 @@ export namespace Prisma {
     bouncedAt: 'bouncedAt',
     openedAt: 'openedAt',
     openCount: 'openCount',
+    clickedAt: 'clickedAt',
+    clickCount: 'clickCount',
     messageVariantId: 'messageVariantId',
     createdAt: 'createdAt'
   };
@@ -25460,6 +25528,7 @@ export namespace Prisma {
     totalFailed?: IntFilter<"PlatformEmailCampaign"> | number
     totalBounced?: IntFilter<"PlatformEmailCampaign"> | number
     totalOpened?: IntFilter<"PlatformEmailCampaign"> | number
+    totalClicked?: IntFilter<"PlatformEmailCampaign"> | number
     createdByUserId?: StringFilter<"PlatformEmailCampaign"> | string
     createdAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
     updatedAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
@@ -25491,6 +25560,7 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalBounced?: SortOrder
     totalOpened?: SortOrder
+    totalClicked?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25525,6 +25595,7 @@ export namespace Prisma {
     totalFailed?: IntFilter<"PlatformEmailCampaign"> | number
     totalBounced?: IntFilter<"PlatformEmailCampaign"> | number
     totalOpened?: IntFilter<"PlatformEmailCampaign"> | number
+    totalClicked?: IntFilter<"PlatformEmailCampaign"> | number
     createdByUserId?: StringFilter<"PlatformEmailCampaign"> | string
     createdAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
     updatedAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
@@ -25556,6 +25627,7 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalBounced?: SortOrder
     totalOpened?: SortOrder
+    totalClicked?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25593,6 +25665,7 @@ export namespace Prisma {
     totalFailed?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
     totalBounced?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
     totalOpened?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
+    totalClicked?: IntWithAggregatesFilter<"PlatformEmailCampaign"> | number
     createdByUserId?: StringWithAggregatesFilter<"PlatformEmailCampaign"> | string
     createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaign"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaign"> | Date | string
@@ -25613,6 +25686,7 @@ export namespace Prisma {
     failedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
     bouncedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
     openedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    clickedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
     errorLog?: JsonNullableFilter<"PlatformEmailCampaignRun">
     createdAt?: DateTimeFilter<"PlatformEmailCampaignRun"> | Date | string
     campaign?: XOR<PlatformEmailCampaignScalarRelationFilter, PlatformEmailCampaignWhereInput>
@@ -25631,6 +25705,7 @@ export namespace Prisma {
     failedCount?: SortOrder
     bouncedCount?: SortOrder
     openedCount?: SortOrder
+    clickedCount?: SortOrder
     errorLog?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     campaign?: PlatformEmailCampaignOrderByWithRelationInput
@@ -25652,6 +25727,7 @@ export namespace Prisma {
     failedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
     bouncedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
     openedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    clickedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
     errorLog?: JsonNullableFilter<"PlatformEmailCampaignRun">
     createdAt?: DateTimeFilter<"PlatformEmailCampaignRun"> | Date | string
     campaign?: XOR<PlatformEmailCampaignScalarRelationFilter, PlatformEmailCampaignWhereInput>
@@ -25670,6 +25746,7 @@ export namespace Prisma {
     failedCount?: SortOrder
     bouncedCount?: SortOrder
     openedCount?: SortOrder
+    clickedCount?: SortOrder
     errorLog?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: PlatformEmailCampaignRunCountOrderByAggregateInput
@@ -25694,6 +25771,7 @@ export namespace Prisma {
     failedCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
     bouncedCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
     openedCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
+    clickedCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRun"> | number
     errorLog?: JsonNullableWithAggregatesFilter<"PlatformEmailCampaignRun">
     createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaignRun"> | Date | string
   }
@@ -25717,6 +25795,8 @@ export namespace Prisma {
     bouncedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
+    clickedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    clickCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
     messageVariantId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
     createdAt?: DateTimeFilter<"PlatformEmailCampaignRecipient"> | Date | string
     run?: XOR<PlatformEmailCampaignRunScalarRelationFilter, PlatformEmailCampaignRunWhereInput>
@@ -25738,6 +25818,8 @@ export namespace Prisma {
     bouncedAt?: SortOrderInput | SortOrder
     openedAt?: SortOrderInput | SortOrder
     openCount?: SortOrder
+    clickedAt?: SortOrderInput | SortOrder
+    clickCount?: SortOrder
     messageVariantId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     run?: PlatformEmailCampaignRunOrderByWithRelationInput
@@ -25762,6 +25844,8 @@ export namespace Prisma {
     bouncedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
+    clickedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    clickCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
     messageVariantId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
     createdAt?: DateTimeFilter<"PlatformEmailCampaignRecipient"> | Date | string
     run?: XOR<PlatformEmailCampaignRunScalarRelationFilter, PlatformEmailCampaignRunWhereInput>
@@ -25783,6 +25867,8 @@ export namespace Prisma {
     bouncedAt?: SortOrderInput | SortOrder
     openedAt?: SortOrderInput | SortOrder
     openCount?: SortOrder
+    clickedAt?: SortOrderInput | SortOrder
+    clickCount?: SortOrder
     messageVariantId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: PlatformEmailCampaignRecipientCountOrderByAggregateInput
@@ -25811,6 +25897,8 @@ export namespace Prisma {
     bouncedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | number
+    clickedAt?: DateTimeNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    clickCount?: IntWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | number
     messageVariantId?: StringNullableWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string
   }
@@ -27318,6 +27406,7 @@ export namespace Prisma {
     totalFailed?: number
     totalBounced?: number
     totalOpened?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutPlatformEmailCampaignsInput
@@ -27348,6 +27437,7 @@ export namespace Prisma {
     totalFailed?: number
     totalBounced?: number
     totalOpened?: number
+    totalClicked?: number
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27378,6 +27468,7 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutPlatformEmailCampaignsNestedInput
@@ -27408,6 +27499,7 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27438,6 +27530,7 @@ export namespace Prisma {
     totalFailed?: number
     totalBounced?: number
     totalOpened?: number
+    totalClicked?: number
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27467,6 +27560,7 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27495,6 +27589,7 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27511,6 +27606,7 @@ export namespace Prisma {
     failedCount?: number
     bouncedCount?: number
     openedCount?: number
+    clickedCount?: number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     campaign: PlatformEmailCampaignCreateNestedOneWithoutRunsInput
@@ -27529,6 +27625,7 @@ export namespace Prisma {
     failedCount?: number
     bouncedCount?: number
     openedCount?: number
+    clickedCount?: number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     recipients?: PlatformEmailCampaignRecipientUncheckedCreateNestedManyWithoutRunInput
@@ -27545,6 +27642,7 @@ export namespace Prisma {
     failedCount?: IntFieldUpdateOperationsInput | number
     bouncedCount?: IntFieldUpdateOperationsInput | number
     openedCount?: IntFieldUpdateOperationsInput | number
+    clickedCount?: IntFieldUpdateOperationsInput | number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaign?: PlatformEmailCampaignUpdateOneRequiredWithoutRunsNestedInput
@@ -27563,6 +27661,7 @@ export namespace Prisma {
     failedCount?: IntFieldUpdateOperationsInput | number
     bouncedCount?: IntFieldUpdateOperationsInput | number
     openedCount?: IntFieldUpdateOperationsInput | number
+    clickedCount?: IntFieldUpdateOperationsInput | number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     recipients?: PlatformEmailCampaignRecipientUncheckedUpdateManyWithoutRunNestedInput
@@ -27580,6 +27679,7 @@ export namespace Prisma {
     failedCount?: number
     bouncedCount?: number
     openedCount?: number
+    clickedCount?: number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
@@ -27595,6 +27695,7 @@ export namespace Prisma {
     failedCount?: IntFieldUpdateOperationsInput | number
     bouncedCount?: IntFieldUpdateOperationsInput | number
     openedCount?: IntFieldUpdateOperationsInput | number
+    clickedCount?: IntFieldUpdateOperationsInput | number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27611,6 +27712,7 @@ export namespace Prisma {
     failedCount?: IntFieldUpdateOperationsInput | number
     bouncedCount?: IntFieldUpdateOperationsInput | number
     openedCount?: IntFieldUpdateOperationsInput | number
+    clickedCount?: IntFieldUpdateOperationsInput | number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27630,6 +27732,8 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    clickedAt?: Date | string | null
+    clickCount?: number
     messageVariantId?: string | null
     createdAt?: Date | string
     run: PlatformEmailCampaignRunCreateNestedOneWithoutRecipientsInput
@@ -27651,6 +27755,8 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    clickedAt?: Date | string | null
+    clickCount?: number
     messageVariantId?: string | null
     createdAt?: Date | string
   }
@@ -27670,6 +27776,8 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
     messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     run?: PlatformEmailCampaignRunUpdateOneRequiredWithoutRecipientsNestedInput
@@ -27691,6 +27799,8 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
     messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27711,6 +27821,8 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    clickedAt?: Date | string | null
+    clickCount?: number
     messageVariantId?: string | null
     createdAt?: Date | string
   }
@@ -27730,6 +27842,8 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
     messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27750,6 +27864,8 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
     messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29179,6 +29295,7 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalBounced?: SortOrder
     totalOpened?: SortOrder
+    totalClicked?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -29191,6 +29308,7 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalBounced?: SortOrder
     totalOpened?: SortOrder
+    totalClicked?: SortOrder
   }
 
   export type PlatformEmailCampaignMaxOrderByAggregateInput = {
@@ -29216,6 +29334,7 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalBounced?: SortOrder
     totalOpened?: SortOrder
+    totalClicked?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -29244,6 +29363,7 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalBounced?: SortOrder
     totalOpened?: SortOrder
+    totalClicked?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -29256,6 +29376,7 @@ export namespace Prisma {
     totalFailed?: SortOrder
     totalBounced?: SortOrder
     totalOpened?: SortOrder
+    totalClicked?: SortOrder
   }
 
   export type EnumPlatformEmailCampaignStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -29322,6 +29443,7 @@ export namespace Prisma {
     failedCount?: SortOrder
     bouncedCount?: SortOrder
     openedCount?: SortOrder
+    clickedCount?: SortOrder
     errorLog?: SortOrder
     createdAt?: SortOrder
   }
@@ -29333,6 +29455,7 @@ export namespace Prisma {
     failedCount?: SortOrder
     bouncedCount?: SortOrder
     openedCount?: SortOrder
+    clickedCount?: SortOrder
   }
 
   export type PlatformEmailCampaignRunMaxOrderByAggregateInput = {
@@ -29347,6 +29470,7 @@ export namespace Prisma {
     failedCount?: SortOrder
     bouncedCount?: SortOrder
     openedCount?: SortOrder
+    clickedCount?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29362,6 +29486,7 @@ export namespace Prisma {
     failedCount?: SortOrder
     bouncedCount?: SortOrder
     openedCount?: SortOrder
+    clickedCount?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -29372,6 +29497,7 @@ export namespace Prisma {
     failedCount?: SortOrder
     bouncedCount?: SortOrder
     openedCount?: SortOrder
+    clickedCount?: SortOrder
   }
 
   export type EnumPlatformEmailCampaignRunStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -29412,12 +29538,15 @@ export namespace Prisma {
     bouncedAt?: SortOrder
     openedAt?: SortOrder
     openCount?: SortOrder
+    clickedAt?: SortOrder
+    clickCount?: SortOrder
     messageVariantId?: SortOrder
     createdAt?: SortOrder
   }
 
   export type PlatformEmailCampaignRecipientAvgOrderByAggregateInput = {
     openCount?: SortOrder
+    clickCount?: SortOrder
   }
 
   export type PlatformEmailCampaignRecipientMaxOrderByAggregateInput = {
@@ -29436,6 +29565,8 @@ export namespace Prisma {
     bouncedAt?: SortOrder
     openedAt?: SortOrder
     openCount?: SortOrder
+    clickedAt?: SortOrder
+    clickCount?: SortOrder
     messageVariantId?: SortOrder
     createdAt?: SortOrder
   }
@@ -29456,12 +29587,15 @@ export namespace Prisma {
     bouncedAt?: SortOrder
     openedAt?: SortOrder
     openCount?: SortOrder
+    clickedAt?: SortOrder
+    clickCount?: SortOrder
     messageVariantId?: SortOrder
     createdAt?: SortOrder
   }
 
   export type PlatformEmailCampaignRecipientSumOrderByAggregateInput = {
     openCount?: SortOrder
+    clickCount?: SortOrder
   }
 
   export type EnumPlatformEmailRecipientStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -31923,6 +32057,7 @@ export namespace Prisma {
     totalFailed?: number
     totalBounced?: number
     totalOpened?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     runs?: PlatformEmailCampaignRunCreateNestedManyWithoutCampaignInput
@@ -31952,6 +32087,7 @@ export namespace Prisma {
     totalFailed?: number
     totalBounced?: number
     totalOpened?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     runs?: PlatformEmailCampaignRunUncheckedCreateNestedManyWithoutCampaignInput
@@ -32323,6 +32459,7 @@ export namespace Prisma {
     totalFailed?: IntFilter<"PlatformEmailCampaign"> | number
     totalBounced?: IntFilter<"PlatformEmailCampaign"> | number
     totalOpened?: IntFilter<"PlatformEmailCampaign"> | number
+    totalClicked?: IntFilter<"PlatformEmailCampaign"> | number
     createdByUserId?: StringFilter<"PlatformEmailCampaign"> | string
     createdAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
     updatedAt?: DateTimeFilter<"PlatformEmailCampaign"> | Date | string
@@ -34924,6 +35061,7 @@ export namespace Prisma {
     failedCount?: number
     bouncedCount?: number
     openedCount?: number
+    clickedCount?: number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     recipients?: PlatformEmailCampaignRecipientCreateNestedManyWithoutRunInput
@@ -34940,6 +35078,7 @@ export namespace Prisma {
     failedCount?: number
     bouncedCount?: number
     openedCount?: number
+    clickedCount?: number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     recipients?: PlatformEmailCampaignRecipientUncheckedCreateNestedManyWithoutRunInput
@@ -35047,6 +35186,7 @@ export namespace Prisma {
     failedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
     bouncedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
     openedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
+    clickedCount?: IntFilter<"PlatformEmailCampaignRun"> | number
     errorLog?: JsonNullableFilter<"PlatformEmailCampaignRun">
     createdAt?: DateTimeFilter<"PlatformEmailCampaignRun"> | Date | string
   }
@@ -35075,6 +35215,7 @@ export namespace Prisma {
     totalFailed?: number
     totalBounced?: number
     totalOpened?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutPlatformEmailCampaignsInput
@@ -35104,6 +35245,7 @@ export namespace Prisma {
     totalFailed?: number
     totalBounced?: number
     totalOpened?: number
+    totalClicked?: number
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35129,6 +35271,8 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    clickedAt?: Date | string | null
+    clickCount?: number
     messageVariantId?: string | null
     createdAt?: Date | string
   }
@@ -35148,6 +35292,8 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    clickedAt?: Date | string | null
+    clickCount?: number
     messageVariantId?: string | null
     createdAt?: Date | string
   }
@@ -35197,6 +35343,7 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutPlatformEmailCampaignsNestedInput
@@ -35226,6 +35373,7 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35266,6 +35414,8 @@ export namespace Prisma {
     bouncedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
     openCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
+    clickedAt?: DateTimeNullableFilter<"PlatformEmailCampaignRecipient"> | Date | string | null
+    clickCount?: IntFilter<"PlatformEmailCampaignRecipient"> | number
     messageVariantId?: StringNullableFilter<"PlatformEmailCampaignRecipient"> | string | null
     createdAt?: DateTimeFilter<"PlatformEmailCampaignRecipient"> | Date | string
   }
@@ -35281,6 +35431,7 @@ export namespace Prisma {
     failedCount?: number
     bouncedCount?: number
     openedCount?: number
+    clickedCount?: number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     campaign: PlatformEmailCampaignCreateNestedOneWithoutRunsInput
@@ -35298,6 +35449,7 @@ export namespace Prisma {
     failedCount?: number
     bouncedCount?: number
     openedCount?: number
+    clickedCount?: number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
@@ -35329,6 +35481,7 @@ export namespace Prisma {
     failedCount?: IntFieldUpdateOperationsInput | number
     bouncedCount?: IntFieldUpdateOperationsInput | number
     openedCount?: IntFieldUpdateOperationsInput | number
+    clickedCount?: IntFieldUpdateOperationsInput | number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     campaign?: PlatformEmailCampaignUpdateOneRequiredWithoutRunsNestedInput
@@ -35346,6 +35499,7 @@ export namespace Prisma {
     failedCount?: IntFieldUpdateOperationsInput | number
     bouncedCount?: IntFieldUpdateOperationsInput | number
     openedCount?: IntFieldUpdateOperationsInput | number
+    clickedCount?: IntFieldUpdateOperationsInput | number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35605,6 +35759,7 @@ export namespace Prisma {
     totalFailed?: number
     totalBounced?: number
     totalOpened?: number
+    totalClicked?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -36008,6 +36163,7 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     runs?: PlatformEmailCampaignRunUpdateManyWithoutCampaignNestedInput
@@ -36037,6 +36193,7 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     runs?: PlatformEmailCampaignRunUncheckedUpdateManyWithoutCampaignNestedInput
@@ -36066,6 +36223,7 @@ export namespace Prisma {
     totalFailed?: IntFieldUpdateOperationsInput | number
     totalBounced?: IntFieldUpdateOperationsInput | number
     totalOpened?: IntFieldUpdateOperationsInput | number
+    totalClicked?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -36755,6 +36913,7 @@ export namespace Prisma {
     failedCount?: number
     bouncedCount?: number
     openedCount?: number
+    clickedCount?: number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
@@ -36770,6 +36929,7 @@ export namespace Prisma {
     failedCount?: IntFieldUpdateOperationsInput | number
     bouncedCount?: IntFieldUpdateOperationsInput | number
     openedCount?: IntFieldUpdateOperationsInput | number
+    clickedCount?: IntFieldUpdateOperationsInput | number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     recipients?: PlatformEmailCampaignRecipientUpdateManyWithoutRunNestedInput
@@ -36786,6 +36946,7 @@ export namespace Prisma {
     failedCount?: IntFieldUpdateOperationsInput | number
     bouncedCount?: IntFieldUpdateOperationsInput | number
     openedCount?: IntFieldUpdateOperationsInput | number
+    clickedCount?: IntFieldUpdateOperationsInput | number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     recipients?: PlatformEmailCampaignRecipientUncheckedUpdateManyWithoutRunNestedInput
@@ -36802,6 +36963,7 @@ export namespace Prisma {
     failedCount?: IntFieldUpdateOperationsInput | number
     bouncedCount?: IntFieldUpdateOperationsInput | number
     openedCount?: IntFieldUpdateOperationsInput | number
+    clickedCount?: IntFieldUpdateOperationsInput | number
     errorLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -36821,6 +36983,8 @@ export namespace Prisma {
     bouncedAt?: Date | string | null
     openedAt?: Date | string | null
     openCount?: number
+    clickedAt?: Date | string | null
+    clickCount?: number
     messageVariantId?: string | null
     createdAt?: Date | string
   }
@@ -36840,6 +37004,8 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
     messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -36859,6 +37025,8 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
     messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -36878,6 +37046,8 @@ export namespace Prisma {
     bouncedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     openCount?: IntFieldUpdateOperationsInput | number
+    clickedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clickCount?: IntFieldUpdateOperationsInput | number
     messageVariantId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

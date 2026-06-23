@@ -325,6 +325,7 @@ exports.Prisma.PlatformEmailCampaignScalarFieldEnum = {
   totalFailed: 'totalFailed',
   totalBounced: 'totalBounced',
   totalOpened: 'totalOpened',
+  totalClicked: 'totalClicked',
   createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -342,6 +343,7 @@ exports.Prisma.PlatformEmailCampaignRunScalarFieldEnum = {
   failedCount: 'failedCount',
   bouncedCount: 'bouncedCount',
   openedCount: 'openedCount',
+  clickedCount: 'clickedCount',
   errorLog: 'errorLog',
   createdAt: 'createdAt'
 };
@@ -362,6 +364,8 @@ exports.Prisma.PlatformEmailCampaignRecipientScalarFieldEnum = {
   bouncedAt: 'bouncedAt',
   openedAt: 'openedAt',
   openCount: 'openCount',
+  clickedAt: 'clickedAt',
+  clickCount: 'clickCount',
   messageVariantId: 'messageVariantId',
   createdAt: 'createdAt'
 };

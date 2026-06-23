@@ -293,6 +293,7 @@ model PlatformEmailCampaign {
     totalFailed          Int                            @default(0)
     totalBounced         Int                            @default(0)
     totalOpened          Int                            @default(0)
+    totalClicked         Int                            @default(0)
     createdByUserId      String
     createdBy            User                           @relation(fields: [createdByUserId], references: [userId])
     createdAt            DateTime                       @default(now())
@@ -317,6 +318,7 @@ model PlatformEmailCampaignRun {
     failedCount     Int                              @default(0)
     bouncedCount    Int                              @default(0)
     openedCount     Int                              @default(0)
+    clickedCount    Int                              @default(0)
     errorLog        Json?
     createdAt       DateTime                         @default(now())
     recipients      PlatformEmailCampaignRecipient[]
@@ -342,6 +344,8 @@ model PlatformEmailCampaignRecipient {
     bouncedAt         DateTime?
     openedAt          DateTime?
     openCount         Int                          @default(0)
+    clickedAt         DateTime?
+    clickCount        Int                          @default(0)
     /** Variante A/B/C del outreach (overview, offer, team) */
     messageVariantId  String?
     createdAt         DateTime                     @default(now())

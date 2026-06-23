@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
-import { getFrontendBaseUrl } from "../../emails/shared/layout.js";
+import { getFrontendBaseUrl, getBackendBaseUrl } from "../../emails/shared/layout.js";
 import { getProspectConversionStats } from "./emailProspectConversionService.js";
 
 const general = new PrismaGeneral();
@@ -15,6 +15,19 @@ function isValidEmail(email) {
 
 export function buildProspectUnsubscribeUrl(token) {
     return `${getFrontendBaseUrl()}/prospect-unsubscribe/${token}`;
+}
+
+/** Enlace de tracking por destinatario de campaña → redirige a /register sin romper el flujo. */
+export function buildProspectRegisterClickUrl(campaignRecipientId) {
+    const id = String(campaignRecipientId ?? "").trim();
+    if (!id) {
+        return `${getFrontendBaseUrl()}/register?from=prospect-email`;
+    }
+    return `${getBackendBaseUrl()}/api/prospects/register-click/${id}`;
+}
+
+export function buildProspectRegisterLandingUrl() {
+    return `${getFrontendBaseUrl()}/register?from=prospect-email`;
 }
 
 export async function listEmailProspects({ status, search, limit = 500 } = {}) {

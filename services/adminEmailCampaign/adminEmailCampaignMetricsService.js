@@ -13,6 +13,7 @@ export async function syncRunMetricsFromRecipients(runId) {
         select: {
             deliveryStatus: true,
             openedAt: true,
+            clickedAt: true,
         },
     });
 
@@ -21,13 +22,15 @@ export async function syncRunMetricsFromRecipients(runId) {
     let failedCount = 0;
     let bouncedCount = 0;
     let openedCount = 0;
+    let clickedCount = 0;
 
     for (const r of recipients) {
         if (SENT_STATUSES.includes(r.deliveryStatus)) sentCount += 1;
-        if (r.deliveryStatus === "DELIVERED" || r.openedAt) deliveredCount += 1;
+        if (r.deliveryStatus === "DELIVERED" || r.openedAt || r.clickedAt) deliveredCount += 1;
         if (r.deliveryStatus === "FAILED") failedCount += 1;
         if (r.deliveryStatus === "BOUNCED") bouncedCount += 1;
         if (r.openedAt) openedCount += 1;
+        if (r.clickedAt) clickedCount += 1;
     }
 
     const run = await general.platformEmailCampaignRun.update({
@@ -38,6 +41,7 @@ export async function syncRunMetricsFromRecipients(runId) {
             failedCount,
             bouncedCount,
             openedCount,
+            clickedCount,
         },
     });
 
@@ -58,6 +62,7 @@ export async function syncCampaignMetricsFromRuns(campaignId) {
             failedCount: true,
             bouncedCount: true,
             openedCount: true,
+            clickedCount: true,
             recipientCount: true,
         },
     });
@@ -71,6 +76,7 @@ export async function syncCampaignMetricsFromRuns(campaignId) {
             totalFailed: agg._sum.failedCount ?? 0,
             totalBounced: agg._sum.bouncedCount ?? 0,
             totalOpened: agg._sum.openedCount ?? 0,
+            totalClicked: agg._sum.clickedCount ?? 0,
         },
     });
 }
@@ -81,8 +87,9 @@ export function buildDeliveryTotals(campaignOrTotals) {
     const failed = campaignOrTotals.totalFailed ?? campaignOrTotals.failed ?? 0;
     const bounced = campaignOrTotals.totalBounced ?? campaignOrTotals.bounced ?? 0;
     const opened = campaignOrTotals.totalOpened ?? campaignOrTotals.opened ?? 0;
+    const clicked = campaignOrTotals.totalClicked ?? campaignOrTotals.clicked ?? 0;
     const rejected = failed + bounced;
-    const effectiveDelivered = Math.max(delivered, opened);
+    const effectiveDelivered = Math.max(delivered, opened, clicked);
     const notOpened = Math.max(0, effectiveDelivered - opened);
 
     return {
@@ -92,6 +99,7 @@ export function buildDeliveryTotals(campaignOrTotals) {
         bounced,
         rejected,
         opened,
+        clicked,
         notOpened,
     };
 }

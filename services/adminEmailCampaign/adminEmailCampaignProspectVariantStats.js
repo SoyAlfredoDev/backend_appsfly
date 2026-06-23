@@ -17,12 +17,12 @@ export async function getProspectOutreachVariantStats() {
     const empty = Object.fromEntries(
         PROSPECT_OUTREACH_VARIANTS.map((variant) => [
             variant.id,
-            { sent: 0, delivered: 0, opened: 0, failed: 0, openRate: 0 },
+            { sent: 0, delivered: 0, opened: 0, clicked: 0, failed: 0, openRate: 0, clickRate: 0 },
         ]),
     );
 
     if (!campaignId) {
-        return { campaignId: null, variants: empty, totals: { sent: 0, opened: 0, openRate: 0 } };
+        return { campaignId: null, variants: empty, totals: { sent: 0, opened: 0, clicked: 0, openRate: 0, clickRate: 0 } };
     }
 
     const recipients = await general.platformEmailCampaignRecipient.findMany({
@@ -34,6 +34,7 @@ export async function getProspectOutreachVariantStats() {
             messageVariantId: true,
             deliveryStatus: true,
             openedAt: true,
+            clickedAt: true,
         },
     });
 
@@ -51,22 +52,28 @@ export async function getProspectOutreachVariantStats() {
         if (row.deliveryStatus === "SENT" || row.deliveryStatus === "DELIVERED" || row.openedAt) {
             stats[id].sent += 1;
         }
-        if (row.deliveryStatus === "DELIVERED" || row.openedAt) {
+        if (row.deliveryStatus === "DELIVERED" || row.openedAt || row.clickedAt) {
             stats[id].delivered += 1;
         }
         if (row.openedAt) {
             stats[id].opened += 1;
         }
+        if (row.clickedAt) {
+            stats[id].clicked += 1;
+        }
     }
 
     let totalSent = 0;
     let totalOpened = 0;
+    let totalClicked = 0;
 
     for (const variant of PROSPECT_OUTREACH_VARIANTS) {
         const row = stats[variant.id];
         row.openRate = row.sent > 0 ? Math.round((row.opened / row.sent) * 1000) / 10 : 0;
+        row.clickRate = row.sent > 0 ? Math.round((row.clicked / row.sent) * 1000) / 10 : 0;
         totalSent += row.sent;
         totalOpened += row.opened;
+        totalClicked += row.clicked;
     }
 
     return {
@@ -75,7 +82,9 @@ export async function getProspectOutreachVariantStats() {
         totals: {
             sent: totalSent,
             opened: totalOpened,
+            clicked: totalClicked,
             openRate: totalSent > 0 ? Math.round((totalOpened / totalSent) * 1000) / 10 : 0,
+            clickRate: totalSent > 0 ? Math.round((totalClicked / totalSent) * 1000) / 10 : 0,
         },
     };
 }

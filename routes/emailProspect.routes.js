@@ -9,6 +9,7 @@ import {
     getProspectOutreachVariantsController,
     getUnsubscribeInfoController,
     listProspectsController,
+    prospectRegisterClickController,
     resubscribeProspectController,
     unsubscribeProspectController,
 } from "../controllers/emailProspect.controller.js";
@@ -17,6 +18,7 @@ const router = Router();
 
 router.get("/prospects/unsubscribe/:token", getUnsubscribeInfoController);
 router.post("/prospects/unsubscribe/:token", unsubscribeProspectController);
+router.get("/prospects/register-click/:recipientId", prospectRegisterClickController);
 
 router.get(
     "/admin/email-prospects",

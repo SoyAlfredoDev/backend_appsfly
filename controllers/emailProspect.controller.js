@@ -8,7 +8,9 @@ import {
     resubscribeEmailProspect,
     unsubscribeEmailProspectByToken,
     buildProspectImportTemplateCsv,
+    buildProspectRegisterLandingUrl,
 } from "../services/emailProspect/emailProspectService.js";
+import { trackProspectRegisterClick } from "../services/emailProspect/emailProspectClickTrackingService.js";
 import { getProspectOutreachVariantsForAdmin } from "../services/adminEmailCampaign/adminEmailCampaignProspectOutreachVariantsService.js";
 
 export async function listProspectsController(req, res) {
@@ -148,5 +150,17 @@ export async function getProspectOutreachVariantsController(req, res) {
     } catch (error) {
         console.error("(emailProspect.outreachVariants):", error);
         return res.status(500).json({ message: "No se pudieron cargar las variantes de outreach." });
+    }
+}
+
+export async function prospectRegisterClickController(req, res) {
+    const fallbackUrl = buildProspectRegisterLandingUrl();
+
+    try {
+        const result = await trackProspectRegisterClick(req.params.recipientId);
+        return res.redirect(302, result.redirectUrl || fallbackUrl);
+    } catch (error) {
+        console.error("(emailProspect.registerClick):", error);
+        return res.redirect(302, fallbackUrl);
     }
 }
