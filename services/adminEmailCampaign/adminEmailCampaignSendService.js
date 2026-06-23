@@ -26,6 +26,7 @@ import {
 import { trackProspectOutreachSend } from "../emailProspect/emailProspectConversionService.js";
 import { evaluateCampaignDue } from "./adminEmailCampaignSchedulerDue.js";
 import { getProspectOutreachVariantStats } from "./adminEmailCampaignProspectVariantStats.js";
+import { syncCampaignDeliveryFromResend } from "./adminEmailCampaignResendSyncService.js";
 
 const general = new PrismaGeneral();
 
@@ -404,6 +405,12 @@ export async function executePlatformEmailCampaign(
     }
     await createCampaignNotification(updatedCampaign, notificationData);
 
+    setImmediate(() => {
+        syncCampaignDeliveryFromResend(campaignId).catch((error) => {
+            console.warn("[campaign-send] Sync entregas Resend post-envío:", error.message);
+        });
+    });
+
     return {
         campaign: updatedCampaign,
         run: completedRun,
@@ -411,6 +418,10 @@ export async function executePlatformEmailCampaign(
 }
 
 export async function getCampaignRunStats(campaignId) {
+    await syncCampaignDeliveryFromResend(campaignId).catch((error) => {
+        console.warn("[campaign-stats] Sync entregas Resend:", error.message);
+    });
+
     const campaign = await general.platformEmailCampaign.findUnique({
         where: { campaignId },
         include: {

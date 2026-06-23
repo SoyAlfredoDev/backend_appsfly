@@ -16,6 +16,7 @@ import {
     evaluateCampaignDue,
     getAutoRunHour,
 } from "./adminEmailCampaignSchedulerDue.js";
+import { syncStaleCampaignDeliveriesFromResend } from "./adminEmailCampaignResendSyncService.js";
 
 const general = new PrismaGeneral();
 const CHECK_INTERVAL_MS = 15 * 60 * 1000;
@@ -269,6 +270,10 @@ async function tick() {
     if (schedulerRunning) return;
     schedulerRunning = true;
     try {
+        await syncStaleCampaignDeliveriesFromResend({ limit: 5 }).catch((error) => {
+            console.warn("[campaign-scheduler] Sync entregas Resend:", error.message);
+        });
+
         const monthly = await runScheduledMonthlyCampaigns();
         const weekly = await runScheduledWeeklyCampaigns();
         const daily = await runScheduledDailyCampaigns();

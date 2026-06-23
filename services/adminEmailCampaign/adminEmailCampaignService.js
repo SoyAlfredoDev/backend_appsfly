@@ -6,6 +6,7 @@ import {
 } from "./adminEmailCampaignConstants.js";
 import { countAudienceByType } from "./adminEmailCampaignAudienceService.js";
 import { getSenderMetadata } from "./adminEmailCampaignSenderService.js";
+import { syncStaleCampaignDeliveriesFromResend } from "./adminEmailCampaignResendSyncService.js";
 
 const general = new PrismaGeneral();
 
@@ -36,6 +37,10 @@ function normalizeCampaign(row) {
 }
 
 export async function listPlatformEmailCampaignsService() {
+    await syncStaleCampaignDeliveriesFromResend().catch((error) => {
+        console.warn("[campaign-list] Sync entregas Resend:", error.message);
+    });
+
     const rows = await general.platformEmailCampaign.findMany({
         include: campaignInclude,
         orderBy: { updatedAt: "desc" },

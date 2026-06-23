@@ -5,6 +5,7 @@ import {
 } from "./adminEmailCampaignProspectTemplate.js";
 import { describeVariantPickStrategy } from "./adminEmailCampaignProspectVariantPicker.js";
 import { getProspectOutreachVariantStats } from "./adminEmailCampaignProspectVariantStats.js";
+import { syncStaleCampaignDeliveriesFromResend } from "./adminEmailCampaignResendSyncService.js";
 
 const SAMPLE_PREVIEW_DATA = {
     firstName: "María",
@@ -15,6 +16,10 @@ const SAMPLE_PREVIEW_DATA = {
 };
 
 export async function getProspectOutreachVariantsForAdmin() {
+    await syncStaleCampaignDeliveriesFromResend({ limit: 1 }).catch((error) => {
+        console.warn("[prospect-variants] Sync entregas Resend:", error.message);
+    });
+
     const statsResult = await getProspectOutreachVariantStats();
 
     const variants = PROSPECT_OUTREACH_VARIANTS.map((variant) => {

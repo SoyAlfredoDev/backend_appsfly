@@ -24,7 +24,7 @@ export async function syncRunMetricsFromRecipients(runId) {
 
     for (const r of recipients) {
         if (SENT_STATUSES.includes(r.deliveryStatus)) sentCount += 1;
-        if (r.deliveryStatus === "DELIVERED") deliveredCount += 1;
+        if (r.deliveryStatus === "DELIVERED" || r.openedAt) deliveredCount += 1;
         if (r.deliveryStatus === "FAILED") failedCount += 1;
         if (r.deliveryStatus === "BOUNCED") bouncedCount += 1;
         if (r.openedAt) openedCount += 1;
@@ -82,11 +82,12 @@ export function buildDeliveryTotals(campaignOrTotals) {
     const bounced = campaignOrTotals.totalBounced ?? campaignOrTotals.bounced ?? 0;
     const opened = campaignOrTotals.totalOpened ?? campaignOrTotals.opened ?? 0;
     const rejected = failed + bounced;
-    const notOpened = Math.max(0, delivered - opened);
+    const effectiveDelivered = Math.max(delivered, opened);
+    const notOpened = Math.max(0, effectiveDelivered - opened);
 
     return {
         sent,
-        delivered,
+        delivered: effectiveDelivered,
         failed,
         bounced,
         rejected,

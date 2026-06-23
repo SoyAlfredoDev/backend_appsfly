@@ -20,6 +20,37 @@ async function findRecipientByProviderMessageId(emailId) {
             deliveryStatus: true,
             openedAt: true,
             openCount: true,
+            deliveredAt: true,
+        },
+    });
+}
+
+async function findRecipientForWebhookEvent(data) {
+    const emailId = data?.email_id;
+    if (emailId) {
+        const byId = await findRecipientByProviderMessageId(emailId);
+        if (byId) return byId;
+    }
+
+    const toList = Array.isArray(data?.to) ? data.to : data?.to ? [data.to] : [];
+    const normalizedEmail = String(toList[0] ?? "").trim().toLowerCase();
+    if (!normalizedEmail) return null;
+
+    return general.platformEmailCampaignRecipient.findFirst({
+        where: {
+            recipientEmail: normalizedEmail,
+            providerMessageId: { not: null },
+            deliveryStatus: { in: ["PENDING", "SENT", "DELIVERED"] },
+            sentAt: { gte: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000) },
+        },
+        orderBy: { sentAt: "desc" },
+        select: {
+            recipientId: true,
+            runId: true,
+            deliveryStatus: true,
+            openedAt: true,
+            openCount: true,
+            deliveredAt: true,
         },
     });
 }
@@ -66,12 +97,22 @@ async function handleEmailBounced(recipient, data) {
 
 async function handleEmailOpened(recipient) {
     const now = new Date();
+    const data = {
+        openedAt: recipient.openedAt ?? now,
+        openCount: { increment: 1 },
+    };
+
+    if (
+        recipient.deliveryStatus === "PENDING"
+        || recipient.deliveryStatus === "SENT"
+    ) {
+        data.deliveryStatus = "DELIVERED";
+        data.deliveredAt = recipient.deliveredAt ?? now;
+    }
+
     await general.platformEmailCampaignRecipient.update({
         where: { recipientId: recipient.recipientId },
-        data: {
-            openedAt: recipient.openedAt ?? now,
-            openCount: { increment: 1 },
-        },
+        data,
     });
     await syncRunMetricsFromRecipients(recipient.runId);
 }
@@ -102,7 +143,7 @@ export async function processResendEmailWebhookEvent(event) {
         return { handled: false, reason: "missing_type_or_email_id" };
     }
 
-    const recipient = await findRecipientByProviderMessageId(emailId);
+    const recipient = await findRecipientForWebhookEvent(data);
     if (!recipient) {
         return { handled: false, reason: "recipient_not_found", emailId, type };
     }
@@ -122,6 +163,16 @@ export async function processResendEmailWebhookEvent(event) {
             break;
         case "email.complained":
             await handleEmailComplained(recipient, data);
+            break;
+        case "email.failed":
+            await general.platformEmailCampaignRecipient.update({
+                where: { recipientId: recipient.recipientId },
+                data: {
+                    deliveryStatus: "FAILED",
+                    errorMessage: data?.error ?? "Error de envío en Resend",
+                },
+            });
+            await syncRunMetricsFromRecipients(recipient.runId);
             break;
         case "email.delivery_delayed":
             // Sin cambio de estado; el correo sigue en tránsito.
