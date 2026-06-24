@@ -31,7 +31,8 @@ model User {
   Product            Product[]
   Service            Service[]
   Category           Category[]
-  Sale               Sale[]
+  Sale               Sale[]              @relation("SaleCreatedBy")
+  salesDelivered     Sale[]              @relation("SaleDeliveredBy")
   Payment            Payment[]
   SaleDetail         SaleDetail[]
   Purchase           Purchase[]          @relation("PurchaseCreatedBy")
@@ -169,29 +170,36 @@ model Category {
 }
 
 model Sale {
-  saleId            String        @id
-  saleCustomerId    String
-  saleTotal         Int
-  saleTotalPayments Int
-  salePendingAmount Int
-  createdByUserId   String
-  saleComment       String?
+  saleId                String              @id
+  saleCustomerId        String
+  saleTotal             Int
+  saleTotalPayments     Int
+  salePendingAmount     Int
+  createdByUserId       String
+  saleComment           String?
   /**
    * Comprobante / respaldo visual — URL Cloudinary (opcional)
    */
-  saleImageUrl      String?
-  saleNumber        String?
-  user              User          @relation(fields: [createdByUserId], references: [userId])
-  customer          Customer      @relation(fields: [saleCustomerId], references: [customerId])
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  SaleDetail        SaleDetail[]
-  Payment           Payment[]
-  taxDocuments      TaxDocument[]
+  saleImageUrl          String?
+  saleNumber            String?
+  user                  User                @relation("SaleCreatedBy", fields: [createdByUserId], references: [userId])
+  customer              Customer            @relation(fields: [saleCustomerId], references: [customerId])
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  SaleDetail            SaleDetail[]
+  Payment               Payment[]
+  taxDocuments          TaxDocument[]
   /**
    * Tipo de comprobante solicitado al registrar la venta
    */
-  documentType      DocumentType  @default(RECEIPT)
+  documentType          DocumentType        @default(RECEIPT)
+  /**
+   * Control de entrega de productos (independiente del pago)
+   */
+  saleDeliveryStatus    SaleDeliveryStatus?
+  saleDeliveredAt       DateTime?
+  saleDeliveredByUserId String?
+  deliveredBy           User?               @relation("SaleDeliveredBy", fields: [saleDeliveredByUserId], references: [userId])
 }
 
 model SaleDetail {
@@ -425,6 +433,11 @@ enum DocumentType {
   RECEIPT
   BOLETA
   FACTURA
+}
+
+enum SaleDeliveryStatus {
+  PENDING
+  DELIVERED
 }
 
 enum TaxDocumentStatus {

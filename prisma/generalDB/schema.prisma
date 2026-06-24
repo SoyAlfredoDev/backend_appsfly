@@ -56,6 +56,14 @@ model Business {
     businessEntity             BusinessEntity
     businessStatus             BusinessStatus
     businessProcess            Json?
+    businessAllowCreditSales       Boolean        @default(false)
+    businessDeliveryControlEnabled Boolean        @default(false)
+    businessReceiptLogoUrl         String?
+    businessReceiptAddress     String?
+    businessReceiptPhone       String?
+    businessReceiptEmail       String?
+    businessReceiptSocial      String?
+    businessReceiptFooterNote  String?
     createdByUserId            String?
     createdBy                  User?          @relation(fields: [createdByUserId], references: [userId])
     createdAt                  DateTime       @default(now())

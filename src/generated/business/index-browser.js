@@ -231,7 +231,10 @@ exports.Prisma.SaleScalarFieldEnum = {
   saleNumber: 'saleNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  documentType: 'documentType'
+  documentType: 'documentType',
+  saleDeliveryStatus: 'saleDeliveryStatus',
+  saleDeliveredAt: 'saleDeliveredAt',
+  saleDeliveredByUserId: 'saleDeliveredByUserId'
 };
 
 exports.Prisma.SaleDetailScalarFieldEnum = {
@@ -488,6 +491,11 @@ exports.DocumentType = exports.$Enums.DocumentType = {
   RECEIPT: 'RECEIPT',
   BOLETA: 'BOLETA',
   FACTURA: 'FACTURA'
+};
+
+exports.SaleDeliveryStatus = exports.$Enums.SaleDeliveryStatus = {
+  PENDING: 'PENDING',
+  DELIVERED: 'DELIVERED'
 };
 
 exports.TaxProviderType = exports.$Enums.TaxProviderType = {

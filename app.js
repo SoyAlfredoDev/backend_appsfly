@@ -38,6 +38,7 @@ import adminNotificationRoutes from "./routes/adminNotification.routes.js";
 import emailProspectRoutes from "./routes/emailProspect.routes.js";
 import agentTaskRoutes from "./routes/agentTask.routes.js";
 import taxDocumentsRoutes from "./routes/taxDocuments.routes.js";
+import businessSettingsRoutes from "./routes/businessSettings.routes.js";
 import { resendWebhookController } from "./controllers/resendWebhook.controller.js";
 
 import dotenv from "dotenv";
@@ -126,6 +127,7 @@ app.use("/api", saleDetailsRoutes);
 app.use("/api", salesRoutes);
 app.use("/api", paymentsRoutes);
 app.use("/api", businessRoutes);
+app.use("/api", businessSettingsRoutes);
 app.use("/api", userBusinessRoutes);
 app.use("/api", userGuestRoutes);
 app.use("/api", dailySalesRoutes);

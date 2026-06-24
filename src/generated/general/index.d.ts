@@ -4522,6 +4522,14 @@ export namespace Prisma {
     businessConnectionDB: string | null
     businessEntity: $Enums.BusinessEntity | null
     businessStatus: $Enums.BusinessStatus | null
+    businessAllowCreditSales: boolean | null
+    businessDeliveryControlEnabled: boolean | null
+    businessReceiptLogoUrl: string | null
+    businessReceiptAddress: string | null
+    businessReceiptPhone: string | null
+    businessReceiptEmail: string | null
+    businessReceiptSocial: string | null
+    businessReceiptFooterNote: string | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4542,6 +4550,14 @@ export namespace Prisma {
     businessConnectionDB: string | null
     businessEntity: $Enums.BusinessEntity | null
     businessStatus: $Enums.BusinessStatus | null
+    businessAllowCreditSales: boolean | null
+    businessDeliveryControlEnabled: boolean | null
+    businessReceiptLogoUrl: string | null
+    businessReceiptAddress: string | null
+    businessReceiptPhone: string | null
+    businessReceiptEmail: string | null
+    businessReceiptSocial: string | null
+    businessReceiptFooterNote: string | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4563,6 +4579,14 @@ export namespace Prisma {
     businessEntity: number
     businessStatus: number
     businessProcess: number
+    businessAllowCreditSales: number
+    businessDeliveryControlEnabled: number
+    businessReceiptLogoUrl: number
+    businessReceiptAddress: number
+    businessReceiptPhone: number
+    businessReceiptEmail: number
+    businessReceiptSocial: number
+    businessReceiptFooterNote: number
     createdByUserId: number
     createdAt: number
     updatedAt: number
@@ -4585,6 +4609,14 @@ export namespace Prisma {
     businessConnectionDB?: true
     businessEntity?: true
     businessStatus?: true
+    businessAllowCreditSales?: true
+    businessDeliveryControlEnabled?: true
+    businessReceiptLogoUrl?: true
+    businessReceiptAddress?: true
+    businessReceiptPhone?: true
+    businessReceiptEmail?: true
+    businessReceiptSocial?: true
+    businessReceiptFooterNote?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -4605,6 +4637,14 @@ export namespace Prisma {
     businessConnectionDB?: true
     businessEntity?: true
     businessStatus?: true
+    businessAllowCreditSales?: true
+    businessDeliveryControlEnabled?: true
+    businessReceiptLogoUrl?: true
+    businessReceiptAddress?: true
+    businessReceiptPhone?: true
+    businessReceiptEmail?: true
+    businessReceiptSocial?: true
+    businessReceiptFooterNote?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -4626,6 +4666,14 @@ export namespace Prisma {
     businessEntity?: true
     businessStatus?: true
     businessProcess?: true
+    businessAllowCreditSales?: true
+    businessDeliveryControlEnabled?: true
+    businessReceiptLogoUrl?: true
+    businessReceiptAddress?: true
+    businessReceiptPhone?: true
+    businessReceiptEmail?: true
+    businessReceiptSocial?: true
+    businessReceiptFooterNote?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -4720,6 +4768,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess: JsonValue | null
+    businessAllowCreditSales: boolean
+    businessDeliveryControlEnabled: boolean
+    businessReceiptLogoUrl: string | null
+    businessReceiptAddress: string | null
+    businessReceiptPhone: string | null
+    businessReceiptEmail: string | null
+    businessReceiptSocial: string | null
+    businessReceiptFooterNote: string | null
     createdByUserId: string | null
     createdAt: Date
     updatedAt: Date
@@ -4758,6 +4814,14 @@ export namespace Prisma {
     businessEntity?: boolean
     businessStatus?: boolean
     businessProcess?: boolean
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: boolean
+    businessReceiptAddress?: boolean
+    businessReceiptPhone?: boolean
+    businessReceiptEmail?: boolean
+    businessReceiptSocial?: boolean
+    businessReceiptFooterNote?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4787,6 +4851,14 @@ export namespace Prisma {
     businessEntity?: boolean
     businessStatus?: boolean
     businessProcess?: boolean
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: boolean
+    businessReceiptAddress?: boolean
+    businessReceiptPhone?: boolean
+    businessReceiptEmail?: boolean
+    businessReceiptSocial?: boolean
+    businessReceiptFooterNote?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4809,6 +4881,14 @@ export namespace Prisma {
     businessEntity?: boolean
     businessStatus?: boolean
     businessProcess?: boolean
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: boolean
+    businessReceiptAddress?: boolean
+    businessReceiptPhone?: boolean
+    businessReceiptEmail?: boolean
+    businessReceiptSocial?: boolean
+    businessReceiptFooterNote?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4831,12 +4911,20 @@ export namespace Prisma {
     businessEntity?: boolean
     businessStatus?: boolean
     businessProcess?: boolean
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: boolean
+    businessReceiptAddress?: boolean
+    businessReceiptPhone?: boolean
+    businessReceiptEmail?: boolean
+    businessReceiptSocial?: boolean
+    businessReceiptFooterNote?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BusinessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "businessName" | "businessType" | "businessDocumentType" | "businessDocumentNumber" | "businessEmail" | "businessPhoneNumber" | "businessCodePhoneNumber" | "businessCountry" | "businessCodeWhatsappNumber" | "businessWhatsappNumber" | "businessConnectionDB" | "businessEntity" | "businessStatus" | "businessProcess" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
+  export type BusinessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "businessName" | "businessType" | "businessDocumentType" | "businessDocumentNumber" | "businessEmail" | "businessPhoneNumber" | "businessCodePhoneNumber" | "businessCountry" | "businessCodeWhatsappNumber" | "businessWhatsappNumber" | "businessConnectionDB" | "businessEntity" | "businessStatus" | "businessProcess" | "businessAllowCreditSales" | "businessDeliveryControlEnabled" | "businessReceiptLogoUrl" | "businessReceiptAddress" | "businessReceiptPhone" | "businessReceiptEmail" | "businessReceiptSocial" | "businessReceiptFooterNote" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
   export type BusinessInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | Business$createdByArgs<ExtArgs>
     UserGuest?: boolean | Business$UserGuestArgs<ExtArgs>
@@ -4881,6 +4969,14 @@ export namespace Prisma {
       businessEntity: $Enums.BusinessEntity
       businessStatus: $Enums.BusinessStatus
       businessProcess: Prisma.JsonValue | null
+      businessAllowCreditSales: boolean
+      businessDeliveryControlEnabled: boolean
+      businessReceiptLogoUrl: string | null
+      businessReceiptAddress: string | null
+      businessReceiptPhone: string | null
+      businessReceiptEmail: string | null
+      businessReceiptSocial: string | null
+      businessReceiptFooterNote: string | null
       createdByUserId: string | null
       createdAt: Date
       updatedAt: Date
@@ -5329,6 +5425,14 @@ export namespace Prisma {
     readonly businessEntity: FieldRef<"Business", 'BusinessEntity'>
     readonly businessStatus: FieldRef<"Business", 'BusinessStatus'>
     readonly businessProcess: FieldRef<"Business", 'Json'>
+    readonly businessAllowCreditSales: FieldRef<"Business", 'Boolean'>
+    readonly businessDeliveryControlEnabled: FieldRef<"Business", 'Boolean'>
+    readonly businessReceiptLogoUrl: FieldRef<"Business", 'String'>
+    readonly businessReceiptAddress: FieldRef<"Business", 'String'>
+    readonly businessReceiptPhone: FieldRef<"Business", 'String'>
+    readonly businessReceiptEmail: FieldRef<"Business", 'String'>
+    readonly businessReceiptSocial: FieldRef<"Business", 'String'>
+    readonly businessReceiptFooterNote: FieldRef<"Business", 'String'>
     readonly createdByUserId: FieldRef<"Business", 'String'>
     readonly createdAt: FieldRef<"Business", 'DateTime'>
     readonly updatedAt: FieldRef<"Business", 'DateTime'>
@@ -25007,6 +25111,14 @@ export namespace Prisma {
     businessEntity: 'businessEntity',
     businessStatus: 'businessStatus',
     businessProcess: 'businessProcess',
+    businessAllowCreditSales: 'businessAllowCreditSales',
+    businessDeliveryControlEnabled: 'businessDeliveryControlEnabled',
+    businessReceiptLogoUrl: 'businessReceiptLogoUrl',
+    businessReceiptAddress: 'businessReceiptAddress',
+    businessReceiptPhone: 'businessReceiptPhone',
+    businessReceiptEmail: 'businessReceiptEmail',
+    businessReceiptSocial: 'businessReceiptSocial',
+    businessReceiptFooterNote: 'businessReceiptFooterNote',
     createdByUserId: 'createdByUserId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -25902,6 +26014,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFilter<"Business"> | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFilter<"Business"> | $Enums.BusinessStatus
     businessProcess?: JsonNullableFilter<"Business">
+    businessAllowCreditSales?: BoolFilter<"Business"> | boolean
+    businessDeliveryControlEnabled?: BoolFilter<"Business"> | boolean
+    businessReceiptLogoUrl?: StringNullableFilter<"Business"> | string | null
+    businessReceiptAddress?: StringNullableFilter<"Business"> | string | null
+    businessReceiptPhone?: StringNullableFilter<"Business"> | string | null
+    businessReceiptEmail?: StringNullableFilter<"Business"> | string | null
+    businessReceiptSocial?: StringNullableFilter<"Business"> | string | null
+    businessReceiptFooterNote?: StringNullableFilter<"Business"> | string | null
     createdByUserId?: StringNullableFilter<"Business"> | string | null
     createdAt?: DateTimeFilter<"Business"> | Date | string
     updatedAt?: DateTimeFilter<"Business"> | Date | string
@@ -25930,6 +26050,14 @@ export namespace Prisma {
     businessEntity?: SortOrder
     businessStatus?: SortOrder
     businessProcess?: SortOrderInput | SortOrder
+    businessAllowCreditSales?: SortOrder
+    businessDeliveryControlEnabled?: SortOrder
+    businessReceiptLogoUrl?: SortOrderInput | SortOrder
+    businessReceiptAddress?: SortOrderInput | SortOrder
+    businessReceiptPhone?: SortOrderInput | SortOrder
+    businessReceiptEmail?: SortOrderInput | SortOrder
+    businessReceiptSocial?: SortOrderInput | SortOrder
+    businessReceiptFooterNote?: SortOrderInput | SortOrder
     createdByUserId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25961,6 +26089,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFilter<"Business"> | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFilter<"Business"> | $Enums.BusinessStatus
     businessProcess?: JsonNullableFilter<"Business">
+    businessAllowCreditSales?: BoolFilter<"Business"> | boolean
+    businessDeliveryControlEnabled?: BoolFilter<"Business"> | boolean
+    businessReceiptLogoUrl?: StringNullableFilter<"Business"> | string | null
+    businessReceiptAddress?: StringNullableFilter<"Business"> | string | null
+    businessReceiptPhone?: StringNullableFilter<"Business"> | string | null
+    businessReceiptEmail?: StringNullableFilter<"Business"> | string | null
+    businessReceiptSocial?: StringNullableFilter<"Business"> | string | null
+    businessReceiptFooterNote?: StringNullableFilter<"Business"> | string | null
     createdByUserId?: StringNullableFilter<"Business"> | string | null
     createdAt?: DateTimeFilter<"Business"> | Date | string
     updatedAt?: DateTimeFilter<"Business"> | Date | string
@@ -25989,6 +26125,14 @@ export namespace Prisma {
     businessEntity?: SortOrder
     businessStatus?: SortOrder
     businessProcess?: SortOrderInput | SortOrder
+    businessAllowCreditSales?: SortOrder
+    businessDeliveryControlEnabled?: SortOrder
+    businessReceiptLogoUrl?: SortOrderInput | SortOrder
+    businessReceiptAddress?: SortOrderInput | SortOrder
+    businessReceiptPhone?: SortOrderInput | SortOrder
+    businessReceiptEmail?: SortOrderInput | SortOrder
+    businessReceiptSocial?: SortOrderInput | SortOrder
+    businessReceiptFooterNote?: SortOrderInput | SortOrder
     createdByUserId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -26016,6 +26160,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityWithAggregatesFilter<"Business"> | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusWithAggregatesFilter<"Business"> | $Enums.BusinessStatus
     businessProcess?: JsonNullableWithAggregatesFilter<"Business">
+    businessAllowCreditSales?: BoolWithAggregatesFilter<"Business"> | boolean
+    businessDeliveryControlEnabled?: BoolWithAggregatesFilter<"Business"> | boolean
+    businessReceiptLogoUrl?: StringNullableWithAggregatesFilter<"Business"> | string | null
+    businessReceiptAddress?: StringNullableWithAggregatesFilter<"Business"> | string | null
+    businessReceiptPhone?: StringNullableWithAggregatesFilter<"Business"> | string | null
+    businessReceiptEmail?: StringNullableWithAggregatesFilter<"Business"> | string | null
+    businessReceiptSocial?: StringNullableWithAggregatesFilter<"Business"> | string | null
+    businessReceiptFooterNote?: StringNullableWithAggregatesFilter<"Business"> | string | null
     createdByUserId?: StringNullableWithAggregatesFilter<"Business"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Business"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Business"> | Date | string
@@ -27772,6 +27924,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -27799,6 +27959,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27826,6 +27994,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -27853,6 +28029,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27880,6 +28064,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27901,6 +28093,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -27921,6 +28121,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30058,6 +30266,14 @@ export namespace Prisma {
     businessEntity?: SortOrder
     businessStatus?: SortOrder
     businessProcess?: SortOrder
+    businessAllowCreditSales?: SortOrder
+    businessDeliveryControlEnabled?: SortOrder
+    businessReceiptLogoUrl?: SortOrder
+    businessReceiptAddress?: SortOrder
+    businessReceiptPhone?: SortOrder
+    businessReceiptEmail?: SortOrder
+    businessReceiptSocial?: SortOrder
+    businessReceiptFooterNote?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -30078,6 +30294,14 @@ export namespace Prisma {
     businessConnectionDB?: SortOrder
     businessEntity?: SortOrder
     businessStatus?: SortOrder
+    businessAllowCreditSales?: SortOrder
+    businessDeliveryControlEnabled?: SortOrder
+    businessReceiptLogoUrl?: SortOrder
+    businessReceiptAddress?: SortOrder
+    businessReceiptPhone?: SortOrder
+    businessReceiptEmail?: SortOrder
+    businessReceiptSocial?: SortOrder
+    businessReceiptFooterNote?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -30098,6 +30322,14 @@ export namespace Prisma {
     businessConnectionDB?: SortOrder
     businessEntity?: SortOrder
     businessStatus?: SortOrder
+    businessAllowCreditSales?: SortOrder
+    businessDeliveryControlEnabled?: SortOrder
+    businessReceiptLogoUrl?: SortOrder
+    businessReceiptAddress?: SortOrder
+    businessReceiptPhone?: SortOrder
+    businessReceiptEmail?: SortOrder
+    businessReceiptSocial?: SortOrder
+    businessReceiptFooterNote?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -33651,6 +33883,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     UserGuest?: UserGuestCreateNestedManyWithoutBusinessInput
@@ -33677,6 +33917,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     UserGuest?: UserGuestUncheckedCreateNestedManyWithoutBusinessInput
@@ -34109,6 +34357,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFilter<"Business"> | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFilter<"Business"> | $Enums.BusinessStatus
     businessProcess?: JsonNullableFilter<"Business">
+    businessAllowCreditSales?: BoolFilter<"Business"> | boolean
+    businessDeliveryControlEnabled?: BoolFilter<"Business"> | boolean
+    businessReceiptLogoUrl?: StringNullableFilter<"Business"> | string | null
+    businessReceiptAddress?: StringNullableFilter<"Business"> | string | null
+    businessReceiptPhone?: StringNullableFilter<"Business"> | string | null
+    businessReceiptEmail?: StringNullableFilter<"Business"> | string | null
+    businessReceiptSocial?: StringNullableFilter<"Business"> | string | null
+    businessReceiptFooterNote?: StringNullableFilter<"Business"> | string | null
     createdByUserId?: StringNullableFilter<"Business"> | string | null
     createdAt?: DateTimeFilter<"Business"> | Date | string
     updatedAt?: DateTimeFilter<"Business"> | Date | string
@@ -34873,6 +35129,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -34899,6 +35163,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34941,6 +35213,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -34967,6 +35247,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35048,6 +35336,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -35074,6 +35370,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35177,6 +35481,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -35203,6 +35515,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35284,6 +35604,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -35310,6 +35638,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35413,6 +35749,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -35439,6 +35783,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35681,6 +36033,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -35707,6 +36067,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35941,6 +36309,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -35967,6 +36343,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36072,6 +36456,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -36098,6 +36490,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -36248,6 +36648,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -36274,6 +36682,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36408,6 +36824,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -36434,6 +36858,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -36617,6 +37049,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -36643,6 +37083,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37757,6 +38205,14 @@ export namespace Prisma {
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: boolean
+    businessDeliveryControlEnabled?: boolean
+    businessReceiptLogoUrl?: string | null
+    businessReceiptAddress?: string | null
+    businessReceiptPhone?: string | null
+    businessReceiptEmail?: string | null
+    businessReceiptSocial?: string | null
+    businessReceiptFooterNote?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -37949,6 +38405,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserGuest?: UserGuestUpdateManyWithoutBusinessNestedInput
@@ -37975,6 +38439,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserGuest?: UserGuestUncheckedUpdateManyWithoutBusinessNestedInput
@@ -38001,6 +38473,14 @@ export namespace Prisma {
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
+    businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
+    businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

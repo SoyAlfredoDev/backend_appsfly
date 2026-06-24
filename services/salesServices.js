@@ -27,10 +27,18 @@ export const getSales = async (prisma) => {
                         userLastName: true,
                     },
                 },
+                deliveredBy: {
+                    select: {
+                        userId: true,
+                        userFirstName: true,
+                        userLastName: true,
+                    },
+                },
                 SaleDetail: {
                     select: {
                         saleDetailId: true,
                         saleDetailTotal: true,
+                        saleDetailType: true,
                     },
                 },
                 Payment: {
@@ -84,10 +92,18 @@ export const getSaleById = async (id, prisma) => {
                         userLastName: true
                     }
                 },
+                deliveredBy: {
+                    select: {
+                        userId: true,
+                        userFirstName: true,
+                        userLastName: true,
+                    },
+                },
                 SaleDetail: {
                     select: {
                         saleDetailId: true,
                         saleDetailTotal: true,
+                        saleDetailType: true,
                     },
                 },
                 Payment: {
@@ -98,6 +114,8 @@ export const getSaleById = async (id, prisma) => {
                 },
             }
         });
+        if (!res) return null;
+
         const saleFinal = {
             ...res,
             saleTotalPayments: res.Payment.reduce((acc, payment) => acc + payment.paymentAmount, 0),
@@ -109,6 +127,83 @@ export const getSaleById = async (id, prisma) => {
         console.error("(salesServices.js): Error getting sale by ID:", error);
         throw error;
     }
+};
+
+export const markSaleAsDelivered = async (saleId, userId, prisma) => {
+    const sale = await prisma.sale.findUnique({
+        where: { saleId },
+        include: {
+            SaleDetail: { select: { saleDetailType: true } },
+        },
+    });
+
+    if (!sale) {
+        const error = new Error("Venta no encontrada.");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    const hasProducts = sale.SaleDetail?.some(
+        (detail) => detail.saleDetailType === "PRODUCT",
+    );
+    if (!hasProducts) {
+        const error = new Error("Esta venta no incluye productos para entregar.");
+        error.statusCode = 400;
+        error.code = "NO_PRODUCTS_TO_DELIVER";
+        throw error;
+    }
+
+    if (sale.saleDeliveryStatus !== "PENDING") {
+        const error = new Error("La venta no está pendiente de entrega.");
+        error.statusCode = 400;
+        error.code = "INVALID_DELIVERY_STATUS";
+        throw error;
+    }
+
+    return prisma.sale.update({
+        where: { saleId },
+        data: {
+            saleDeliveryStatus: "DELIVERED",
+            saleDeliveredAt: new Date(),
+            saleDeliveredByUserId: userId,
+        },
+        include: {
+            customer: {
+                select: {
+                    customerId: true,
+                    customerFirstName: true,
+                    customerLastName: true,
+                },
+            },
+            user: {
+                select: {
+                    userId: true,
+                    userFirstName: true,
+                    userLastName: true,
+                },
+            },
+            deliveredBy: {
+                select: {
+                    userId: true,
+                    userFirstName: true,
+                    userLastName: true,
+                },
+            },
+            SaleDetail: {
+                select: {
+                    saleDetailId: true,
+                    saleDetailTotal: true,
+                    saleDetailType: true,
+                },
+            },
+            Payment: {
+                select: {
+                    paymentId: true,
+                    paymentAmount: true,
+                },
+            },
+        },
+    });
 };
 
 export const updateSale = async (id, data, prisma) => {

@@ -40,25 +40,33 @@ model User {
 }
 
 model Business {
-  businessId                 String         @id
-  businessName               String
-  businessType               String
-  businessDocumentType       String
-  businessDocumentNumber     String
-  businessEmail              String
-  businessPhoneNumber        String
-  businessCodePhoneNumber    String
-  businessCountry            String
-  businessCodeWhatsappNumber String?
-  businessWhatsappNumber     String?
-  businessConnectionDB       String?
-  businessEntity             BusinessEntity
-  businessStatus             BusinessStatus
-  businessProcess            Json?
-  createdByUserId            String?
-  createdBy                  User?          @relation(fields: [createdByUserId], references: [userId])
-  createdAt                  DateTime       @default(now())
-  updatedAt                  DateTime       @updatedAt
+  businessId                     String         @id
+  businessName                   String
+  businessType                   String
+  businessDocumentType           String
+  businessDocumentNumber         String
+  businessEmail                  String
+  businessPhoneNumber            String
+  businessCodePhoneNumber        String
+  businessCountry                String
+  businessCodeWhatsappNumber     String?
+  businessWhatsappNumber         String?
+  businessConnectionDB           String?
+  businessEntity                 BusinessEntity
+  businessStatus                 BusinessStatus
+  businessProcess                Json?
+  businessAllowCreditSales       Boolean        @default(false)
+  businessDeliveryControlEnabled Boolean        @default(false)
+  businessReceiptLogoUrl         String?
+  businessReceiptAddress         String?
+  businessReceiptPhone           String?
+  businessReceiptEmail           String?
+  businessReceiptSocial          String?
+  businessReceiptFooterNote      String?
+  createdByUserId                String?
+  createdBy                      User?          @relation(fields: [createdByUserId], references: [userId])
+  createdAt                      DateTime       @default(now())
+  updatedAt                      DateTime       @updatedAt
 
   // Relaciones
   UserGuest                 UserGuest[]

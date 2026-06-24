@@ -8,7 +8,8 @@ import {
     getDaySalesController,
     getMonthlySalesNowController,
     getSalesByCustomerIdController,
-    countSalesMonthController
+    countSalesMonthController,
+    markSaleDeliveredController,
 } from "../controllers/sales.controller.js";
 
 import { authRequired } from "../middlewares/auth.middleware.js";
@@ -40,6 +41,9 @@ router.get("/sales", authRequired, dbSelectorMiddleware, getSalesController);
 
 // 6. Get sale by ID
 router.get("/sales/:id", authRequired, dbSelectorMiddleware, getSaleByIdController);
+
+// 6b. Marcar venta como entregada
+router.patch("/sales/:id/delivery", authRequired, dbSelectorMiddleware, markSaleDeliveredController);
 
 // 7. Create sale
 router.post("/sales", authRequired, dbSelectorMiddleware, pendingDailyClosureMiddleware, createSaleController);
