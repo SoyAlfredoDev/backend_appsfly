@@ -1,4 +1,5 @@
 -- businessDB: provider enum SIMPLE_API -> AUTH_CL
+-- RENAME VALUE actualiza automáticamente las filas existentes; no usar 'SIMPLE_API' después del rename.
 
 DO $$
 BEGIN
@@ -12,5 +13,3 @@ BEGIN
 END $$;
 
 ALTER TABLE "public"."TaxDocument" ALTER COLUMN "provider" SET DEFAULT 'AUTH_CL';
-
-UPDATE "public"."TaxDocument" SET "provider" = 'AUTH_CL' WHERE "provider" = 'SIMPLE_API';
