@@ -14,12 +14,20 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-const DEFAULT_FEATURES = [
+const BASE_FEATURES = [
     "5 usuarios",
     "Compras y Ventas",
     "Inventario",
     "Reportes",
     "Soporte 24/7",
+];
+
+const PRO_FEATURES = [
+    ...BASE_FEATURES,
+    "Boletas electrónicas",
+    "Facturas electrónicas",
+    "Asistente con IA",
+    "Envío de correos a clientes",
 ];
 
 /** Planes requeridos por el flujo de suscripción en frontend/backend */
@@ -28,11 +36,11 @@ const PLANS = [
         planId: "P001",
         planName: "Plan Básico",
         planDescription:
-            "Promoción de lanzamiento — 2 meses gratis para negocios sin historial de suscripción.",
+            "Plan Básico — valor $9.990/mes. Promoción de lanzamiento: 2 meses gratis para negocios sin historial de suscripción.",
         planPrice: 0,
         planDuration: 2,
         planCurrency: "CLP",
-        planFeatures: DEFAULT_FEATURES,
+        planFeatures: BASE_FEATURES,
         planActive: true,
     },
     {
@@ -42,7 +50,18 @@ const PLANS = [
         planPrice: 9990,
         planDuration: 1,
         planCurrency: "CLP",
-        planFeatures: DEFAULT_FEATURES,
+        planFeatures: BASE_FEATURES,
+        planActive: true,
+    },
+    {
+        planId: "P003",
+        planName: "Plan Profesional",
+        planDescription:
+            "Facturación electrónica, asistente con IA y comunicación por correo con tus clientes.",
+        planPrice: 39990,
+        planDuration: 1,
+        planCurrency: "CLP",
+        planFeatures: PRO_FEATURES,
         planActive: true,
     },
 ];
@@ -70,7 +89,7 @@ async function main() {
         );
     }
 
-    console.log("\nListo. P001 habilita el trial; P002 el plan de pago.");
+    console.log("\nListo. P001 habilita el trial; P002 el plan comercial; P003 el plan profesional.");
 }
 
 main()

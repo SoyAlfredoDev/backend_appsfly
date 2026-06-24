@@ -24,6 +24,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Business = $Result.DefaultSelection<Prisma.$BusinessPayload>
 /**
+ * Model TaxProviderAccount
+ * Cuenta Auth.cl por empresa (multi-tenant). companyId = businessId del tenant.
+ */
+export type TaxProviderAccount = $Result.DefaultSelection<Prisma.$TaxProviderAccountPayload>
+/**
  * Model UserBusiness
  * 
  */
@@ -103,7 +108,25 @@ export type PlatformAgentTask = $Result.DefaultSelection<Prisma.$PlatformAgentTa
  * Enums
  */
 export namespace $Enums {
-  export const PlatformEmailProspectStatus: {
+  export const CertificateStatus: {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  EXPIRED: 'EXPIRED',
+  REVOKED: 'REVOKED'
+};
+
+export type CertificateStatus = (typeof CertificateStatus)[keyof typeof CertificateStatus]
+
+
+export const TaxProviderType: {
+  AUTH_CL: 'AUTH_CL',
+  INTERNAL: 'INTERNAL'
+};
+
+export type TaxProviderType = (typeof TaxProviderType)[keyof typeof TaxProviderType]
+
+
+export const PlatformEmailProspectStatus: {
   ACTIVE: 'ACTIVE',
   UNSUBSCRIBED: 'UNSUBSCRIBED',
   CONVERTED: 'CONVERTED'
@@ -304,6 +327,14 @@ export const TicketDetailOrigin: {
 export type TicketDetailOrigin = (typeof TicketDetailOrigin)[keyof typeof TicketDetailOrigin]
 
 }
+
+export type CertificateStatus = $Enums.CertificateStatus
+
+export const CertificateStatus: typeof $Enums.CertificateStatus
+
+export type TaxProviderType = $Enums.TaxProviderType
+
+export const TaxProviderType: typeof $Enums.TaxProviderType
 
 export type PlatformEmailProspectStatus = $Enums.PlatformEmailProspectStatus
 
@@ -522,6 +553,16 @@ export class PrismaClient<
     * ```
     */
   get business(): Prisma.BusinessDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.taxProviderAccount`: Exposes CRUD operations for the **TaxProviderAccount** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TaxProviderAccounts
+    * const taxProviderAccounts = await prisma.taxProviderAccount.findMany()
+    * ```
+    */
+  get taxProviderAccount(): Prisma.TaxProviderAccountDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.userBusiness`: Exposes CRUD operations for the **UserBusiness** model.
@@ -1115,6 +1156,7 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Business: 'Business',
+    TaxProviderAccount: 'TaxProviderAccount',
     UserBusiness: 'UserBusiness',
     UserGuest: 'UserGuest',
     Plan: 'Plan',
@@ -1148,7 +1190,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "business" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber" | "platformEmailProspect" | "platformEmailCampaign" | "platformEmailCampaignRun" | "platformEmailCampaignRecipient" | "platformAdminNotification" | "platformAgentTask"
+      modelProps: "user" | "business" | "taxProviderAccount" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber" | "platformEmailProspect" | "platformEmailCampaign" | "platformEmailCampaignRun" | "platformEmailCampaignRecipient" | "platformAdminNotification" | "platformAgentTask"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1297,6 +1339,80 @@ export namespace Prisma {
           count: {
             args: Prisma.BusinessCountArgs<ExtArgs>
             result: $Utils.Optional<BusinessCountAggregateOutputType> | number
+          }
+        }
+      }
+      TaxProviderAccount: {
+        payload: Prisma.$TaxProviderAccountPayload<ExtArgs>
+        fields: Prisma.TaxProviderAccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TaxProviderAccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TaxProviderAccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload>
+          }
+          findFirst: {
+            args: Prisma.TaxProviderAccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TaxProviderAccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload>
+          }
+          findMany: {
+            args: Prisma.TaxProviderAccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload>[]
+          }
+          create: {
+            args: Prisma.TaxProviderAccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload>
+          }
+          createMany: {
+            args: Prisma.TaxProviderAccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TaxProviderAccountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload>[]
+          }
+          delete: {
+            args: Prisma.TaxProviderAccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload>
+          }
+          update: {
+            args: Prisma.TaxProviderAccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.TaxProviderAccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TaxProviderAccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TaxProviderAccountUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload>[]
+          }
+          upsert: {
+            args: Prisma.TaxProviderAccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxProviderAccountPayload>
+          }
+          aggregate: {
+            args: Prisma.TaxProviderAccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTaxProviderAccount>
+          }
+          groupBy: {
+            args: Prisma.TaxProviderAccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TaxProviderAccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TaxProviderAccountCountArgs<ExtArgs>
+            result: $Utils.Optional<TaxProviderAccountCountAggregateOutputType> | number
           }
         }
       }
@@ -2508,6 +2624,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     business?: BusinessOmit
+    taxProviderAccount?: TaxProviderAccountOmit
     userBusiness?: UserBusinessOmit
     userGuest?: UserGuestOmit
     plan?: PlanOmit
@@ -4650,6 +4767,7 @@ export namespace Prisma {
     subscriptions?: boolean | Business$subscriptionsArgs<ExtArgs>
     subscriptionPayments?: boolean | Business$subscriptionPaymentsArgs<ExtArgs>
     subscriptionCancellations?: boolean | Business$subscriptionCancellationsArgs<ExtArgs>
+    taxProviderAccount?: boolean | Business$taxProviderAccountArgs<ExtArgs>
     _count?: boolean | BusinessCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["business"]>
 
@@ -4726,6 +4844,7 @@ export namespace Prisma {
     subscriptions?: boolean | Business$subscriptionsArgs<ExtArgs>
     subscriptionPayments?: boolean | Business$subscriptionPaymentsArgs<ExtArgs>
     subscriptionCancellations?: boolean | Business$subscriptionCancellationsArgs<ExtArgs>
+    taxProviderAccount?: boolean | Business$taxProviderAccountArgs<ExtArgs>
     _count?: boolean | BusinessCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BusinessIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4744,6 +4863,7 @@ export namespace Prisma {
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       subscriptionPayments: Prisma.$SubscriptionPaymentPayload<ExtArgs>[]
       subscriptionCancellations: Prisma.$SubscriptionCancellationPayload<ExtArgs>[]
+      taxProviderAccount: Prisma.$TaxProviderAccountPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       businessId: string
@@ -5164,6 +5284,7 @@ export namespace Prisma {
     subscriptions<T extends Business$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, Business$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscriptionPayments<T extends Business$subscriptionPaymentsArgs<ExtArgs> = {}>(args?: Subset<T, Business$subscriptionPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscriptionCancellations<T extends Business$subscriptionCancellationsArgs<ExtArgs> = {}>(args?: Subset<T, Business$subscriptionCancellationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionCancellationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    taxProviderAccount<T extends Business$taxProviderAccountArgs<ExtArgs> = {}>(args?: Subset<T, Business$taxProviderAccountArgs<ExtArgs>>): Prisma__TaxProviderAccountClient<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5746,6 +5867,25 @@ export namespace Prisma {
   }
 
   /**
+   * Business.taxProviderAccount
+   */
+  export type Business$taxProviderAccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    where?: TaxProviderAccountWhereInput
+  }
+
+  /**
    * Business without action
    */
   export type BusinessDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5761,6 +5901,1245 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: BusinessInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TaxProviderAccount
+   */
+
+  export type AggregateTaxProviderAccount = {
+    _count: TaxProviderAccountCountAggregateOutputType | null
+    _avg: TaxProviderAccountAvgAggregateOutputType | null
+    _sum: TaxProviderAccountSumAggregateOutputType | null
+    _min: TaxProviderAccountMinAggregateOutputType | null
+    _max: TaxProviderAccountMaxAggregateOutputType | null
+  }
+
+  export type TaxProviderAccountAvgAggregateOutputType = {
+    folioBoletaNext: number | null
+    folioFacturaNext: number | null
+  }
+
+  export type TaxProviderAccountSumAggregateOutputType = {
+    folioBoletaNext: number | null
+    folioFacturaNext: number | null
+  }
+
+  export type TaxProviderAccountMinAggregateOutputType = {
+    companyId: string | null
+    provider: $Enums.TaxProviderType | null
+    authApiKey: string | null
+    authApiSecret: string | null
+    environment: string | null
+    businessActivity: string | null
+    businessAddress: string | null
+    businessCommune: string | null
+    businessCity: string | null
+    certificateRef: string | null
+    certificateStatus: $Enums.CertificateStatus | null
+    folioBoletaNext: number | null
+    folioFacturaNext: number | null
+    isEnabled: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TaxProviderAccountMaxAggregateOutputType = {
+    companyId: string | null
+    provider: $Enums.TaxProviderType | null
+    authApiKey: string | null
+    authApiSecret: string | null
+    environment: string | null
+    businessActivity: string | null
+    businessAddress: string | null
+    businessCommune: string | null
+    businessCity: string | null
+    certificateRef: string | null
+    certificateStatus: $Enums.CertificateStatus | null
+    folioBoletaNext: number | null
+    folioFacturaNext: number | null
+    isEnabled: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TaxProviderAccountCountAggregateOutputType = {
+    companyId: number
+    provider: number
+    authApiKey: number
+    authApiSecret: number
+    environment: number
+    businessActivity: number
+    businessAddress: number
+    businessCommune: number
+    businessCity: number
+    certificateRef: number
+    certificateStatus: number
+    folioBoletaNext: number
+    folioFacturaNext: number
+    isEnabled: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TaxProviderAccountAvgAggregateInputType = {
+    folioBoletaNext?: true
+    folioFacturaNext?: true
+  }
+
+  export type TaxProviderAccountSumAggregateInputType = {
+    folioBoletaNext?: true
+    folioFacturaNext?: true
+  }
+
+  export type TaxProviderAccountMinAggregateInputType = {
+    companyId?: true
+    provider?: true
+    authApiKey?: true
+    authApiSecret?: true
+    environment?: true
+    businessActivity?: true
+    businessAddress?: true
+    businessCommune?: true
+    businessCity?: true
+    certificateRef?: true
+    certificateStatus?: true
+    folioBoletaNext?: true
+    folioFacturaNext?: true
+    isEnabled?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TaxProviderAccountMaxAggregateInputType = {
+    companyId?: true
+    provider?: true
+    authApiKey?: true
+    authApiSecret?: true
+    environment?: true
+    businessActivity?: true
+    businessAddress?: true
+    businessCommune?: true
+    businessCity?: true
+    certificateRef?: true
+    certificateStatus?: true
+    folioBoletaNext?: true
+    folioFacturaNext?: true
+    isEnabled?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TaxProviderAccountCountAggregateInputType = {
+    companyId?: true
+    provider?: true
+    authApiKey?: true
+    authApiSecret?: true
+    environment?: true
+    businessActivity?: true
+    businessAddress?: true
+    businessCommune?: true
+    businessCity?: true
+    certificateRef?: true
+    certificateStatus?: true
+    folioBoletaNext?: true
+    folioFacturaNext?: true
+    isEnabled?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TaxProviderAccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TaxProviderAccount to aggregate.
+     */
+    where?: TaxProviderAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxProviderAccounts to fetch.
+     */
+    orderBy?: TaxProviderAccountOrderByWithRelationInput | TaxProviderAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TaxProviderAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxProviderAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxProviderAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TaxProviderAccounts
+    **/
+    _count?: true | TaxProviderAccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TaxProviderAccountAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TaxProviderAccountSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TaxProviderAccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TaxProviderAccountMaxAggregateInputType
+  }
+
+  export type GetTaxProviderAccountAggregateType<T extends TaxProviderAccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateTaxProviderAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTaxProviderAccount[P]>
+      : GetScalarType<T[P], AggregateTaxProviderAccount[P]>
+  }
+
+
+
+
+  export type TaxProviderAccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaxProviderAccountWhereInput
+    orderBy?: TaxProviderAccountOrderByWithAggregationInput | TaxProviderAccountOrderByWithAggregationInput[]
+    by: TaxProviderAccountScalarFieldEnum[] | TaxProviderAccountScalarFieldEnum
+    having?: TaxProviderAccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TaxProviderAccountCountAggregateInputType | true
+    _avg?: TaxProviderAccountAvgAggregateInputType
+    _sum?: TaxProviderAccountSumAggregateInputType
+    _min?: TaxProviderAccountMinAggregateInputType
+    _max?: TaxProviderAccountMaxAggregateInputType
+  }
+
+  export type TaxProviderAccountGroupByOutputType = {
+    companyId: string
+    provider: $Enums.TaxProviderType
+    authApiKey: string | null
+    authApiSecret: string | null
+    environment: string
+    businessActivity: string | null
+    businessAddress: string | null
+    businessCommune: string | null
+    businessCity: string | null
+    certificateRef: string | null
+    certificateStatus: $Enums.CertificateStatus
+    folioBoletaNext: number
+    folioFacturaNext: number
+    isEnabled: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: TaxProviderAccountCountAggregateOutputType | null
+    _avg: TaxProviderAccountAvgAggregateOutputType | null
+    _sum: TaxProviderAccountSumAggregateOutputType | null
+    _min: TaxProviderAccountMinAggregateOutputType | null
+    _max: TaxProviderAccountMaxAggregateOutputType | null
+  }
+
+  type GetTaxProviderAccountGroupByPayload<T extends TaxProviderAccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TaxProviderAccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TaxProviderAccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TaxProviderAccountGroupByOutputType[P]>
+            : GetScalarType<T[P], TaxProviderAccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TaxProviderAccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    companyId?: boolean
+    provider?: boolean
+    authApiKey?: boolean
+    authApiSecret?: boolean
+    environment?: boolean
+    businessActivity?: boolean
+    businessAddress?: boolean
+    businessCommune?: boolean
+    businessCity?: boolean
+    certificateRef?: boolean
+    certificateStatus?: boolean
+    folioBoletaNext?: boolean
+    folioFacturaNext?: boolean
+    isEnabled?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["taxProviderAccount"]>
+
+  export type TaxProviderAccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    companyId?: boolean
+    provider?: boolean
+    authApiKey?: boolean
+    authApiSecret?: boolean
+    environment?: boolean
+    businessActivity?: boolean
+    businessAddress?: boolean
+    businessCommune?: boolean
+    businessCity?: boolean
+    certificateRef?: boolean
+    certificateStatus?: boolean
+    folioBoletaNext?: boolean
+    folioFacturaNext?: boolean
+    isEnabled?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["taxProviderAccount"]>
+
+  export type TaxProviderAccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    companyId?: boolean
+    provider?: boolean
+    authApiKey?: boolean
+    authApiSecret?: boolean
+    environment?: boolean
+    businessActivity?: boolean
+    businessAddress?: boolean
+    businessCommune?: boolean
+    businessCity?: boolean
+    certificateRef?: boolean
+    certificateStatus?: boolean
+    folioBoletaNext?: boolean
+    folioFacturaNext?: boolean
+    isEnabled?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["taxProviderAccount"]>
+
+  export type TaxProviderAccountSelectScalar = {
+    companyId?: boolean
+    provider?: boolean
+    authApiKey?: boolean
+    authApiSecret?: boolean
+    environment?: boolean
+    businessActivity?: boolean
+    businessAddress?: boolean
+    businessCommune?: boolean
+    businessCity?: boolean
+    certificateRef?: boolean
+    certificateStatus?: boolean
+    folioBoletaNext?: boolean
+    folioFacturaNext?: boolean
+    isEnabled?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TaxProviderAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"companyId" | "provider" | "authApiKey" | "authApiSecret" | "environment" | "businessActivity" | "businessAddress" | "businessCommune" | "businessCity" | "certificateRef" | "certificateStatus" | "folioBoletaNext" | "folioFacturaNext" | "isEnabled" | "createdAt" | "updatedAt", ExtArgs["result"]["taxProviderAccount"]>
+  export type TaxProviderAccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+  }
+  export type TaxProviderAccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+  }
+  export type TaxProviderAccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    business?: boolean | BusinessDefaultArgs<ExtArgs>
+  }
+
+  export type $TaxProviderAccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TaxProviderAccount"
+    objects: {
+      business: Prisma.$BusinessPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      companyId: string
+      provider: $Enums.TaxProviderType
+      authApiKey: string | null
+      authApiSecret: string | null
+      environment: string
+      businessActivity: string | null
+      businessAddress: string | null
+      businessCommune: string | null
+      businessCity: string | null
+      certificateRef: string | null
+      certificateStatus: $Enums.CertificateStatus
+      folioBoletaNext: number
+      folioFacturaNext: number
+      isEnabled: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["taxProviderAccount"]>
+    composites: {}
+  }
+
+  type TaxProviderAccountGetPayload<S extends boolean | null | undefined | TaxProviderAccountDefaultArgs> = $Result.GetResult<Prisma.$TaxProviderAccountPayload, S>
+
+  type TaxProviderAccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TaxProviderAccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TaxProviderAccountCountAggregateInputType | true
+    }
+
+  export interface TaxProviderAccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TaxProviderAccount'], meta: { name: 'TaxProviderAccount' } }
+    /**
+     * Find zero or one TaxProviderAccount that matches the filter.
+     * @param {TaxProviderAccountFindUniqueArgs} args - Arguments to find a TaxProviderAccount
+     * @example
+     * // Get one TaxProviderAccount
+     * const taxProviderAccount = await prisma.taxProviderAccount.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TaxProviderAccountFindUniqueArgs>(args: SelectSubset<T, TaxProviderAccountFindUniqueArgs<ExtArgs>>): Prisma__TaxProviderAccountClient<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TaxProviderAccount that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TaxProviderAccountFindUniqueOrThrowArgs} args - Arguments to find a TaxProviderAccount
+     * @example
+     * // Get one TaxProviderAccount
+     * const taxProviderAccount = await prisma.taxProviderAccount.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TaxProviderAccountFindUniqueOrThrowArgs>(args: SelectSubset<T, TaxProviderAccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TaxProviderAccountClient<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TaxProviderAccount that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxProviderAccountFindFirstArgs} args - Arguments to find a TaxProviderAccount
+     * @example
+     * // Get one TaxProviderAccount
+     * const taxProviderAccount = await prisma.taxProviderAccount.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TaxProviderAccountFindFirstArgs>(args?: SelectSubset<T, TaxProviderAccountFindFirstArgs<ExtArgs>>): Prisma__TaxProviderAccountClient<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TaxProviderAccount that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxProviderAccountFindFirstOrThrowArgs} args - Arguments to find a TaxProviderAccount
+     * @example
+     * // Get one TaxProviderAccount
+     * const taxProviderAccount = await prisma.taxProviderAccount.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TaxProviderAccountFindFirstOrThrowArgs>(args?: SelectSubset<T, TaxProviderAccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__TaxProviderAccountClient<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TaxProviderAccounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxProviderAccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TaxProviderAccounts
+     * const taxProviderAccounts = await prisma.taxProviderAccount.findMany()
+     * 
+     * // Get first 10 TaxProviderAccounts
+     * const taxProviderAccounts = await prisma.taxProviderAccount.findMany({ take: 10 })
+     * 
+     * // Only select the `companyId`
+     * const taxProviderAccountWithCompanyIdOnly = await prisma.taxProviderAccount.findMany({ select: { companyId: true } })
+     * 
+     */
+    findMany<T extends TaxProviderAccountFindManyArgs>(args?: SelectSubset<T, TaxProviderAccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TaxProviderAccount.
+     * @param {TaxProviderAccountCreateArgs} args - Arguments to create a TaxProviderAccount.
+     * @example
+     * // Create one TaxProviderAccount
+     * const TaxProviderAccount = await prisma.taxProviderAccount.create({
+     *   data: {
+     *     // ... data to create a TaxProviderAccount
+     *   }
+     * })
+     * 
+     */
+    create<T extends TaxProviderAccountCreateArgs>(args: SelectSubset<T, TaxProviderAccountCreateArgs<ExtArgs>>): Prisma__TaxProviderAccountClient<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TaxProviderAccounts.
+     * @param {TaxProviderAccountCreateManyArgs} args - Arguments to create many TaxProviderAccounts.
+     * @example
+     * // Create many TaxProviderAccounts
+     * const taxProviderAccount = await prisma.taxProviderAccount.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TaxProviderAccountCreateManyArgs>(args?: SelectSubset<T, TaxProviderAccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TaxProviderAccounts and returns the data saved in the database.
+     * @param {TaxProviderAccountCreateManyAndReturnArgs} args - Arguments to create many TaxProviderAccounts.
+     * @example
+     * // Create many TaxProviderAccounts
+     * const taxProviderAccount = await prisma.taxProviderAccount.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TaxProviderAccounts and only return the `companyId`
+     * const taxProviderAccountWithCompanyIdOnly = await prisma.taxProviderAccount.createManyAndReturn({
+     *   select: { companyId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TaxProviderAccountCreateManyAndReturnArgs>(args?: SelectSubset<T, TaxProviderAccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TaxProviderAccount.
+     * @param {TaxProviderAccountDeleteArgs} args - Arguments to delete one TaxProviderAccount.
+     * @example
+     * // Delete one TaxProviderAccount
+     * const TaxProviderAccount = await prisma.taxProviderAccount.delete({
+     *   where: {
+     *     // ... filter to delete one TaxProviderAccount
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TaxProviderAccountDeleteArgs>(args: SelectSubset<T, TaxProviderAccountDeleteArgs<ExtArgs>>): Prisma__TaxProviderAccountClient<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TaxProviderAccount.
+     * @param {TaxProviderAccountUpdateArgs} args - Arguments to update one TaxProviderAccount.
+     * @example
+     * // Update one TaxProviderAccount
+     * const taxProviderAccount = await prisma.taxProviderAccount.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TaxProviderAccountUpdateArgs>(args: SelectSubset<T, TaxProviderAccountUpdateArgs<ExtArgs>>): Prisma__TaxProviderAccountClient<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TaxProviderAccounts.
+     * @param {TaxProviderAccountDeleteManyArgs} args - Arguments to filter TaxProviderAccounts to delete.
+     * @example
+     * // Delete a few TaxProviderAccounts
+     * const { count } = await prisma.taxProviderAccount.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TaxProviderAccountDeleteManyArgs>(args?: SelectSubset<T, TaxProviderAccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TaxProviderAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxProviderAccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TaxProviderAccounts
+     * const taxProviderAccount = await prisma.taxProviderAccount.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TaxProviderAccountUpdateManyArgs>(args: SelectSubset<T, TaxProviderAccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TaxProviderAccounts and returns the data updated in the database.
+     * @param {TaxProviderAccountUpdateManyAndReturnArgs} args - Arguments to update many TaxProviderAccounts.
+     * @example
+     * // Update many TaxProviderAccounts
+     * const taxProviderAccount = await prisma.taxProviderAccount.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TaxProviderAccounts and only return the `companyId`
+     * const taxProviderAccountWithCompanyIdOnly = await prisma.taxProviderAccount.updateManyAndReturn({
+     *   select: { companyId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TaxProviderAccountUpdateManyAndReturnArgs>(args: SelectSubset<T, TaxProviderAccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TaxProviderAccount.
+     * @param {TaxProviderAccountUpsertArgs} args - Arguments to update or create a TaxProviderAccount.
+     * @example
+     * // Update or create a TaxProviderAccount
+     * const taxProviderAccount = await prisma.taxProviderAccount.upsert({
+     *   create: {
+     *     // ... data to create a TaxProviderAccount
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TaxProviderAccount we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TaxProviderAccountUpsertArgs>(args: SelectSubset<T, TaxProviderAccountUpsertArgs<ExtArgs>>): Prisma__TaxProviderAccountClient<$Result.GetResult<Prisma.$TaxProviderAccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TaxProviderAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxProviderAccountCountArgs} args - Arguments to filter TaxProviderAccounts to count.
+     * @example
+     * // Count the number of TaxProviderAccounts
+     * const count = await prisma.taxProviderAccount.count({
+     *   where: {
+     *     // ... the filter for the TaxProviderAccounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends TaxProviderAccountCountArgs>(
+      args?: Subset<T, TaxProviderAccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TaxProviderAccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TaxProviderAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxProviderAccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TaxProviderAccountAggregateArgs>(args: Subset<T, TaxProviderAccountAggregateArgs>): Prisma.PrismaPromise<GetTaxProviderAccountAggregateType<T>>
+
+    /**
+     * Group by TaxProviderAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxProviderAccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TaxProviderAccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TaxProviderAccountGroupByArgs['orderBy'] }
+        : { orderBy?: TaxProviderAccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TaxProviderAccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTaxProviderAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TaxProviderAccount model
+   */
+  readonly fields: TaxProviderAccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TaxProviderAccount.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TaxProviderAccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    business<T extends BusinessDefaultArgs<ExtArgs> = {}>(args?: Subset<T, BusinessDefaultArgs<ExtArgs>>): Prisma__BusinessClient<$Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TaxProviderAccount model
+   */
+  interface TaxProviderAccountFieldRefs {
+    readonly companyId: FieldRef<"TaxProviderAccount", 'String'>
+    readonly provider: FieldRef<"TaxProviderAccount", 'TaxProviderType'>
+    readonly authApiKey: FieldRef<"TaxProviderAccount", 'String'>
+    readonly authApiSecret: FieldRef<"TaxProviderAccount", 'String'>
+    readonly environment: FieldRef<"TaxProviderAccount", 'String'>
+    readonly businessActivity: FieldRef<"TaxProviderAccount", 'String'>
+    readonly businessAddress: FieldRef<"TaxProviderAccount", 'String'>
+    readonly businessCommune: FieldRef<"TaxProviderAccount", 'String'>
+    readonly businessCity: FieldRef<"TaxProviderAccount", 'String'>
+    readonly certificateRef: FieldRef<"TaxProviderAccount", 'String'>
+    readonly certificateStatus: FieldRef<"TaxProviderAccount", 'CertificateStatus'>
+    readonly folioBoletaNext: FieldRef<"TaxProviderAccount", 'Int'>
+    readonly folioFacturaNext: FieldRef<"TaxProviderAccount", 'Int'>
+    readonly isEnabled: FieldRef<"TaxProviderAccount", 'Boolean'>
+    readonly createdAt: FieldRef<"TaxProviderAccount", 'DateTime'>
+    readonly updatedAt: FieldRef<"TaxProviderAccount", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TaxProviderAccount findUnique
+   */
+  export type TaxProviderAccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxProviderAccount to fetch.
+     */
+    where: TaxProviderAccountWhereUniqueInput
+  }
+
+  /**
+   * TaxProviderAccount findUniqueOrThrow
+   */
+  export type TaxProviderAccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxProviderAccount to fetch.
+     */
+    where: TaxProviderAccountWhereUniqueInput
+  }
+
+  /**
+   * TaxProviderAccount findFirst
+   */
+  export type TaxProviderAccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxProviderAccount to fetch.
+     */
+    where?: TaxProviderAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxProviderAccounts to fetch.
+     */
+    orderBy?: TaxProviderAccountOrderByWithRelationInput | TaxProviderAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TaxProviderAccounts.
+     */
+    cursor?: TaxProviderAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxProviderAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxProviderAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TaxProviderAccounts.
+     */
+    distinct?: TaxProviderAccountScalarFieldEnum | TaxProviderAccountScalarFieldEnum[]
+  }
+
+  /**
+   * TaxProviderAccount findFirstOrThrow
+   */
+  export type TaxProviderAccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxProviderAccount to fetch.
+     */
+    where?: TaxProviderAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxProviderAccounts to fetch.
+     */
+    orderBy?: TaxProviderAccountOrderByWithRelationInput | TaxProviderAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TaxProviderAccounts.
+     */
+    cursor?: TaxProviderAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxProviderAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxProviderAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TaxProviderAccounts.
+     */
+    distinct?: TaxProviderAccountScalarFieldEnum | TaxProviderAccountScalarFieldEnum[]
+  }
+
+  /**
+   * TaxProviderAccount findMany
+   */
+  export type TaxProviderAccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxProviderAccounts to fetch.
+     */
+    where?: TaxProviderAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxProviderAccounts to fetch.
+     */
+    orderBy?: TaxProviderAccountOrderByWithRelationInput | TaxProviderAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TaxProviderAccounts.
+     */
+    cursor?: TaxProviderAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxProviderAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxProviderAccounts.
+     */
+    skip?: number
+    distinct?: TaxProviderAccountScalarFieldEnum | TaxProviderAccountScalarFieldEnum[]
+  }
+
+  /**
+   * TaxProviderAccount create
+   */
+  export type TaxProviderAccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TaxProviderAccount.
+     */
+    data: XOR<TaxProviderAccountCreateInput, TaxProviderAccountUncheckedCreateInput>
+  }
+
+  /**
+   * TaxProviderAccount createMany
+   */
+  export type TaxProviderAccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TaxProviderAccounts.
+     */
+    data: TaxProviderAccountCreateManyInput | TaxProviderAccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TaxProviderAccount createManyAndReturn
+   */
+  export type TaxProviderAccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * The data used to create many TaxProviderAccounts.
+     */
+    data: TaxProviderAccountCreateManyInput | TaxProviderAccountCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TaxProviderAccount update
+   */
+  export type TaxProviderAccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TaxProviderAccount.
+     */
+    data: XOR<TaxProviderAccountUpdateInput, TaxProviderAccountUncheckedUpdateInput>
+    /**
+     * Choose, which TaxProviderAccount to update.
+     */
+    where: TaxProviderAccountWhereUniqueInput
+  }
+
+  /**
+   * TaxProviderAccount updateMany
+   */
+  export type TaxProviderAccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TaxProviderAccounts.
+     */
+    data: XOR<TaxProviderAccountUpdateManyMutationInput, TaxProviderAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which TaxProviderAccounts to update
+     */
+    where?: TaxProviderAccountWhereInput
+    /**
+     * Limit how many TaxProviderAccounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TaxProviderAccount updateManyAndReturn
+   */
+  export type TaxProviderAccountUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * The data used to update TaxProviderAccounts.
+     */
+    data: XOR<TaxProviderAccountUpdateManyMutationInput, TaxProviderAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which TaxProviderAccounts to update
+     */
+    where?: TaxProviderAccountWhereInput
+    /**
+     * Limit how many TaxProviderAccounts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TaxProviderAccount upsert
+   */
+  export type TaxProviderAccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TaxProviderAccount to update in case it exists.
+     */
+    where: TaxProviderAccountWhereUniqueInput
+    /**
+     * In case the TaxProviderAccount found by the `where` argument doesn't exist, create a new TaxProviderAccount with this data.
+     */
+    create: XOR<TaxProviderAccountCreateInput, TaxProviderAccountUncheckedCreateInput>
+    /**
+     * In case the TaxProviderAccount was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TaxProviderAccountUpdateInput, TaxProviderAccountUncheckedUpdateInput>
+  }
+
+  /**
+   * TaxProviderAccount delete
+   */
+  export type TaxProviderAccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
+    /**
+     * Filter which TaxProviderAccount to delete.
+     */
+    where: TaxProviderAccountWhereUniqueInput
+  }
+
+  /**
+   * TaxProviderAccount deleteMany
+   */
+  export type TaxProviderAccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TaxProviderAccounts to delete
+     */
+    where?: TaxProviderAccountWhereInput
+    /**
+     * Limit how many TaxProviderAccounts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TaxProviderAccount without action
+   */
+  export type TaxProviderAccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxProviderAccount
+     */
+    select?: TaxProviderAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxProviderAccount
+     */
+    omit?: TaxProviderAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxProviderAccountInclude<ExtArgs> | null
   }
 
 
@@ -23636,6 +25015,28 @@ export namespace Prisma {
   export type BusinessScalarFieldEnum = (typeof BusinessScalarFieldEnum)[keyof typeof BusinessScalarFieldEnum]
 
 
+  export const TaxProviderAccountScalarFieldEnum: {
+    companyId: 'companyId',
+    provider: 'provider',
+    authApiKey: 'authApiKey',
+    authApiSecret: 'authApiSecret',
+    environment: 'environment',
+    businessActivity: 'businessActivity',
+    businessAddress: 'businessAddress',
+    businessCommune: 'businessCommune',
+    businessCity: 'businessCity',
+    certificateRef: 'certificateRef',
+    certificateStatus: 'certificateStatus',
+    folioBoletaNext: 'folioBoletaNext',
+    folioFacturaNext: 'folioFacturaNext',
+    isEnabled: 'isEnabled',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TaxProviderAccountScalarFieldEnum = (typeof TaxProviderAccountScalarFieldEnum)[keyof typeof TaxProviderAccountScalarFieldEnum]
+
+
   export const UserBusinessScalarFieldEnum: {
     userBusinessUserId: 'userBusinessUserId',
     userBusinessBusinessId: 'userBusinessBusinessId',
@@ -24050,6 +25451,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'TaxProviderType'
+   */
+  export type EnumTaxProviderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaxProviderType'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaxProviderType[]'
+   */
+  export type ListEnumTaxProviderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaxProviderType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CertificateStatus'
+   */
+  export type EnumCertificateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificateStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'CertificateStatus[]'
+   */
+  export type ListEnumCertificateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificateStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Role'
    */
   export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -24088,20 +25531,6 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -24482,6 +25911,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionListRelationFilter
     subscriptionPayments?: SubscriptionPaymentListRelationFilter
     subscriptionCancellations?: SubscriptionCancellationListRelationFilter
+    taxProviderAccount?: XOR<TaxProviderAccountNullableScalarRelationFilter, TaxProviderAccountWhereInput> | null
   }
 
   export type BusinessOrderByWithRelationInput = {
@@ -24509,6 +25939,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     subscriptionPayments?: SubscriptionPaymentOrderByRelationAggregateInput
     subscriptionCancellations?: SubscriptionCancellationOrderByRelationAggregateInput
+    taxProviderAccount?: TaxProviderAccountOrderByWithRelationInput
   }
 
   export type BusinessWhereUniqueInput = Prisma.AtLeast<{
@@ -24539,6 +25970,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionListRelationFilter
     subscriptionPayments?: SubscriptionPaymentListRelationFilter
     subscriptionCancellations?: SubscriptionCancellationListRelationFilter
+    taxProviderAccount?: XOR<TaxProviderAccountNullableScalarRelationFilter, TaxProviderAccountWhereInput> | null
   }, "businessId">
 
   export type BusinessOrderByWithAggregationInput = {
@@ -24587,6 +26019,118 @@ export namespace Prisma {
     createdByUserId?: StringNullableWithAggregatesFilter<"Business"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Business"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Business"> | Date | string
+  }
+
+  export type TaxProviderAccountWhereInput = {
+    AND?: TaxProviderAccountWhereInput | TaxProviderAccountWhereInput[]
+    OR?: TaxProviderAccountWhereInput[]
+    NOT?: TaxProviderAccountWhereInput | TaxProviderAccountWhereInput[]
+    companyId?: StringFilter<"TaxProviderAccount"> | string
+    provider?: EnumTaxProviderTypeFilter<"TaxProviderAccount"> | $Enums.TaxProviderType
+    authApiKey?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    authApiSecret?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    environment?: StringFilter<"TaxProviderAccount"> | string
+    businessActivity?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    businessAddress?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    businessCommune?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    businessCity?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    certificateRef?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    certificateStatus?: EnumCertificateStatusFilter<"TaxProviderAccount"> | $Enums.CertificateStatus
+    folioBoletaNext?: IntFilter<"TaxProviderAccount"> | number
+    folioFacturaNext?: IntFilter<"TaxProviderAccount"> | number
+    isEnabled?: BoolFilter<"TaxProviderAccount"> | boolean
+    createdAt?: DateTimeFilter<"TaxProviderAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"TaxProviderAccount"> | Date | string
+    business?: XOR<BusinessScalarRelationFilter, BusinessWhereInput>
+  }
+
+  export type TaxProviderAccountOrderByWithRelationInput = {
+    companyId?: SortOrder
+    provider?: SortOrder
+    authApiKey?: SortOrderInput | SortOrder
+    authApiSecret?: SortOrderInput | SortOrder
+    environment?: SortOrder
+    businessActivity?: SortOrderInput | SortOrder
+    businessAddress?: SortOrderInput | SortOrder
+    businessCommune?: SortOrderInput | SortOrder
+    businessCity?: SortOrderInput | SortOrder
+    certificateRef?: SortOrderInput | SortOrder
+    certificateStatus?: SortOrder
+    folioBoletaNext?: SortOrder
+    folioFacturaNext?: SortOrder
+    isEnabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    business?: BusinessOrderByWithRelationInput
+  }
+
+  export type TaxProviderAccountWhereUniqueInput = Prisma.AtLeast<{
+    companyId?: string
+    AND?: TaxProviderAccountWhereInput | TaxProviderAccountWhereInput[]
+    OR?: TaxProviderAccountWhereInput[]
+    NOT?: TaxProviderAccountWhereInput | TaxProviderAccountWhereInput[]
+    provider?: EnumTaxProviderTypeFilter<"TaxProviderAccount"> | $Enums.TaxProviderType
+    authApiKey?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    authApiSecret?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    environment?: StringFilter<"TaxProviderAccount"> | string
+    businessActivity?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    businessAddress?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    businessCommune?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    businessCity?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    certificateRef?: StringNullableFilter<"TaxProviderAccount"> | string | null
+    certificateStatus?: EnumCertificateStatusFilter<"TaxProviderAccount"> | $Enums.CertificateStatus
+    folioBoletaNext?: IntFilter<"TaxProviderAccount"> | number
+    folioFacturaNext?: IntFilter<"TaxProviderAccount"> | number
+    isEnabled?: BoolFilter<"TaxProviderAccount"> | boolean
+    createdAt?: DateTimeFilter<"TaxProviderAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"TaxProviderAccount"> | Date | string
+    business?: XOR<BusinessScalarRelationFilter, BusinessWhereInput>
+  }, "companyId">
+
+  export type TaxProviderAccountOrderByWithAggregationInput = {
+    companyId?: SortOrder
+    provider?: SortOrder
+    authApiKey?: SortOrderInput | SortOrder
+    authApiSecret?: SortOrderInput | SortOrder
+    environment?: SortOrder
+    businessActivity?: SortOrderInput | SortOrder
+    businessAddress?: SortOrderInput | SortOrder
+    businessCommune?: SortOrderInput | SortOrder
+    businessCity?: SortOrderInput | SortOrder
+    certificateRef?: SortOrderInput | SortOrder
+    certificateStatus?: SortOrder
+    folioBoletaNext?: SortOrder
+    folioFacturaNext?: SortOrder
+    isEnabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TaxProviderAccountCountOrderByAggregateInput
+    _avg?: TaxProviderAccountAvgOrderByAggregateInput
+    _max?: TaxProviderAccountMaxOrderByAggregateInput
+    _min?: TaxProviderAccountMinOrderByAggregateInput
+    _sum?: TaxProviderAccountSumOrderByAggregateInput
+  }
+
+  export type TaxProviderAccountScalarWhereWithAggregatesInput = {
+    AND?: TaxProviderAccountScalarWhereWithAggregatesInput | TaxProviderAccountScalarWhereWithAggregatesInput[]
+    OR?: TaxProviderAccountScalarWhereWithAggregatesInput[]
+    NOT?: TaxProviderAccountScalarWhereWithAggregatesInput | TaxProviderAccountScalarWhereWithAggregatesInput[]
+    companyId?: StringWithAggregatesFilter<"TaxProviderAccount"> | string
+    provider?: EnumTaxProviderTypeWithAggregatesFilter<"TaxProviderAccount"> | $Enums.TaxProviderType
+    authApiKey?: StringNullableWithAggregatesFilter<"TaxProviderAccount"> | string | null
+    authApiSecret?: StringNullableWithAggregatesFilter<"TaxProviderAccount"> | string | null
+    environment?: StringWithAggregatesFilter<"TaxProviderAccount"> | string
+    businessActivity?: StringNullableWithAggregatesFilter<"TaxProviderAccount"> | string | null
+    businessAddress?: StringNullableWithAggregatesFilter<"TaxProviderAccount"> | string | null
+    businessCommune?: StringNullableWithAggregatesFilter<"TaxProviderAccount"> | string | null
+    businessCity?: StringNullableWithAggregatesFilter<"TaxProviderAccount"> | string | null
+    certificateRef?: StringNullableWithAggregatesFilter<"TaxProviderAccount"> | string | null
+    certificateStatus?: EnumCertificateStatusWithAggregatesFilter<"TaxProviderAccount"> | $Enums.CertificateStatus
+    folioBoletaNext?: IntWithAggregatesFilter<"TaxProviderAccount"> | number
+    folioFacturaNext?: IntWithAggregatesFilter<"TaxProviderAccount"> | number
+    isEnabled?: BoolWithAggregatesFilter<"TaxProviderAccount"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"TaxProviderAccount"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TaxProviderAccount"> | Date | string
   }
 
   export type UserBusinessWhereInput = {
@@ -26236,6 +27780,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateInput = {
@@ -26262,6 +27807,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountUncheckedCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessUpdateInput = {
@@ -26288,6 +27834,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUpdateOneWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateInput = {
@@ -26314,6 +27861,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUncheckedUpdateOneWithoutBusinessNestedInput
   }
 
   export type BusinessCreateManyInput = {
@@ -26374,6 +27922,138 @@ export namespace Prisma {
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxProviderAccountCreateInput = {
+    provider?: $Enums.TaxProviderType
+    authApiKey?: string | null
+    authApiSecret?: string | null
+    environment?: string
+    businessActivity?: string | null
+    businessAddress?: string | null
+    businessCommune?: string | null
+    businessCity?: string | null
+    certificateRef?: string | null
+    certificateStatus?: $Enums.CertificateStatus
+    folioBoletaNext?: number
+    folioFacturaNext?: number
+    isEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    business: BusinessCreateNestedOneWithoutTaxProviderAccountInput
+  }
+
+  export type TaxProviderAccountUncheckedCreateInput = {
+    companyId: string
+    provider?: $Enums.TaxProviderType
+    authApiKey?: string | null
+    authApiSecret?: string | null
+    environment?: string
+    businessActivity?: string | null
+    businessAddress?: string | null
+    businessCommune?: string | null
+    businessCity?: string | null
+    certificateRef?: string | null
+    certificateStatus?: $Enums.CertificateStatus
+    folioBoletaNext?: number
+    folioFacturaNext?: number
+    isEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaxProviderAccountUpdateInput = {
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    authApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    authApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: StringFieldUpdateOperationsInput | string
+    businessActivity?: NullableStringFieldUpdateOperationsInput | string | null
+    businessAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCommune?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCity?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateStatus?: EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+    folioBoletaNext?: IntFieldUpdateOperationsInput | number
+    folioFacturaNext?: IntFieldUpdateOperationsInput | number
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    business?: BusinessUpdateOneRequiredWithoutTaxProviderAccountNestedInput
+  }
+
+  export type TaxProviderAccountUncheckedUpdateInput = {
+    companyId?: StringFieldUpdateOperationsInput | string
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    authApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    authApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: StringFieldUpdateOperationsInput | string
+    businessActivity?: NullableStringFieldUpdateOperationsInput | string | null
+    businessAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCommune?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCity?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateStatus?: EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+    folioBoletaNext?: IntFieldUpdateOperationsInput | number
+    folioFacturaNext?: IntFieldUpdateOperationsInput | number
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxProviderAccountCreateManyInput = {
+    companyId: string
+    provider?: $Enums.TaxProviderType
+    authApiKey?: string | null
+    authApiSecret?: string | null
+    environment?: string
+    businessActivity?: string | null
+    businessAddress?: string | null
+    businessCommune?: string | null
+    businessCity?: string | null
+    certificateRef?: string | null
+    certificateStatus?: $Enums.CertificateStatus
+    folioBoletaNext?: number
+    folioFacturaNext?: number
+    isEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaxProviderAccountUpdateManyMutationInput = {
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    authApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    authApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: StringFieldUpdateOperationsInput | string
+    businessActivity?: NullableStringFieldUpdateOperationsInput | string | null
+    businessAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCommune?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCity?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateStatus?: EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+    folioBoletaNext?: IntFieldUpdateOperationsInput | number
+    folioFacturaNext?: IntFieldUpdateOperationsInput | number
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxProviderAccountUncheckedUpdateManyInput = {
+    companyId?: StringFieldUpdateOperationsInput | string
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    authApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    authApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: StringFieldUpdateOperationsInput | string
+    businessActivity?: NullableStringFieldUpdateOperationsInput | string | null
+    businessAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCommune?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCity?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateStatus?: EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+    folioBoletaNext?: IntFieldUpdateOperationsInput | number
+    folioFacturaNext?: IntFieldUpdateOperationsInput | number
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28357,6 +30037,11 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
+  export type TaxProviderAccountNullableScalarRelationFilter = {
+    is?: TaxProviderAccountWhereInput | null
+    isNot?: TaxProviderAccountWhereInput | null
+  }
+
   export type BusinessCountOrderByAggregateInput = {
     businessId?: SortOrder
     businessName?: SortOrder
@@ -28482,6 +30167,139 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type EnumTaxProviderTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxProviderType | EnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxProviderTypeFilter<$PrismaModel> | $Enums.TaxProviderType
+  }
+
+  export type EnumCertificateStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CertificateStatus | EnumCertificateStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CertificateStatus[] | ListEnumCertificateStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CertificateStatus[] | ListEnumCertificateStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCertificateStatusFilter<$PrismaModel> | $Enums.CertificateStatus
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type BusinessScalarRelationFilter = {
+    is?: BusinessWhereInput
+    isNot?: BusinessWhereInput
+  }
+
+  export type TaxProviderAccountCountOrderByAggregateInput = {
+    companyId?: SortOrder
+    provider?: SortOrder
+    authApiKey?: SortOrder
+    authApiSecret?: SortOrder
+    environment?: SortOrder
+    businessActivity?: SortOrder
+    businessAddress?: SortOrder
+    businessCommune?: SortOrder
+    businessCity?: SortOrder
+    certificateRef?: SortOrder
+    certificateStatus?: SortOrder
+    folioBoletaNext?: SortOrder
+    folioFacturaNext?: SortOrder
+    isEnabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaxProviderAccountAvgOrderByAggregateInput = {
+    folioBoletaNext?: SortOrder
+    folioFacturaNext?: SortOrder
+  }
+
+  export type TaxProviderAccountMaxOrderByAggregateInput = {
+    companyId?: SortOrder
+    provider?: SortOrder
+    authApiKey?: SortOrder
+    authApiSecret?: SortOrder
+    environment?: SortOrder
+    businessActivity?: SortOrder
+    businessAddress?: SortOrder
+    businessCommune?: SortOrder
+    businessCity?: SortOrder
+    certificateRef?: SortOrder
+    certificateStatus?: SortOrder
+    folioBoletaNext?: SortOrder
+    folioFacturaNext?: SortOrder
+    isEnabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaxProviderAccountMinOrderByAggregateInput = {
+    companyId?: SortOrder
+    provider?: SortOrder
+    authApiKey?: SortOrder
+    authApiSecret?: SortOrder
+    environment?: SortOrder
+    businessActivity?: SortOrder
+    businessAddress?: SortOrder
+    businessCommune?: SortOrder
+    businessCity?: SortOrder
+    certificateRef?: SortOrder
+    certificateStatus?: SortOrder
+    folioBoletaNext?: SortOrder
+    folioFacturaNext?: SortOrder
+    isEnabled?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaxProviderAccountSumOrderByAggregateInput = {
+    folioBoletaNext?: SortOrder
+    folioFacturaNext?: SortOrder
+  }
+
+  export type EnumTaxProviderTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxProviderType | EnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxProviderTypeWithAggregatesFilter<$PrismaModel> | $Enums.TaxProviderType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaxProviderTypeFilter<$PrismaModel>
+    _max?: NestedEnumTaxProviderTypeFilter<$PrismaModel>
+  }
+
+  export type EnumCertificateStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CertificateStatus | EnumCertificateStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CertificateStatus[] | ListEnumCertificateStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CertificateStatus[] | ListEnumCertificateStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCertificateStatusWithAggregatesFilter<$PrismaModel> | $Enums.CertificateStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCertificateStatusFilter<$PrismaModel>
+    _max?: NestedEnumCertificateStatusFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type EnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -28492,11 +30310,6 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
-  }
-
-  export type BusinessScalarRelationFilter = {
-    is?: BusinessWhereInput
-    isNot?: BusinessWhereInput
   }
 
   export type UserBusinessUserBusinessUserIdUserBusinessBusinessIdCompoundUniqueInput = {
@@ -28622,17 +30435,6 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type PlanCountOrderByAggregateInput = {
     planId?: SortOrder
     planName?: SortOrder
@@ -28720,22 +30522,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumSubscriptionStatusFilter<$PrismaModel = never> = {
@@ -30229,6 +32015,12 @@ export namespace Prisma {
     connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
   }
 
+  export type TaxProviderAccountCreateNestedOneWithoutBusinessInput = {
+    create?: XOR<TaxProviderAccountCreateWithoutBusinessInput, TaxProviderAccountUncheckedCreateWithoutBusinessInput>
+    connectOrCreate?: TaxProviderAccountCreateOrConnectWithoutBusinessInput
+    connect?: TaxProviderAccountWhereUniqueInput
+  }
+
   export type UserGuestUncheckedCreateNestedManyWithoutBusinessInput = {
     create?: XOR<UserGuestCreateWithoutBusinessInput, UserGuestUncheckedCreateWithoutBusinessInput> | UserGuestCreateWithoutBusinessInput[] | UserGuestUncheckedCreateWithoutBusinessInput[]
     connectOrCreate?: UserGuestCreateOrConnectWithoutBusinessInput | UserGuestCreateOrConnectWithoutBusinessInput[]
@@ -30262,6 +32054,12 @@ export namespace Prisma {
     connectOrCreate?: SubscriptionCancellationCreateOrConnectWithoutBusinessInput | SubscriptionCancellationCreateOrConnectWithoutBusinessInput[]
     createMany?: SubscriptionCancellationCreateManyBusinessInputEnvelope
     connect?: SubscriptionCancellationWhereUniqueInput | SubscriptionCancellationWhereUniqueInput[]
+  }
+
+  export type TaxProviderAccountUncheckedCreateNestedOneWithoutBusinessInput = {
+    create?: XOR<TaxProviderAccountCreateWithoutBusinessInput, TaxProviderAccountUncheckedCreateWithoutBusinessInput>
+    connectOrCreate?: TaxProviderAccountCreateOrConnectWithoutBusinessInput
+    connect?: TaxProviderAccountWhereUniqueInput
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -30356,6 +32154,16 @@ export namespace Prisma {
     deleteMany?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
   }
 
+  export type TaxProviderAccountUpdateOneWithoutBusinessNestedInput = {
+    create?: XOR<TaxProviderAccountCreateWithoutBusinessInput, TaxProviderAccountUncheckedCreateWithoutBusinessInput>
+    connectOrCreate?: TaxProviderAccountCreateOrConnectWithoutBusinessInput
+    upsert?: TaxProviderAccountUpsertWithoutBusinessInput
+    disconnect?: TaxProviderAccountWhereInput | boolean
+    delete?: TaxProviderAccountWhereInput | boolean
+    connect?: TaxProviderAccountWhereUniqueInput
+    update?: XOR<XOR<TaxProviderAccountUpdateToOneWithWhereWithoutBusinessInput, TaxProviderAccountUpdateWithoutBusinessInput>, TaxProviderAccountUncheckedUpdateWithoutBusinessInput>
+  }
+
   export type UserGuestUncheckedUpdateManyWithoutBusinessNestedInput = {
     create?: XOR<UserGuestCreateWithoutBusinessInput, UserGuestUncheckedCreateWithoutBusinessInput> | UserGuestCreateWithoutBusinessInput[] | UserGuestUncheckedCreateWithoutBusinessInput[]
     connectOrCreate?: UserGuestCreateOrConnectWithoutBusinessInput | UserGuestCreateOrConnectWithoutBusinessInput[]
@@ -30424,6 +32232,46 @@ export namespace Prisma {
     update?: SubscriptionCancellationUpdateWithWhereUniqueWithoutBusinessInput | SubscriptionCancellationUpdateWithWhereUniqueWithoutBusinessInput[]
     updateMany?: SubscriptionCancellationUpdateManyWithWhereWithoutBusinessInput | SubscriptionCancellationUpdateManyWithWhereWithoutBusinessInput[]
     deleteMany?: SubscriptionCancellationScalarWhereInput | SubscriptionCancellationScalarWhereInput[]
+  }
+
+  export type TaxProviderAccountUncheckedUpdateOneWithoutBusinessNestedInput = {
+    create?: XOR<TaxProviderAccountCreateWithoutBusinessInput, TaxProviderAccountUncheckedCreateWithoutBusinessInput>
+    connectOrCreate?: TaxProviderAccountCreateOrConnectWithoutBusinessInput
+    upsert?: TaxProviderAccountUpsertWithoutBusinessInput
+    disconnect?: TaxProviderAccountWhereInput | boolean
+    delete?: TaxProviderAccountWhereInput | boolean
+    connect?: TaxProviderAccountWhereUniqueInput
+    update?: XOR<XOR<TaxProviderAccountUpdateToOneWithWhereWithoutBusinessInput, TaxProviderAccountUpdateWithoutBusinessInput>, TaxProviderAccountUncheckedUpdateWithoutBusinessInput>
+  }
+
+  export type BusinessCreateNestedOneWithoutTaxProviderAccountInput = {
+    create?: XOR<BusinessCreateWithoutTaxProviderAccountInput, BusinessUncheckedCreateWithoutTaxProviderAccountInput>
+    connectOrCreate?: BusinessCreateOrConnectWithoutTaxProviderAccountInput
+    connect?: BusinessWhereUniqueInput
+  }
+
+  export type EnumTaxProviderTypeFieldUpdateOperationsInput = {
+    set?: $Enums.TaxProviderType
+  }
+
+  export type EnumCertificateStatusFieldUpdateOperationsInput = {
+    set?: $Enums.CertificateStatus
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type BusinessUpdateOneRequiredWithoutTaxProviderAccountNestedInput = {
+    create?: XOR<BusinessCreateWithoutTaxProviderAccountInput, BusinessUncheckedCreateWithoutTaxProviderAccountInput>
+    connectOrCreate?: BusinessCreateOrConnectWithoutTaxProviderAccountInput
+    upsert?: BusinessUpsertWithoutTaxProviderAccountInput
+    connect?: BusinessWhereUniqueInput
+    update?: XOR<XOR<BusinessUpdateToOneWithWhereWithoutTaxProviderAccountInput, BusinessUpdateWithoutTaxProviderAccountInput>, BusinessUncheckedUpdateWithoutTaxProviderAccountInput>
   }
 
   export type UserCreateNestedOneWithoutUserBusinessInput = {
@@ -30519,14 +32367,6 @@ export namespace Prisma {
   }
 
   export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
@@ -31335,6 +33175,67 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedEnumTaxProviderTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxProviderType | EnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxProviderTypeFilter<$PrismaModel> | $Enums.TaxProviderType
+  }
+
+  export type NestedEnumCertificateStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CertificateStatus | EnumCertificateStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CertificateStatus[] | ListEnumCertificateStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CertificateStatus[] | ListEnumCertificateStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCertificateStatusFilter<$PrismaModel> | $Enums.CertificateStatus
+  }
+
+  export type NestedEnumTaxProviderTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxProviderType | EnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxProviderTypeWithAggregatesFilter<$PrismaModel> | $Enums.TaxProviderType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaxProviderTypeFilter<$PrismaModel>
+    _max?: NestedEnumTaxProviderTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCertificateStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CertificateStatus | EnumCertificateStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CertificateStatus[] | ListEnumCertificateStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CertificateStatus[] | ListEnumCertificateStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCertificateStatusWithAggregatesFilter<$PrismaModel> | $Enums.CertificateStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCertificateStatusFilter<$PrismaModel>
+    _max?: NestedEnumCertificateStatusFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type NestedEnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -31367,17 +33268,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserGuestStatusFilter<$PrismaModel>
     _max?: NestedEnumUserGuestStatusFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
   }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -31417,22 +33307,6 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type NestedEnumSubscriptionStatusFilter<$PrismaModel = never> = {
@@ -31784,6 +33658,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutCreatedByInput = {
@@ -31809,6 +33684,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountUncheckedCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutCreatedByInput = {
@@ -32752,6 +34628,47 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TaxProviderAccountCreateWithoutBusinessInput = {
+    provider?: $Enums.TaxProviderType
+    authApiKey?: string | null
+    authApiSecret?: string | null
+    environment?: string
+    businessActivity?: string | null
+    businessAddress?: string | null
+    businessCommune?: string | null
+    businessCity?: string | null
+    certificateRef?: string | null
+    certificateStatus?: $Enums.CertificateStatus
+    folioBoletaNext?: number
+    folioFacturaNext?: number
+    isEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaxProviderAccountUncheckedCreateWithoutBusinessInput = {
+    provider?: $Enums.TaxProviderType
+    authApiKey?: string | null
+    authApiSecret?: string | null
+    environment?: string
+    businessActivity?: string | null
+    businessAddress?: string | null
+    businessCommune?: string | null
+    businessCity?: string | null
+    certificateRef?: string | null
+    certificateStatus?: $Enums.CertificateStatus
+    folioBoletaNext?: number
+    folioFacturaNext?: number
+    isEnabled?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaxProviderAccountCreateOrConnectWithoutBusinessInput = {
+    where: TaxProviderAccountWhereUniqueInput
+    create: XOR<TaxProviderAccountCreateWithoutBusinessInput, TaxProviderAccountUncheckedCreateWithoutBusinessInput>
+  }
+
   export type UserUpsertWithoutBusinessesInput = {
     update: XOR<UserUpdateWithoutBusinessesInput, UserUncheckedUpdateWithoutBusinessesInput>
     create: XOR<UserCreateWithoutBusinessesInput, UserUncheckedCreateWithoutBusinessesInput>
@@ -32893,6 +34810,173 @@ export namespace Prisma {
     data: XOR<SubscriptionCancellationUpdateManyMutationInput, SubscriptionCancellationUncheckedUpdateManyWithoutBusinessInput>
   }
 
+  export type TaxProviderAccountUpsertWithoutBusinessInput = {
+    update: XOR<TaxProviderAccountUpdateWithoutBusinessInput, TaxProviderAccountUncheckedUpdateWithoutBusinessInput>
+    create: XOR<TaxProviderAccountCreateWithoutBusinessInput, TaxProviderAccountUncheckedCreateWithoutBusinessInput>
+    where?: TaxProviderAccountWhereInput
+  }
+
+  export type TaxProviderAccountUpdateToOneWithWhereWithoutBusinessInput = {
+    where?: TaxProviderAccountWhereInput
+    data: XOR<TaxProviderAccountUpdateWithoutBusinessInput, TaxProviderAccountUncheckedUpdateWithoutBusinessInput>
+  }
+
+  export type TaxProviderAccountUpdateWithoutBusinessInput = {
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    authApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    authApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: StringFieldUpdateOperationsInput | string
+    businessActivity?: NullableStringFieldUpdateOperationsInput | string | null
+    businessAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCommune?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCity?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateStatus?: EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+    folioBoletaNext?: IntFieldUpdateOperationsInput | number
+    folioFacturaNext?: IntFieldUpdateOperationsInput | number
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxProviderAccountUncheckedUpdateWithoutBusinessInput = {
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    authApiKey?: NullableStringFieldUpdateOperationsInput | string | null
+    authApiSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    environment?: StringFieldUpdateOperationsInput | string
+    businessActivity?: NullableStringFieldUpdateOperationsInput | string | null
+    businessAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCommune?: NullableStringFieldUpdateOperationsInput | string | null
+    businessCity?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    certificateStatus?: EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+    folioBoletaNext?: IntFieldUpdateOperationsInput | number
+    folioFacturaNext?: IntFieldUpdateOperationsInput | number
+    isEnabled?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BusinessCreateWithoutTaxProviderAccountInput = {
+    businessId: string
+    businessName: string
+    businessType: string
+    businessDocumentType: string
+    businessDocumentNumber: string
+    businessEmail: string
+    businessPhoneNumber: string
+    businessCodePhoneNumber: string
+    businessCountry: string
+    businessCodeWhatsappNumber?: string | null
+    businessWhatsappNumber?: string | null
+    businessConnectionDB?: string | null
+    businessEntity: $Enums.BusinessEntity
+    businessStatus: $Enums.BusinessStatus
+    businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutBusinessesInput
+    UserGuest?: UserGuestCreateNestedManyWithoutBusinessInput
+    UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
+    subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
+  }
+
+  export type BusinessUncheckedCreateWithoutTaxProviderAccountInput = {
+    businessId: string
+    businessName: string
+    businessType: string
+    businessDocumentType: string
+    businessDocumentNumber: string
+    businessEmail: string
+    businessPhoneNumber: string
+    businessCodePhoneNumber: string
+    businessCountry: string
+    businessCodeWhatsappNumber?: string | null
+    businessWhatsappNumber?: string | null
+    businessConnectionDB?: string | null
+    businessEntity: $Enums.BusinessEntity
+    businessStatus: $Enums.BusinessStatus
+    businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    UserGuest?: UserGuestUncheckedCreateNestedManyWithoutBusinessInput
+    UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
+  }
+
+  export type BusinessCreateOrConnectWithoutTaxProviderAccountInput = {
+    where: BusinessWhereUniqueInput
+    create: XOR<BusinessCreateWithoutTaxProviderAccountInput, BusinessUncheckedCreateWithoutTaxProviderAccountInput>
+  }
+
+  export type BusinessUpsertWithoutTaxProviderAccountInput = {
+    update: XOR<BusinessUpdateWithoutTaxProviderAccountInput, BusinessUncheckedUpdateWithoutTaxProviderAccountInput>
+    create: XOR<BusinessCreateWithoutTaxProviderAccountInput, BusinessUncheckedCreateWithoutTaxProviderAccountInput>
+    where?: BusinessWhereInput
+  }
+
+  export type BusinessUpdateToOneWithWhereWithoutTaxProviderAccountInput = {
+    where?: BusinessWhereInput
+    data: XOR<BusinessUpdateWithoutTaxProviderAccountInput, BusinessUncheckedUpdateWithoutTaxProviderAccountInput>
+  }
+
+  export type BusinessUpdateWithoutTaxProviderAccountInput = {
+    businessId?: StringFieldUpdateOperationsInput | string
+    businessName?: StringFieldUpdateOperationsInput | string
+    businessType?: StringFieldUpdateOperationsInput | string
+    businessDocumentType?: StringFieldUpdateOperationsInput | string
+    businessDocumentNumber?: StringFieldUpdateOperationsInput | string
+    businessEmail?: StringFieldUpdateOperationsInput | string
+    businessPhoneNumber?: StringFieldUpdateOperationsInput | string
+    businessCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    businessCountry?: StringFieldUpdateOperationsInput | string
+    businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
+    businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
+    businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutBusinessesNestedInput
+    UserGuest?: UserGuestUpdateManyWithoutBusinessNestedInput
+    UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
+    subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
+  }
+
+  export type BusinessUncheckedUpdateWithoutTaxProviderAccountInput = {
+    businessId?: StringFieldUpdateOperationsInput | string
+    businessName?: StringFieldUpdateOperationsInput | string
+    businessType?: StringFieldUpdateOperationsInput | string
+    businessDocumentType?: StringFieldUpdateOperationsInput | string
+    businessDocumentNumber?: StringFieldUpdateOperationsInput | string
+    businessEmail?: StringFieldUpdateOperationsInput | string
+    businessPhoneNumber?: StringFieldUpdateOperationsInput | string
+    businessCodePhoneNumber?: StringFieldUpdateOperationsInput | string
+    businessCountry?: StringFieldUpdateOperationsInput | string
+    businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
+    businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
+    businessProcess?: NullableJsonNullValueInput | InputJsonValue
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    UserGuest?: UserGuestUncheckedUpdateManyWithoutBusinessNestedInput
+    UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
+    subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
+  }
+
   export type UserCreateWithoutUserBusinessInput = {
     userId?: string
     userFirstName: string
@@ -32971,6 +35055,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutUserBusinessInput = {
@@ -32996,6 +35081,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountUncheckedCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutUserBusinessInput = {
@@ -33098,6 +35184,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUpdateOneWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutUserBusinessInput = {
@@ -33123,6 +35210,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUncheckedUpdateOneWithoutBusinessNestedInput
   }
 
   export type UserCreateWithoutUserGuestInput = {
@@ -33203,6 +35291,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutUserGuestInput = {
@@ -33228,6 +35317,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountUncheckedCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutUserGuestInput = {
@@ -33330,6 +35420,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUpdateOneWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutUserGuestInput = {
@@ -33355,6 +35446,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUncheckedUpdateOneWithoutBusinessNestedInput
   }
 
   export type SubscriptionCreateWithoutPlanInput = {
@@ -33596,6 +35688,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutSubscriptionsInput = {
@@ -33621,6 +35714,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountUncheckedCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutSubscriptionsInput = {
@@ -33854,6 +35948,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUpdateOneWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutSubscriptionsInput = {
@@ -33879,6 +35974,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUncheckedUpdateOneWithoutBusinessNestedInput
   }
 
   export type SubscriptionPaymentUpsertWithWhereUniqueWithoutSubscriptionInput = {
@@ -33983,6 +36079,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutSubscriptionCancellationsInput = {
@@ -34008,6 +36105,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountUncheckedCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutSubscriptionCancellationsInput = {
@@ -34157,6 +36255,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUpdateOneWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutSubscriptionCancellationsInput = {
@@ -34182,6 +36281,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUncheckedUpdateOneWithoutBusinessNestedInput
   }
 
   export type UserUpsertWithoutSubscriptionCancellationsInput = {
@@ -34315,6 +36415,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessUncheckedCreateWithoutSubscriptionPaymentsInput = {
@@ -34340,6 +36441,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutBusinessInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutBusinessInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedCreateNestedManyWithoutBusinessInput
+    taxProviderAccount?: TaxProviderAccountUncheckedCreateNestedOneWithoutBusinessInput
   }
 
   export type BusinessCreateOrConnectWithoutSubscriptionPaymentsInput = {
@@ -34522,6 +36624,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUpdateOneWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutSubscriptionPaymentsInput = {
@@ -34547,6 +36650,7 @@ export namespace Prisma {
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUncheckedUpdateOneWithoutBusinessNestedInput
   }
 
   export type PlanUpsertWithoutSubscriptionPaymentsInput = {
@@ -35852,6 +37956,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUpdateOneWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateWithoutCreatedByInput = {
@@ -35877,6 +37982,7 @@ export namespace Prisma {
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutBusinessNestedInput
     subscriptionCancellations?: SubscriptionCancellationUncheckedUpdateManyWithoutBusinessNestedInput
+    taxProviderAccount?: TaxProviderAccountUncheckedUpdateOneWithoutBusinessNestedInput
   }
 
   export type BusinessUncheckedUpdateManyWithoutCreatedByInput = {

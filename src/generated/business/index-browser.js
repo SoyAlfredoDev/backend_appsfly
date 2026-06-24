@@ -230,7 +230,8 @@ exports.Prisma.SaleScalarFieldEnum = {
   saleImageUrl: 'saleImageUrl',
   saleNumber: 'saleNumber',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  documentType: 'documentType'
 };
 
 exports.Prisma.SaleDetailScalarFieldEnum = {
@@ -370,6 +371,40 @@ exports.Prisma.PurchaseDetailScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TaxDocumentScalarFieldEnum = {
+  taxDocumentId: 'taxDocumentId',
+  saleId: 'saleId',
+  documentType: 'documentType',
+  provider: 'provider',
+  folio: 'folio',
+  trackId: 'trackId',
+  status: 'status',
+  siiStatus: 'siiStatus',
+  pdfUrl: 'pdfUrl',
+  xmlUrl: 'xmlUrl',
+  providerResponse: 'providerResponse',
+  netAmount: 'netAmount',
+  taxAmount: 'taxAmount',
+  totalAmount: 'totalAmount',
+  receiverRut: 'receiverRut',
+  receiverName: 'receiverName',
+  receiverEmail: 'receiverEmail',
+  retryCount: 'retryCount',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TaxDocumentAuditLogScalarFieldEnum = {
+  auditLogId: 'auditLogId',
+  taxDocumentId: 'taxDocumentId',
+  action: 'action',
+  previousStatus: 'previousStatus',
+  newStatus: 'newStatus',
+  payload: 'payload',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -449,6 +484,25 @@ exports.UsageContext = exports.$Enums.UsageContext = {
   BOTH: 'BOTH'
 };
 
+exports.DocumentType = exports.$Enums.DocumentType = {
+  RECEIPT: 'RECEIPT',
+  BOLETA: 'BOLETA',
+  FACTURA: 'FACTURA'
+};
+
+exports.TaxProviderType = exports.$Enums.TaxProviderType = {
+  AUTH_CL: 'AUTH_CL',
+  INTERNAL: 'INTERNAL'
+};
+
+exports.TaxDocumentStatus = exports.$Enums.TaxDocumentStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  ERROR: 'ERROR'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Customer: 'Customer',
@@ -467,7 +521,9 @@ exports.Prisma.ModelName = {
   Expense: 'Expense',
   Provider: 'Provider',
   Purchase: 'Purchase',
-  PurchaseDetail: 'PurchaseDetail'
+  PurchaseDetail: 'PurchaseDetail',
+  TaxDocument: 'TaxDocument',
+  TaxDocumentAuditLog: 'TaxDocumentAuditLog'
 };
 
 /**

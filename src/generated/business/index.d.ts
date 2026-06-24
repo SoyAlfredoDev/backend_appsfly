@@ -103,6 +103,16 @@ export type Purchase = $Result.DefaultSelection<Prisma.$PurchasePayload>
  * 
  */
 export type PurchaseDetail = $Result.DefaultSelection<Prisma.$PurchaseDetailPayload>
+/**
+ * Model TaxDocument
+ * 
+ */
+export type TaxDocument = $Result.DefaultSelection<Prisma.$TaxDocumentPayload>
+/**
+ * Model TaxDocumentAuditLog
+ * 
+ */
+export type TaxDocumentAuditLog = $Result.DefaultSelection<Prisma.$TaxDocumentAuditLogPayload>
 
 /**
  * Enums
@@ -182,6 +192,34 @@ export const InventoryReferenceType: {
 
 export type InventoryReferenceType = (typeof InventoryReferenceType)[keyof typeof InventoryReferenceType]
 
+
+export const DocumentType: {
+  RECEIPT: 'RECEIPT',
+  BOLETA: 'BOLETA',
+  FACTURA: 'FACTURA'
+};
+
+export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
+
+
+export const TaxDocumentStatus: {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  ERROR: 'ERROR'
+};
+
+export type TaxDocumentStatus = (typeof TaxDocumentStatus)[keyof typeof TaxDocumentStatus]
+
+
+export const TaxProviderType: {
+  AUTH_CL: 'AUTH_CL',
+  INTERNAL: 'INTERNAL'
+};
+
+export type TaxProviderType = (typeof TaxProviderType)[keyof typeof TaxProviderType]
+
 }
 
 export type Role = $Enums.Role
@@ -211,6 +249,18 @@ export const InventoryMovementType: typeof $Enums.InventoryMovementType
 export type InventoryReferenceType = $Enums.InventoryReferenceType
 
 export const InventoryReferenceType: typeof $Enums.InventoryReferenceType
+
+export type DocumentType = $Enums.DocumentType
+
+export const DocumentType: typeof $Enums.DocumentType
+
+export type TaxDocumentStatus = $Enums.TaxDocumentStatus
+
+export const TaxDocumentStatus: typeof $Enums.TaxDocumentStatus
+
+export type TaxProviderType = $Enums.TaxProviderType
+
+export const TaxProviderType: typeof $Enums.TaxProviderType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -509,6 +559,26 @@ export class PrismaClient<
     * ```
     */
   get purchaseDetail(): Prisma.PurchaseDetailDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.taxDocument`: Exposes CRUD operations for the **TaxDocument** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TaxDocuments
+    * const taxDocuments = await prisma.taxDocument.findMany()
+    * ```
+    */
+  get taxDocument(): Prisma.TaxDocumentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.taxDocumentAuditLog`: Exposes CRUD operations for the **TaxDocumentAuditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TaxDocumentAuditLogs
+    * const taxDocumentAuditLogs = await prisma.taxDocumentAuditLog.findMany()
+    * ```
+    */
+  get taxDocumentAuditLog(): Prisma.TaxDocumentAuditLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -967,7 +1037,9 @@ export namespace Prisma {
     Expense: 'Expense',
     Provider: 'Provider',
     Purchase: 'Purchase',
-    PurchaseDetail: 'PurchaseDetail'
+    PurchaseDetail: 'PurchaseDetail',
+    TaxDocument: 'TaxDocument',
+    TaxDocumentAuditLog: 'TaxDocumentAuditLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -986,7 +1058,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "customer" | "product" | "productStock" | "inventoryMovement" | "service" | "category" | "sale" | "saleDetail" | "payment" | "cashExpense" | "dailySales" | "transactions" | "asmrCampaign" | "expense" | "provider" | "purchase" | "purchaseDetail"
+      modelProps: "user" | "customer" | "product" | "productStock" | "inventoryMovement" | "service" | "category" | "sale" | "saleDetail" | "payment" | "cashExpense" | "dailySales" | "transactions" | "asmrCampaign" | "expense" | "provider" | "purchase" | "purchaseDetail" | "taxDocument" | "taxDocumentAuditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2322,6 +2394,154 @@ export namespace Prisma {
           }
         }
       }
+      TaxDocument: {
+        payload: Prisma.$TaxDocumentPayload<ExtArgs>
+        fields: Prisma.TaxDocumentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TaxDocumentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TaxDocumentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload>
+          }
+          findFirst: {
+            args: Prisma.TaxDocumentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TaxDocumentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload>
+          }
+          findMany: {
+            args: Prisma.TaxDocumentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload>[]
+          }
+          create: {
+            args: Prisma.TaxDocumentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload>
+          }
+          createMany: {
+            args: Prisma.TaxDocumentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TaxDocumentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload>[]
+          }
+          delete: {
+            args: Prisma.TaxDocumentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload>
+          }
+          update: {
+            args: Prisma.TaxDocumentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload>
+          }
+          deleteMany: {
+            args: Prisma.TaxDocumentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TaxDocumentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TaxDocumentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload>[]
+          }
+          upsert: {
+            args: Prisma.TaxDocumentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentPayload>
+          }
+          aggregate: {
+            args: Prisma.TaxDocumentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTaxDocument>
+          }
+          groupBy: {
+            args: Prisma.TaxDocumentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TaxDocumentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TaxDocumentCountArgs<ExtArgs>
+            result: $Utils.Optional<TaxDocumentCountAggregateOutputType> | number
+          }
+        }
+      }
+      TaxDocumentAuditLog: {
+        payload: Prisma.$TaxDocumentAuditLogPayload<ExtArgs>
+        fields: Prisma.TaxDocumentAuditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TaxDocumentAuditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TaxDocumentAuditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.TaxDocumentAuditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TaxDocumentAuditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload>
+          }
+          findMany: {
+            args: Prisma.TaxDocumentAuditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload>[]
+          }
+          create: {
+            args: Prisma.TaxDocumentAuditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload>
+          }
+          createMany: {
+            args: Prisma.TaxDocumentAuditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TaxDocumentAuditLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload>[]
+          }
+          delete: {
+            args: Prisma.TaxDocumentAuditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload>
+          }
+          update: {
+            args: Prisma.TaxDocumentAuditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.TaxDocumentAuditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TaxDocumentAuditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TaxDocumentAuditLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.TaxDocumentAuditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaxDocumentAuditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.TaxDocumentAuditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTaxDocumentAuditLog>
+          }
+          groupBy: {
+            args: Prisma.TaxDocumentAuditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TaxDocumentAuditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TaxDocumentAuditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<TaxDocumentAuditLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2436,6 +2656,8 @@ export namespace Prisma {
     provider?: ProviderOmit
     purchase?: PurchaseOmit
     purchaseDetail?: PurchaseDetailOmit
+    taxDocument?: TaxDocumentOmit
+    taxDocumentAuditLog?: TaxDocumentAuditLogOmit
   }
 
   /* Types for Logging */
@@ -2884,11 +3106,13 @@ export namespace Prisma {
   export type SaleCountOutputType = {
     SaleDetail: number
     Payment: number
+    taxDocuments: number
   }
 
   export type SaleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     SaleDetail?: boolean | SaleCountOutputTypeCountSaleDetailArgs
     Payment?: boolean | SaleCountOutputTypeCountPaymentArgs
+    taxDocuments?: boolean | SaleCountOutputTypeCountTaxDocumentsArgs
   }
 
   // Custom InputTypes
@@ -2914,6 +3138,13 @@ export namespace Prisma {
    */
   export type SaleCountOutputTypeCountPaymentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PaymentWhereInput
+  }
+
+  /**
+   * SaleCountOutputType without action
+   */
+  export type SaleCountOutputTypeCountTaxDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaxDocumentWhereInput
   }
 
 
@@ -2976,6 +3207,37 @@ export namespace Prisma {
    */
   export type PurchaseCountOutputTypeCountPurchaseDetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PurchaseDetailWhereInput
+  }
+
+
+  /**
+   * Count Type TaxDocumentCountOutputType
+   */
+
+  export type TaxDocumentCountOutputType = {
+    auditLogs: number
+  }
+
+  export type TaxDocumentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    auditLogs?: boolean | TaxDocumentCountOutputTypeCountAuditLogsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TaxDocumentCountOutputType without action
+   */
+  export type TaxDocumentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentCountOutputType
+     */
+    select?: TaxDocumentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TaxDocumentCountOutputType without action
+   */
+  export type TaxDocumentCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaxDocumentAuditLogWhereInput
   }
 
 
@@ -11921,6 +12183,7 @@ export namespace Prisma {
     saleNumber: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    documentType: $Enums.DocumentType | null
   }
 
   export type SaleMaxAggregateOutputType = {
@@ -11935,6 +12198,7 @@ export namespace Prisma {
     saleNumber: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    documentType: $Enums.DocumentType | null
   }
 
   export type SaleCountAggregateOutputType = {
@@ -11949,6 +12213,7 @@ export namespace Prisma {
     saleNumber: number
     createdAt: number
     updatedAt: number
+    documentType: number
     _all: number
   }
 
@@ -11977,6 +12242,7 @@ export namespace Prisma {
     saleNumber?: true
     createdAt?: true
     updatedAt?: true
+    documentType?: true
   }
 
   export type SaleMaxAggregateInputType = {
@@ -11991,6 +12257,7 @@ export namespace Prisma {
     saleNumber?: true
     createdAt?: true
     updatedAt?: true
+    documentType?: true
   }
 
   export type SaleCountAggregateInputType = {
@@ -12005,6 +12272,7 @@ export namespace Prisma {
     saleNumber?: true
     createdAt?: true
     updatedAt?: true
+    documentType?: true
     _all?: true
   }
 
@@ -12106,6 +12374,7 @@ export namespace Prisma {
     saleNumber: string | null
     createdAt: Date
     updatedAt: Date
+    documentType: $Enums.DocumentType
     _count: SaleCountAggregateOutputType | null
     _avg: SaleAvgAggregateOutputType | null
     _sum: SaleSumAggregateOutputType | null
@@ -12139,10 +12408,12 @@ export namespace Prisma {
     saleNumber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    documentType?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
     SaleDetail?: boolean | Sale$SaleDetailArgs<ExtArgs>
     Payment?: boolean | Sale$PaymentArgs<ExtArgs>
+    taxDocuments?: boolean | Sale$taxDocumentsArgs<ExtArgs>
     _count?: boolean | SaleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sale"]>
 
@@ -12158,6 +12429,7 @@ export namespace Prisma {
     saleNumber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    documentType?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sale"]>
@@ -12174,6 +12446,7 @@ export namespace Prisma {
     saleNumber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    documentType?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["sale"]>
@@ -12190,14 +12463,16 @@ export namespace Prisma {
     saleNumber?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    documentType?: boolean
   }
 
-  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"saleId" | "saleCustomerId" | "saleTotal" | "saleTotalPayments" | "salePendingAmount" | "createdByUserId" | "saleComment" | "saleImageUrl" | "saleNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["sale"]>
+  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"saleId" | "saleCustomerId" | "saleTotal" | "saleTotalPayments" | "salePendingAmount" | "createdByUserId" | "saleComment" | "saleImageUrl" | "saleNumber" | "createdAt" | "updatedAt" | "documentType", ExtArgs["result"]["sale"]>
   export type SaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
     SaleDetail?: boolean | Sale$SaleDetailArgs<ExtArgs>
     Payment?: boolean | Sale$PaymentArgs<ExtArgs>
+    taxDocuments?: boolean | Sale$taxDocumentsArgs<ExtArgs>
     _count?: boolean | SaleCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SaleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12216,6 +12491,7 @@ export namespace Prisma {
       customer: Prisma.$CustomerPayload<ExtArgs>
       SaleDetail: Prisma.$SaleDetailPayload<ExtArgs>[]
       Payment: Prisma.$PaymentPayload<ExtArgs>[]
+      taxDocuments: Prisma.$TaxDocumentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       saleId: string
@@ -12232,6 +12508,10 @@ export namespace Prisma {
       saleNumber: string | null
       createdAt: Date
       updatedAt: Date
+      /**
+       * * Tipo de comprobante solicitado al registrar la venta
+       */
+      documentType: $Enums.DocumentType
     }, ExtArgs["result"]["sale"]>
     composites: {}
   }
@@ -12630,6 +12910,7 @@ export namespace Prisma {
     customer<T extends CustomerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CustomerDefaultArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     SaleDetail<T extends Sale$SaleDetailArgs<ExtArgs> = {}>(args?: Subset<T, Sale$SaleDetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SaleDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Payment<T extends Sale$PaymentArgs<ExtArgs> = {}>(args?: Subset<T, Sale$PaymentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    taxDocuments<T extends Sale$taxDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, Sale$taxDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12670,6 +12951,7 @@ export namespace Prisma {
     readonly saleNumber: FieldRef<"Sale", 'String'>
     readonly createdAt: FieldRef<"Sale", 'DateTime'>
     readonly updatedAt: FieldRef<"Sale", 'DateTime'>
+    readonly documentType: FieldRef<"Sale", 'DocumentType'>
   }
     
 
@@ -13111,6 +13393,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Sale.taxDocuments
+   */
+  export type Sale$taxDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    where?: TaxDocumentWhereInput
+    orderBy?: TaxDocumentOrderByWithRelationInput | TaxDocumentOrderByWithRelationInput[]
+    cursor?: TaxDocumentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaxDocumentScalarFieldEnum | TaxDocumentScalarFieldEnum[]
   }
 
   /**
@@ -25013,6 +25319,2428 @@ export namespace Prisma {
 
 
   /**
+   * Model TaxDocument
+   */
+
+  export type AggregateTaxDocument = {
+    _count: TaxDocumentCountAggregateOutputType | null
+    _avg: TaxDocumentAvgAggregateOutputType | null
+    _sum: TaxDocumentSumAggregateOutputType | null
+    _min: TaxDocumentMinAggregateOutputType | null
+    _max: TaxDocumentMaxAggregateOutputType | null
+  }
+
+  export type TaxDocumentAvgAggregateOutputType = {
+    folio: number | null
+    netAmount: number | null
+    taxAmount: number | null
+    totalAmount: number | null
+    retryCount: number | null
+  }
+
+  export type TaxDocumentSumAggregateOutputType = {
+    folio: number | null
+    netAmount: number | null
+    taxAmount: number | null
+    totalAmount: number | null
+    retryCount: number | null
+  }
+
+  export type TaxDocumentMinAggregateOutputType = {
+    taxDocumentId: string | null
+    saleId: string | null
+    documentType: $Enums.DocumentType | null
+    provider: $Enums.TaxProviderType | null
+    folio: number | null
+    trackId: string | null
+    status: $Enums.TaxDocumentStatus | null
+    siiStatus: string | null
+    pdfUrl: string | null
+    xmlUrl: string | null
+    netAmount: number | null
+    taxAmount: number | null
+    totalAmount: number | null
+    receiverRut: string | null
+    receiverName: string | null
+    receiverEmail: string | null
+    retryCount: number | null
+    lastError: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TaxDocumentMaxAggregateOutputType = {
+    taxDocumentId: string | null
+    saleId: string | null
+    documentType: $Enums.DocumentType | null
+    provider: $Enums.TaxProviderType | null
+    folio: number | null
+    trackId: string | null
+    status: $Enums.TaxDocumentStatus | null
+    siiStatus: string | null
+    pdfUrl: string | null
+    xmlUrl: string | null
+    netAmount: number | null
+    taxAmount: number | null
+    totalAmount: number | null
+    receiverRut: string | null
+    receiverName: string | null
+    receiverEmail: string | null
+    retryCount: number | null
+    lastError: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TaxDocumentCountAggregateOutputType = {
+    taxDocumentId: number
+    saleId: number
+    documentType: number
+    provider: number
+    folio: number
+    trackId: number
+    status: number
+    siiStatus: number
+    pdfUrl: number
+    xmlUrl: number
+    providerResponse: number
+    netAmount: number
+    taxAmount: number
+    totalAmount: number
+    receiverRut: number
+    receiverName: number
+    receiverEmail: number
+    retryCount: number
+    lastError: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TaxDocumentAvgAggregateInputType = {
+    folio?: true
+    netAmount?: true
+    taxAmount?: true
+    totalAmount?: true
+    retryCount?: true
+  }
+
+  export type TaxDocumentSumAggregateInputType = {
+    folio?: true
+    netAmount?: true
+    taxAmount?: true
+    totalAmount?: true
+    retryCount?: true
+  }
+
+  export type TaxDocumentMinAggregateInputType = {
+    taxDocumentId?: true
+    saleId?: true
+    documentType?: true
+    provider?: true
+    folio?: true
+    trackId?: true
+    status?: true
+    siiStatus?: true
+    pdfUrl?: true
+    xmlUrl?: true
+    netAmount?: true
+    taxAmount?: true
+    totalAmount?: true
+    receiverRut?: true
+    receiverName?: true
+    receiverEmail?: true
+    retryCount?: true
+    lastError?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TaxDocumentMaxAggregateInputType = {
+    taxDocumentId?: true
+    saleId?: true
+    documentType?: true
+    provider?: true
+    folio?: true
+    trackId?: true
+    status?: true
+    siiStatus?: true
+    pdfUrl?: true
+    xmlUrl?: true
+    netAmount?: true
+    taxAmount?: true
+    totalAmount?: true
+    receiverRut?: true
+    receiverName?: true
+    receiverEmail?: true
+    retryCount?: true
+    lastError?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TaxDocumentCountAggregateInputType = {
+    taxDocumentId?: true
+    saleId?: true
+    documentType?: true
+    provider?: true
+    folio?: true
+    trackId?: true
+    status?: true
+    siiStatus?: true
+    pdfUrl?: true
+    xmlUrl?: true
+    providerResponse?: true
+    netAmount?: true
+    taxAmount?: true
+    totalAmount?: true
+    receiverRut?: true
+    receiverName?: true
+    receiverEmail?: true
+    retryCount?: true
+    lastError?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TaxDocumentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TaxDocument to aggregate.
+     */
+    where?: TaxDocumentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxDocuments to fetch.
+     */
+    orderBy?: TaxDocumentOrderByWithRelationInput | TaxDocumentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TaxDocumentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TaxDocuments
+    **/
+    _count?: true | TaxDocumentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TaxDocumentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TaxDocumentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TaxDocumentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TaxDocumentMaxAggregateInputType
+  }
+
+  export type GetTaxDocumentAggregateType<T extends TaxDocumentAggregateArgs> = {
+        [P in keyof T & keyof AggregateTaxDocument]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTaxDocument[P]>
+      : GetScalarType<T[P], AggregateTaxDocument[P]>
+  }
+
+
+
+
+  export type TaxDocumentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaxDocumentWhereInput
+    orderBy?: TaxDocumentOrderByWithAggregationInput | TaxDocumentOrderByWithAggregationInput[]
+    by: TaxDocumentScalarFieldEnum[] | TaxDocumentScalarFieldEnum
+    having?: TaxDocumentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TaxDocumentCountAggregateInputType | true
+    _avg?: TaxDocumentAvgAggregateInputType
+    _sum?: TaxDocumentSumAggregateInputType
+    _min?: TaxDocumentMinAggregateInputType
+    _max?: TaxDocumentMaxAggregateInputType
+  }
+
+  export type TaxDocumentGroupByOutputType = {
+    taxDocumentId: string
+    saleId: string
+    documentType: $Enums.DocumentType
+    provider: $Enums.TaxProviderType
+    folio: number | null
+    trackId: string | null
+    status: $Enums.TaxDocumentStatus
+    siiStatus: string | null
+    pdfUrl: string | null
+    xmlUrl: string | null
+    providerResponse: JsonValue | null
+    netAmount: number | null
+    taxAmount: number | null
+    totalAmount: number | null
+    receiverRut: string | null
+    receiverName: string | null
+    receiverEmail: string | null
+    retryCount: number
+    lastError: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: TaxDocumentCountAggregateOutputType | null
+    _avg: TaxDocumentAvgAggregateOutputType | null
+    _sum: TaxDocumentSumAggregateOutputType | null
+    _min: TaxDocumentMinAggregateOutputType | null
+    _max: TaxDocumentMaxAggregateOutputType | null
+  }
+
+  type GetTaxDocumentGroupByPayload<T extends TaxDocumentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TaxDocumentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TaxDocumentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TaxDocumentGroupByOutputType[P]>
+            : GetScalarType<T[P], TaxDocumentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TaxDocumentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    taxDocumentId?: boolean
+    saleId?: boolean
+    documentType?: boolean
+    provider?: boolean
+    folio?: boolean
+    trackId?: boolean
+    status?: boolean
+    siiStatus?: boolean
+    pdfUrl?: boolean
+    xmlUrl?: boolean
+    providerResponse?: boolean
+    netAmount?: boolean
+    taxAmount?: boolean
+    totalAmount?: boolean
+    receiverRut?: boolean
+    receiverName?: boolean
+    receiverEmail?: boolean
+    retryCount?: boolean
+    lastError?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+    auditLogs?: boolean | TaxDocument$auditLogsArgs<ExtArgs>
+    _count?: boolean | TaxDocumentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["taxDocument"]>
+
+  export type TaxDocumentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    taxDocumentId?: boolean
+    saleId?: boolean
+    documentType?: boolean
+    provider?: boolean
+    folio?: boolean
+    trackId?: boolean
+    status?: boolean
+    siiStatus?: boolean
+    pdfUrl?: boolean
+    xmlUrl?: boolean
+    providerResponse?: boolean
+    netAmount?: boolean
+    taxAmount?: boolean
+    totalAmount?: boolean
+    receiverRut?: boolean
+    receiverName?: boolean
+    receiverEmail?: boolean
+    retryCount?: boolean
+    lastError?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["taxDocument"]>
+
+  export type TaxDocumentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    taxDocumentId?: boolean
+    saleId?: boolean
+    documentType?: boolean
+    provider?: boolean
+    folio?: boolean
+    trackId?: boolean
+    status?: boolean
+    siiStatus?: boolean
+    pdfUrl?: boolean
+    xmlUrl?: boolean
+    providerResponse?: boolean
+    netAmount?: boolean
+    taxAmount?: boolean
+    totalAmount?: boolean
+    receiverRut?: boolean
+    receiverName?: boolean
+    receiverEmail?: boolean
+    retryCount?: boolean
+    lastError?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["taxDocument"]>
+
+  export type TaxDocumentSelectScalar = {
+    taxDocumentId?: boolean
+    saleId?: boolean
+    documentType?: boolean
+    provider?: boolean
+    folio?: boolean
+    trackId?: boolean
+    status?: boolean
+    siiStatus?: boolean
+    pdfUrl?: boolean
+    xmlUrl?: boolean
+    providerResponse?: boolean
+    netAmount?: boolean
+    taxAmount?: boolean
+    totalAmount?: boolean
+    receiverRut?: boolean
+    receiverName?: boolean
+    receiverEmail?: boolean
+    retryCount?: boolean
+    lastError?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TaxDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"taxDocumentId" | "saleId" | "documentType" | "provider" | "folio" | "trackId" | "status" | "siiStatus" | "pdfUrl" | "xmlUrl" | "providerResponse" | "netAmount" | "taxAmount" | "totalAmount" | "receiverRut" | "receiverName" | "receiverEmail" | "retryCount" | "lastError" | "createdAt" | "updatedAt", ExtArgs["result"]["taxDocument"]>
+  export type TaxDocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+    auditLogs?: boolean | TaxDocument$auditLogsArgs<ExtArgs>
+    _count?: boolean | TaxDocumentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TaxDocumentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }
+  export type TaxDocumentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }
+
+  export type $TaxDocumentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TaxDocument"
+    objects: {
+      sale: Prisma.$SalePayload<ExtArgs>
+      auditLogs: Prisma.$TaxDocumentAuditLogPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      taxDocumentId: string
+      saleId: string
+      documentType: $Enums.DocumentType
+      provider: $Enums.TaxProviderType
+      folio: number | null
+      trackId: string | null
+      status: $Enums.TaxDocumentStatus
+      siiStatus: string | null
+      pdfUrl: string | null
+      xmlUrl: string | null
+      providerResponse: Prisma.JsonValue | null
+      netAmount: number | null
+      taxAmount: number | null
+      totalAmount: number | null
+      receiverRut: string | null
+      receiverName: string | null
+      receiverEmail: string | null
+      retryCount: number
+      lastError: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["taxDocument"]>
+    composites: {}
+  }
+
+  type TaxDocumentGetPayload<S extends boolean | null | undefined | TaxDocumentDefaultArgs> = $Result.GetResult<Prisma.$TaxDocumentPayload, S>
+
+  type TaxDocumentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TaxDocumentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TaxDocumentCountAggregateInputType | true
+    }
+
+  export interface TaxDocumentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TaxDocument'], meta: { name: 'TaxDocument' } }
+    /**
+     * Find zero or one TaxDocument that matches the filter.
+     * @param {TaxDocumentFindUniqueArgs} args - Arguments to find a TaxDocument
+     * @example
+     * // Get one TaxDocument
+     * const taxDocument = await prisma.taxDocument.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TaxDocumentFindUniqueArgs>(args: SelectSubset<T, TaxDocumentFindUniqueArgs<ExtArgs>>): Prisma__TaxDocumentClient<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TaxDocument that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TaxDocumentFindUniqueOrThrowArgs} args - Arguments to find a TaxDocument
+     * @example
+     * // Get one TaxDocument
+     * const taxDocument = await prisma.taxDocument.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TaxDocumentFindUniqueOrThrowArgs>(args: SelectSubset<T, TaxDocumentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TaxDocumentClient<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TaxDocument that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentFindFirstArgs} args - Arguments to find a TaxDocument
+     * @example
+     * // Get one TaxDocument
+     * const taxDocument = await prisma.taxDocument.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TaxDocumentFindFirstArgs>(args?: SelectSubset<T, TaxDocumentFindFirstArgs<ExtArgs>>): Prisma__TaxDocumentClient<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TaxDocument that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentFindFirstOrThrowArgs} args - Arguments to find a TaxDocument
+     * @example
+     * // Get one TaxDocument
+     * const taxDocument = await prisma.taxDocument.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TaxDocumentFindFirstOrThrowArgs>(args?: SelectSubset<T, TaxDocumentFindFirstOrThrowArgs<ExtArgs>>): Prisma__TaxDocumentClient<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TaxDocuments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TaxDocuments
+     * const taxDocuments = await prisma.taxDocument.findMany()
+     * 
+     * // Get first 10 TaxDocuments
+     * const taxDocuments = await prisma.taxDocument.findMany({ take: 10 })
+     * 
+     * // Only select the `taxDocumentId`
+     * const taxDocumentWithTaxDocumentIdOnly = await prisma.taxDocument.findMany({ select: { taxDocumentId: true } })
+     * 
+     */
+    findMany<T extends TaxDocumentFindManyArgs>(args?: SelectSubset<T, TaxDocumentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TaxDocument.
+     * @param {TaxDocumentCreateArgs} args - Arguments to create a TaxDocument.
+     * @example
+     * // Create one TaxDocument
+     * const TaxDocument = await prisma.taxDocument.create({
+     *   data: {
+     *     // ... data to create a TaxDocument
+     *   }
+     * })
+     * 
+     */
+    create<T extends TaxDocumentCreateArgs>(args: SelectSubset<T, TaxDocumentCreateArgs<ExtArgs>>): Prisma__TaxDocumentClient<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TaxDocuments.
+     * @param {TaxDocumentCreateManyArgs} args - Arguments to create many TaxDocuments.
+     * @example
+     * // Create many TaxDocuments
+     * const taxDocument = await prisma.taxDocument.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TaxDocumentCreateManyArgs>(args?: SelectSubset<T, TaxDocumentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TaxDocuments and returns the data saved in the database.
+     * @param {TaxDocumentCreateManyAndReturnArgs} args - Arguments to create many TaxDocuments.
+     * @example
+     * // Create many TaxDocuments
+     * const taxDocument = await prisma.taxDocument.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TaxDocuments and only return the `taxDocumentId`
+     * const taxDocumentWithTaxDocumentIdOnly = await prisma.taxDocument.createManyAndReturn({
+     *   select: { taxDocumentId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TaxDocumentCreateManyAndReturnArgs>(args?: SelectSubset<T, TaxDocumentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TaxDocument.
+     * @param {TaxDocumentDeleteArgs} args - Arguments to delete one TaxDocument.
+     * @example
+     * // Delete one TaxDocument
+     * const TaxDocument = await prisma.taxDocument.delete({
+     *   where: {
+     *     // ... filter to delete one TaxDocument
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TaxDocumentDeleteArgs>(args: SelectSubset<T, TaxDocumentDeleteArgs<ExtArgs>>): Prisma__TaxDocumentClient<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TaxDocument.
+     * @param {TaxDocumentUpdateArgs} args - Arguments to update one TaxDocument.
+     * @example
+     * // Update one TaxDocument
+     * const taxDocument = await prisma.taxDocument.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TaxDocumentUpdateArgs>(args: SelectSubset<T, TaxDocumentUpdateArgs<ExtArgs>>): Prisma__TaxDocumentClient<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TaxDocuments.
+     * @param {TaxDocumentDeleteManyArgs} args - Arguments to filter TaxDocuments to delete.
+     * @example
+     * // Delete a few TaxDocuments
+     * const { count } = await prisma.taxDocument.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TaxDocumentDeleteManyArgs>(args?: SelectSubset<T, TaxDocumentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TaxDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TaxDocuments
+     * const taxDocument = await prisma.taxDocument.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TaxDocumentUpdateManyArgs>(args: SelectSubset<T, TaxDocumentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TaxDocuments and returns the data updated in the database.
+     * @param {TaxDocumentUpdateManyAndReturnArgs} args - Arguments to update many TaxDocuments.
+     * @example
+     * // Update many TaxDocuments
+     * const taxDocument = await prisma.taxDocument.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TaxDocuments and only return the `taxDocumentId`
+     * const taxDocumentWithTaxDocumentIdOnly = await prisma.taxDocument.updateManyAndReturn({
+     *   select: { taxDocumentId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TaxDocumentUpdateManyAndReturnArgs>(args: SelectSubset<T, TaxDocumentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TaxDocument.
+     * @param {TaxDocumentUpsertArgs} args - Arguments to update or create a TaxDocument.
+     * @example
+     * // Update or create a TaxDocument
+     * const taxDocument = await prisma.taxDocument.upsert({
+     *   create: {
+     *     // ... data to create a TaxDocument
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TaxDocument we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TaxDocumentUpsertArgs>(args: SelectSubset<T, TaxDocumentUpsertArgs<ExtArgs>>): Prisma__TaxDocumentClient<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TaxDocuments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentCountArgs} args - Arguments to filter TaxDocuments to count.
+     * @example
+     * // Count the number of TaxDocuments
+     * const count = await prisma.taxDocument.count({
+     *   where: {
+     *     // ... the filter for the TaxDocuments we want to count
+     *   }
+     * })
+    **/
+    count<T extends TaxDocumentCountArgs>(
+      args?: Subset<T, TaxDocumentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TaxDocumentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TaxDocument.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TaxDocumentAggregateArgs>(args: Subset<T, TaxDocumentAggregateArgs>): Prisma.PrismaPromise<GetTaxDocumentAggregateType<T>>
+
+    /**
+     * Group by TaxDocument.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TaxDocumentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TaxDocumentGroupByArgs['orderBy'] }
+        : { orderBy?: TaxDocumentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TaxDocumentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTaxDocumentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TaxDocument model
+   */
+  readonly fields: TaxDocumentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TaxDocument.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TaxDocumentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sale<T extends SaleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SaleDefaultArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    auditLogs<T extends TaxDocument$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, TaxDocument$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TaxDocument model
+   */
+  interface TaxDocumentFieldRefs {
+    readonly taxDocumentId: FieldRef<"TaxDocument", 'String'>
+    readonly saleId: FieldRef<"TaxDocument", 'String'>
+    readonly documentType: FieldRef<"TaxDocument", 'DocumentType'>
+    readonly provider: FieldRef<"TaxDocument", 'TaxProviderType'>
+    readonly folio: FieldRef<"TaxDocument", 'Int'>
+    readonly trackId: FieldRef<"TaxDocument", 'String'>
+    readonly status: FieldRef<"TaxDocument", 'TaxDocumentStatus'>
+    readonly siiStatus: FieldRef<"TaxDocument", 'String'>
+    readonly pdfUrl: FieldRef<"TaxDocument", 'String'>
+    readonly xmlUrl: FieldRef<"TaxDocument", 'String'>
+    readonly providerResponse: FieldRef<"TaxDocument", 'Json'>
+    readonly netAmount: FieldRef<"TaxDocument", 'Int'>
+    readonly taxAmount: FieldRef<"TaxDocument", 'Int'>
+    readonly totalAmount: FieldRef<"TaxDocument", 'Int'>
+    readonly receiverRut: FieldRef<"TaxDocument", 'String'>
+    readonly receiverName: FieldRef<"TaxDocument", 'String'>
+    readonly receiverEmail: FieldRef<"TaxDocument", 'String'>
+    readonly retryCount: FieldRef<"TaxDocument", 'Int'>
+    readonly lastError: FieldRef<"TaxDocument", 'String'>
+    readonly createdAt: FieldRef<"TaxDocument", 'DateTime'>
+    readonly updatedAt: FieldRef<"TaxDocument", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TaxDocument findUnique
+   */
+  export type TaxDocumentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocument to fetch.
+     */
+    where: TaxDocumentWhereUniqueInput
+  }
+
+  /**
+   * TaxDocument findUniqueOrThrow
+   */
+  export type TaxDocumentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocument to fetch.
+     */
+    where: TaxDocumentWhereUniqueInput
+  }
+
+  /**
+   * TaxDocument findFirst
+   */
+  export type TaxDocumentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocument to fetch.
+     */
+    where?: TaxDocumentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxDocuments to fetch.
+     */
+    orderBy?: TaxDocumentOrderByWithRelationInput | TaxDocumentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TaxDocuments.
+     */
+    cursor?: TaxDocumentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TaxDocuments.
+     */
+    distinct?: TaxDocumentScalarFieldEnum | TaxDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * TaxDocument findFirstOrThrow
+   */
+  export type TaxDocumentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocument to fetch.
+     */
+    where?: TaxDocumentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxDocuments to fetch.
+     */
+    orderBy?: TaxDocumentOrderByWithRelationInput | TaxDocumentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TaxDocuments.
+     */
+    cursor?: TaxDocumentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxDocuments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TaxDocuments.
+     */
+    distinct?: TaxDocumentScalarFieldEnum | TaxDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * TaxDocument findMany
+   */
+  export type TaxDocumentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocuments to fetch.
+     */
+    where?: TaxDocumentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxDocuments to fetch.
+     */
+    orderBy?: TaxDocumentOrderByWithRelationInput | TaxDocumentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TaxDocuments.
+     */
+    cursor?: TaxDocumentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxDocuments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxDocuments.
+     */
+    skip?: number
+    distinct?: TaxDocumentScalarFieldEnum | TaxDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * TaxDocument create
+   */
+  export type TaxDocumentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TaxDocument.
+     */
+    data: XOR<TaxDocumentCreateInput, TaxDocumentUncheckedCreateInput>
+  }
+
+  /**
+   * TaxDocument createMany
+   */
+  export type TaxDocumentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TaxDocuments.
+     */
+    data: TaxDocumentCreateManyInput | TaxDocumentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TaxDocument createManyAndReturn
+   */
+  export type TaxDocumentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * The data used to create many TaxDocuments.
+     */
+    data: TaxDocumentCreateManyInput | TaxDocumentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TaxDocument update
+   */
+  export type TaxDocumentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TaxDocument.
+     */
+    data: XOR<TaxDocumentUpdateInput, TaxDocumentUncheckedUpdateInput>
+    /**
+     * Choose, which TaxDocument to update.
+     */
+    where: TaxDocumentWhereUniqueInput
+  }
+
+  /**
+   * TaxDocument updateMany
+   */
+  export type TaxDocumentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TaxDocuments.
+     */
+    data: XOR<TaxDocumentUpdateManyMutationInput, TaxDocumentUncheckedUpdateManyInput>
+    /**
+     * Filter which TaxDocuments to update
+     */
+    where?: TaxDocumentWhereInput
+    /**
+     * Limit how many TaxDocuments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TaxDocument updateManyAndReturn
+   */
+  export type TaxDocumentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * The data used to update TaxDocuments.
+     */
+    data: XOR<TaxDocumentUpdateManyMutationInput, TaxDocumentUncheckedUpdateManyInput>
+    /**
+     * Filter which TaxDocuments to update
+     */
+    where?: TaxDocumentWhereInput
+    /**
+     * Limit how many TaxDocuments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TaxDocument upsert
+   */
+  export type TaxDocumentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TaxDocument to update in case it exists.
+     */
+    where: TaxDocumentWhereUniqueInput
+    /**
+     * In case the TaxDocument found by the `where` argument doesn't exist, create a new TaxDocument with this data.
+     */
+    create: XOR<TaxDocumentCreateInput, TaxDocumentUncheckedCreateInput>
+    /**
+     * In case the TaxDocument was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TaxDocumentUpdateInput, TaxDocumentUncheckedUpdateInput>
+  }
+
+  /**
+   * TaxDocument delete
+   */
+  export type TaxDocumentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+    /**
+     * Filter which TaxDocument to delete.
+     */
+    where: TaxDocumentWhereUniqueInput
+  }
+
+  /**
+   * TaxDocument deleteMany
+   */
+  export type TaxDocumentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TaxDocuments to delete
+     */
+    where?: TaxDocumentWhereInput
+    /**
+     * Limit how many TaxDocuments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TaxDocument.auditLogs
+   */
+  export type TaxDocument$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    where?: TaxDocumentAuditLogWhereInput
+    orderBy?: TaxDocumentAuditLogOrderByWithRelationInput | TaxDocumentAuditLogOrderByWithRelationInput[]
+    cursor?: TaxDocumentAuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaxDocumentAuditLogScalarFieldEnum | TaxDocumentAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * TaxDocument without action
+   */
+  export type TaxDocumentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocument
+     */
+    select?: TaxDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocument
+     */
+    omit?: TaxDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TaxDocumentAuditLog
+   */
+
+  export type AggregateTaxDocumentAuditLog = {
+    _count: TaxDocumentAuditLogCountAggregateOutputType | null
+    _min: TaxDocumentAuditLogMinAggregateOutputType | null
+    _max: TaxDocumentAuditLogMaxAggregateOutputType | null
+  }
+
+  export type TaxDocumentAuditLogMinAggregateOutputType = {
+    auditLogId: string | null
+    taxDocumentId: string | null
+    action: string | null
+    previousStatus: $Enums.TaxDocumentStatus | null
+    newStatus: $Enums.TaxDocumentStatus | null
+    createdAt: Date | null
+  }
+
+  export type TaxDocumentAuditLogMaxAggregateOutputType = {
+    auditLogId: string | null
+    taxDocumentId: string | null
+    action: string | null
+    previousStatus: $Enums.TaxDocumentStatus | null
+    newStatus: $Enums.TaxDocumentStatus | null
+    createdAt: Date | null
+  }
+
+  export type TaxDocumentAuditLogCountAggregateOutputType = {
+    auditLogId: number
+    taxDocumentId: number
+    action: number
+    previousStatus: number
+    newStatus: number
+    payload: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TaxDocumentAuditLogMinAggregateInputType = {
+    auditLogId?: true
+    taxDocumentId?: true
+    action?: true
+    previousStatus?: true
+    newStatus?: true
+    createdAt?: true
+  }
+
+  export type TaxDocumentAuditLogMaxAggregateInputType = {
+    auditLogId?: true
+    taxDocumentId?: true
+    action?: true
+    previousStatus?: true
+    newStatus?: true
+    createdAt?: true
+  }
+
+  export type TaxDocumentAuditLogCountAggregateInputType = {
+    auditLogId?: true
+    taxDocumentId?: true
+    action?: true
+    previousStatus?: true
+    newStatus?: true
+    payload?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TaxDocumentAuditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TaxDocumentAuditLog to aggregate.
+     */
+    where?: TaxDocumentAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxDocumentAuditLogs to fetch.
+     */
+    orderBy?: TaxDocumentAuditLogOrderByWithRelationInput | TaxDocumentAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TaxDocumentAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxDocumentAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxDocumentAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TaxDocumentAuditLogs
+    **/
+    _count?: true | TaxDocumentAuditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TaxDocumentAuditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TaxDocumentAuditLogMaxAggregateInputType
+  }
+
+  export type GetTaxDocumentAuditLogAggregateType<T extends TaxDocumentAuditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateTaxDocumentAuditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTaxDocumentAuditLog[P]>
+      : GetScalarType<T[P], AggregateTaxDocumentAuditLog[P]>
+  }
+
+
+
+
+  export type TaxDocumentAuditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaxDocumentAuditLogWhereInput
+    orderBy?: TaxDocumentAuditLogOrderByWithAggregationInput | TaxDocumentAuditLogOrderByWithAggregationInput[]
+    by: TaxDocumentAuditLogScalarFieldEnum[] | TaxDocumentAuditLogScalarFieldEnum
+    having?: TaxDocumentAuditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TaxDocumentAuditLogCountAggregateInputType | true
+    _min?: TaxDocumentAuditLogMinAggregateInputType
+    _max?: TaxDocumentAuditLogMaxAggregateInputType
+  }
+
+  export type TaxDocumentAuditLogGroupByOutputType = {
+    auditLogId: string
+    taxDocumentId: string
+    action: string
+    previousStatus: $Enums.TaxDocumentStatus | null
+    newStatus: $Enums.TaxDocumentStatus | null
+    payload: JsonValue | null
+    createdAt: Date
+    _count: TaxDocumentAuditLogCountAggregateOutputType | null
+    _min: TaxDocumentAuditLogMinAggregateOutputType | null
+    _max: TaxDocumentAuditLogMaxAggregateOutputType | null
+  }
+
+  type GetTaxDocumentAuditLogGroupByPayload<T extends TaxDocumentAuditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TaxDocumentAuditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TaxDocumentAuditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TaxDocumentAuditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], TaxDocumentAuditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TaxDocumentAuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    auditLogId?: boolean
+    taxDocumentId?: boolean
+    action?: boolean
+    previousStatus?: boolean
+    newStatus?: boolean
+    payload?: boolean
+    createdAt?: boolean
+    taxDocument?: boolean | TaxDocumentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["taxDocumentAuditLog"]>
+
+  export type TaxDocumentAuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    auditLogId?: boolean
+    taxDocumentId?: boolean
+    action?: boolean
+    previousStatus?: boolean
+    newStatus?: boolean
+    payload?: boolean
+    createdAt?: boolean
+    taxDocument?: boolean | TaxDocumentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["taxDocumentAuditLog"]>
+
+  export type TaxDocumentAuditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    auditLogId?: boolean
+    taxDocumentId?: boolean
+    action?: boolean
+    previousStatus?: boolean
+    newStatus?: boolean
+    payload?: boolean
+    createdAt?: boolean
+    taxDocument?: boolean | TaxDocumentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["taxDocumentAuditLog"]>
+
+  export type TaxDocumentAuditLogSelectScalar = {
+    auditLogId?: boolean
+    taxDocumentId?: boolean
+    action?: boolean
+    previousStatus?: boolean
+    newStatus?: boolean
+    payload?: boolean
+    createdAt?: boolean
+  }
+
+  export type TaxDocumentAuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"auditLogId" | "taxDocumentId" | "action" | "previousStatus" | "newStatus" | "payload" | "createdAt", ExtArgs["result"]["taxDocumentAuditLog"]>
+  export type TaxDocumentAuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    taxDocument?: boolean | TaxDocumentDefaultArgs<ExtArgs>
+  }
+  export type TaxDocumentAuditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    taxDocument?: boolean | TaxDocumentDefaultArgs<ExtArgs>
+  }
+  export type TaxDocumentAuditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    taxDocument?: boolean | TaxDocumentDefaultArgs<ExtArgs>
+  }
+
+  export type $TaxDocumentAuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TaxDocumentAuditLog"
+    objects: {
+      taxDocument: Prisma.$TaxDocumentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      auditLogId: string
+      taxDocumentId: string
+      action: string
+      previousStatus: $Enums.TaxDocumentStatus | null
+      newStatus: $Enums.TaxDocumentStatus | null
+      payload: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["taxDocumentAuditLog"]>
+    composites: {}
+  }
+
+  type TaxDocumentAuditLogGetPayload<S extends boolean | null | undefined | TaxDocumentAuditLogDefaultArgs> = $Result.GetResult<Prisma.$TaxDocumentAuditLogPayload, S>
+
+  type TaxDocumentAuditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TaxDocumentAuditLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TaxDocumentAuditLogCountAggregateInputType | true
+    }
+
+  export interface TaxDocumentAuditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TaxDocumentAuditLog'], meta: { name: 'TaxDocumentAuditLog' } }
+    /**
+     * Find zero or one TaxDocumentAuditLog that matches the filter.
+     * @param {TaxDocumentAuditLogFindUniqueArgs} args - Arguments to find a TaxDocumentAuditLog
+     * @example
+     * // Get one TaxDocumentAuditLog
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TaxDocumentAuditLogFindUniqueArgs>(args: SelectSubset<T, TaxDocumentAuditLogFindUniqueArgs<ExtArgs>>): Prisma__TaxDocumentAuditLogClient<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TaxDocumentAuditLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TaxDocumentAuditLogFindUniqueOrThrowArgs} args - Arguments to find a TaxDocumentAuditLog
+     * @example
+     * // Get one TaxDocumentAuditLog
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TaxDocumentAuditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, TaxDocumentAuditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TaxDocumentAuditLogClient<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TaxDocumentAuditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentAuditLogFindFirstArgs} args - Arguments to find a TaxDocumentAuditLog
+     * @example
+     * // Get one TaxDocumentAuditLog
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TaxDocumentAuditLogFindFirstArgs>(args?: SelectSubset<T, TaxDocumentAuditLogFindFirstArgs<ExtArgs>>): Prisma__TaxDocumentAuditLogClient<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TaxDocumentAuditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentAuditLogFindFirstOrThrowArgs} args - Arguments to find a TaxDocumentAuditLog
+     * @example
+     * // Get one TaxDocumentAuditLog
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TaxDocumentAuditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, TaxDocumentAuditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__TaxDocumentAuditLogClient<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TaxDocumentAuditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentAuditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TaxDocumentAuditLogs
+     * const taxDocumentAuditLogs = await prisma.taxDocumentAuditLog.findMany()
+     * 
+     * // Get first 10 TaxDocumentAuditLogs
+     * const taxDocumentAuditLogs = await prisma.taxDocumentAuditLog.findMany({ take: 10 })
+     * 
+     * // Only select the `auditLogId`
+     * const taxDocumentAuditLogWithAuditLogIdOnly = await prisma.taxDocumentAuditLog.findMany({ select: { auditLogId: true } })
+     * 
+     */
+    findMany<T extends TaxDocumentAuditLogFindManyArgs>(args?: SelectSubset<T, TaxDocumentAuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TaxDocumentAuditLog.
+     * @param {TaxDocumentAuditLogCreateArgs} args - Arguments to create a TaxDocumentAuditLog.
+     * @example
+     * // Create one TaxDocumentAuditLog
+     * const TaxDocumentAuditLog = await prisma.taxDocumentAuditLog.create({
+     *   data: {
+     *     // ... data to create a TaxDocumentAuditLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends TaxDocumentAuditLogCreateArgs>(args: SelectSubset<T, TaxDocumentAuditLogCreateArgs<ExtArgs>>): Prisma__TaxDocumentAuditLogClient<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TaxDocumentAuditLogs.
+     * @param {TaxDocumentAuditLogCreateManyArgs} args - Arguments to create many TaxDocumentAuditLogs.
+     * @example
+     * // Create many TaxDocumentAuditLogs
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TaxDocumentAuditLogCreateManyArgs>(args?: SelectSubset<T, TaxDocumentAuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TaxDocumentAuditLogs and returns the data saved in the database.
+     * @param {TaxDocumentAuditLogCreateManyAndReturnArgs} args - Arguments to create many TaxDocumentAuditLogs.
+     * @example
+     * // Create many TaxDocumentAuditLogs
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TaxDocumentAuditLogs and only return the `auditLogId`
+     * const taxDocumentAuditLogWithAuditLogIdOnly = await prisma.taxDocumentAuditLog.createManyAndReturn({
+     *   select: { auditLogId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TaxDocumentAuditLogCreateManyAndReturnArgs>(args?: SelectSubset<T, TaxDocumentAuditLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TaxDocumentAuditLog.
+     * @param {TaxDocumentAuditLogDeleteArgs} args - Arguments to delete one TaxDocumentAuditLog.
+     * @example
+     * // Delete one TaxDocumentAuditLog
+     * const TaxDocumentAuditLog = await prisma.taxDocumentAuditLog.delete({
+     *   where: {
+     *     // ... filter to delete one TaxDocumentAuditLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TaxDocumentAuditLogDeleteArgs>(args: SelectSubset<T, TaxDocumentAuditLogDeleteArgs<ExtArgs>>): Prisma__TaxDocumentAuditLogClient<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TaxDocumentAuditLog.
+     * @param {TaxDocumentAuditLogUpdateArgs} args - Arguments to update one TaxDocumentAuditLog.
+     * @example
+     * // Update one TaxDocumentAuditLog
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TaxDocumentAuditLogUpdateArgs>(args: SelectSubset<T, TaxDocumentAuditLogUpdateArgs<ExtArgs>>): Prisma__TaxDocumentAuditLogClient<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TaxDocumentAuditLogs.
+     * @param {TaxDocumentAuditLogDeleteManyArgs} args - Arguments to filter TaxDocumentAuditLogs to delete.
+     * @example
+     * // Delete a few TaxDocumentAuditLogs
+     * const { count } = await prisma.taxDocumentAuditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TaxDocumentAuditLogDeleteManyArgs>(args?: SelectSubset<T, TaxDocumentAuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TaxDocumentAuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentAuditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TaxDocumentAuditLogs
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TaxDocumentAuditLogUpdateManyArgs>(args: SelectSubset<T, TaxDocumentAuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TaxDocumentAuditLogs and returns the data updated in the database.
+     * @param {TaxDocumentAuditLogUpdateManyAndReturnArgs} args - Arguments to update many TaxDocumentAuditLogs.
+     * @example
+     * // Update many TaxDocumentAuditLogs
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TaxDocumentAuditLogs and only return the `auditLogId`
+     * const taxDocumentAuditLogWithAuditLogIdOnly = await prisma.taxDocumentAuditLog.updateManyAndReturn({
+     *   select: { auditLogId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TaxDocumentAuditLogUpdateManyAndReturnArgs>(args: SelectSubset<T, TaxDocumentAuditLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TaxDocumentAuditLog.
+     * @param {TaxDocumentAuditLogUpsertArgs} args - Arguments to update or create a TaxDocumentAuditLog.
+     * @example
+     * // Update or create a TaxDocumentAuditLog
+     * const taxDocumentAuditLog = await prisma.taxDocumentAuditLog.upsert({
+     *   create: {
+     *     // ... data to create a TaxDocumentAuditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TaxDocumentAuditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TaxDocumentAuditLogUpsertArgs>(args: SelectSubset<T, TaxDocumentAuditLogUpsertArgs<ExtArgs>>): Prisma__TaxDocumentAuditLogClient<$Result.GetResult<Prisma.$TaxDocumentAuditLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TaxDocumentAuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentAuditLogCountArgs} args - Arguments to filter TaxDocumentAuditLogs to count.
+     * @example
+     * // Count the number of TaxDocumentAuditLogs
+     * const count = await prisma.taxDocumentAuditLog.count({
+     *   where: {
+     *     // ... the filter for the TaxDocumentAuditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends TaxDocumentAuditLogCountArgs>(
+      args?: Subset<T, TaxDocumentAuditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TaxDocumentAuditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TaxDocumentAuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentAuditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TaxDocumentAuditLogAggregateArgs>(args: Subset<T, TaxDocumentAuditLogAggregateArgs>): Prisma.PrismaPromise<GetTaxDocumentAuditLogAggregateType<T>>
+
+    /**
+     * Group by TaxDocumentAuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaxDocumentAuditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TaxDocumentAuditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TaxDocumentAuditLogGroupByArgs['orderBy'] }
+        : { orderBy?: TaxDocumentAuditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TaxDocumentAuditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTaxDocumentAuditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TaxDocumentAuditLog model
+   */
+  readonly fields: TaxDocumentAuditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TaxDocumentAuditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TaxDocumentAuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    taxDocument<T extends TaxDocumentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TaxDocumentDefaultArgs<ExtArgs>>): Prisma__TaxDocumentClient<$Result.GetResult<Prisma.$TaxDocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TaxDocumentAuditLog model
+   */
+  interface TaxDocumentAuditLogFieldRefs {
+    readonly auditLogId: FieldRef<"TaxDocumentAuditLog", 'String'>
+    readonly taxDocumentId: FieldRef<"TaxDocumentAuditLog", 'String'>
+    readonly action: FieldRef<"TaxDocumentAuditLog", 'String'>
+    readonly previousStatus: FieldRef<"TaxDocumentAuditLog", 'TaxDocumentStatus'>
+    readonly newStatus: FieldRef<"TaxDocumentAuditLog", 'TaxDocumentStatus'>
+    readonly payload: FieldRef<"TaxDocumentAuditLog", 'Json'>
+    readonly createdAt: FieldRef<"TaxDocumentAuditLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TaxDocumentAuditLog findUnique
+   */
+  export type TaxDocumentAuditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocumentAuditLog to fetch.
+     */
+    where: TaxDocumentAuditLogWhereUniqueInput
+  }
+
+  /**
+   * TaxDocumentAuditLog findUniqueOrThrow
+   */
+  export type TaxDocumentAuditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocumentAuditLog to fetch.
+     */
+    where: TaxDocumentAuditLogWhereUniqueInput
+  }
+
+  /**
+   * TaxDocumentAuditLog findFirst
+   */
+  export type TaxDocumentAuditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocumentAuditLog to fetch.
+     */
+    where?: TaxDocumentAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxDocumentAuditLogs to fetch.
+     */
+    orderBy?: TaxDocumentAuditLogOrderByWithRelationInput | TaxDocumentAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TaxDocumentAuditLogs.
+     */
+    cursor?: TaxDocumentAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxDocumentAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxDocumentAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TaxDocumentAuditLogs.
+     */
+    distinct?: TaxDocumentAuditLogScalarFieldEnum | TaxDocumentAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * TaxDocumentAuditLog findFirstOrThrow
+   */
+  export type TaxDocumentAuditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocumentAuditLog to fetch.
+     */
+    where?: TaxDocumentAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxDocumentAuditLogs to fetch.
+     */
+    orderBy?: TaxDocumentAuditLogOrderByWithRelationInput | TaxDocumentAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TaxDocumentAuditLogs.
+     */
+    cursor?: TaxDocumentAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxDocumentAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxDocumentAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TaxDocumentAuditLogs.
+     */
+    distinct?: TaxDocumentAuditLogScalarFieldEnum | TaxDocumentAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * TaxDocumentAuditLog findMany
+   */
+  export type TaxDocumentAuditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which TaxDocumentAuditLogs to fetch.
+     */
+    where?: TaxDocumentAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TaxDocumentAuditLogs to fetch.
+     */
+    orderBy?: TaxDocumentAuditLogOrderByWithRelationInput | TaxDocumentAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TaxDocumentAuditLogs.
+     */
+    cursor?: TaxDocumentAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TaxDocumentAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TaxDocumentAuditLogs.
+     */
+    skip?: number
+    distinct?: TaxDocumentAuditLogScalarFieldEnum | TaxDocumentAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * TaxDocumentAuditLog create
+   */
+  export type TaxDocumentAuditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TaxDocumentAuditLog.
+     */
+    data: XOR<TaxDocumentAuditLogCreateInput, TaxDocumentAuditLogUncheckedCreateInput>
+  }
+
+  /**
+   * TaxDocumentAuditLog createMany
+   */
+  export type TaxDocumentAuditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TaxDocumentAuditLogs.
+     */
+    data: TaxDocumentAuditLogCreateManyInput | TaxDocumentAuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TaxDocumentAuditLog createManyAndReturn
+   */
+  export type TaxDocumentAuditLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many TaxDocumentAuditLogs.
+     */
+    data: TaxDocumentAuditLogCreateManyInput | TaxDocumentAuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TaxDocumentAuditLog update
+   */
+  export type TaxDocumentAuditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TaxDocumentAuditLog.
+     */
+    data: XOR<TaxDocumentAuditLogUpdateInput, TaxDocumentAuditLogUncheckedUpdateInput>
+    /**
+     * Choose, which TaxDocumentAuditLog to update.
+     */
+    where: TaxDocumentAuditLogWhereUniqueInput
+  }
+
+  /**
+   * TaxDocumentAuditLog updateMany
+   */
+  export type TaxDocumentAuditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TaxDocumentAuditLogs.
+     */
+    data: XOR<TaxDocumentAuditLogUpdateManyMutationInput, TaxDocumentAuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which TaxDocumentAuditLogs to update
+     */
+    where?: TaxDocumentAuditLogWhereInput
+    /**
+     * Limit how many TaxDocumentAuditLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TaxDocumentAuditLog updateManyAndReturn
+   */
+  export type TaxDocumentAuditLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to update TaxDocumentAuditLogs.
+     */
+    data: XOR<TaxDocumentAuditLogUpdateManyMutationInput, TaxDocumentAuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which TaxDocumentAuditLogs to update
+     */
+    where?: TaxDocumentAuditLogWhereInput
+    /**
+     * Limit how many TaxDocumentAuditLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TaxDocumentAuditLog upsert
+   */
+  export type TaxDocumentAuditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TaxDocumentAuditLog to update in case it exists.
+     */
+    where: TaxDocumentAuditLogWhereUniqueInput
+    /**
+     * In case the TaxDocumentAuditLog found by the `where` argument doesn't exist, create a new TaxDocumentAuditLog with this data.
+     */
+    create: XOR<TaxDocumentAuditLogCreateInput, TaxDocumentAuditLogUncheckedCreateInput>
+    /**
+     * In case the TaxDocumentAuditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TaxDocumentAuditLogUpdateInput, TaxDocumentAuditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * TaxDocumentAuditLog delete
+   */
+  export type TaxDocumentAuditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+    /**
+     * Filter which TaxDocumentAuditLog to delete.
+     */
+    where: TaxDocumentAuditLogWhereUniqueInput
+  }
+
+  /**
+   * TaxDocumentAuditLog deleteMany
+   */
+  export type TaxDocumentAuditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TaxDocumentAuditLogs to delete
+     */
+    where?: TaxDocumentAuditLogWhereInput
+    /**
+     * Limit how many TaxDocumentAuditLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TaxDocumentAuditLog without action
+   */
+  export type TaxDocumentAuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxDocumentAuditLog
+     */
+    select?: TaxDocumentAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxDocumentAuditLog
+     */
+    omit?: TaxDocumentAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxDocumentAuditLogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -25156,7 +27884,8 @@ export namespace Prisma {
     saleImageUrl: 'saleImageUrl',
     saleNumber: 'saleNumber',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    documentType: 'documentType'
   };
 
   export type SaleScalarFieldEnum = (typeof SaleScalarFieldEnum)[keyof typeof SaleScalarFieldEnum]
@@ -25327,6 +28056,46 @@ export namespace Prisma {
   };
 
   export type PurchaseDetailScalarFieldEnum = (typeof PurchaseDetailScalarFieldEnum)[keyof typeof PurchaseDetailScalarFieldEnum]
+
+
+  export const TaxDocumentScalarFieldEnum: {
+    taxDocumentId: 'taxDocumentId',
+    saleId: 'saleId',
+    documentType: 'documentType',
+    provider: 'provider',
+    folio: 'folio',
+    trackId: 'trackId',
+    status: 'status',
+    siiStatus: 'siiStatus',
+    pdfUrl: 'pdfUrl',
+    xmlUrl: 'xmlUrl',
+    providerResponse: 'providerResponse',
+    netAmount: 'netAmount',
+    taxAmount: 'taxAmount',
+    totalAmount: 'totalAmount',
+    receiverRut: 'receiverRut',
+    receiverName: 'receiverName',
+    receiverEmail: 'receiverEmail',
+    retryCount: 'retryCount',
+    lastError: 'lastError',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TaxDocumentScalarFieldEnum = (typeof TaxDocumentScalarFieldEnum)[keyof typeof TaxDocumentScalarFieldEnum]
+
+
+  export const TaxDocumentAuditLogScalarFieldEnum: {
+    auditLogId: 'auditLogId',
+    taxDocumentId: 'taxDocumentId',
+    action: 'action',
+    previousStatus: 'previousStatus',
+    newStatus: 'newStatus',
+    payload: 'payload',
+    createdAt: 'createdAt'
+  };
+
+  export type TaxDocumentAuditLogScalarFieldEnum = (typeof TaxDocumentAuditLogScalarFieldEnum)[keyof typeof TaxDocumentAuditLogScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -25523,6 +28292,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DocumentType'
+   */
+  export type EnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocumentType[]'
+   */
+  export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -25533,6 +28316,34 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaxProviderType'
+   */
+  export type EnumTaxProviderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaxProviderType'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaxProviderType[]'
+   */
+  export type ListEnumTaxProviderTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaxProviderType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaxDocumentStatus'
+   */
+  export type EnumTaxDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaxDocumentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaxDocumentStatus[]'
+   */
+  export type ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaxDocumentStatus[]'>
     
 
 
@@ -26258,10 +29069,12 @@ export namespace Prisma {
     saleNumber?: StringNullableFilter<"Sale"> | string | null
     createdAt?: DateTimeFilter<"Sale"> | Date | string
     updatedAt?: DateTimeFilter<"Sale"> | Date | string
+    documentType?: EnumDocumentTypeFilter<"Sale"> | $Enums.DocumentType
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
     SaleDetail?: SaleDetailListRelationFilter
     Payment?: PaymentListRelationFilter
+    taxDocuments?: TaxDocumentListRelationFilter
   }
 
   export type SaleOrderByWithRelationInput = {
@@ -26276,10 +29089,12 @@ export namespace Prisma {
     saleNumber?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    documentType?: SortOrder
     user?: UserOrderByWithRelationInput
     customer?: CustomerOrderByWithRelationInput
     SaleDetail?: SaleDetailOrderByRelationAggregateInput
     Payment?: PaymentOrderByRelationAggregateInput
+    taxDocuments?: TaxDocumentOrderByRelationAggregateInput
   }
 
   export type SaleWhereUniqueInput = Prisma.AtLeast<{
@@ -26297,10 +29112,12 @@ export namespace Prisma {
     saleNumber?: StringNullableFilter<"Sale"> | string | null
     createdAt?: DateTimeFilter<"Sale"> | Date | string
     updatedAt?: DateTimeFilter<"Sale"> | Date | string
+    documentType?: EnumDocumentTypeFilter<"Sale"> | $Enums.DocumentType
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
     SaleDetail?: SaleDetailListRelationFilter
     Payment?: PaymentListRelationFilter
+    taxDocuments?: TaxDocumentListRelationFilter
   }, "saleId">
 
   export type SaleOrderByWithAggregationInput = {
@@ -26315,6 +29132,7 @@ export namespace Prisma {
     saleNumber?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    documentType?: SortOrder
     _count?: SaleCountOrderByAggregateInput
     _avg?: SaleAvgOrderByAggregateInput
     _max?: SaleMaxOrderByAggregateInput
@@ -26337,6 +29155,7 @@ export namespace Prisma {
     saleNumber?: StringNullableWithAggregatesFilter<"Sale"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
+    documentType?: EnumDocumentTypeWithAggregatesFilter<"Sale"> | $Enums.DocumentType
   }
 
   export type SaleDetailWhereInput = {
@@ -27226,6 +30045,211 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"PurchaseDetail"> | Date | string
   }
 
+  export type TaxDocumentWhereInput = {
+    AND?: TaxDocumentWhereInput | TaxDocumentWhereInput[]
+    OR?: TaxDocumentWhereInput[]
+    NOT?: TaxDocumentWhereInput | TaxDocumentWhereInput[]
+    taxDocumentId?: StringFilter<"TaxDocument"> | string
+    saleId?: StringFilter<"TaxDocument"> | string
+    documentType?: EnumDocumentTypeFilter<"TaxDocument"> | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFilter<"TaxDocument"> | $Enums.TaxProviderType
+    folio?: IntNullableFilter<"TaxDocument"> | number | null
+    trackId?: StringNullableFilter<"TaxDocument"> | string | null
+    status?: EnumTaxDocumentStatusFilter<"TaxDocument"> | $Enums.TaxDocumentStatus
+    siiStatus?: StringNullableFilter<"TaxDocument"> | string | null
+    pdfUrl?: StringNullableFilter<"TaxDocument"> | string | null
+    xmlUrl?: StringNullableFilter<"TaxDocument"> | string | null
+    providerResponse?: JsonNullableFilter<"TaxDocument">
+    netAmount?: IntNullableFilter<"TaxDocument"> | number | null
+    taxAmount?: IntNullableFilter<"TaxDocument"> | number | null
+    totalAmount?: IntNullableFilter<"TaxDocument"> | number | null
+    receiverRut?: StringNullableFilter<"TaxDocument"> | string | null
+    receiverName?: StringNullableFilter<"TaxDocument"> | string | null
+    receiverEmail?: StringNullableFilter<"TaxDocument"> | string | null
+    retryCount?: IntFilter<"TaxDocument"> | number
+    lastError?: StringNullableFilter<"TaxDocument"> | string | null
+    createdAt?: DateTimeFilter<"TaxDocument"> | Date | string
+    updatedAt?: DateTimeFilter<"TaxDocument"> | Date | string
+    sale?: XOR<SaleScalarRelationFilter, SaleWhereInput>
+    auditLogs?: TaxDocumentAuditLogListRelationFilter
+  }
+
+  export type TaxDocumentOrderByWithRelationInput = {
+    taxDocumentId?: SortOrder
+    saleId?: SortOrder
+    documentType?: SortOrder
+    provider?: SortOrder
+    folio?: SortOrderInput | SortOrder
+    trackId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    siiStatus?: SortOrderInput | SortOrder
+    pdfUrl?: SortOrderInput | SortOrder
+    xmlUrl?: SortOrderInput | SortOrder
+    providerResponse?: SortOrderInput | SortOrder
+    netAmount?: SortOrderInput | SortOrder
+    taxAmount?: SortOrderInput | SortOrder
+    totalAmount?: SortOrderInput | SortOrder
+    receiverRut?: SortOrderInput | SortOrder
+    receiverName?: SortOrderInput | SortOrder
+    receiverEmail?: SortOrderInput | SortOrder
+    retryCount?: SortOrder
+    lastError?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sale?: SaleOrderByWithRelationInput
+    auditLogs?: TaxDocumentAuditLogOrderByRelationAggregateInput
+  }
+
+  export type TaxDocumentWhereUniqueInput = Prisma.AtLeast<{
+    taxDocumentId?: string
+    AND?: TaxDocumentWhereInput | TaxDocumentWhereInput[]
+    OR?: TaxDocumentWhereInput[]
+    NOT?: TaxDocumentWhereInput | TaxDocumentWhereInput[]
+    saleId?: StringFilter<"TaxDocument"> | string
+    documentType?: EnumDocumentTypeFilter<"TaxDocument"> | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFilter<"TaxDocument"> | $Enums.TaxProviderType
+    folio?: IntNullableFilter<"TaxDocument"> | number | null
+    trackId?: StringNullableFilter<"TaxDocument"> | string | null
+    status?: EnumTaxDocumentStatusFilter<"TaxDocument"> | $Enums.TaxDocumentStatus
+    siiStatus?: StringNullableFilter<"TaxDocument"> | string | null
+    pdfUrl?: StringNullableFilter<"TaxDocument"> | string | null
+    xmlUrl?: StringNullableFilter<"TaxDocument"> | string | null
+    providerResponse?: JsonNullableFilter<"TaxDocument">
+    netAmount?: IntNullableFilter<"TaxDocument"> | number | null
+    taxAmount?: IntNullableFilter<"TaxDocument"> | number | null
+    totalAmount?: IntNullableFilter<"TaxDocument"> | number | null
+    receiverRut?: StringNullableFilter<"TaxDocument"> | string | null
+    receiverName?: StringNullableFilter<"TaxDocument"> | string | null
+    receiverEmail?: StringNullableFilter<"TaxDocument"> | string | null
+    retryCount?: IntFilter<"TaxDocument"> | number
+    lastError?: StringNullableFilter<"TaxDocument"> | string | null
+    createdAt?: DateTimeFilter<"TaxDocument"> | Date | string
+    updatedAt?: DateTimeFilter<"TaxDocument"> | Date | string
+    sale?: XOR<SaleScalarRelationFilter, SaleWhereInput>
+    auditLogs?: TaxDocumentAuditLogListRelationFilter
+  }, "taxDocumentId">
+
+  export type TaxDocumentOrderByWithAggregationInput = {
+    taxDocumentId?: SortOrder
+    saleId?: SortOrder
+    documentType?: SortOrder
+    provider?: SortOrder
+    folio?: SortOrderInput | SortOrder
+    trackId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    siiStatus?: SortOrderInput | SortOrder
+    pdfUrl?: SortOrderInput | SortOrder
+    xmlUrl?: SortOrderInput | SortOrder
+    providerResponse?: SortOrderInput | SortOrder
+    netAmount?: SortOrderInput | SortOrder
+    taxAmount?: SortOrderInput | SortOrder
+    totalAmount?: SortOrderInput | SortOrder
+    receiverRut?: SortOrderInput | SortOrder
+    receiverName?: SortOrderInput | SortOrder
+    receiverEmail?: SortOrderInput | SortOrder
+    retryCount?: SortOrder
+    lastError?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TaxDocumentCountOrderByAggregateInput
+    _avg?: TaxDocumentAvgOrderByAggregateInput
+    _max?: TaxDocumentMaxOrderByAggregateInput
+    _min?: TaxDocumentMinOrderByAggregateInput
+    _sum?: TaxDocumentSumOrderByAggregateInput
+  }
+
+  export type TaxDocumentScalarWhereWithAggregatesInput = {
+    AND?: TaxDocumentScalarWhereWithAggregatesInput | TaxDocumentScalarWhereWithAggregatesInput[]
+    OR?: TaxDocumentScalarWhereWithAggregatesInput[]
+    NOT?: TaxDocumentScalarWhereWithAggregatesInput | TaxDocumentScalarWhereWithAggregatesInput[]
+    taxDocumentId?: StringWithAggregatesFilter<"TaxDocument"> | string
+    saleId?: StringWithAggregatesFilter<"TaxDocument"> | string
+    documentType?: EnumDocumentTypeWithAggregatesFilter<"TaxDocument"> | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeWithAggregatesFilter<"TaxDocument"> | $Enums.TaxProviderType
+    folio?: IntNullableWithAggregatesFilter<"TaxDocument"> | number | null
+    trackId?: StringNullableWithAggregatesFilter<"TaxDocument"> | string | null
+    status?: EnumTaxDocumentStatusWithAggregatesFilter<"TaxDocument"> | $Enums.TaxDocumentStatus
+    siiStatus?: StringNullableWithAggregatesFilter<"TaxDocument"> | string | null
+    pdfUrl?: StringNullableWithAggregatesFilter<"TaxDocument"> | string | null
+    xmlUrl?: StringNullableWithAggregatesFilter<"TaxDocument"> | string | null
+    providerResponse?: JsonNullableWithAggregatesFilter<"TaxDocument">
+    netAmount?: IntNullableWithAggregatesFilter<"TaxDocument"> | number | null
+    taxAmount?: IntNullableWithAggregatesFilter<"TaxDocument"> | number | null
+    totalAmount?: IntNullableWithAggregatesFilter<"TaxDocument"> | number | null
+    receiverRut?: StringNullableWithAggregatesFilter<"TaxDocument"> | string | null
+    receiverName?: StringNullableWithAggregatesFilter<"TaxDocument"> | string | null
+    receiverEmail?: StringNullableWithAggregatesFilter<"TaxDocument"> | string | null
+    retryCount?: IntWithAggregatesFilter<"TaxDocument"> | number
+    lastError?: StringNullableWithAggregatesFilter<"TaxDocument"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"TaxDocument"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TaxDocument"> | Date | string
+  }
+
+  export type TaxDocumentAuditLogWhereInput = {
+    AND?: TaxDocumentAuditLogWhereInput | TaxDocumentAuditLogWhereInput[]
+    OR?: TaxDocumentAuditLogWhereInput[]
+    NOT?: TaxDocumentAuditLogWhereInput | TaxDocumentAuditLogWhereInput[]
+    auditLogId?: StringFilter<"TaxDocumentAuditLog"> | string
+    taxDocumentId?: StringFilter<"TaxDocumentAuditLog"> | string
+    action?: StringFilter<"TaxDocumentAuditLog"> | string
+    previousStatus?: EnumTaxDocumentStatusNullableFilter<"TaxDocumentAuditLog"> | $Enums.TaxDocumentStatus | null
+    newStatus?: EnumTaxDocumentStatusNullableFilter<"TaxDocumentAuditLog"> | $Enums.TaxDocumentStatus | null
+    payload?: JsonNullableFilter<"TaxDocumentAuditLog">
+    createdAt?: DateTimeFilter<"TaxDocumentAuditLog"> | Date | string
+    taxDocument?: XOR<TaxDocumentScalarRelationFilter, TaxDocumentWhereInput>
+  }
+
+  export type TaxDocumentAuditLogOrderByWithRelationInput = {
+    auditLogId?: SortOrder
+    taxDocumentId?: SortOrder
+    action?: SortOrder
+    previousStatus?: SortOrderInput | SortOrder
+    newStatus?: SortOrderInput | SortOrder
+    payload?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    taxDocument?: TaxDocumentOrderByWithRelationInput
+  }
+
+  export type TaxDocumentAuditLogWhereUniqueInput = Prisma.AtLeast<{
+    auditLogId?: string
+    AND?: TaxDocumentAuditLogWhereInput | TaxDocumentAuditLogWhereInput[]
+    OR?: TaxDocumentAuditLogWhereInput[]
+    NOT?: TaxDocumentAuditLogWhereInput | TaxDocumentAuditLogWhereInput[]
+    taxDocumentId?: StringFilter<"TaxDocumentAuditLog"> | string
+    action?: StringFilter<"TaxDocumentAuditLog"> | string
+    previousStatus?: EnumTaxDocumentStatusNullableFilter<"TaxDocumentAuditLog"> | $Enums.TaxDocumentStatus | null
+    newStatus?: EnumTaxDocumentStatusNullableFilter<"TaxDocumentAuditLog"> | $Enums.TaxDocumentStatus | null
+    payload?: JsonNullableFilter<"TaxDocumentAuditLog">
+    createdAt?: DateTimeFilter<"TaxDocumentAuditLog"> | Date | string
+    taxDocument?: XOR<TaxDocumentScalarRelationFilter, TaxDocumentWhereInput>
+  }, "auditLogId">
+
+  export type TaxDocumentAuditLogOrderByWithAggregationInput = {
+    auditLogId?: SortOrder
+    taxDocumentId?: SortOrder
+    action?: SortOrder
+    previousStatus?: SortOrderInput | SortOrder
+    newStatus?: SortOrderInput | SortOrder
+    payload?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: TaxDocumentAuditLogCountOrderByAggregateInput
+    _max?: TaxDocumentAuditLogMaxOrderByAggregateInput
+    _min?: TaxDocumentAuditLogMinOrderByAggregateInput
+  }
+
+  export type TaxDocumentAuditLogScalarWhereWithAggregatesInput = {
+    AND?: TaxDocumentAuditLogScalarWhereWithAggregatesInput | TaxDocumentAuditLogScalarWhereWithAggregatesInput[]
+    OR?: TaxDocumentAuditLogScalarWhereWithAggregatesInput[]
+    NOT?: TaxDocumentAuditLogScalarWhereWithAggregatesInput | TaxDocumentAuditLogScalarWhereWithAggregatesInput[]
+    auditLogId?: StringWithAggregatesFilter<"TaxDocumentAuditLog"> | string
+    taxDocumentId?: StringWithAggregatesFilter<"TaxDocumentAuditLog"> | string
+    action?: StringWithAggregatesFilter<"TaxDocumentAuditLog"> | string
+    previousStatus?: EnumTaxDocumentStatusNullableWithAggregatesFilter<"TaxDocumentAuditLog"> | $Enums.TaxDocumentStatus | null
+    newStatus?: EnumTaxDocumentStatusNullableWithAggregatesFilter<"TaxDocumentAuditLog"> | $Enums.TaxDocumentStatus | null
+    payload?: JsonNullableWithAggregatesFilter<"TaxDocumentAuditLog">
+    createdAt?: DateTimeWithAggregatesFilter<"TaxDocumentAuditLog"> | Date | string
+  }
+
   export type UserCreateInput = {
     userId: string
     userFirstName: string
@@ -28021,10 +31045,12 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     user: UserCreateNestedOneWithoutSaleInput
     customer: CustomerCreateNestedOneWithoutSaleInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutSaleInput
     Payment?: PaymentCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentCreateNestedManyWithoutSaleInput
   }
 
   export type SaleUncheckedCreateInput = {
@@ -28039,8 +31065,10 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutSaleInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentUncheckedCreateNestedManyWithoutSaleInput
   }
 
   export type SaleUpdateInput = {
@@ -28053,10 +31081,12 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     user?: UserUpdateOneRequiredWithoutSaleNestedInput
     customer?: CustomerUpdateOneRequiredWithoutSaleNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutSaleNestedInput
     Payment?: PaymentUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUpdateManyWithoutSaleNestedInput
   }
 
   export type SaleUncheckedUpdateInput = {
@@ -28071,8 +31101,10 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutSaleNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUncheckedUpdateManyWithoutSaleNestedInput
   }
 
   export type SaleCreateManyInput = {
@@ -28087,6 +31119,7 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
   }
 
   export type SaleUpdateManyMutationInput = {
@@ -28099,6 +31132,7 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   }
 
   export type SaleUncheckedUpdateManyInput = {
@@ -28113,6 +31147,7 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   }
 
   export type SaleDetailCreateInput = {
@@ -29062,6 +32097,246 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TaxDocumentCreateInput = {
+    taxDocumentId?: string
+    documentType: $Enums.DocumentType
+    provider?: $Enums.TaxProviderType
+    folio?: number | null
+    trackId?: string | null
+    status?: $Enums.TaxDocumentStatus
+    siiStatus?: string | null
+    pdfUrl?: string | null
+    xmlUrl?: string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: number | null
+    taxAmount?: number | null
+    totalAmount?: number | null
+    receiverRut?: string | null
+    receiverName?: string | null
+    receiverEmail?: string | null
+    retryCount?: number
+    lastError?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sale: SaleCreateNestedOneWithoutTaxDocumentsInput
+    auditLogs?: TaxDocumentAuditLogCreateNestedManyWithoutTaxDocumentInput
+  }
+
+  export type TaxDocumentUncheckedCreateInput = {
+    taxDocumentId?: string
+    saleId: string
+    documentType: $Enums.DocumentType
+    provider?: $Enums.TaxProviderType
+    folio?: number | null
+    trackId?: string | null
+    status?: $Enums.TaxDocumentStatus
+    siiStatus?: string | null
+    pdfUrl?: string | null
+    xmlUrl?: string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: number | null
+    taxAmount?: number | null
+    totalAmount?: number | null
+    receiverRut?: string | null
+    receiverName?: string | null
+    receiverEmail?: string | null
+    retryCount?: number
+    lastError?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    auditLogs?: TaxDocumentAuditLogUncheckedCreateNestedManyWithoutTaxDocumentInput
+  }
+
+  export type TaxDocumentUpdateInput = {
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    folio?: NullableIntFieldUpdateOperationsInput | number | null
+    trackId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus
+    siiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    xmlUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    taxAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    receiverRut?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverName?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    retryCount?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sale?: SaleUpdateOneRequiredWithoutTaxDocumentsNestedInput
+    auditLogs?: TaxDocumentAuditLogUpdateManyWithoutTaxDocumentNestedInput
+  }
+
+  export type TaxDocumentUncheckedUpdateInput = {
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    saleId?: StringFieldUpdateOperationsInput | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    folio?: NullableIntFieldUpdateOperationsInput | number | null
+    trackId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus
+    siiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    xmlUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    taxAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    receiverRut?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverName?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    retryCount?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    auditLogs?: TaxDocumentAuditLogUncheckedUpdateManyWithoutTaxDocumentNestedInput
+  }
+
+  export type TaxDocumentCreateManyInput = {
+    taxDocumentId?: string
+    saleId: string
+    documentType: $Enums.DocumentType
+    provider?: $Enums.TaxProviderType
+    folio?: number | null
+    trackId?: string | null
+    status?: $Enums.TaxDocumentStatus
+    siiStatus?: string | null
+    pdfUrl?: string | null
+    xmlUrl?: string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: number | null
+    taxAmount?: number | null
+    totalAmount?: number | null
+    receiverRut?: string | null
+    receiverName?: string | null
+    receiverEmail?: string | null
+    retryCount?: number
+    lastError?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaxDocumentUpdateManyMutationInput = {
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    folio?: NullableIntFieldUpdateOperationsInput | number | null
+    trackId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus
+    siiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    xmlUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    taxAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    receiverRut?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverName?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    retryCount?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxDocumentUncheckedUpdateManyInput = {
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    saleId?: StringFieldUpdateOperationsInput | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    folio?: NullableIntFieldUpdateOperationsInput | number | null
+    trackId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus
+    siiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    xmlUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    taxAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    receiverRut?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverName?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    retryCount?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxDocumentAuditLogCreateInput = {
+    auditLogId?: string
+    action: string
+    previousStatus?: $Enums.TaxDocumentStatus | null
+    newStatus?: $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    taxDocument: TaxDocumentCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type TaxDocumentAuditLogUncheckedCreateInput = {
+    auditLogId?: string
+    taxDocumentId: string
+    action: string
+    previousStatus?: $Enums.TaxDocumentStatus | null
+    newStatus?: $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type TaxDocumentAuditLogUpdateInput = {
+    auditLogId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    newStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    taxDocument?: TaxDocumentUpdateOneRequiredWithoutAuditLogsNestedInput
+  }
+
+  export type TaxDocumentAuditLogUncheckedUpdateInput = {
+    auditLogId?: StringFieldUpdateOperationsInput | string
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    newStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxDocumentAuditLogCreateManyInput = {
+    auditLogId?: string
+    taxDocumentId: string
+    action: string
+    previousStatus?: $Enums.TaxDocumentStatus | null
+    newStatus?: $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type TaxDocumentAuditLogUpdateManyMutationInput = {
+    auditLogId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    newStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxDocumentAuditLogUncheckedUpdateManyInput = {
+    auditLogId?: StringFieldUpdateOperationsInput | string
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    newStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -29881,9 +33156,26 @@ export namespace Prisma {
     _max?: NestedEnumUsageContextFilter<$PrismaModel>
   }
 
+  export type EnumDocumentTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentType | EnumDocumentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentTypeFilter<$PrismaModel> | $Enums.DocumentType
+  }
+
   export type CustomerScalarRelationFilter = {
     is?: CustomerWhereInput
     isNot?: CustomerWhereInput
+  }
+
+  export type TaxDocumentListRelationFilter = {
+    every?: TaxDocumentWhereInput
+    some?: TaxDocumentWhereInput
+    none?: TaxDocumentWhereInput
+  }
+
+  export type TaxDocumentOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type SaleCountOrderByAggregateInput = {
@@ -29898,6 +33190,7 @@ export namespace Prisma {
     saleNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    documentType?: SortOrder
   }
 
   export type SaleAvgOrderByAggregateInput = {
@@ -29918,6 +33211,7 @@ export namespace Prisma {
     saleNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    documentType?: SortOrder
   }
 
   export type SaleMinOrderByAggregateInput = {
@@ -29932,12 +33226,23 @@ export namespace Prisma {
     saleNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    documentType?: SortOrder
   }
 
   export type SaleSumOrderByAggregateInput = {
     saleTotal?: SortOrder
     saleTotalPayments?: SortOrder
     salePendingAmount?: SortOrder
+  }
+
+  export type EnumDocumentTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentType | EnumDocumentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentTypeWithAggregatesFilter<$PrismaModel> | $Enums.DocumentType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocumentTypeFilter<$PrismaModel>
+    _max?: NestedEnumDocumentTypeFilter<$PrismaModel>
   }
 
   export type SaleScalarRelationFilter = {
@@ -30540,6 +33845,186 @@ export namespace Prisma {
     purchaseDetailQuantity?: SortOrder
     purchaseDetailPrice?: SortOrder
     purchaseDetailTotal?: SortOrder
+  }
+
+  export type EnumTaxProviderTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxProviderType | EnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxProviderTypeFilter<$PrismaModel> | $Enums.TaxProviderType
+  }
+
+  export type EnumTaxDocumentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxDocumentStatus | EnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxDocumentStatusFilter<$PrismaModel> | $Enums.TaxDocumentStatus
+  }
+
+  export type TaxDocumentAuditLogListRelationFilter = {
+    every?: TaxDocumentAuditLogWhereInput
+    some?: TaxDocumentAuditLogWhereInput
+    none?: TaxDocumentAuditLogWhereInput
+  }
+
+  export type TaxDocumentAuditLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TaxDocumentCountOrderByAggregateInput = {
+    taxDocumentId?: SortOrder
+    saleId?: SortOrder
+    documentType?: SortOrder
+    provider?: SortOrder
+    folio?: SortOrder
+    trackId?: SortOrder
+    status?: SortOrder
+    siiStatus?: SortOrder
+    pdfUrl?: SortOrder
+    xmlUrl?: SortOrder
+    providerResponse?: SortOrder
+    netAmount?: SortOrder
+    taxAmount?: SortOrder
+    totalAmount?: SortOrder
+    receiverRut?: SortOrder
+    receiverName?: SortOrder
+    receiverEmail?: SortOrder
+    retryCount?: SortOrder
+    lastError?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaxDocumentAvgOrderByAggregateInput = {
+    folio?: SortOrder
+    netAmount?: SortOrder
+    taxAmount?: SortOrder
+    totalAmount?: SortOrder
+    retryCount?: SortOrder
+  }
+
+  export type TaxDocumentMaxOrderByAggregateInput = {
+    taxDocumentId?: SortOrder
+    saleId?: SortOrder
+    documentType?: SortOrder
+    provider?: SortOrder
+    folio?: SortOrder
+    trackId?: SortOrder
+    status?: SortOrder
+    siiStatus?: SortOrder
+    pdfUrl?: SortOrder
+    xmlUrl?: SortOrder
+    netAmount?: SortOrder
+    taxAmount?: SortOrder
+    totalAmount?: SortOrder
+    receiverRut?: SortOrder
+    receiverName?: SortOrder
+    receiverEmail?: SortOrder
+    retryCount?: SortOrder
+    lastError?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaxDocumentMinOrderByAggregateInput = {
+    taxDocumentId?: SortOrder
+    saleId?: SortOrder
+    documentType?: SortOrder
+    provider?: SortOrder
+    folio?: SortOrder
+    trackId?: SortOrder
+    status?: SortOrder
+    siiStatus?: SortOrder
+    pdfUrl?: SortOrder
+    xmlUrl?: SortOrder
+    netAmount?: SortOrder
+    taxAmount?: SortOrder
+    totalAmount?: SortOrder
+    receiverRut?: SortOrder
+    receiverName?: SortOrder
+    receiverEmail?: SortOrder
+    retryCount?: SortOrder
+    lastError?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaxDocumentSumOrderByAggregateInput = {
+    folio?: SortOrder
+    netAmount?: SortOrder
+    taxAmount?: SortOrder
+    totalAmount?: SortOrder
+    retryCount?: SortOrder
+  }
+
+  export type EnumTaxProviderTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxProviderType | EnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxProviderTypeWithAggregatesFilter<$PrismaModel> | $Enums.TaxProviderType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaxProviderTypeFilter<$PrismaModel>
+    _max?: NestedEnumTaxProviderTypeFilter<$PrismaModel>
+  }
+
+  export type EnumTaxDocumentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxDocumentStatus | EnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxDocumentStatusWithAggregatesFilter<$PrismaModel> | $Enums.TaxDocumentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaxDocumentStatusFilter<$PrismaModel>
+    _max?: NestedEnumTaxDocumentStatusFilter<$PrismaModel>
+  }
+
+  export type EnumTaxDocumentStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxDocumentStatus | EnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTaxDocumentStatusNullableFilter<$PrismaModel> | $Enums.TaxDocumentStatus | null
+  }
+
+  export type TaxDocumentScalarRelationFilter = {
+    is?: TaxDocumentWhereInput
+    isNot?: TaxDocumentWhereInput
+  }
+
+  export type TaxDocumentAuditLogCountOrderByAggregateInput = {
+    auditLogId?: SortOrder
+    taxDocumentId?: SortOrder
+    action?: SortOrder
+    previousStatus?: SortOrder
+    newStatus?: SortOrder
+    payload?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TaxDocumentAuditLogMaxOrderByAggregateInput = {
+    auditLogId?: SortOrder
+    taxDocumentId?: SortOrder
+    action?: SortOrder
+    previousStatus?: SortOrder
+    newStatus?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TaxDocumentAuditLogMinOrderByAggregateInput = {
+    auditLogId?: SortOrder
+    taxDocumentId?: SortOrder
+    action?: SortOrder
+    previousStatus?: SortOrder
+    newStatus?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumTaxDocumentStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxDocumentStatus | EnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTaxDocumentStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.TaxDocumentStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumTaxDocumentStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumTaxDocumentStatusNullableFilter<$PrismaModel>
   }
 
   export type CustomerCreateNestedManyWithoutCreatedByInput = {
@@ -31880,6 +35365,13 @@ export namespace Prisma {
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
   }
 
+  export type TaxDocumentCreateNestedManyWithoutSaleInput = {
+    create?: XOR<TaxDocumentCreateWithoutSaleInput, TaxDocumentUncheckedCreateWithoutSaleInput> | TaxDocumentCreateWithoutSaleInput[] | TaxDocumentUncheckedCreateWithoutSaleInput[]
+    connectOrCreate?: TaxDocumentCreateOrConnectWithoutSaleInput | TaxDocumentCreateOrConnectWithoutSaleInput[]
+    createMany?: TaxDocumentCreateManySaleInputEnvelope
+    connect?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+  }
+
   export type SaleDetailUncheckedCreateNestedManyWithoutSaleInput = {
     create?: XOR<SaleDetailCreateWithoutSaleInput, SaleDetailUncheckedCreateWithoutSaleInput> | SaleDetailCreateWithoutSaleInput[] | SaleDetailUncheckedCreateWithoutSaleInput[]
     connectOrCreate?: SaleDetailCreateOrConnectWithoutSaleInput | SaleDetailCreateOrConnectWithoutSaleInput[]
@@ -31892,6 +35384,17 @@ export namespace Prisma {
     connectOrCreate?: PaymentCreateOrConnectWithoutSaleInput | PaymentCreateOrConnectWithoutSaleInput[]
     createMany?: PaymentCreateManySaleInputEnvelope
     connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type TaxDocumentUncheckedCreateNestedManyWithoutSaleInput = {
+    create?: XOR<TaxDocumentCreateWithoutSaleInput, TaxDocumentUncheckedCreateWithoutSaleInput> | TaxDocumentCreateWithoutSaleInput[] | TaxDocumentUncheckedCreateWithoutSaleInput[]
+    connectOrCreate?: TaxDocumentCreateOrConnectWithoutSaleInput | TaxDocumentCreateOrConnectWithoutSaleInput[]
+    createMany?: TaxDocumentCreateManySaleInputEnvelope
+    connect?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+  }
+
+  export type EnumDocumentTypeFieldUpdateOperationsInput = {
+    set?: $Enums.DocumentType
   }
 
   export type UserUpdateOneRequiredWithoutSaleNestedInput = {
@@ -31938,6 +35441,20 @@ export namespace Prisma {
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
   }
 
+  export type TaxDocumentUpdateManyWithoutSaleNestedInput = {
+    create?: XOR<TaxDocumentCreateWithoutSaleInput, TaxDocumentUncheckedCreateWithoutSaleInput> | TaxDocumentCreateWithoutSaleInput[] | TaxDocumentUncheckedCreateWithoutSaleInput[]
+    connectOrCreate?: TaxDocumentCreateOrConnectWithoutSaleInput | TaxDocumentCreateOrConnectWithoutSaleInput[]
+    upsert?: TaxDocumentUpsertWithWhereUniqueWithoutSaleInput | TaxDocumentUpsertWithWhereUniqueWithoutSaleInput[]
+    createMany?: TaxDocumentCreateManySaleInputEnvelope
+    set?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+    disconnect?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+    delete?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+    connect?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+    update?: TaxDocumentUpdateWithWhereUniqueWithoutSaleInput | TaxDocumentUpdateWithWhereUniqueWithoutSaleInput[]
+    updateMany?: TaxDocumentUpdateManyWithWhereWithoutSaleInput | TaxDocumentUpdateManyWithWhereWithoutSaleInput[]
+    deleteMany?: TaxDocumentScalarWhereInput | TaxDocumentScalarWhereInput[]
+  }
+
   export type SaleDetailUncheckedUpdateManyWithoutSaleNestedInput = {
     create?: XOR<SaleDetailCreateWithoutSaleInput, SaleDetailUncheckedCreateWithoutSaleInput> | SaleDetailCreateWithoutSaleInput[] | SaleDetailUncheckedCreateWithoutSaleInput[]
     connectOrCreate?: SaleDetailCreateOrConnectWithoutSaleInput | SaleDetailCreateOrConnectWithoutSaleInput[]
@@ -31964,6 +35481,20 @@ export namespace Prisma {
     update?: PaymentUpdateWithWhereUniqueWithoutSaleInput | PaymentUpdateWithWhereUniqueWithoutSaleInput[]
     updateMany?: PaymentUpdateManyWithWhereWithoutSaleInput | PaymentUpdateManyWithWhereWithoutSaleInput[]
     deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type TaxDocumentUncheckedUpdateManyWithoutSaleNestedInput = {
+    create?: XOR<TaxDocumentCreateWithoutSaleInput, TaxDocumentUncheckedCreateWithoutSaleInput> | TaxDocumentCreateWithoutSaleInput[] | TaxDocumentUncheckedCreateWithoutSaleInput[]
+    connectOrCreate?: TaxDocumentCreateOrConnectWithoutSaleInput | TaxDocumentCreateOrConnectWithoutSaleInput[]
+    upsert?: TaxDocumentUpsertWithWhereUniqueWithoutSaleInput | TaxDocumentUpsertWithWhereUniqueWithoutSaleInput[]
+    createMany?: TaxDocumentCreateManySaleInputEnvelope
+    set?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+    disconnect?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+    delete?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+    connect?: TaxDocumentWhereUniqueInput | TaxDocumentWhereUniqueInput[]
+    update?: TaxDocumentUpdateWithWhereUniqueWithoutSaleInput | TaxDocumentUpdateWithWhereUniqueWithoutSaleInput[]
+    updateMany?: TaxDocumentUpdateManyWithWhereWithoutSaleInput | TaxDocumentUpdateManyWithWhereWithoutSaleInput[]
+    deleteMany?: TaxDocumentScalarWhereInput | TaxDocumentScalarWhereInput[]
   }
 
   export type CustomerCreateNestedOneWithoutSaleDetailInput = {
@@ -32348,6 +35879,88 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPurchaseDetailInput, UserUpdateWithoutPurchaseDetailInput>, UserUncheckedUpdateWithoutPurchaseDetailInput>
   }
 
+  export type SaleCreateNestedOneWithoutTaxDocumentsInput = {
+    create?: XOR<SaleCreateWithoutTaxDocumentsInput, SaleUncheckedCreateWithoutTaxDocumentsInput>
+    connectOrCreate?: SaleCreateOrConnectWithoutTaxDocumentsInput
+    connect?: SaleWhereUniqueInput
+  }
+
+  export type TaxDocumentAuditLogCreateNestedManyWithoutTaxDocumentInput = {
+    create?: XOR<TaxDocumentAuditLogCreateWithoutTaxDocumentInput, TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput> | TaxDocumentAuditLogCreateWithoutTaxDocumentInput[] | TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput[]
+    connectOrCreate?: TaxDocumentAuditLogCreateOrConnectWithoutTaxDocumentInput | TaxDocumentAuditLogCreateOrConnectWithoutTaxDocumentInput[]
+    createMany?: TaxDocumentAuditLogCreateManyTaxDocumentInputEnvelope
+    connect?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+  }
+
+  export type TaxDocumentAuditLogUncheckedCreateNestedManyWithoutTaxDocumentInput = {
+    create?: XOR<TaxDocumentAuditLogCreateWithoutTaxDocumentInput, TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput> | TaxDocumentAuditLogCreateWithoutTaxDocumentInput[] | TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput[]
+    connectOrCreate?: TaxDocumentAuditLogCreateOrConnectWithoutTaxDocumentInput | TaxDocumentAuditLogCreateOrConnectWithoutTaxDocumentInput[]
+    createMany?: TaxDocumentAuditLogCreateManyTaxDocumentInputEnvelope
+    connect?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+  }
+
+  export type EnumTaxProviderTypeFieldUpdateOperationsInput = {
+    set?: $Enums.TaxProviderType
+  }
+
+  export type EnumTaxDocumentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.TaxDocumentStatus
+  }
+
+  export type SaleUpdateOneRequiredWithoutTaxDocumentsNestedInput = {
+    create?: XOR<SaleCreateWithoutTaxDocumentsInput, SaleUncheckedCreateWithoutTaxDocumentsInput>
+    connectOrCreate?: SaleCreateOrConnectWithoutTaxDocumentsInput
+    upsert?: SaleUpsertWithoutTaxDocumentsInput
+    connect?: SaleWhereUniqueInput
+    update?: XOR<XOR<SaleUpdateToOneWithWhereWithoutTaxDocumentsInput, SaleUpdateWithoutTaxDocumentsInput>, SaleUncheckedUpdateWithoutTaxDocumentsInput>
+  }
+
+  export type TaxDocumentAuditLogUpdateManyWithoutTaxDocumentNestedInput = {
+    create?: XOR<TaxDocumentAuditLogCreateWithoutTaxDocumentInput, TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput> | TaxDocumentAuditLogCreateWithoutTaxDocumentInput[] | TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput[]
+    connectOrCreate?: TaxDocumentAuditLogCreateOrConnectWithoutTaxDocumentInput | TaxDocumentAuditLogCreateOrConnectWithoutTaxDocumentInput[]
+    upsert?: TaxDocumentAuditLogUpsertWithWhereUniqueWithoutTaxDocumentInput | TaxDocumentAuditLogUpsertWithWhereUniqueWithoutTaxDocumentInput[]
+    createMany?: TaxDocumentAuditLogCreateManyTaxDocumentInputEnvelope
+    set?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+    disconnect?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+    delete?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+    connect?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+    update?: TaxDocumentAuditLogUpdateWithWhereUniqueWithoutTaxDocumentInput | TaxDocumentAuditLogUpdateWithWhereUniqueWithoutTaxDocumentInput[]
+    updateMany?: TaxDocumentAuditLogUpdateManyWithWhereWithoutTaxDocumentInput | TaxDocumentAuditLogUpdateManyWithWhereWithoutTaxDocumentInput[]
+    deleteMany?: TaxDocumentAuditLogScalarWhereInput | TaxDocumentAuditLogScalarWhereInput[]
+  }
+
+  export type TaxDocumentAuditLogUncheckedUpdateManyWithoutTaxDocumentNestedInput = {
+    create?: XOR<TaxDocumentAuditLogCreateWithoutTaxDocumentInput, TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput> | TaxDocumentAuditLogCreateWithoutTaxDocumentInput[] | TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput[]
+    connectOrCreate?: TaxDocumentAuditLogCreateOrConnectWithoutTaxDocumentInput | TaxDocumentAuditLogCreateOrConnectWithoutTaxDocumentInput[]
+    upsert?: TaxDocumentAuditLogUpsertWithWhereUniqueWithoutTaxDocumentInput | TaxDocumentAuditLogUpsertWithWhereUniqueWithoutTaxDocumentInput[]
+    createMany?: TaxDocumentAuditLogCreateManyTaxDocumentInputEnvelope
+    set?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+    disconnect?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+    delete?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+    connect?: TaxDocumentAuditLogWhereUniqueInput | TaxDocumentAuditLogWhereUniqueInput[]
+    update?: TaxDocumentAuditLogUpdateWithWhereUniqueWithoutTaxDocumentInput | TaxDocumentAuditLogUpdateWithWhereUniqueWithoutTaxDocumentInput[]
+    updateMany?: TaxDocumentAuditLogUpdateManyWithWhereWithoutTaxDocumentInput | TaxDocumentAuditLogUpdateManyWithWhereWithoutTaxDocumentInput[]
+    deleteMany?: TaxDocumentAuditLogScalarWhereInput | TaxDocumentAuditLogScalarWhereInput[]
+  }
+
+  export type TaxDocumentCreateNestedOneWithoutAuditLogsInput = {
+    create?: XOR<TaxDocumentCreateWithoutAuditLogsInput, TaxDocumentUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: TaxDocumentCreateOrConnectWithoutAuditLogsInput
+    connect?: TaxDocumentWhereUniqueInput
+  }
+
+  export type NullableEnumTaxDocumentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.TaxDocumentStatus | null
+  }
+
+  export type TaxDocumentUpdateOneRequiredWithoutAuditLogsNestedInput = {
+    create?: XOR<TaxDocumentCreateWithoutAuditLogsInput, TaxDocumentUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: TaxDocumentCreateOrConnectWithoutAuditLogsInput
+    upsert?: TaxDocumentUpsertWithoutAuditLogsInput
+    connect?: TaxDocumentWhereUniqueInput
+    update?: XOR<XOR<TaxDocumentUpdateToOneWithWhereWithoutAuditLogsInput, TaxDocumentUpdateWithoutAuditLogsInput>, TaxDocumentUncheckedUpdateWithoutAuditLogsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -32654,6 +36267,23 @@ export namespace Prisma {
     _max?: NestedEnumUsageContextFilter<$PrismaModel>
   }
 
+  export type NestedEnumDocumentTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentType | EnumDocumentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentTypeFilter<$PrismaModel> | $Enums.DocumentType
+  }
+
+  export type NestedEnumDocumentTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocumentType | EnumDocumentTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocumentTypeWithAggregatesFilter<$PrismaModel> | $Enums.DocumentType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocumentTypeFilter<$PrismaModel>
+    _max?: NestedEnumDocumentTypeFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -32702,6 +36332,57 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumTaxProviderTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxProviderType | EnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxProviderTypeFilter<$PrismaModel> | $Enums.TaxProviderType
+  }
+
+  export type NestedEnumTaxDocumentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxDocumentStatus | EnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxDocumentStatusFilter<$PrismaModel> | $Enums.TaxDocumentStatus
+  }
+
+  export type NestedEnumTaxProviderTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxProviderType | EnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxProviderType[] | ListEnumTaxProviderTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxProviderTypeWithAggregatesFilter<$PrismaModel> | $Enums.TaxProviderType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaxProviderTypeFilter<$PrismaModel>
+    _max?: NestedEnumTaxProviderTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTaxDocumentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxDocumentStatus | EnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaxDocumentStatusWithAggregatesFilter<$PrismaModel> | $Enums.TaxDocumentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaxDocumentStatusFilter<$PrismaModel>
+    _max?: NestedEnumTaxDocumentStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTaxDocumentStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxDocumentStatus | EnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTaxDocumentStatusNullableFilter<$PrismaModel> | $Enums.TaxDocumentStatus | null
+  }
+
+  export type NestedEnumTaxDocumentStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaxDocumentStatus | EnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TaxDocumentStatus[] | ListEnumTaxDocumentStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTaxDocumentStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.TaxDocumentStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumTaxDocumentStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumTaxDocumentStatusNullableFilter<$PrismaModel>
   }
 
   export type CustomerCreateWithoutCreatedByInput = {
@@ -32876,9 +36557,11 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     customer: CustomerCreateNestedOneWithoutSaleInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutSaleInput
     Payment?: PaymentCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentCreateNestedManyWithoutSaleInput
   }
 
   export type SaleUncheckedCreateWithoutUserInput = {
@@ -32892,8 +36575,10 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutSaleInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentUncheckedCreateNestedManyWithoutSaleInput
   }
 
   export type SaleCreateOrConnectWithoutUserInput = {
@@ -33507,6 +37192,7 @@ export namespace Prisma {
     saleNumber?: StringNullableFilter<"Sale"> | string | null
     createdAt?: DateTimeFilter<"Sale"> | Date | string
     updatedAt?: DateTimeFilter<"Sale"> | Date | string
+    documentType?: EnumDocumentTypeFilter<"Sale"> | $Enums.DocumentType
   }
 
   export type PaymentUpsertWithWhereUniqueWithoutUserInput = {
@@ -33964,9 +37650,11 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     user: UserCreateNestedOneWithoutSaleInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutSaleInput
     Payment?: PaymentCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentCreateNestedManyWithoutSaleInput
   }
 
   export type SaleUncheckedCreateWithoutCustomerInput = {
@@ -33980,8 +37668,10 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutSaleInput
     Payment?: PaymentUncheckedCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentUncheckedCreateNestedManyWithoutSaleInput
   }
 
   export type SaleCreateOrConnectWithoutCustomerInput = {
@@ -35577,6 +39267,64 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TaxDocumentCreateWithoutSaleInput = {
+    taxDocumentId?: string
+    documentType: $Enums.DocumentType
+    provider?: $Enums.TaxProviderType
+    folio?: number | null
+    trackId?: string | null
+    status?: $Enums.TaxDocumentStatus
+    siiStatus?: string | null
+    pdfUrl?: string | null
+    xmlUrl?: string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: number | null
+    taxAmount?: number | null
+    totalAmount?: number | null
+    receiverRut?: string | null
+    receiverName?: string | null
+    receiverEmail?: string | null
+    retryCount?: number
+    lastError?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    auditLogs?: TaxDocumentAuditLogCreateNestedManyWithoutTaxDocumentInput
+  }
+
+  export type TaxDocumentUncheckedCreateWithoutSaleInput = {
+    taxDocumentId?: string
+    documentType: $Enums.DocumentType
+    provider?: $Enums.TaxProviderType
+    folio?: number | null
+    trackId?: string | null
+    status?: $Enums.TaxDocumentStatus
+    siiStatus?: string | null
+    pdfUrl?: string | null
+    xmlUrl?: string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: number | null
+    taxAmount?: number | null
+    totalAmount?: number | null
+    receiverRut?: string | null
+    receiverName?: string | null
+    receiverEmail?: string | null
+    retryCount?: number
+    lastError?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    auditLogs?: TaxDocumentAuditLogUncheckedCreateNestedManyWithoutTaxDocumentInput
+  }
+
+  export type TaxDocumentCreateOrConnectWithoutSaleInput = {
+    where: TaxDocumentWhereUniqueInput
+    create: XOR<TaxDocumentCreateWithoutSaleInput, TaxDocumentUncheckedCreateWithoutSaleInput>
+  }
+
+  export type TaxDocumentCreateManySaleInputEnvelope = {
+    data: TaxDocumentCreateManySaleInput | TaxDocumentCreateManySaleInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutSaleInput = {
     update: XOR<UserUpdateWithoutSaleInput, UserUncheckedUpdateWithoutSaleInput>
     create: XOR<UserCreateWithoutSaleInput, UserUncheckedCreateWithoutSaleInput>
@@ -35727,6 +39475,49 @@ export namespace Prisma {
     data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutSaleInput>
   }
 
+  export type TaxDocumentUpsertWithWhereUniqueWithoutSaleInput = {
+    where: TaxDocumentWhereUniqueInput
+    update: XOR<TaxDocumentUpdateWithoutSaleInput, TaxDocumentUncheckedUpdateWithoutSaleInput>
+    create: XOR<TaxDocumentCreateWithoutSaleInput, TaxDocumentUncheckedCreateWithoutSaleInput>
+  }
+
+  export type TaxDocumentUpdateWithWhereUniqueWithoutSaleInput = {
+    where: TaxDocumentWhereUniqueInput
+    data: XOR<TaxDocumentUpdateWithoutSaleInput, TaxDocumentUncheckedUpdateWithoutSaleInput>
+  }
+
+  export type TaxDocumentUpdateManyWithWhereWithoutSaleInput = {
+    where: TaxDocumentScalarWhereInput
+    data: XOR<TaxDocumentUpdateManyMutationInput, TaxDocumentUncheckedUpdateManyWithoutSaleInput>
+  }
+
+  export type TaxDocumentScalarWhereInput = {
+    AND?: TaxDocumentScalarWhereInput | TaxDocumentScalarWhereInput[]
+    OR?: TaxDocumentScalarWhereInput[]
+    NOT?: TaxDocumentScalarWhereInput | TaxDocumentScalarWhereInput[]
+    taxDocumentId?: StringFilter<"TaxDocument"> | string
+    saleId?: StringFilter<"TaxDocument"> | string
+    documentType?: EnumDocumentTypeFilter<"TaxDocument"> | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFilter<"TaxDocument"> | $Enums.TaxProviderType
+    folio?: IntNullableFilter<"TaxDocument"> | number | null
+    trackId?: StringNullableFilter<"TaxDocument"> | string | null
+    status?: EnumTaxDocumentStatusFilter<"TaxDocument"> | $Enums.TaxDocumentStatus
+    siiStatus?: StringNullableFilter<"TaxDocument"> | string | null
+    pdfUrl?: StringNullableFilter<"TaxDocument"> | string | null
+    xmlUrl?: StringNullableFilter<"TaxDocument"> | string | null
+    providerResponse?: JsonNullableFilter<"TaxDocument">
+    netAmount?: IntNullableFilter<"TaxDocument"> | number | null
+    taxAmount?: IntNullableFilter<"TaxDocument"> | number | null
+    totalAmount?: IntNullableFilter<"TaxDocument"> | number | null
+    receiverRut?: StringNullableFilter<"TaxDocument"> | string | null
+    receiverName?: StringNullableFilter<"TaxDocument"> | string | null
+    receiverEmail?: StringNullableFilter<"TaxDocument"> | string | null
+    retryCount?: IntFilter<"TaxDocument"> | number
+    lastError?: StringNullableFilter<"TaxDocument"> | string | null
+    createdAt?: DateTimeFilter<"TaxDocument"> | Date | string
+    updatedAt?: DateTimeFilter<"TaxDocument"> | Date | string
+  }
+
   export type CustomerCreateWithoutSaleDetailInput = {
     customerId?: string
     customerFirstName: string
@@ -35843,9 +39634,11 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     user: UserCreateNestedOneWithoutSaleInput
     customer: CustomerCreateNestedOneWithoutSaleInput
     Payment?: PaymentCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentCreateNestedManyWithoutSaleInput
   }
 
   export type SaleUncheckedCreateWithoutSaleDetailInput = {
@@ -35860,7 +39653,9 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     Payment?: PaymentUncheckedCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentUncheckedCreateNestedManyWithoutSaleInput
   }
 
   export type SaleCreateOrConnectWithoutSaleDetailInput = {
@@ -36085,9 +39880,11 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     user?: UserUpdateOneRequiredWithoutSaleNestedInput
     customer?: CustomerUpdateOneRequiredWithoutSaleNestedInput
     Payment?: PaymentUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUpdateManyWithoutSaleNestedInput
   }
 
   export type SaleUncheckedUpdateWithoutSaleDetailInput = {
@@ -36102,7 +39899,9 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     Payment?: PaymentUncheckedUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUncheckedUpdateManyWithoutSaleNestedInput
   }
 
   export type ProductUpsertWithoutSaleDetailInput = {
@@ -36272,9 +40071,11 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     user: UserCreateNestedOneWithoutSaleInput
     customer: CustomerCreateNestedOneWithoutSaleInput
     SaleDetail?: SaleDetailCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentCreateNestedManyWithoutSaleInput
   }
 
   export type SaleUncheckedCreateWithoutPaymentInput = {
@@ -36289,7 +40090,9 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
     SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutSaleInput
+    taxDocuments?: TaxDocumentUncheckedCreateNestedManyWithoutSaleInput
   }
 
   export type SaleCreateOrConnectWithoutPaymentInput = {
@@ -36391,9 +40194,11 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     user?: UserUpdateOneRequiredWithoutSaleNestedInput
     customer?: CustomerUpdateOneRequiredWithoutSaleNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUpdateManyWithoutSaleNestedInput
   }
 
   export type SaleUncheckedUpdateWithoutPaymentInput = {
@@ -36408,7 +40213,9 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUncheckedUpdateManyWithoutSaleNestedInput
   }
 
   export type UserCreateWithoutCashExpenseInput = {
@@ -38099,6 +41906,259 @@ export namespace Prisma {
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type SaleCreateWithoutTaxDocumentsInput = {
+    saleId: string
+    saleTotal: number
+    saleTotalPayments: number
+    salePendingAmount: number
+    saleComment?: string | null
+    saleImageUrl?: string | null
+    saleNumber?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
+    user: UserCreateNestedOneWithoutSaleInput
+    customer: CustomerCreateNestedOneWithoutSaleInput
+    SaleDetail?: SaleDetailCreateNestedManyWithoutSaleInput
+    Payment?: PaymentCreateNestedManyWithoutSaleInput
+  }
+
+  export type SaleUncheckedCreateWithoutTaxDocumentsInput = {
+    saleId: string
+    saleCustomerId: string
+    saleTotal: number
+    saleTotalPayments: number
+    salePendingAmount: number
+    createdByUserId: string
+    saleComment?: string | null
+    saleImageUrl?: string | null
+    saleNumber?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
+    SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutSaleInput
+    Payment?: PaymentUncheckedCreateNestedManyWithoutSaleInput
+  }
+
+  export type SaleCreateOrConnectWithoutTaxDocumentsInput = {
+    where: SaleWhereUniqueInput
+    create: XOR<SaleCreateWithoutTaxDocumentsInput, SaleUncheckedCreateWithoutTaxDocumentsInput>
+  }
+
+  export type TaxDocumentAuditLogCreateWithoutTaxDocumentInput = {
+    auditLogId?: string
+    action: string
+    previousStatus?: $Enums.TaxDocumentStatus | null
+    newStatus?: $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput = {
+    auditLogId?: string
+    action: string
+    previousStatus?: $Enums.TaxDocumentStatus | null
+    newStatus?: $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type TaxDocumentAuditLogCreateOrConnectWithoutTaxDocumentInput = {
+    where: TaxDocumentAuditLogWhereUniqueInput
+    create: XOR<TaxDocumentAuditLogCreateWithoutTaxDocumentInput, TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput>
+  }
+
+  export type TaxDocumentAuditLogCreateManyTaxDocumentInputEnvelope = {
+    data: TaxDocumentAuditLogCreateManyTaxDocumentInput | TaxDocumentAuditLogCreateManyTaxDocumentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SaleUpsertWithoutTaxDocumentsInput = {
+    update: XOR<SaleUpdateWithoutTaxDocumentsInput, SaleUncheckedUpdateWithoutTaxDocumentsInput>
+    create: XOR<SaleCreateWithoutTaxDocumentsInput, SaleUncheckedCreateWithoutTaxDocumentsInput>
+    where?: SaleWhereInput
+  }
+
+  export type SaleUpdateToOneWithWhereWithoutTaxDocumentsInput = {
+    where?: SaleWhereInput
+    data: XOR<SaleUpdateWithoutTaxDocumentsInput, SaleUncheckedUpdateWithoutTaxDocumentsInput>
+  }
+
+  export type SaleUpdateWithoutTaxDocumentsInput = {
+    saleId?: StringFieldUpdateOperationsInput | string
+    saleTotal?: IntFieldUpdateOperationsInput | number
+    saleTotalPayments?: IntFieldUpdateOperationsInput | number
+    salePendingAmount?: IntFieldUpdateOperationsInput | number
+    saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    user?: UserUpdateOneRequiredWithoutSaleNestedInput
+    customer?: CustomerUpdateOneRequiredWithoutSaleNestedInput
+    SaleDetail?: SaleDetailUpdateManyWithoutSaleNestedInput
+    Payment?: PaymentUpdateManyWithoutSaleNestedInput
+  }
+
+  export type SaleUncheckedUpdateWithoutTaxDocumentsInput = {
+    saleId?: StringFieldUpdateOperationsInput | string
+    saleCustomerId?: StringFieldUpdateOperationsInput | string
+    saleTotal?: IntFieldUpdateOperationsInput | number
+    saleTotalPayments?: IntFieldUpdateOperationsInput | number
+    salePendingAmount?: IntFieldUpdateOperationsInput | number
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    SaleDetail?: SaleDetailUncheckedUpdateManyWithoutSaleNestedInput
+    Payment?: PaymentUncheckedUpdateManyWithoutSaleNestedInput
+  }
+
+  export type TaxDocumentAuditLogUpsertWithWhereUniqueWithoutTaxDocumentInput = {
+    where: TaxDocumentAuditLogWhereUniqueInput
+    update: XOR<TaxDocumentAuditLogUpdateWithoutTaxDocumentInput, TaxDocumentAuditLogUncheckedUpdateWithoutTaxDocumentInput>
+    create: XOR<TaxDocumentAuditLogCreateWithoutTaxDocumentInput, TaxDocumentAuditLogUncheckedCreateWithoutTaxDocumentInput>
+  }
+
+  export type TaxDocumentAuditLogUpdateWithWhereUniqueWithoutTaxDocumentInput = {
+    where: TaxDocumentAuditLogWhereUniqueInput
+    data: XOR<TaxDocumentAuditLogUpdateWithoutTaxDocumentInput, TaxDocumentAuditLogUncheckedUpdateWithoutTaxDocumentInput>
+  }
+
+  export type TaxDocumentAuditLogUpdateManyWithWhereWithoutTaxDocumentInput = {
+    where: TaxDocumentAuditLogScalarWhereInput
+    data: XOR<TaxDocumentAuditLogUpdateManyMutationInput, TaxDocumentAuditLogUncheckedUpdateManyWithoutTaxDocumentInput>
+  }
+
+  export type TaxDocumentAuditLogScalarWhereInput = {
+    AND?: TaxDocumentAuditLogScalarWhereInput | TaxDocumentAuditLogScalarWhereInput[]
+    OR?: TaxDocumentAuditLogScalarWhereInput[]
+    NOT?: TaxDocumentAuditLogScalarWhereInput | TaxDocumentAuditLogScalarWhereInput[]
+    auditLogId?: StringFilter<"TaxDocumentAuditLog"> | string
+    taxDocumentId?: StringFilter<"TaxDocumentAuditLog"> | string
+    action?: StringFilter<"TaxDocumentAuditLog"> | string
+    previousStatus?: EnumTaxDocumentStatusNullableFilter<"TaxDocumentAuditLog"> | $Enums.TaxDocumentStatus | null
+    newStatus?: EnumTaxDocumentStatusNullableFilter<"TaxDocumentAuditLog"> | $Enums.TaxDocumentStatus | null
+    payload?: JsonNullableFilter<"TaxDocumentAuditLog">
+    createdAt?: DateTimeFilter<"TaxDocumentAuditLog"> | Date | string
+  }
+
+  export type TaxDocumentCreateWithoutAuditLogsInput = {
+    taxDocumentId?: string
+    documentType: $Enums.DocumentType
+    provider?: $Enums.TaxProviderType
+    folio?: number | null
+    trackId?: string | null
+    status?: $Enums.TaxDocumentStatus
+    siiStatus?: string | null
+    pdfUrl?: string | null
+    xmlUrl?: string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: number | null
+    taxAmount?: number | null
+    totalAmount?: number | null
+    receiverRut?: string | null
+    receiverName?: string | null
+    receiverEmail?: string | null
+    retryCount?: number
+    lastError?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sale: SaleCreateNestedOneWithoutTaxDocumentsInput
+  }
+
+  export type TaxDocumentUncheckedCreateWithoutAuditLogsInput = {
+    taxDocumentId?: string
+    saleId: string
+    documentType: $Enums.DocumentType
+    provider?: $Enums.TaxProviderType
+    folio?: number | null
+    trackId?: string | null
+    status?: $Enums.TaxDocumentStatus
+    siiStatus?: string | null
+    pdfUrl?: string | null
+    xmlUrl?: string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: number | null
+    taxAmount?: number | null
+    totalAmount?: number | null
+    receiverRut?: string | null
+    receiverName?: string | null
+    receiverEmail?: string | null
+    retryCount?: number
+    lastError?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaxDocumentCreateOrConnectWithoutAuditLogsInput = {
+    where: TaxDocumentWhereUniqueInput
+    create: XOR<TaxDocumentCreateWithoutAuditLogsInput, TaxDocumentUncheckedCreateWithoutAuditLogsInput>
+  }
+
+  export type TaxDocumentUpsertWithoutAuditLogsInput = {
+    update: XOR<TaxDocumentUpdateWithoutAuditLogsInput, TaxDocumentUncheckedUpdateWithoutAuditLogsInput>
+    create: XOR<TaxDocumentCreateWithoutAuditLogsInput, TaxDocumentUncheckedCreateWithoutAuditLogsInput>
+    where?: TaxDocumentWhereInput
+  }
+
+  export type TaxDocumentUpdateToOneWithWhereWithoutAuditLogsInput = {
+    where?: TaxDocumentWhereInput
+    data: XOR<TaxDocumentUpdateWithoutAuditLogsInput, TaxDocumentUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type TaxDocumentUpdateWithoutAuditLogsInput = {
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    folio?: NullableIntFieldUpdateOperationsInput | number | null
+    trackId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus
+    siiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    xmlUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    taxAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    receiverRut?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverName?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    retryCount?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sale?: SaleUpdateOneRequiredWithoutTaxDocumentsNestedInput
+  }
+
+  export type TaxDocumentUncheckedUpdateWithoutAuditLogsInput = {
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    saleId?: StringFieldUpdateOperationsInput | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    folio?: NullableIntFieldUpdateOperationsInput | number | null
+    trackId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus
+    siiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    xmlUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    taxAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    receiverRut?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverName?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    retryCount?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CustomerCreateManyCreatedByInput = {
     customerId?: string
     customerFirstName: string
@@ -38162,6 +42222,7 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
   }
 
   export type PaymentCreateManyUserInput = {
@@ -38504,9 +42565,11 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     customer?: CustomerUpdateOneRequiredWithoutSaleNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutSaleNestedInput
     Payment?: PaymentUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUpdateManyWithoutSaleNestedInput
   }
 
   export type SaleUncheckedUpdateWithoutUserInput = {
@@ -38520,8 +42583,10 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutSaleNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUncheckedUpdateManyWithoutSaleNestedInput
   }
 
   export type SaleUncheckedUpdateManyWithoutUserInput = {
@@ -38535,6 +42600,7 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   }
 
   export type PaymentUpdateWithoutUserInput = {
@@ -39022,6 +43088,7 @@ export namespace Prisma {
     saleNumber?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    documentType?: $Enums.DocumentType
   }
 
   export type SaleDetailCreateManyCustomerInput = {
@@ -39048,9 +43115,11 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     user?: UserUpdateOneRequiredWithoutSaleNestedInput
     SaleDetail?: SaleDetailUpdateManyWithoutSaleNestedInput
     Payment?: PaymentUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUpdateManyWithoutSaleNestedInput
   }
 
   export type SaleUncheckedUpdateWithoutCustomerInput = {
@@ -39064,8 +43133,10 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     SaleDetail?: SaleDetailUncheckedUpdateManyWithoutSaleNestedInput
     Payment?: PaymentUncheckedUpdateManyWithoutSaleNestedInput
+    taxDocuments?: TaxDocumentUncheckedUpdateManyWithoutSaleNestedInput
   }
 
   export type SaleUncheckedUpdateManyWithoutCustomerInput = {
@@ -39079,6 +43150,7 @@ export namespace Prisma {
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
   }
 
   export type SaleDetailUpdateWithoutCustomerInput = {
@@ -39548,6 +43620,29 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type TaxDocumentCreateManySaleInput = {
+    taxDocumentId?: string
+    documentType: $Enums.DocumentType
+    provider?: $Enums.TaxProviderType
+    folio?: number | null
+    trackId?: string | null
+    status?: $Enums.TaxDocumentStatus
+    siiStatus?: string | null
+    pdfUrl?: string | null
+    xmlUrl?: string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: number | null
+    taxAmount?: number | null
+    totalAmount?: number | null
+    receiverRut?: string | null
+    receiverName?: string | null
+    receiverEmail?: string | null
+    retryCount?: number
+    lastError?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type SaleDetailUpdateWithoutSaleInput = {
     saleDetailId?: StringFieldUpdateOperationsInput | string
     saleDetailQuantity?: IntFieldUpdateOperationsInput | number
@@ -39613,6 +43708,77 @@ export namespace Prisma {
     paymentAmount?: IntFieldUpdateOperationsInput | number
     paymentMethod?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxDocumentUpdateWithoutSaleInput = {
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    folio?: NullableIntFieldUpdateOperationsInput | number | null
+    trackId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus
+    siiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    xmlUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    taxAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    receiverRut?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverName?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    retryCount?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    auditLogs?: TaxDocumentAuditLogUpdateManyWithoutTaxDocumentNestedInput
+  }
+
+  export type TaxDocumentUncheckedUpdateWithoutSaleInput = {
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    folio?: NullableIntFieldUpdateOperationsInput | number | null
+    trackId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus
+    siiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    xmlUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    taxAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    receiverRut?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverName?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    retryCount?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    auditLogs?: TaxDocumentAuditLogUncheckedUpdateManyWithoutTaxDocumentNestedInput
+  }
+
+  export type TaxDocumentUncheckedUpdateManyWithoutSaleInput = {
+    taxDocumentId?: StringFieldUpdateOperationsInput | string
+    documentType?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
+    provider?: EnumTaxProviderTypeFieldUpdateOperationsInput | $Enums.TaxProviderType
+    folio?: NullableIntFieldUpdateOperationsInput | number | null
+    trackId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus
+    siiStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    xmlUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    providerResponse?: NullableJsonNullValueInput | InputJsonValue
+    netAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    taxAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    totalAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    receiverRut?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverName?: NullableStringFieldUpdateOperationsInput | string | null
+    receiverEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    retryCount?: IntFieldUpdateOperationsInput | number
+    lastError?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -39725,6 +43891,42 @@ export namespace Prisma {
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxDocumentAuditLogCreateManyTaxDocumentInput = {
+    auditLogId?: string
+    action: string
+    previousStatus?: $Enums.TaxDocumentStatus | null
+    newStatus?: $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type TaxDocumentAuditLogUpdateWithoutTaxDocumentInput = {
+    auditLogId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    newStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxDocumentAuditLogUncheckedUpdateWithoutTaxDocumentInput = {
+    auditLogId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    newStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxDocumentAuditLogUncheckedUpdateManyWithoutTaxDocumentInput = {
+    auditLogId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    previousStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    newStatus?: NullableEnumTaxDocumentStatusFieldUpdateOperationsInput | $Enums.TaxDocumentStatus | null
+    payload?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

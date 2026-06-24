@@ -158,6 +158,25 @@ exports.Prisma.BusinessScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TaxProviderAccountScalarFieldEnum = {
+  companyId: 'companyId',
+  provider: 'provider',
+  authApiKey: 'authApiKey',
+  authApiSecret: 'authApiSecret',
+  environment: 'environment',
+  businessActivity: 'businessActivity',
+  businessAddress: 'businessAddress',
+  businessCommune: 'businessCommune',
+  businessCity: 'businessCity',
+  certificateRef: 'certificateRef',
+  certificateStatus: 'certificateStatus',
+  folioBoletaNext: 'folioBoletaNext',
+  folioFacturaNext: 'folioFacturaNext',
+  isEnabled: 'isEnabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserBusinessScalarFieldEnum = {
   userBusinessUserId: 'userBusinessUserId',
   userBusinessBusinessId: 'userBusinessBusinessId',
@@ -437,6 +456,18 @@ exports.BusinessStatus = exports.$Enums.BusinessStatus = {
   PENDING: 'PENDING'
 };
 
+exports.TaxProviderType = exports.$Enums.TaxProviderType = {
+  AUTH_CL: 'AUTH_CL',
+  INTERNAL: 'INTERNAL'
+};
+
+exports.CertificateStatus = exports.$Enums.CertificateStatus = {
+  PENDING: 'PENDING',
+  ACTIVE: 'ACTIVE',
+  EXPIRED: 'EXPIRED',
+  REVOKED: 'REVOKED'
+};
+
 exports.Role = exports.$Enums.Role = {
   ADMIN: 'ADMIN',
   USER: 'USER',
@@ -569,6 +600,7 @@ exports.PlatformAgentTaskSafety = exports.$Enums.PlatformAgentTaskSafety = {
 exports.Prisma.ModelName = {
   User: 'User',
   Business: 'Business',
+  TaxProviderAccount: 'TaxProviderAccount',
   UserBusiness: 'UserBusiness',
   UserGuest: 'UserGuest',
   Plan: 'Plan',

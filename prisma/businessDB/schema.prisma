@@ -181,6 +181,9 @@ model Sale {
     updatedAt         DateTime     @updatedAt
     SaleDetail        SaleDetail[]
     Payment           Payment[]
+    taxDocuments      TaxDocument[]
+    /** Tipo de comprobante solicitado al registrar la venta */
+    documentType      DocumentType @default(RECEIPT)
 }
 
 model SaleDetail {
@@ -408,4 +411,71 @@ enum InventoryReferenceType {
     PURCHASE_DETAIL
     MANUAL
     NONE
+}
+
+enum DocumentType {
+    RECEIPT
+    BOLETA
+    FACTURA
+}
+
+enum TaxDocumentStatus {
+    PENDING
+    SENT
+    ACCEPTED
+    REJECTED
+    ERROR
+}
+
+enum TaxProviderType {
+    AUTH_CL
+    INTERNAL
+}
+
+model TaxDocument {
+    taxDocumentId    String            @id @default(uuid())
+    saleId           String
+    sale             Sale              @relation(fields: [saleId], references: [saleId], onDelete: Cascade)
+    documentType     DocumentType
+    provider         TaxProviderType   @default(AUTH_CL)
+    folio            Int?
+    trackId          String?
+    status           TaxDocumentStatus @default(PENDING)
+    siiStatus        String?
+    pdfUrl           String?
+    xmlUrl           String?
+    providerResponse Json?
+    netAmount        Int?
+    taxAmount        Int?
+    totalAmount      Int?
+    receiverRut      String?
+    receiverName     String?
+    receiverEmail    String?
+    retryCount       Int               @default(0)
+    lastError        String?
+    createdAt        DateTime          @default(now())
+    updatedAt        DateTime          @updatedAt
+    auditLogs        TaxDocumentAuditLog[]
+
+    @@index([saleId])
+    @@index([documentType])
+    @@index([status])
+    @@index([folio])
+    @@index([trackId])
+    @@index([receiverRut])
+    @@index([createdAt(sort: Desc)])
+}
+
+model TaxDocumentAuditLog {
+    auditLogId       String             @id @default(uuid())
+    taxDocumentId    String
+    taxDocument      TaxDocument        @relation(fields: [taxDocumentId], references: [taxDocumentId], onDelete: Cascade)
+    action           String
+    previousStatus   TaxDocumentStatus?
+    newStatus        TaxDocumentStatus?
+    payload          Json?
+    createdAt        DateTime           @default(now())
+
+    @@index([taxDocumentId])
+    @@index([createdAt(sort: Desc)])
 }

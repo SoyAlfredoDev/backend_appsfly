@@ -3,7 +3,7 @@ import defineSaleNumber from '../libs/defineSaleNumber.js';
 
 export const createSaleController = async (req, res) => {
     try {
-        const { saleId, saleCustomerId, saleTotal, saleTotalPayments, saleComment, saleImageUrl } = req.body;
+        const { saleId, saleCustomerId, saleTotal, saleTotalPayments, saleComment, saleImageUrl, documentType } = req.body;
         const userId = req.user.payload.id
         const numberSale = await defineSaleNumber(req.prisma);
 
@@ -11,6 +11,11 @@ export const createSaleController = async (req, res) => {
             const trimmed = url?.trim();
             return trimmed || null;
         };
+
+        const allowedDocTypes = ["RECEIPT", "BOLETA", "FACTURA"];
+        const normalizedDocType = allowedDocTypes.includes(documentType)
+            ? documentType
+            : "RECEIPT";
 
         const data = {
             saleId,
@@ -22,6 +27,7 @@ export const createSaleController = async (req, res) => {
             salePendingAmount: (Number(saleTotal) - Number(saleTotalPayments)),
             saleComment,
             saleImageUrl: formatOptionalUrl(saleImageUrl),
+            documentType: normalizedDocType,
         };
         const sale = await createSale(data, req.prisma);
         res.status(201).json({

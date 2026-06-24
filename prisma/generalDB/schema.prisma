@@ -67,6 +67,40 @@ model Business {
     subscriptions Subscription[]
     subscriptionPayments SubscriptionPayment[]
     subscriptionCancellations SubscriptionCancellation[]
+    taxProviderAccount          TaxProviderAccount?
+}
+
+/// Cuenta Auth.cl por empresa (multi-tenant). companyId = businessId del tenant.
+model TaxProviderAccount {
+    companyId         String            @id
+    business          Business          @relation(fields: [companyId], references: [businessId], onDelete: Cascade)
+    provider          TaxProviderType   @default(AUTH_CL)
+    authApiKey        String?
+    authApiSecret     String?
+    environment       String            @default("sandbox")
+    businessActivity  String?
+    businessAddress   String?
+    businessCommune   String?
+    businessCity      String?
+    certificateRef    String?
+    certificateStatus CertificateStatus @default(PENDING)
+    folioBoletaNext   Int               @default(1)
+    folioFacturaNext  Int               @default(1)
+    isEnabled         Boolean           @default(false)
+    createdAt         DateTime          @default(now())
+    updatedAt         DateTime          @updatedAt
+}
+
+enum CertificateStatus {
+    PENDING
+    ACTIVE
+    EXPIRED
+    REVOKED
+}
+
+enum TaxProviderType {
+    AUTH_CL
+    INTERNAL
 }
 
 model UserBusiness {

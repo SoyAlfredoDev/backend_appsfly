@@ -37,6 +37,7 @@ import adminEmailCampaignRoutes from "./routes/adminEmailCampaign.routes.js";
 import adminNotificationRoutes from "./routes/adminNotification.routes.js";
 import emailProspectRoutes from "./routes/emailProspect.routes.js";
 import agentTaskRoutes from "./routes/agentTask.routes.js";
+import taxDocumentsRoutes from "./routes/taxDocuments.routes.js";
 import { resendWebhookController } from "./controllers/resendWebhook.controller.js";
 
 import dotenv from "dotenv";
@@ -144,5 +145,6 @@ app.use("/api", adminEmailCampaignRoutes);
 app.use("/api", adminNotificationRoutes);
 app.use("/api", emailProspectRoutes);
 app.use("/api", agentTaskRoutes);
+app.use("/api", taxDocumentsRoutes);
 
 export default app;
