@@ -10,6 +10,8 @@ import {
     getEmailCampaignMetadataController,
     getEmailCampaignRunController,
     getEmailCampaignStatsController,
+    getEmailCampaignsDueOverviewController,
+    runDueEmailCampaignsController,
     listEmailCampaignsController,
     previewEmailCampaignAudienceController,
     previewEmailCampaignMessageController,
@@ -19,6 +21,20 @@ import {
 const router = Router();
 
 /** Campañas de email de plataforma — panel super-admin. Separado de /asmr-campaigns (tenant). */
+
+router.get(
+    "/admin/email-campaigns/due-overview",
+    authRequired,
+    superAdminRequired,
+    getEmailCampaignsDueOverviewController,
+);
+
+router.post(
+    "/admin/email-campaigns/run-due",
+    authRequired,
+    superAdminRequired,
+    runDueEmailCampaignsController,
+);
 
 router.get(
     "/admin/email-campaigns/metadata",

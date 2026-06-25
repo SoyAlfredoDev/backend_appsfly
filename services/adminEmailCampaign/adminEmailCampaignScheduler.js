@@ -319,3 +319,22 @@ export function startEmailCampaignScheduler() {
 export function stopEmailCampaignScheduler() {
     if (intervalHandle) clearInterval(intervalHandle);
 }
+
+/** Ejecuta todas las campañas automáticas que estén pendientes (uso manual o cron). */
+export async function runAllDueEmailCampaigns({ dryRun = false, now = new Date() } = {}) {
+    const monthly = await runScheduledMonthlyCampaigns({ dryRun, now });
+    const weekly = await runScheduledWeeklyCampaigns({ dryRun, now });
+    const daily = await runScheduledDailyCampaigns({ dryRun, now });
+
+    const ran = [monthly, weekly, daily].some(
+        (batch) => !batch.skipped && batch.results?.length,
+    );
+
+    return {
+        ran,
+        monthly,
+        weekly,
+        daily,
+        checkedAt: now.toISOString(),
+    };
+}

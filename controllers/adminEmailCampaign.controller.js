@@ -22,6 +22,12 @@ import {
     getCampaignRunStats,
     canRunMonthlyCampaign,
 } from "../services/adminEmailCampaign/adminEmailCampaignSendService.js";
+import { runAllDueEmailCampaigns } from "../services/adminEmailCampaign/adminEmailCampaignScheduler.js";
+import {
+    enrichCampaignsScheduleMeta,
+    enrichCampaignScheduleMeta,
+    summarizeDueCampaigns,
+} from "../services/adminEmailCampaign/adminEmailCampaignScheduleOverview.js";
 import {
     renderCampaignEmail,
     getSamplePreviewRecipient,
@@ -126,10 +132,42 @@ export const getEmailCampaignMetadataController = async (req, res) => {
 export const listEmailCampaignsController = async (req, res) => {
     try {
         const campaigns = await listPlatformEmailCampaignsService();
-        return res.json(campaigns);
+        const enriched = enrichCampaignsScheduleMeta(campaigns);
+        return res.json(enriched);
     } catch (error) {
         console.error("(adminEmailCampaign.list):", error);
         return res.status(500).json({ message: "No se pudieron listar las campañas." });
+    }
+};
+
+export const getEmailCampaignsDueOverviewController = async (req, res) => {
+    try {
+        const campaigns = await listPlatformEmailCampaignsService();
+        const enriched = enrichCampaignsScheduleMeta(campaigns);
+        return res.json(summarizeDueCampaigns(enriched));
+    } catch (error) {
+        console.error("(adminEmailCampaign.dueOverview):", error);
+        return res.status(500).json({ message: "No se pudo obtener el estado de envíos." });
+    }
+};
+
+export const runDueEmailCampaignsController = async (req, res) => {
+    try {
+        const userId = getUserId(req);
+        if (!userId) {
+            return res.status(401).json({ message: "Usuario no autenticado." });
+        }
+        await ensureSystemEmailCampaigns(userId);
+        const result = await runAllDueEmailCampaigns();
+        return res.json({
+            message: result.ran
+                ? "Se procesaron las campañas pendientes."
+                : "No había campañas pendientes de envío.",
+            ...result,
+        });
+    } catch (error) {
+        console.error("(adminEmailCampaign.runDue):", error);
+        return res.status(500).json({ message: "No se pudieron ejecutar las campañas pendientes." });
     }
 };
 
@@ -139,7 +177,7 @@ export const getEmailCampaignController = async (req, res) => {
         if (!campaign) {
             return res.status(404).json({ message: "Campaña no encontrada." });
         }
-        return res.json(campaign);
+        return res.json(enrichCampaignScheduleMeta(campaign));
     } catch (error) {
         console.error("(adminEmailCampaign.get):", error);
         return res.status(500).json({ message: "No se pudo obtener la campaña." });

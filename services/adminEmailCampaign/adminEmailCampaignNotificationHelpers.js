@@ -20,7 +20,7 @@ export function getManualActionForCampaign(campaign) {
     }
     if (campaign?.campaignId) {
         return {
-            path: `/admin/email-campaigns/${campaign.campaignId}/edit`,
+            path: `/admin/email-campaigns/${campaign.campaignId}/settings`,
             label: "Enviar campaña manualmente",
         };
     }
