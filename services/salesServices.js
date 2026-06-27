@@ -1,3 +1,60 @@
+import { getBusinessDateFromDate, getTodayBusinessDate } from '../libs/businessDate.js';
+
+const SALE_LIST_INCLUDE = {
+    customer: {
+        select: {
+            customerId: true,
+            customerFirstName: true,
+            customerLastName: true,
+        },
+    },
+    user: {
+        select: {
+            userId: true,
+            userFirstName: true,
+            userLastName: true,
+        },
+    },
+    deliveredBy: {
+        select: {
+            userId: true,
+            userFirstName: true,
+            userLastName: true,
+        },
+    },
+    SaleDetail: {
+        select: {
+            saleDetailId: true,
+            saleDetailTotal: true,
+            saleDetailType: true,
+        },
+    },
+    Payment: {
+        select: {
+            paymentId: true,
+            paymentAmount: true,
+        },
+    },
+};
+
+function mapSaleListRow(salesOriginal) {
+    const totalPayments = salesOriginal.Payment.reduce(
+        (acc, payment) => acc + payment.paymentAmount,
+        0,
+    );
+    const totalDetails = salesOriginal.SaleDetail.reduce(
+        (acc, detail) => acc + detail.saleDetailTotal,
+        0,
+    );
+    const saleDate = salesOriginal.createdAt.toLocaleDateString('es-CL');
+    return {
+        ...salesOriginal,
+        saleTotalPayments: totalPayments,
+        saleTotal: totalDetails,
+        salePendingAmount: totalDetails - totalPayments,
+        saleDate,
+    };
+}
 
 export const createSale = async (data, prisma) => {
     try {
@@ -12,63 +69,67 @@ export const createSale = async (data, prisma) => {
 export const getSales = async (prisma) => {
     try {
         const salesOriginal = await prisma.sale.findMany({
-            include: {
-                customer: {
-                    select: {
-                        customerId: true,
-                        customerFirstName: true,
-                        customerLastName: true,
-                    },
-                },
-                user: {
-                    select: {
-                        userId: true,
-                        userFirstName: true,
-                        userLastName: true,
-                    },
-                },
-                deliveredBy: {
-                    select: {
-                        userId: true,
-                        userFirstName: true,
-                        userLastName: true,
-                    },
-                },
-                SaleDetail: {
-                    select: {
-                        saleDetailId: true,
-                        saleDetailTotal: true,
-                        saleDetailType: true,
-                    },
-                },
-                Payment: {
-                    select: {
-                        paymentId: true,
-                        paymentAmount: true,
-                    },
-                },
-            },
+            include: SALE_LIST_INCLUDE,
             orderBy: {
                 createdAt: 'desc',
             },
         });
 
-        const sales = salesOriginal.map(salesOriginal => {
-            const totalPayments = salesOriginal.Payment.reduce((acc, payment) => acc + payment.paymentAmount, 0);
-            const totalDetails = salesOriginal.SaleDetail.reduce((acc, detail) => acc + detail.saleDetailTotal, 0);
-            const saleDate = salesOriginal.createdAt.toLocaleDateString('es-CL');
-            return {
-                ...salesOriginal,
-                saleTotalPayments: totalPayments,
-                saleTotal: totalDetails,
-                salePendingAmount: totalDetails - totalPayments,
-                saleDate
-            };
-        });
-        return sales;
+        return salesOriginal.map(mapSaleListRow);
     } catch (error) {
         console.error("(salesServices.js): Error getting sales:", error);
         throw error
+    }
+};
+
+const DASHBOARD_SALE_VIEWS = new Set(['today', 'todayIncome', 'month', 'pending']);
+
+export const getSalesForDashboardView = async (view, prisma) => {
+    if (!DASHBOARD_SALE_VIEWS.has(view)) {
+        const error = new Error('Vista de dashboard no válida');
+        error.statusCode = 400;
+        throw error;
+    }
+
+    try {
+        const salesOriginal = await prisma.sale.findMany({
+            include: SALE_LIST_INCLUDE,
+            orderBy: {
+                createdAt: 'desc',
+            },
+        });
+
+        const sales = salesOriginal.map(mapSaleListRow);
+        const today = getTodayBusinessDate();
+        const monthPrefix = today.slice(0, 7);
+
+        switch (view) {
+            case 'today':
+                return sales.filter(
+                    (sale) => getBusinessDateFromDate(sale.createdAt) === today,
+                );
+            case 'todayIncome':
+                return sales.filter(
+                    (sale) =>
+                        getBusinessDateFromDate(sale.createdAt) === today
+                        && (sale.saleTotalPayments ?? 0) > 0,
+                );
+            case 'month':
+                return sales.filter((sale) =>
+                    getBusinessDateFromDate(sale.createdAt).startsWith(monthPrefix),
+                );
+            case 'pending':
+                return sales.filter(
+                    (sale) =>
+                        getBusinessDateFromDate(sale.createdAt).startsWith(monthPrefix)
+                        && (sale.salePendingAmount ?? 0) > 0,
+                );
+            default:
+                return sales;
+        }
+    } catch (error) {
+        console.error("(salesServices.js): Error getting dashboard sales view:", error);
+        throw error;
     }
 };
 

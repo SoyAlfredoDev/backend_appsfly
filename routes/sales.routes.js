@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
     getSalesController,
+    getDashboardSalesViewController,
     getSaleByIdController,
     createSaleController,
     getMonthlySalescontroller,
@@ -35,6 +36,9 @@ router.get("/sales/month/:month/:year", authRequired, dbSelectorMiddleware, getM
 
 // 4. Daily sales (avoid collision by adding /day)
 router.get("/sales/day/:day/:month/:year", authRequired, dbSelectorMiddleware, getDaySalesController);
+
+// 4b. Dashboard KPI drill-down (before /sales/:id)
+router.get("/sales/dashboard/:view", authRequired, dbSelectorMiddleware, getDashboardSalesViewController);
 
 // 5. Main list of sales
 router.get("/sales", authRequired, dbSelectorMiddleware, getSalesController);

@@ -1,4 +1,4 @@
-import { createSale, getSaleById, getSales, getMonthlySales, getDaySales, getSalesByCustomerIdService, countSalesMonthService, markSaleAsDelivered } from '../services/salesServices.js';
+import { createSale, getSaleById, getSales, getSalesForDashboardView, getMonthlySales, getDaySales, getSalesByCustomerIdService, countSalesMonthService, markSaleAsDelivered } from '../services/salesServices.js';
 import defineSaleNumber from '../libs/defineSaleNumber.js';
 import { isCreditSalesAllowed, isDeliveryControlEnabled } from '../services/businessSettingsService.js';
 
@@ -69,6 +69,22 @@ export const getSalesController = async (req, res) => {
     } catch (error) {
         console.error("(sales.controller.js): Error fetching sales:", error);
         res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const getDashboardSalesViewController = async (req, res) => {
+    try {
+        const { view } = req.params;
+        const sales = await getSalesForDashboardView(view, req.prisma);
+        res.status(200).json(sales);
+    } catch (error) {
+        const status = error.statusCode ?? 500;
+        if (status >= 500) {
+            console.error("(sales.controller.js): Error fetching dashboard sales view:", error);
+        }
+        res.status(status).json({
+            message: error.message ?? "Internal server error",
+        });
     }
 };
 
