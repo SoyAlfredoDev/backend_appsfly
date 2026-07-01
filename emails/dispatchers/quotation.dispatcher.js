@@ -14,6 +14,7 @@ export async function sendQuotationEmail({
     to,
     replyTo,
     businessName,
+    businessLogoUrl = null,
     contactEmail,
     contactPhone,
     contactAddress,
@@ -50,6 +51,7 @@ export async function sendQuotationEmail({
 
     const templateData = {
         businessName,
+        businessLogoUrl,
         contactEmail,
         contactPhone,
         contactAddress,

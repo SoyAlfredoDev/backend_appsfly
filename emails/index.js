@@ -62,6 +62,9 @@ export {
     formatDateTime,
     escapeHtml,
     wrapEmailLayout,
+    wrapBusinessEmailLayout,
+    appsFlyDiscreetFooterText,
+    getAppsFlyPlatformUrl,
     receiptRow,
     primaryButton,
 } from "./shared/layout.js";

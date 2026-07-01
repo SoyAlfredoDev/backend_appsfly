@@ -49,22 +49,31 @@ export const getQuotationsController = async (req, res) => {
 export const getQuotationByIdController = async (req, res) => {
     try {
         const { id } = req.params;
-        await syncQuotationEmailDeliveryFromResend(
-            id,
-            req.tenantBusinessId,
-            req.prisma,
-        ).catch((error) => {
-            console.warn("[quotation] Sync entregas Resend:", error.message);
-        });
+
+        try {
+            await syncQuotationEmailDeliveryFromResend(
+                id,
+                req.tenantBusinessId,
+                req.prisma,
+            );
+        } catch (syncError) {
+            console.warn("[quotation] Sync entregas Resend:", syncError.message);
+        }
 
         const quotation = await getQuotationById(id, req.prisma);
         if (!quotation) {
-            return res.status(404).json({ message: "Quotation not found" });
+            return res.status(404).json({ message: "Cotización no encontrada." });
         }
         res.status(200).json(quotation);
     } catch (error) {
         console.error("(quotation.controller.js): Error fetching quotation by ID:", error);
-        res.status(500).json({ message: "Internal server error" });
+        const isSchemaMismatch = error?.code === "P2022";
+        res.status(500).json({
+            message: isSchemaMismatch
+                ? "La base de datos del negocio requiere actualización. Contacte a soporte o reintente en unos minutos."
+                : "No se pudo cargar el detalle de la cotización.",
+            code: error?.code,
+        });
     }
 };
 

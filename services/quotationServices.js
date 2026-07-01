@@ -22,12 +22,20 @@ const QUOTATION_LIST_INCLUDE = {
     },
 };
 
+function formatQuotationDate(value) {
+    if (!value) return "—";
+    const date = value instanceof Date ? value : new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    return date.toLocaleDateString("es-CL");
+}
+
+function sumQuotationDetails(details = []) {
+    return details.reduce((acc, detail) => acc + (detail.quotationDetailTotal ?? 0), 0);
+}
+
 function mapQuotationListRow(quotation) {
-    const totalDetails = quotation.QuotationDetail.reduce(
-        (acc, detail) => acc + detail.quotationDetailTotal,
-        0,
-    );
-    const quotationDate = quotation.createdAt.toLocaleDateString('es-CL');
+    const totalDetails = sumQuotationDetails(quotation.QuotationDetail);
+    const quotationDate = formatQuotationDate(quotation.createdAt);
     return {
         ...quotation,
         quotationTotal: totalDetails,
@@ -72,6 +80,8 @@ export const getQuotationById = async (id, prisma) => {
                         customerLastName: true,
                         customerEmail: true,
                         customerDocumentNumber: true,
+                        customerCodePhoneNumber: true,
+                        customerPhoneNumber: true,
                     }
                 },
                 user: {
@@ -104,14 +114,13 @@ export const getQuotationById = async (id, prisma) => {
             }
         });
         if (!res) return null;
-        const totalDetails = res.QuotationDetail.reduce(
-            (acc, detail) => acc + detail.quotationDetailTotal,
-            0,
-        );
+        const details = res.QuotationDetail ?? [];
+        const totalDetails = sumQuotationDetails(details);
         return {
             ...res,
+            QuotationDetail: details,
             quotationTotal: totalDetails,
-            quotationDate: res.createdAt.toLocaleDateString('es-CL'),
+            quotationDate: formatQuotationDate(res.createdAt),
         };
     } catch (error) {
         console.error("(quotationServices.js): Error getting quotation by ID:", error);

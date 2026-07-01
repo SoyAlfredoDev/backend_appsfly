@@ -114,6 +114,7 @@ export async function sendQuotationEmailToCustomer(quotationId, businessId, pris
         to: customerEmail,
         replyTo: contact.email,
         businessName: contact.name,
+        businessLogoUrl: business.businessReceiptLogoUrl?.trim() || null,
         contactEmail: contact.email,
         contactPhone: contact.phone,
         contactAddress: contact.address,

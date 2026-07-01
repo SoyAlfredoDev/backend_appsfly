@@ -3,7 +3,8 @@ import {
     formatCurrency,
     formatDateLong,
     receiptRow,
-    wrapEmailLayout,
+    wrapBusinessEmailLayout,
+    appsFlyDiscreetFooterText,
 } from "../../shared/layout.js";
 
 function lineItemRow({ index, name, sku, quantity, unitPrice, lineTotal, isLast }) {
@@ -70,6 +71,7 @@ export function quotationEmailSubject({ businessName, quotationNumber }) {
 
 export function quotationEmailTemplate({
     businessName,
+    businessLogoUrl = null,
     contactEmail,
     contactPhone,
     contactAddress,
@@ -151,9 +153,11 @@ export function quotationEmailTemplate({
         contactDocument,
       })}`;
 
-    return wrapEmailLayout({
+    return wrapBusinessEmailLayout({
         title: quotationEmailSubject({ businessName, quotationNumber }),
         preheader: `Cotización de ${businessName} por ${formatCurrency(total)}.`,
+        businessName,
+        businessLogoUrl,
         bodyHtml,
     });
 }
@@ -201,5 +205,6 @@ ${quotationComment?.trim() ? `Notas: ${quotationComment.trim()}\n` : ""}
 CONTACTO — ${businessName}
 ${contactEmail ? `Correo: ${contactEmail}\n` : ""}${contactPhone ? `Teléfono: ${contactPhone}\n` : ""}${contactAddress ? `Dirección: ${contactAddress}\n` : ""}${contactDocument ? `${contactDocument}\n` : ""}
 Puede responder a este correo y su mensaje llegará al equipo de la empresa.
+${appsFlyDiscreetFooterText()}
 `;
 }

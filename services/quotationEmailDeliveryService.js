@@ -21,20 +21,24 @@ export async function registerQuotationEmailDispatch({
 }) {
     if (!providerMessageId) return;
 
-    await general.quotationEmailDispatchIndex.upsert({
-        where: { providerMessageId },
-        create: {
-            businessId,
-            quotationId,
-            providerMessageId,
-            recipientEmail: recipientEmail.trim().toLowerCase(),
-        },
-        update: {
-            businessId,
-            quotationId,
-            recipientEmail: recipientEmail.trim().toLowerCase(),
-        },
-    });
+    try {
+        await general.quotationEmailDispatchIndex.upsert({
+            where: { providerMessageId },
+            create: {
+                businessId,
+                quotationId,
+                providerMessageId,
+                recipientEmail: recipientEmail.trim().toLowerCase(),
+            },
+            update: {
+                businessId,
+                quotationId,
+                recipientEmail: recipientEmail.trim().toLowerCase(),
+            },
+        });
+    } catch (error) {
+        console.warn("[quotation-email] No se pudo registrar índice de envío:", error.message);
+    }
 }
 
 export async function markQuotationEmailSent({
@@ -168,41 +172,48 @@ export async function applyResendStatusToQuotation(quotation, emailData, prisma)
 }
 
 export async function syncQuotationEmailDeliveryFromResend(quotationId, businessId, prisma) {
-    if (!resend) {
-        return { synced: false, reason: "no_api_key" };
-    }
-
-    const quotation = await getQuotationEmailTracking(quotationId, prisma);
-    if (!quotation?.quotationEmailProviderMessageId) {
-        return { synced: false, reason: "no_provider_message_id" };
-    }
-
-    if (!["SENT", "PENDING"].includes(quotation.quotationEmailDeliveryStatus ?? "")) {
-        return { synced: false, reason: "already_final" };
-    }
-
-    const sentAt = quotation.quotationEmailSentAt;
-    if (sentAt) {
-        const recentCutoff = new Date(Date.now() - STALE_MINUTES * 60 * 1000);
-        if (sentAt > recentCutoff) {
-            return { synced: false, reason: "too_recent" };
+    try {
+        if (!resend) {
+            return { synced: false, reason: "no_api_key" };
         }
+
+        const quotation = await getQuotationEmailTracking(quotationId, prisma);
+        if (!quotation?.quotationEmailProviderMessageId) {
+            return { synced: false, reason: "no_provider_message_id" };
+        }
+
+        if (!["SENT", "PENDING"].includes(quotation.quotationEmailDeliveryStatus ?? "")) {
+            return { synced: false, reason: "already_final" };
+        }
+
+        const sentAt = quotation.quotationEmailSentAt;
+        if (sentAt) {
+            const recentCutoff = new Date(Date.now() - STALE_MINUTES * 60 * 1000);
+            if (sentAt > recentCutoff) {
+                return { synced: false, reason: "too_recent" };
+            }
+        }
+
+        const { data, error } = await resend.emails.get(
+            quotation.quotationEmailProviderMessageId,
+        );
+        if (error || !data) {
+            return { synced: false, reason: "resend_lookup_failed" };
+        }
+
+        const changed = await applyResendStatusToQuotation(
+            { ...quotation, quotationId },
+            data,
+            prisma,
+        );
+
+        return { synced: changed, checked: true, businessId };
+    } catch (error) {
+        if (error?.code === "P2022") {
+            return { synced: false, reason: "schema_not_ready" };
+        }
+        throw error;
     }
-
-    const { data, error } = await resend.emails.get(
-        quotation.quotationEmailProviderMessageId,
-    );
-    if (error || !data) {
-        return { synced: false, reason: "resend_lookup_failed" };
-    }
-
-    const changed = await applyResendStatusToQuotation(
-        { ...quotation, quotationId },
-        data,
-        prisma,
-    );
-
-    return { synced: changed, checked: true, businessId };
 }
 
 export async function processQuotationResendWebhookEvent(event) {

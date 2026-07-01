@@ -32,6 +32,62 @@ export function getAppsFlyEmailLogoUrl() {
     return `${base}/logo-appsfly-white.png`;
 }
 
+export function getAppsFlyPlatformUrl() {
+    return getFrontendBaseUrl();
+}
+
+function renderBusinessEmailHeader({ businessName, businessLogoUrl }) {
+    const name = businessName?.trim() || "Empresa";
+    const logo = businessLogoUrl?.trim();
+
+    if (logo) {
+        return `<tr>
+            <td align="center" bgcolor="#ffffff" style="background-color:#ffffff;padding:28px 24px 22px;border-bottom:1px solid #e5e7eb;">
+              <img
+                src="${escapeHtml(logo)}"
+                alt="${escapeHtml(name)}"
+                width="180"
+                style="width:180px;max-width:180px;max-height:72px;height:auto;margin:0 auto 10px;display:block;object-fit:contain;"
+              />
+              <p class="email-heading" style="margin:0;font-size:15px;font-weight:700;color:#021f41;line-height:1.35;font-family:Arial,Helvetica,sans-serif;">
+                ${escapeHtml(name)}
+              </p>
+            </td>
+          </tr>`;
+    }
+
+    return `<tr>
+        <td align="center" bgcolor="#f8fafc" style="background-color:#f8fafc;padding:30px 24px 26px;border-bottom:3px solid #021f41;">
+          <p class="email-heading" style="margin:0;font-size:22px;font-weight:700;color:#021f41;line-height:1.3;font-family:Arial,Helvetica,sans-serif;">
+            ${escapeHtml(name)}
+          </p>
+        </td>
+      </tr>`;
+}
+
+function renderAppsFlyDiscreetFooter() {
+    const platformUrl = getAppsFlyPlatformUrl();
+    const supportEmail = "soporte@appsfly.app";
+
+    return `<tr>
+        <td bgcolor="#fafbfc" style="background-color:#fafbfc;padding:14px 28px 22px;border-top:1px solid #e5e7eb;text-align:center;">
+          <p class="email-footer-text" style="margin:0;font-size:11px;line-height:1.55;color:#b0b8c4;font-family:Arial,Helvetica,sans-serif;">
+            Documento generado con
+            <a href="${escapeHtml(platformUrl)}" target="_blank" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:none;font-weight:600;">AppsFly</a>
+            ·
+            <a href="${escapeHtml(platformUrl)}" target="_blank" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:underline;">appsfly.app</a>
+            ·
+            <a href="mailto:${escapeHtml(supportEmail)}" style="color:#94a3b8;text-decoration:underline;">soporte</a>
+          </p>
+        </td>
+      </tr>`;
+}
+
+export function appsFlyDiscreetFooterText() {
+    const platformUrl = getAppsFlyPlatformUrl();
+    return `\n---\nDocumento generado con AppsFly · ${platformUrl}`;
+}
+
 export function formatCurrency(amount, currency = "CLP") {
     const value = Number(amount ?? 0);
     if (currency === "CLP") {
@@ -164,6 +220,54 @@ export function wrapEmailLayout({ title, preheader, bodyHtml }) {
               </p>
             </td>
           </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+/**
+ * Layout para correos al cliente final: marca del negocio arriba y atribución discreta a AppsFly abajo.
+ */
+export function wrapBusinessEmailLayout({
+    title,
+    preheader,
+    bodyHtml,
+    businessName,
+    businessLogoUrl = null,
+}) {
+    const headerHtml = renderBusinessEmailHeader({ businessName, businessLogoUrl });
+    const platformFooterHtml = renderAppsFlyDiscreetFooter();
+
+    return `<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>${escapeHtml(title)}</title>
+  ${emailStyles()}
+  <!--[if mso]>
+  <style>table,td{font-family:Arial,Helvetica,sans-serif!important}</style>
+  <![endif]-->
+</head>
+<body class="body" style="margin:0;padding:0;background-color:#eef2f6;font-family:Arial,Helvetica,sans-serif;">
+  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${escapeHtml(preheader)}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+  <table role="presentation" class="email-outer" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#eef2f6" style="background-color:#eef2f6;padding:24px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" class="email-card" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0;">
+          ${headerHtml}
+          <tr>
+            <td bgcolor="#ffffff" style="background-color:#ffffff;padding:32px 28px 24px;">
+              ${bodyHtml}
+            </td>
+          </tr>
+          ${platformFooterHtml}
         </table>
       </td>
     </tr>
