@@ -514,20 +514,35 @@ enum QuotationStatus {
   EXPIRED
 }
 
+enum QuotationEmailDeliveryStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+  BOUNCED
+}
+
 model Quotation {
-  quotationId         String            @id
-  quotationNumber     String?
-  quotationCustomerId String
-  quotationTotal      Int
-  quotationStatus     QuotationStatus   @default(DRAFT)
-  quotationComment    String?
-  quotationExpiresAt  DateTime?
-  createdByUserId     String
-  user                User              @relation("QuotationCreatedBy", fields: [createdByUserId], references: [userId])
-  customer            Customer          @relation(fields: [quotationCustomerId], references: [customerId])
-  createdAt           DateTime          @default(now())
-  updatedAt           DateTime          @updatedAt
-  QuotationDetail     QuotationDetail[]
+  quotationId                     String                        @id
+  quotationNumber                 String?
+  quotationCustomerId             String
+  quotationTotal                  Int
+  quotationStatus                 QuotationStatus               @default(DRAFT)
+  quotationComment                String?
+  quotationExpiresAt              DateTime?
+  quotationEmailDeliveryStatus    QuotationEmailDeliveryStatus?
+  quotationEmailProviderMessageId String?
+  quotationEmailSentTo            String?
+  quotationEmailSentAt            DateTime?
+  quotationEmailDeliveredAt       DateTime?
+  quotationEmailOpenedAt          DateTime?
+  quotationEmailErrorMessage      String?
+  createdByUserId                 String
+  user                            User                          @relation("QuotationCreatedBy", fields: [createdByUserId], references: [userId])
+  customer                        Customer                      @relation(fields: [quotationCustomerId], references: [customerId])
+  createdAt                       DateTime                      @default(now())
+  updatedAt                       DateTime                      @updatedAt
+  QuotationDetail                 QuotationDetail[]
 }
 
 model QuotationDetail {

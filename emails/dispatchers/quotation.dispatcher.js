@@ -28,6 +28,8 @@ export async function sendQuotationEmail({
     ivaTotal,
     total,
     pdfBuffer = null,
+    quotationId = null,
+    businessId = null,
 }) {
     const recipient = to?.trim().toLowerCase();
     if (!recipient) {
@@ -74,7 +76,11 @@ export async function sendQuotationEmail({
         }]
         : undefined;
 
-    await sendEmail({
+    const tags = quotationId && businessId
+        ? { quotation_id: quotationId, business_id: businessId }
+        : undefined;
+
+    const data = await sendEmail({
         to: recipient,
         from: getQuotationSenderFrom(businessName),
         replyTo: replyTo.trim(),
@@ -82,7 +88,13 @@ export async function sendQuotationEmail({
         html,
         text,
         attachments,
+        tags,
     });
 
-    return { sent: true, to: recipient, replyTo: replyTo.trim() };
+    return {
+        sent: true,
+        to: recipient,
+        replyTo: replyTo.trim(),
+        providerMessageId: data?.id ?? null,
+    };
 }

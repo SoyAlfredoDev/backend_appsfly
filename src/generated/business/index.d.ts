@@ -248,6 +248,17 @@ export const QuotationStatus: {
 
 export type QuotationStatus = (typeof QuotationStatus)[keyof typeof QuotationStatus]
 
+
+export const QuotationEmailDeliveryStatus: {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED'
+};
+
+export type QuotationEmailDeliveryStatus = (typeof QuotationEmailDeliveryStatus)[keyof typeof QuotationEmailDeliveryStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -297,6 +308,10 @@ export const TaxProviderType: typeof $Enums.TaxProviderType
 export type QuotationStatus = $Enums.QuotationStatus
 
 export const QuotationStatus: typeof $Enums.QuotationStatus
+
+export type QuotationEmailDeliveryStatus = $Enums.QuotationEmailDeliveryStatus
+
+export const QuotationEmailDeliveryStatus: typeof $Enums.QuotationEmailDeliveryStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -28335,6 +28350,13 @@ export namespace Prisma {
     quotationStatus: $Enums.QuotationStatus | null
     quotationComment: string | null
     quotationExpiresAt: Date | null
+    quotationEmailDeliveryStatus: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId: string | null
+    quotationEmailSentTo: string | null
+    quotationEmailSentAt: Date | null
+    quotationEmailDeliveredAt: Date | null
+    quotationEmailOpenedAt: Date | null
+    quotationEmailErrorMessage: string | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -28348,6 +28370,13 @@ export namespace Prisma {
     quotationStatus: $Enums.QuotationStatus | null
     quotationComment: string | null
     quotationExpiresAt: Date | null
+    quotationEmailDeliveryStatus: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId: string | null
+    quotationEmailSentTo: string | null
+    quotationEmailSentAt: Date | null
+    quotationEmailDeliveredAt: Date | null
+    quotationEmailOpenedAt: Date | null
+    quotationEmailErrorMessage: string | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -28361,6 +28390,13 @@ export namespace Prisma {
     quotationStatus: number
     quotationComment: number
     quotationExpiresAt: number
+    quotationEmailDeliveryStatus: number
+    quotationEmailProviderMessageId: number
+    quotationEmailSentTo: number
+    quotationEmailSentAt: number
+    quotationEmailDeliveredAt: number
+    quotationEmailOpenedAt: number
+    quotationEmailErrorMessage: number
     createdByUserId: number
     createdAt: number
     updatedAt: number
@@ -28384,6 +28420,13 @@ export namespace Prisma {
     quotationStatus?: true
     quotationComment?: true
     quotationExpiresAt?: true
+    quotationEmailDeliveryStatus?: true
+    quotationEmailProviderMessageId?: true
+    quotationEmailSentTo?: true
+    quotationEmailSentAt?: true
+    quotationEmailDeliveredAt?: true
+    quotationEmailOpenedAt?: true
+    quotationEmailErrorMessage?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -28397,6 +28440,13 @@ export namespace Prisma {
     quotationStatus?: true
     quotationComment?: true
     quotationExpiresAt?: true
+    quotationEmailDeliveryStatus?: true
+    quotationEmailProviderMessageId?: true
+    quotationEmailSentTo?: true
+    quotationEmailSentAt?: true
+    quotationEmailDeliveredAt?: true
+    quotationEmailOpenedAt?: true
+    quotationEmailErrorMessage?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -28410,6 +28460,13 @@ export namespace Prisma {
     quotationStatus?: true
     quotationComment?: true
     quotationExpiresAt?: true
+    quotationEmailDeliveryStatus?: true
+    quotationEmailProviderMessageId?: true
+    quotationEmailSentTo?: true
+    quotationEmailSentAt?: true
+    quotationEmailDeliveredAt?: true
+    quotationEmailOpenedAt?: true
+    quotationEmailErrorMessage?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -28510,6 +28567,13 @@ export namespace Prisma {
     quotationStatus: $Enums.QuotationStatus
     quotationComment: string | null
     quotationExpiresAt: Date | null
+    quotationEmailDeliveryStatus: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId: string | null
+    quotationEmailSentTo: string | null
+    quotationEmailSentAt: Date | null
+    quotationEmailDeliveredAt: Date | null
+    quotationEmailOpenedAt: Date | null
+    quotationEmailErrorMessage: string | null
     createdByUserId: string
     createdAt: Date
     updatedAt: Date
@@ -28542,6 +28606,13 @@ export namespace Prisma {
     quotationStatus?: boolean
     quotationComment?: boolean
     quotationExpiresAt?: boolean
+    quotationEmailDeliveryStatus?: boolean
+    quotationEmailProviderMessageId?: boolean
+    quotationEmailSentTo?: boolean
+    quotationEmailSentAt?: boolean
+    quotationEmailDeliveredAt?: boolean
+    quotationEmailOpenedAt?: boolean
+    quotationEmailErrorMessage?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -28559,6 +28630,13 @@ export namespace Prisma {
     quotationStatus?: boolean
     quotationComment?: boolean
     quotationExpiresAt?: boolean
+    quotationEmailDeliveryStatus?: boolean
+    quotationEmailProviderMessageId?: boolean
+    quotationEmailSentTo?: boolean
+    quotationEmailSentAt?: boolean
+    quotationEmailDeliveredAt?: boolean
+    quotationEmailOpenedAt?: boolean
+    quotationEmailErrorMessage?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -28574,6 +28652,13 @@ export namespace Prisma {
     quotationStatus?: boolean
     quotationComment?: boolean
     quotationExpiresAt?: boolean
+    quotationEmailDeliveryStatus?: boolean
+    quotationEmailProviderMessageId?: boolean
+    quotationEmailSentTo?: boolean
+    quotationEmailSentAt?: boolean
+    quotationEmailDeliveredAt?: boolean
+    quotationEmailOpenedAt?: boolean
+    quotationEmailErrorMessage?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -28589,12 +28674,19 @@ export namespace Prisma {
     quotationStatus?: boolean
     quotationComment?: boolean
     quotationExpiresAt?: boolean
+    quotationEmailDeliveryStatus?: boolean
+    quotationEmailProviderMessageId?: boolean
+    quotationEmailSentTo?: boolean
+    quotationEmailSentAt?: boolean
+    quotationEmailDeliveredAt?: boolean
+    quotationEmailOpenedAt?: boolean
+    quotationEmailErrorMessage?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type QuotationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"quotationId" | "quotationNumber" | "quotationCustomerId" | "quotationTotal" | "quotationStatus" | "quotationComment" | "quotationExpiresAt" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["quotation"]>
+  export type QuotationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"quotationId" | "quotationNumber" | "quotationCustomerId" | "quotationTotal" | "quotationStatus" | "quotationComment" | "quotationExpiresAt" | "quotationEmailDeliveryStatus" | "quotationEmailProviderMessageId" | "quotationEmailSentTo" | "quotationEmailSentAt" | "quotationEmailDeliveredAt" | "quotationEmailOpenedAt" | "quotationEmailErrorMessage" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["quotation"]>
   export type QuotationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
@@ -28625,6 +28717,13 @@ export namespace Prisma {
       quotationStatus: $Enums.QuotationStatus
       quotationComment: string | null
       quotationExpiresAt: Date | null
+      quotationEmailDeliveryStatus: $Enums.QuotationEmailDeliveryStatus | null
+      quotationEmailProviderMessageId: string | null
+      quotationEmailSentTo: string | null
+      quotationEmailSentAt: Date | null
+      quotationEmailDeliveredAt: Date | null
+      quotationEmailOpenedAt: Date | null
+      quotationEmailErrorMessage: string | null
       createdByUserId: string
       createdAt: Date
       updatedAt: Date
@@ -29061,6 +29160,13 @@ export namespace Prisma {
     readonly quotationStatus: FieldRef<"Quotation", 'QuotationStatus'>
     readonly quotationComment: FieldRef<"Quotation", 'String'>
     readonly quotationExpiresAt: FieldRef<"Quotation", 'DateTime'>
+    readonly quotationEmailDeliveryStatus: FieldRef<"Quotation", 'QuotationEmailDeliveryStatus'>
+    readonly quotationEmailProviderMessageId: FieldRef<"Quotation", 'String'>
+    readonly quotationEmailSentTo: FieldRef<"Quotation", 'String'>
+    readonly quotationEmailSentAt: FieldRef<"Quotation", 'DateTime'>
+    readonly quotationEmailDeliveredAt: FieldRef<"Quotation", 'DateTime'>
+    readonly quotationEmailOpenedAt: FieldRef<"Quotation", 'DateTime'>
+    readonly quotationEmailErrorMessage: FieldRef<"Quotation", 'String'>
     readonly createdByUserId: FieldRef<"Quotation", 'String'>
     readonly createdAt: FieldRef<"Quotation", 'DateTime'>
     readonly updatedAt: FieldRef<"Quotation", 'DateTime'>
@@ -31132,6 +31238,13 @@ export namespace Prisma {
     quotationStatus: 'quotationStatus',
     quotationComment: 'quotationComment',
     quotationExpiresAt: 'quotationExpiresAt',
+    quotationEmailDeliveryStatus: 'quotationEmailDeliveryStatus',
+    quotationEmailProviderMessageId: 'quotationEmailProviderMessageId',
+    quotationEmailSentTo: 'quotationEmailSentTo',
+    quotationEmailSentAt: 'quotationEmailSentAt',
+    quotationEmailDeliveredAt: 'quotationEmailDeliveredAt',
+    quotationEmailOpenedAt: 'quotationEmailOpenedAt',
+    quotationEmailErrorMessage: 'quotationEmailErrorMessage',
     createdByUserId: 'createdByUserId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -31432,6 +31545,20 @@ export namespace Prisma {
    * Reference to a field of type 'QuotationStatus[]'
    */
   export type ListEnumQuotationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuotationStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'QuotationEmailDeliveryStatus'
+   */
+  export type EnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuotationEmailDeliveryStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'QuotationEmailDeliveryStatus[]'
+   */
+  export type ListEnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QuotationEmailDeliveryStatus[]'>
     
 
 
@@ -33388,6 +33515,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFilter<"Quotation"> | $Enums.QuotationStatus
     quotationComment?: StringNullableFilter<"Quotation"> | string | null
     quotationExpiresAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailDeliveryStatus?: EnumQuotationEmailDeliveryStatusNullableFilter<"Quotation"> | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: StringNullableFilter<"Quotation"> | string | null
+    quotationEmailSentTo?: StringNullableFilter<"Quotation"> | string | null
+    quotationEmailSentAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailDeliveredAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailOpenedAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailErrorMessage?: StringNullableFilter<"Quotation"> | string | null
     createdByUserId?: StringFilter<"Quotation"> | string
     createdAt?: DateTimeFilter<"Quotation"> | Date | string
     updatedAt?: DateTimeFilter<"Quotation"> | Date | string
@@ -33404,6 +33538,13 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrderInput | SortOrder
     quotationExpiresAt?: SortOrderInput | SortOrder
+    quotationEmailDeliveryStatus?: SortOrderInput | SortOrder
+    quotationEmailProviderMessageId?: SortOrderInput | SortOrder
+    quotationEmailSentTo?: SortOrderInput | SortOrder
+    quotationEmailSentAt?: SortOrderInput | SortOrder
+    quotationEmailDeliveredAt?: SortOrderInput | SortOrder
+    quotationEmailOpenedAt?: SortOrderInput | SortOrder
+    quotationEmailErrorMessage?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -33423,6 +33564,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFilter<"Quotation"> | $Enums.QuotationStatus
     quotationComment?: StringNullableFilter<"Quotation"> | string | null
     quotationExpiresAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailDeliveryStatus?: EnumQuotationEmailDeliveryStatusNullableFilter<"Quotation"> | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: StringNullableFilter<"Quotation"> | string | null
+    quotationEmailSentTo?: StringNullableFilter<"Quotation"> | string | null
+    quotationEmailSentAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailDeliveredAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailOpenedAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailErrorMessage?: StringNullableFilter<"Quotation"> | string | null
     createdByUserId?: StringFilter<"Quotation"> | string
     createdAt?: DateTimeFilter<"Quotation"> | Date | string
     updatedAt?: DateTimeFilter<"Quotation"> | Date | string
@@ -33439,6 +33587,13 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrderInput | SortOrder
     quotationExpiresAt?: SortOrderInput | SortOrder
+    quotationEmailDeliveryStatus?: SortOrderInput | SortOrder
+    quotationEmailProviderMessageId?: SortOrderInput | SortOrder
+    quotationEmailSentTo?: SortOrderInput | SortOrder
+    quotationEmailSentAt?: SortOrderInput | SortOrder
+    quotationEmailDeliveredAt?: SortOrderInput | SortOrder
+    quotationEmailOpenedAt?: SortOrderInput | SortOrder
+    quotationEmailErrorMessage?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -33460,6 +33615,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusWithAggregatesFilter<"Quotation"> | $Enums.QuotationStatus
     quotationComment?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     quotationExpiresAt?: DateTimeNullableWithAggregatesFilter<"Quotation"> | Date | string | null
+    quotationEmailDeliveryStatus?: EnumQuotationEmailDeliveryStatusNullableWithAggregatesFilter<"Quotation"> | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
+    quotationEmailSentTo?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
+    quotationEmailSentAt?: DateTimeNullableWithAggregatesFilter<"Quotation"> | Date | string | null
+    quotationEmailDeliveredAt?: DateTimeNullableWithAggregatesFilter<"Quotation"> | Date | string | null
+    quotationEmailOpenedAt?: DateTimeNullableWithAggregatesFilter<"Quotation"> | Date | string | null
+    quotationEmailErrorMessage?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     createdByUserId?: StringWithAggregatesFilter<"Quotation"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Quotation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Quotation"> | Date | string
@@ -35711,6 +35873,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutQuotationInput
@@ -35726,6 +35895,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35739,6 +35915,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutQuotationNestedInput
@@ -35754,6 +35937,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35768,6 +35958,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -35780,6 +35977,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35792,6 +35996,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37640,6 +37851,13 @@ export namespace Prisma {
     not?: NestedEnumQuotationStatusFilter<$PrismaModel> | $Enums.QuotationStatus
   }
 
+  export type EnumQuotationEmailDeliveryStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuotationEmailDeliveryStatus | EnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.QuotationEmailDeliveryStatus[] | ListEnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.QuotationEmailDeliveryStatus[] | ListEnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumQuotationEmailDeliveryStatusNullableFilter<$PrismaModel> | $Enums.QuotationEmailDeliveryStatus | null
+  }
+
   export type QuotationCountOrderByAggregateInput = {
     quotationId?: SortOrder
     quotationNumber?: SortOrder
@@ -37648,6 +37866,13 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrder
     quotationExpiresAt?: SortOrder
+    quotationEmailDeliveryStatus?: SortOrder
+    quotationEmailProviderMessageId?: SortOrder
+    quotationEmailSentTo?: SortOrder
+    quotationEmailSentAt?: SortOrder
+    quotationEmailDeliveredAt?: SortOrder
+    quotationEmailOpenedAt?: SortOrder
+    quotationEmailErrorMessage?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -37665,6 +37890,13 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrder
     quotationExpiresAt?: SortOrder
+    quotationEmailDeliveryStatus?: SortOrder
+    quotationEmailProviderMessageId?: SortOrder
+    quotationEmailSentTo?: SortOrder
+    quotationEmailSentAt?: SortOrder
+    quotationEmailDeliveredAt?: SortOrder
+    quotationEmailOpenedAt?: SortOrder
+    quotationEmailErrorMessage?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -37678,6 +37910,13 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrder
     quotationExpiresAt?: SortOrder
+    quotationEmailDeliveryStatus?: SortOrder
+    quotationEmailProviderMessageId?: SortOrder
+    quotationEmailSentTo?: SortOrder
+    quotationEmailSentAt?: SortOrder
+    quotationEmailDeliveredAt?: SortOrder
+    quotationEmailOpenedAt?: SortOrder
+    quotationEmailErrorMessage?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -37695,6 +37934,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumQuotationStatusFilter<$PrismaModel>
     _max?: NestedEnumQuotationStatusFilter<$PrismaModel>
+  }
+
+  export type EnumQuotationEmailDeliveryStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuotationEmailDeliveryStatus | EnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.QuotationEmailDeliveryStatus[] | ListEnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.QuotationEmailDeliveryStatus[] | ListEnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumQuotationEmailDeliveryStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.QuotationEmailDeliveryStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumQuotationEmailDeliveryStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumQuotationEmailDeliveryStatusNullableFilter<$PrismaModel>
   }
 
   export type QuotationScalarRelationFilter = {
@@ -40037,6 +40286,10 @@ export namespace Prisma {
     set?: $Enums.QuotationStatus
   }
 
+  export type NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput = {
+    set?: $Enums.QuotationEmailDeliveryStatus | null
+  }
+
   export type UserUpdateOneRequiredWithoutQuotationNestedInput = {
     create?: XOR<UserCreateWithoutQuotationInput, UserUncheckedCreateWithoutQuotationInput>
     connectOrCreate?: UserCreateOrConnectWithoutQuotationInput
@@ -40603,6 +40856,13 @@ export namespace Prisma {
     not?: NestedEnumQuotationStatusFilter<$PrismaModel> | $Enums.QuotationStatus
   }
 
+  export type NestedEnumQuotationEmailDeliveryStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuotationEmailDeliveryStatus | EnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.QuotationEmailDeliveryStatus[] | ListEnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.QuotationEmailDeliveryStatus[] | ListEnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumQuotationEmailDeliveryStatusNullableFilter<$PrismaModel> | $Enums.QuotationEmailDeliveryStatus | null
+  }
+
   export type NestedEnumQuotationStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.QuotationStatus | EnumQuotationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.QuotationStatus[] | ListEnumQuotationStatusFieldRefInput<$PrismaModel>
@@ -40611,6 +40871,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumQuotationStatusFilter<$PrismaModel>
     _max?: NestedEnumQuotationStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumQuotationEmailDeliveryStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.QuotationEmailDeliveryStatus | EnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.QuotationEmailDeliveryStatus[] | ListEnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.QuotationEmailDeliveryStatus[] | ListEnumQuotationEmailDeliveryStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumQuotationEmailDeliveryStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.QuotationEmailDeliveryStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumQuotationEmailDeliveryStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumQuotationEmailDeliveryStatusNullableFilter<$PrismaModel>
   }
 
   export type CustomerCreateWithoutCreatedByInput = {
@@ -41328,6 +41598,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     customer: CustomerCreateNestedOneWithoutQuotationInput
@@ -41342,6 +41619,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     QuotationDetail?: QuotationDetailUncheckedCreateNestedManyWithoutQuotationInput
@@ -41985,6 +42269,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFilter<"Quotation"> | $Enums.QuotationStatus
     quotationComment?: StringNullableFilter<"Quotation"> | string | null
     quotationExpiresAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailDeliveryStatus?: EnumQuotationEmailDeliveryStatusNullableFilter<"Quotation"> | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: StringNullableFilter<"Quotation"> | string | null
+    quotationEmailSentTo?: StringNullableFilter<"Quotation"> | string | null
+    quotationEmailSentAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailDeliveredAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailOpenedAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    quotationEmailErrorMessage?: StringNullableFilter<"Quotation"> | string | null
     createdByUserId?: StringFilter<"Quotation"> | string
     createdAt?: DateTimeFilter<"Quotation"> | Date | string
     updatedAt?: DateTimeFilter<"Quotation"> | Date | string
@@ -42192,6 +42483,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutQuotationInput
@@ -42205,6 +42503,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -47683,6 +47988,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutQuotationInput
@@ -47697,6 +48009,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -47935,6 +48254,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutQuotationNestedInput
@@ -47949,6 +48275,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48298,6 +48631,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -49093,6 +49433,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     customer?: CustomerUpdateOneRequiredWithoutQuotationNestedInput
@@ -49107,6 +49454,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     QuotationDetail?: QuotationDetailUncheckedUpdateManyWithoutQuotationNestedInput
@@ -49120,6 +49474,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -49204,6 +49565,13 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -49329,6 +49697,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutQuotationNestedInput
@@ -49342,6 +49717,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49355,6 +49737,13 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

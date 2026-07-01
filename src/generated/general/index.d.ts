@@ -94,6 +94,11 @@ export type PlatformEmailCampaignRun = $Result.DefaultSelection<Prisma.$Platform
  */
 export type PlatformEmailCampaignRecipient = $Result.DefaultSelection<Prisma.$PlatformEmailCampaignRecipientPayload>
 /**
+ * Model QuotationEmailDispatchIndex
+ * * Índice global para webhooks Resend → cotización en BD del tenant
+ */
+export type QuotationEmailDispatchIndex = $Result.DefaultSelection<Prisma.$QuotationEmailDispatchIndexPayload>
+/**
  * Model PlatformAdminNotification
  * 
  */
@@ -695,6 +700,16 @@ export class PrismaClient<
   get platformEmailCampaignRecipient(): Prisma.PlatformEmailCampaignRecipientDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.quotationEmailDispatchIndex`: Exposes CRUD operations for the **QuotationEmailDispatchIndex** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more QuotationEmailDispatchIndices
+    * const quotationEmailDispatchIndices = await prisma.quotationEmailDispatchIndex.findMany()
+    * ```
+    */
+  get quotationEmailDispatchIndex(): Prisma.QuotationEmailDispatchIndexDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.platformAdminNotification`: Exposes CRUD operations for the **PlatformAdminNotification** model.
     * Example usage:
     * ```ts
@@ -1170,6 +1185,7 @@ export namespace Prisma {
     PlatformEmailCampaign: 'PlatformEmailCampaign',
     PlatformEmailCampaignRun: 'PlatformEmailCampaignRun',
     PlatformEmailCampaignRecipient: 'PlatformEmailCampaignRecipient',
+    QuotationEmailDispatchIndex: 'QuotationEmailDispatchIndex',
     PlatformAdminNotification: 'PlatformAdminNotification',
     PlatformAgentTask: 'PlatformAgentTask'
   };
@@ -1190,7 +1206,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "business" | "taxProviderAccount" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber" | "platformEmailProspect" | "platformEmailCampaign" | "platformEmailCampaignRun" | "platformEmailCampaignRecipient" | "platformAdminNotification" | "platformAgentTask"
+      modelProps: "user" | "business" | "taxProviderAccount" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber" | "platformEmailProspect" | "platformEmailCampaign" | "platformEmailCampaignRun" | "platformEmailCampaignRecipient" | "quotationEmailDispatchIndex" | "platformAdminNotification" | "platformAgentTask"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2378,6 +2394,80 @@ export namespace Prisma {
           }
         }
       }
+      QuotationEmailDispatchIndex: {
+        payload: Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>
+        fields: Prisma.QuotationEmailDispatchIndexFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.QuotationEmailDispatchIndexFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.QuotationEmailDispatchIndexFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload>
+          }
+          findFirst: {
+            args: Prisma.QuotationEmailDispatchIndexFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.QuotationEmailDispatchIndexFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload>
+          }
+          findMany: {
+            args: Prisma.QuotationEmailDispatchIndexFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload>[]
+          }
+          create: {
+            args: Prisma.QuotationEmailDispatchIndexCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload>
+          }
+          createMany: {
+            args: Prisma.QuotationEmailDispatchIndexCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.QuotationEmailDispatchIndexCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload>[]
+          }
+          delete: {
+            args: Prisma.QuotationEmailDispatchIndexDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload>
+          }
+          update: {
+            args: Prisma.QuotationEmailDispatchIndexUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload>
+          }
+          deleteMany: {
+            args: Prisma.QuotationEmailDispatchIndexDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.QuotationEmailDispatchIndexUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.QuotationEmailDispatchIndexUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload>[]
+          }
+          upsert: {
+            args: Prisma.QuotationEmailDispatchIndexUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuotationEmailDispatchIndexPayload>
+          }
+          aggregate: {
+            args: Prisma.QuotationEmailDispatchIndexAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateQuotationEmailDispatchIndex>
+          }
+          groupBy: {
+            args: Prisma.QuotationEmailDispatchIndexGroupByArgs<ExtArgs>
+            result: $Utils.Optional<QuotationEmailDispatchIndexGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.QuotationEmailDispatchIndexCountArgs<ExtArgs>
+            result: $Utils.Optional<QuotationEmailDispatchIndexCountAggregateOutputType> | number
+          }
+        }
+      }
       PlatformAdminNotification: {
         payload: Prisma.$PlatformAdminNotificationPayload<ExtArgs>
         fields: Prisma.PlatformAdminNotificationFieldRefs
@@ -2638,6 +2728,7 @@ export namespace Prisma {
     platformEmailCampaign?: PlatformEmailCampaignOmit
     platformEmailCampaignRun?: PlatformEmailCampaignRunOmit
     platformEmailCampaignRecipient?: PlatformEmailCampaignRecipientOmit
+    quotationEmailDispatchIndex?: QuotationEmailDispatchIndexOmit
     platformAdminNotification?: PlatformAdminNotificationOmit
     platformAgentTask?: PlatformAgentTaskOmit
   }
@@ -22884,6 +22975,1014 @@ export namespace Prisma {
 
 
   /**
+   * Model QuotationEmailDispatchIndex
+   */
+
+  export type AggregateQuotationEmailDispatchIndex = {
+    _count: QuotationEmailDispatchIndexCountAggregateOutputType | null
+    _min: QuotationEmailDispatchIndexMinAggregateOutputType | null
+    _max: QuotationEmailDispatchIndexMaxAggregateOutputType | null
+  }
+
+  export type QuotationEmailDispatchIndexMinAggregateOutputType = {
+    dispatchId: string | null
+    businessId: string | null
+    quotationId: string | null
+    providerMessageId: string | null
+    recipientEmail: string | null
+    createdAt: Date | null
+  }
+
+  export type QuotationEmailDispatchIndexMaxAggregateOutputType = {
+    dispatchId: string | null
+    businessId: string | null
+    quotationId: string | null
+    providerMessageId: string | null
+    recipientEmail: string | null
+    createdAt: Date | null
+  }
+
+  export type QuotationEmailDispatchIndexCountAggregateOutputType = {
+    dispatchId: number
+    businessId: number
+    quotationId: number
+    providerMessageId: number
+    recipientEmail: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type QuotationEmailDispatchIndexMinAggregateInputType = {
+    dispatchId?: true
+    businessId?: true
+    quotationId?: true
+    providerMessageId?: true
+    recipientEmail?: true
+    createdAt?: true
+  }
+
+  export type QuotationEmailDispatchIndexMaxAggregateInputType = {
+    dispatchId?: true
+    businessId?: true
+    quotationId?: true
+    providerMessageId?: true
+    recipientEmail?: true
+    createdAt?: true
+  }
+
+  export type QuotationEmailDispatchIndexCountAggregateInputType = {
+    dispatchId?: true
+    businessId?: true
+    quotationId?: true
+    providerMessageId?: true
+    recipientEmail?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type QuotationEmailDispatchIndexAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuotationEmailDispatchIndex to aggregate.
+     */
+    where?: QuotationEmailDispatchIndexWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuotationEmailDispatchIndices to fetch.
+     */
+    orderBy?: QuotationEmailDispatchIndexOrderByWithRelationInput | QuotationEmailDispatchIndexOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: QuotationEmailDispatchIndexWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuotationEmailDispatchIndices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuotationEmailDispatchIndices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned QuotationEmailDispatchIndices
+    **/
+    _count?: true | QuotationEmailDispatchIndexCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: QuotationEmailDispatchIndexMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: QuotationEmailDispatchIndexMaxAggregateInputType
+  }
+
+  export type GetQuotationEmailDispatchIndexAggregateType<T extends QuotationEmailDispatchIndexAggregateArgs> = {
+        [P in keyof T & keyof AggregateQuotationEmailDispatchIndex]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateQuotationEmailDispatchIndex[P]>
+      : GetScalarType<T[P], AggregateQuotationEmailDispatchIndex[P]>
+  }
+
+
+
+
+  export type QuotationEmailDispatchIndexGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuotationEmailDispatchIndexWhereInput
+    orderBy?: QuotationEmailDispatchIndexOrderByWithAggregationInput | QuotationEmailDispatchIndexOrderByWithAggregationInput[]
+    by: QuotationEmailDispatchIndexScalarFieldEnum[] | QuotationEmailDispatchIndexScalarFieldEnum
+    having?: QuotationEmailDispatchIndexScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: QuotationEmailDispatchIndexCountAggregateInputType | true
+    _min?: QuotationEmailDispatchIndexMinAggregateInputType
+    _max?: QuotationEmailDispatchIndexMaxAggregateInputType
+  }
+
+  export type QuotationEmailDispatchIndexGroupByOutputType = {
+    dispatchId: string
+    businessId: string
+    quotationId: string
+    providerMessageId: string
+    recipientEmail: string
+    createdAt: Date
+    _count: QuotationEmailDispatchIndexCountAggregateOutputType | null
+    _min: QuotationEmailDispatchIndexMinAggregateOutputType | null
+    _max: QuotationEmailDispatchIndexMaxAggregateOutputType | null
+  }
+
+  type GetQuotationEmailDispatchIndexGroupByPayload<T extends QuotationEmailDispatchIndexGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<QuotationEmailDispatchIndexGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof QuotationEmailDispatchIndexGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], QuotationEmailDispatchIndexGroupByOutputType[P]>
+            : GetScalarType<T[P], QuotationEmailDispatchIndexGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type QuotationEmailDispatchIndexSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    dispatchId?: boolean
+    businessId?: boolean
+    quotationId?: boolean
+    providerMessageId?: boolean
+    recipientEmail?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["quotationEmailDispatchIndex"]>
+
+  export type QuotationEmailDispatchIndexSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    dispatchId?: boolean
+    businessId?: boolean
+    quotationId?: boolean
+    providerMessageId?: boolean
+    recipientEmail?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["quotationEmailDispatchIndex"]>
+
+  export type QuotationEmailDispatchIndexSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    dispatchId?: boolean
+    businessId?: boolean
+    quotationId?: boolean
+    providerMessageId?: boolean
+    recipientEmail?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["quotationEmailDispatchIndex"]>
+
+  export type QuotationEmailDispatchIndexSelectScalar = {
+    dispatchId?: boolean
+    businessId?: boolean
+    quotationId?: boolean
+    providerMessageId?: boolean
+    recipientEmail?: boolean
+    createdAt?: boolean
+  }
+
+  export type QuotationEmailDispatchIndexOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"dispatchId" | "businessId" | "quotationId" | "providerMessageId" | "recipientEmail" | "createdAt", ExtArgs["result"]["quotationEmailDispatchIndex"]>
+
+  export type $QuotationEmailDispatchIndexPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "QuotationEmailDispatchIndex"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      dispatchId: string
+      businessId: string
+      quotationId: string
+      providerMessageId: string
+      recipientEmail: string
+      createdAt: Date
+    }, ExtArgs["result"]["quotationEmailDispatchIndex"]>
+    composites: {}
+  }
+
+  type QuotationEmailDispatchIndexGetPayload<S extends boolean | null | undefined | QuotationEmailDispatchIndexDefaultArgs> = $Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload, S>
+
+  type QuotationEmailDispatchIndexCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<QuotationEmailDispatchIndexFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: QuotationEmailDispatchIndexCountAggregateInputType | true
+    }
+
+  export interface QuotationEmailDispatchIndexDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuotationEmailDispatchIndex'], meta: { name: 'QuotationEmailDispatchIndex' } }
+    /**
+     * Find zero or one QuotationEmailDispatchIndex that matches the filter.
+     * @param {QuotationEmailDispatchIndexFindUniqueArgs} args - Arguments to find a QuotationEmailDispatchIndex
+     * @example
+     * // Get one QuotationEmailDispatchIndex
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends QuotationEmailDispatchIndexFindUniqueArgs>(args: SelectSubset<T, QuotationEmailDispatchIndexFindUniqueArgs<ExtArgs>>): Prisma__QuotationEmailDispatchIndexClient<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one QuotationEmailDispatchIndex that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {QuotationEmailDispatchIndexFindUniqueOrThrowArgs} args - Arguments to find a QuotationEmailDispatchIndex
+     * @example
+     * // Get one QuotationEmailDispatchIndex
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends QuotationEmailDispatchIndexFindUniqueOrThrowArgs>(args: SelectSubset<T, QuotationEmailDispatchIndexFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuotationEmailDispatchIndexClient<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuotationEmailDispatchIndex that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuotationEmailDispatchIndexFindFirstArgs} args - Arguments to find a QuotationEmailDispatchIndex
+     * @example
+     * // Get one QuotationEmailDispatchIndex
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends QuotationEmailDispatchIndexFindFirstArgs>(args?: SelectSubset<T, QuotationEmailDispatchIndexFindFirstArgs<ExtArgs>>): Prisma__QuotationEmailDispatchIndexClient<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuotationEmailDispatchIndex that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuotationEmailDispatchIndexFindFirstOrThrowArgs} args - Arguments to find a QuotationEmailDispatchIndex
+     * @example
+     * // Get one QuotationEmailDispatchIndex
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends QuotationEmailDispatchIndexFindFirstOrThrowArgs>(args?: SelectSubset<T, QuotationEmailDispatchIndexFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuotationEmailDispatchIndexClient<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more QuotationEmailDispatchIndices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuotationEmailDispatchIndexFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all QuotationEmailDispatchIndices
+     * const quotationEmailDispatchIndices = await prisma.quotationEmailDispatchIndex.findMany()
+     * 
+     * // Get first 10 QuotationEmailDispatchIndices
+     * const quotationEmailDispatchIndices = await prisma.quotationEmailDispatchIndex.findMany({ take: 10 })
+     * 
+     * // Only select the `dispatchId`
+     * const quotationEmailDispatchIndexWithDispatchIdOnly = await prisma.quotationEmailDispatchIndex.findMany({ select: { dispatchId: true } })
+     * 
+     */
+    findMany<T extends QuotationEmailDispatchIndexFindManyArgs>(args?: SelectSubset<T, QuotationEmailDispatchIndexFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a QuotationEmailDispatchIndex.
+     * @param {QuotationEmailDispatchIndexCreateArgs} args - Arguments to create a QuotationEmailDispatchIndex.
+     * @example
+     * // Create one QuotationEmailDispatchIndex
+     * const QuotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.create({
+     *   data: {
+     *     // ... data to create a QuotationEmailDispatchIndex
+     *   }
+     * })
+     * 
+     */
+    create<T extends QuotationEmailDispatchIndexCreateArgs>(args: SelectSubset<T, QuotationEmailDispatchIndexCreateArgs<ExtArgs>>): Prisma__QuotationEmailDispatchIndexClient<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many QuotationEmailDispatchIndices.
+     * @param {QuotationEmailDispatchIndexCreateManyArgs} args - Arguments to create many QuotationEmailDispatchIndices.
+     * @example
+     * // Create many QuotationEmailDispatchIndices
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends QuotationEmailDispatchIndexCreateManyArgs>(args?: SelectSubset<T, QuotationEmailDispatchIndexCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many QuotationEmailDispatchIndices and returns the data saved in the database.
+     * @param {QuotationEmailDispatchIndexCreateManyAndReturnArgs} args - Arguments to create many QuotationEmailDispatchIndices.
+     * @example
+     * // Create many QuotationEmailDispatchIndices
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many QuotationEmailDispatchIndices and only return the `dispatchId`
+     * const quotationEmailDispatchIndexWithDispatchIdOnly = await prisma.quotationEmailDispatchIndex.createManyAndReturn({
+     *   select: { dispatchId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends QuotationEmailDispatchIndexCreateManyAndReturnArgs>(args?: SelectSubset<T, QuotationEmailDispatchIndexCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a QuotationEmailDispatchIndex.
+     * @param {QuotationEmailDispatchIndexDeleteArgs} args - Arguments to delete one QuotationEmailDispatchIndex.
+     * @example
+     * // Delete one QuotationEmailDispatchIndex
+     * const QuotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.delete({
+     *   where: {
+     *     // ... filter to delete one QuotationEmailDispatchIndex
+     *   }
+     * })
+     * 
+     */
+    delete<T extends QuotationEmailDispatchIndexDeleteArgs>(args: SelectSubset<T, QuotationEmailDispatchIndexDeleteArgs<ExtArgs>>): Prisma__QuotationEmailDispatchIndexClient<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one QuotationEmailDispatchIndex.
+     * @param {QuotationEmailDispatchIndexUpdateArgs} args - Arguments to update one QuotationEmailDispatchIndex.
+     * @example
+     * // Update one QuotationEmailDispatchIndex
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends QuotationEmailDispatchIndexUpdateArgs>(args: SelectSubset<T, QuotationEmailDispatchIndexUpdateArgs<ExtArgs>>): Prisma__QuotationEmailDispatchIndexClient<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more QuotationEmailDispatchIndices.
+     * @param {QuotationEmailDispatchIndexDeleteManyArgs} args - Arguments to filter QuotationEmailDispatchIndices to delete.
+     * @example
+     * // Delete a few QuotationEmailDispatchIndices
+     * const { count } = await prisma.quotationEmailDispatchIndex.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends QuotationEmailDispatchIndexDeleteManyArgs>(args?: SelectSubset<T, QuotationEmailDispatchIndexDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuotationEmailDispatchIndices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuotationEmailDispatchIndexUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many QuotationEmailDispatchIndices
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends QuotationEmailDispatchIndexUpdateManyArgs>(args: SelectSubset<T, QuotationEmailDispatchIndexUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuotationEmailDispatchIndices and returns the data updated in the database.
+     * @param {QuotationEmailDispatchIndexUpdateManyAndReturnArgs} args - Arguments to update many QuotationEmailDispatchIndices.
+     * @example
+     * // Update many QuotationEmailDispatchIndices
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more QuotationEmailDispatchIndices and only return the `dispatchId`
+     * const quotationEmailDispatchIndexWithDispatchIdOnly = await prisma.quotationEmailDispatchIndex.updateManyAndReturn({
+     *   select: { dispatchId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends QuotationEmailDispatchIndexUpdateManyAndReturnArgs>(args: SelectSubset<T, QuotationEmailDispatchIndexUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one QuotationEmailDispatchIndex.
+     * @param {QuotationEmailDispatchIndexUpsertArgs} args - Arguments to update or create a QuotationEmailDispatchIndex.
+     * @example
+     * // Update or create a QuotationEmailDispatchIndex
+     * const quotationEmailDispatchIndex = await prisma.quotationEmailDispatchIndex.upsert({
+     *   create: {
+     *     // ... data to create a QuotationEmailDispatchIndex
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the QuotationEmailDispatchIndex we want to update
+     *   }
+     * })
+     */
+    upsert<T extends QuotationEmailDispatchIndexUpsertArgs>(args: SelectSubset<T, QuotationEmailDispatchIndexUpsertArgs<ExtArgs>>): Prisma__QuotationEmailDispatchIndexClient<$Result.GetResult<Prisma.$QuotationEmailDispatchIndexPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of QuotationEmailDispatchIndices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuotationEmailDispatchIndexCountArgs} args - Arguments to filter QuotationEmailDispatchIndices to count.
+     * @example
+     * // Count the number of QuotationEmailDispatchIndices
+     * const count = await prisma.quotationEmailDispatchIndex.count({
+     *   where: {
+     *     // ... the filter for the QuotationEmailDispatchIndices we want to count
+     *   }
+     * })
+    **/
+    count<T extends QuotationEmailDispatchIndexCountArgs>(
+      args?: Subset<T, QuotationEmailDispatchIndexCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], QuotationEmailDispatchIndexCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a QuotationEmailDispatchIndex.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuotationEmailDispatchIndexAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends QuotationEmailDispatchIndexAggregateArgs>(args: Subset<T, QuotationEmailDispatchIndexAggregateArgs>): Prisma.PrismaPromise<GetQuotationEmailDispatchIndexAggregateType<T>>
+
+    /**
+     * Group by QuotationEmailDispatchIndex.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuotationEmailDispatchIndexGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends QuotationEmailDispatchIndexGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: QuotationEmailDispatchIndexGroupByArgs['orderBy'] }
+        : { orderBy?: QuotationEmailDispatchIndexGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, QuotationEmailDispatchIndexGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuotationEmailDispatchIndexGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the QuotationEmailDispatchIndex model
+   */
+  readonly fields: QuotationEmailDispatchIndexFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for QuotationEmailDispatchIndex.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__QuotationEmailDispatchIndexClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the QuotationEmailDispatchIndex model
+   */
+  interface QuotationEmailDispatchIndexFieldRefs {
+    readonly dispatchId: FieldRef<"QuotationEmailDispatchIndex", 'String'>
+    readonly businessId: FieldRef<"QuotationEmailDispatchIndex", 'String'>
+    readonly quotationId: FieldRef<"QuotationEmailDispatchIndex", 'String'>
+    readonly providerMessageId: FieldRef<"QuotationEmailDispatchIndex", 'String'>
+    readonly recipientEmail: FieldRef<"QuotationEmailDispatchIndex", 'String'>
+    readonly createdAt: FieldRef<"QuotationEmailDispatchIndex", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * QuotationEmailDispatchIndex findUnique
+   */
+  export type QuotationEmailDispatchIndexFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which QuotationEmailDispatchIndex to fetch.
+     */
+    where: QuotationEmailDispatchIndexWhereUniqueInput
+  }
+
+  /**
+   * QuotationEmailDispatchIndex findUniqueOrThrow
+   */
+  export type QuotationEmailDispatchIndexFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which QuotationEmailDispatchIndex to fetch.
+     */
+    where: QuotationEmailDispatchIndexWhereUniqueInput
+  }
+
+  /**
+   * QuotationEmailDispatchIndex findFirst
+   */
+  export type QuotationEmailDispatchIndexFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which QuotationEmailDispatchIndex to fetch.
+     */
+    where?: QuotationEmailDispatchIndexWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuotationEmailDispatchIndices to fetch.
+     */
+    orderBy?: QuotationEmailDispatchIndexOrderByWithRelationInput | QuotationEmailDispatchIndexOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuotationEmailDispatchIndices.
+     */
+    cursor?: QuotationEmailDispatchIndexWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuotationEmailDispatchIndices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuotationEmailDispatchIndices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuotationEmailDispatchIndices.
+     */
+    distinct?: QuotationEmailDispatchIndexScalarFieldEnum | QuotationEmailDispatchIndexScalarFieldEnum[]
+  }
+
+  /**
+   * QuotationEmailDispatchIndex findFirstOrThrow
+   */
+  export type QuotationEmailDispatchIndexFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which QuotationEmailDispatchIndex to fetch.
+     */
+    where?: QuotationEmailDispatchIndexWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuotationEmailDispatchIndices to fetch.
+     */
+    orderBy?: QuotationEmailDispatchIndexOrderByWithRelationInput | QuotationEmailDispatchIndexOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuotationEmailDispatchIndices.
+     */
+    cursor?: QuotationEmailDispatchIndexWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuotationEmailDispatchIndices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuotationEmailDispatchIndices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuotationEmailDispatchIndices.
+     */
+    distinct?: QuotationEmailDispatchIndexScalarFieldEnum | QuotationEmailDispatchIndexScalarFieldEnum[]
+  }
+
+  /**
+   * QuotationEmailDispatchIndex findMany
+   */
+  export type QuotationEmailDispatchIndexFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which QuotationEmailDispatchIndices to fetch.
+     */
+    where?: QuotationEmailDispatchIndexWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuotationEmailDispatchIndices to fetch.
+     */
+    orderBy?: QuotationEmailDispatchIndexOrderByWithRelationInput | QuotationEmailDispatchIndexOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing QuotationEmailDispatchIndices.
+     */
+    cursor?: QuotationEmailDispatchIndexWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuotationEmailDispatchIndices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuotationEmailDispatchIndices.
+     */
+    skip?: number
+    distinct?: QuotationEmailDispatchIndexScalarFieldEnum | QuotationEmailDispatchIndexScalarFieldEnum[]
+  }
+
+  /**
+   * QuotationEmailDispatchIndex create
+   */
+  export type QuotationEmailDispatchIndexCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * The data needed to create a QuotationEmailDispatchIndex.
+     */
+    data: XOR<QuotationEmailDispatchIndexCreateInput, QuotationEmailDispatchIndexUncheckedCreateInput>
+  }
+
+  /**
+   * QuotationEmailDispatchIndex createMany
+   */
+  export type QuotationEmailDispatchIndexCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many QuotationEmailDispatchIndices.
+     */
+    data: QuotationEmailDispatchIndexCreateManyInput | QuotationEmailDispatchIndexCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * QuotationEmailDispatchIndex createManyAndReturn
+   */
+  export type QuotationEmailDispatchIndexCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * The data used to create many QuotationEmailDispatchIndices.
+     */
+    data: QuotationEmailDispatchIndexCreateManyInput | QuotationEmailDispatchIndexCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * QuotationEmailDispatchIndex update
+   */
+  export type QuotationEmailDispatchIndexUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * The data needed to update a QuotationEmailDispatchIndex.
+     */
+    data: XOR<QuotationEmailDispatchIndexUpdateInput, QuotationEmailDispatchIndexUncheckedUpdateInput>
+    /**
+     * Choose, which QuotationEmailDispatchIndex to update.
+     */
+    where: QuotationEmailDispatchIndexWhereUniqueInput
+  }
+
+  /**
+   * QuotationEmailDispatchIndex updateMany
+   */
+  export type QuotationEmailDispatchIndexUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update QuotationEmailDispatchIndices.
+     */
+    data: XOR<QuotationEmailDispatchIndexUpdateManyMutationInput, QuotationEmailDispatchIndexUncheckedUpdateManyInput>
+    /**
+     * Filter which QuotationEmailDispatchIndices to update
+     */
+    where?: QuotationEmailDispatchIndexWhereInput
+    /**
+     * Limit how many QuotationEmailDispatchIndices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuotationEmailDispatchIndex updateManyAndReturn
+   */
+  export type QuotationEmailDispatchIndexUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * The data used to update QuotationEmailDispatchIndices.
+     */
+    data: XOR<QuotationEmailDispatchIndexUpdateManyMutationInput, QuotationEmailDispatchIndexUncheckedUpdateManyInput>
+    /**
+     * Filter which QuotationEmailDispatchIndices to update
+     */
+    where?: QuotationEmailDispatchIndexWhereInput
+    /**
+     * Limit how many QuotationEmailDispatchIndices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuotationEmailDispatchIndex upsert
+   */
+  export type QuotationEmailDispatchIndexUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * The filter to search for the QuotationEmailDispatchIndex to update in case it exists.
+     */
+    where: QuotationEmailDispatchIndexWhereUniqueInput
+    /**
+     * In case the QuotationEmailDispatchIndex found by the `where` argument doesn't exist, create a new QuotationEmailDispatchIndex with this data.
+     */
+    create: XOR<QuotationEmailDispatchIndexCreateInput, QuotationEmailDispatchIndexUncheckedCreateInput>
+    /**
+     * In case the QuotationEmailDispatchIndex was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<QuotationEmailDispatchIndexUpdateInput, QuotationEmailDispatchIndexUncheckedUpdateInput>
+  }
+
+  /**
+   * QuotationEmailDispatchIndex delete
+   */
+  export type QuotationEmailDispatchIndexDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+    /**
+     * Filter which QuotationEmailDispatchIndex to delete.
+     */
+    where: QuotationEmailDispatchIndexWhereUniqueInput
+  }
+
+  /**
+   * QuotationEmailDispatchIndex deleteMany
+   */
+  export type QuotationEmailDispatchIndexDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuotationEmailDispatchIndices to delete
+     */
+    where?: QuotationEmailDispatchIndexWhereInput
+    /**
+     * Limit how many QuotationEmailDispatchIndices to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuotationEmailDispatchIndex without action
+   */
+  export type QuotationEmailDispatchIndexDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuotationEmailDispatchIndex
+     */
+    select?: QuotationEmailDispatchIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuotationEmailDispatchIndex
+     */
+    omit?: QuotationEmailDispatchIndexOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model PlatformAdminNotification
    */
 
@@ -25400,6 +26499,18 @@ export namespace Prisma {
   export type PlatformEmailCampaignRecipientScalarFieldEnum = (typeof PlatformEmailCampaignRecipientScalarFieldEnum)[keyof typeof PlatformEmailCampaignRecipientScalarFieldEnum]
 
 
+  export const QuotationEmailDispatchIndexScalarFieldEnum: {
+    dispatchId: 'dispatchId',
+    businessId: 'businessId',
+    quotationId: 'quotationId',
+    providerMessageId: 'providerMessageId',
+    recipientEmail: 'recipientEmail',
+    createdAt: 'createdAt'
+  };
+
+  export type QuotationEmailDispatchIndexScalarFieldEnum = (typeof QuotationEmailDispatchIndexScalarFieldEnum)[keyof typeof QuotationEmailDispatchIndexScalarFieldEnum]
+
+
   export const PlatformAdminNotificationScalarFieldEnum: {
     notificationId: 'notificationId',
     notificationType: 'notificationType',
@@ -27599,6 +28710,63 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"PlatformEmailCampaignRecipient"> | Date | string
   }
 
+  export type QuotationEmailDispatchIndexWhereInput = {
+    AND?: QuotationEmailDispatchIndexWhereInput | QuotationEmailDispatchIndexWhereInput[]
+    OR?: QuotationEmailDispatchIndexWhereInput[]
+    NOT?: QuotationEmailDispatchIndexWhereInput | QuotationEmailDispatchIndexWhereInput[]
+    dispatchId?: StringFilter<"QuotationEmailDispatchIndex"> | string
+    businessId?: StringFilter<"QuotationEmailDispatchIndex"> | string
+    quotationId?: StringFilter<"QuotationEmailDispatchIndex"> | string
+    providerMessageId?: StringFilter<"QuotationEmailDispatchIndex"> | string
+    recipientEmail?: StringFilter<"QuotationEmailDispatchIndex"> | string
+    createdAt?: DateTimeFilter<"QuotationEmailDispatchIndex"> | Date | string
+  }
+
+  export type QuotationEmailDispatchIndexOrderByWithRelationInput = {
+    dispatchId?: SortOrder
+    businessId?: SortOrder
+    quotationId?: SortOrder
+    providerMessageId?: SortOrder
+    recipientEmail?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type QuotationEmailDispatchIndexWhereUniqueInput = Prisma.AtLeast<{
+    dispatchId?: string
+    providerMessageId?: string
+    AND?: QuotationEmailDispatchIndexWhereInput | QuotationEmailDispatchIndexWhereInput[]
+    OR?: QuotationEmailDispatchIndexWhereInput[]
+    NOT?: QuotationEmailDispatchIndexWhereInput | QuotationEmailDispatchIndexWhereInput[]
+    businessId?: StringFilter<"QuotationEmailDispatchIndex"> | string
+    quotationId?: StringFilter<"QuotationEmailDispatchIndex"> | string
+    recipientEmail?: StringFilter<"QuotationEmailDispatchIndex"> | string
+    createdAt?: DateTimeFilter<"QuotationEmailDispatchIndex"> | Date | string
+  }, "dispatchId" | "providerMessageId">
+
+  export type QuotationEmailDispatchIndexOrderByWithAggregationInput = {
+    dispatchId?: SortOrder
+    businessId?: SortOrder
+    quotationId?: SortOrder
+    providerMessageId?: SortOrder
+    recipientEmail?: SortOrder
+    createdAt?: SortOrder
+    _count?: QuotationEmailDispatchIndexCountOrderByAggregateInput
+    _max?: QuotationEmailDispatchIndexMaxOrderByAggregateInput
+    _min?: QuotationEmailDispatchIndexMinOrderByAggregateInput
+  }
+
+  export type QuotationEmailDispatchIndexScalarWhereWithAggregatesInput = {
+    AND?: QuotationEmailDispatchIndexScalarWhereWithAggregatesInput | QuotationEmailDispatchIndexScalarWhereWithAggregatesInput[]
+    OR?: QuotationEmailDispatchIndexScalarWhereWithAggregatesInput[]
+    NOT?: QuotationEmailDispatchIndexScalarWhereWithAggregatesInput | QuotationEmailDispatchIndexScalarWhereWithAggregatesInput[]
+    dispatchId?: StringWithAggregatesFilter<"QuotationEmailDispatchIndex"> | string
+    businessId?: StringWithAggregatesFilter<"QuotationEmailDispatchIndex"> | string
+    quotationId?: StringWithAggregatesFilter<"QuotationEmailDispatchIndex"> | string
+    providerMessageId?: StringWithAggregatesFilter<"QuotationEmailDispatchIndex"> | string
+    recipientEmail?: StringWithAggregatesFilter<"QuotationEmailDispatchIndex"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"QuotationEmailDispatchIndex"> | Date | string
+  }
+
   export type PlatformAdminNotificationWhereInput = {
     AND?: PlatformAdminNotificationWhereInput | PlatformAdminNotificationWhereInput[]
     OR?: PlatformAdminNotificationWhereInput[]
@@ -29758,6 +30926,69 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type QuotationEmailDispatchIndexCreateInput = {
+    dispatchId?: string
+    businessId: string
+    quotationId: string
+    providerMessageId: string
+    recipientEmail: string
+    createdAt?: Date | string
+  }
+
+  export type QuotationEmailDispatchIndexUncheckedCreateInput = {
+    dispatchId?: string
+    businessId: string
+    quotationId: string
+    providerMessageId: string
+    recipientEmail: string
+    createdAt?: Date | string
+  }
+
+  export type QuotationEmailDispatchIndexUpdateInput = {
+    dispatchId?: StringFieldUpdateOperationsInput | string
+    businessId?: StringFieldUpdateOperationsInput | string
+    quotationId?: StringFieldUpdateOperationsInput | string
+    providerMessageId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuotationEmailDispatchIndexUncheckedUpdateInput = {
+    dispatchId?: StringFieldUpdateOperationsInput | string
+    businessId?: StringFieldUpdateOperationsInput | string
+    quotationId?: StringFieldUpdateOperationsInput | string
+    providerMessageId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuotationEmailDispatchIndexCreateManyInput = {
+    dispatchId?: string
+    businessId: string
+    quotationId: string
+    providerMessageId: string
+    recipientEmail: string
+    createdAt?: Date | string
+  }
+
+  export type QuotationEmailDispatchIndexUpdateManyMutationInput = {
+    dispatchId?: StringFieldUpdateOperationsInput | string
+    businessId?: StringFieldUpdateOperationsInput | string
+    quotationId?: StringFieldUpdateOperationsInput | string
+    providerMessageId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuotationEmailDispatchIndexUncheckedUpdateManyInput = {
+    dispatchId?: StringFieldUpdateOperationsInput | string
+    businessId?: StringFieldUpdateOperationsInput | string
+    quotationId?: StringFieldUpdateOperationsInput | string
+    providerMessageId?: StringFieldUpdateOperationsInput | string
+    recipientEmail?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PlatformAdminNotificationCreateInput = {
     notificationId?: string
     notificationType?: $Enums.PlatformAdminNotificationType
@@ -31624,6 +32855,33 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPlatformEmailRecipientStatusFilter<$PrismaModel>
     _max?: NestedEnumPlatformEmailRecipientStatusFilter<$PrismaModel>
+  }
+
+  export type QuotationEmailDispatchIndexCountOrderByAggregateInput = {
+    dispatchId?: SortOrder
+    businessId?: SortOrder
+    quotationId?: SortOrder
+    providerMessageId?: SortOrder
+    recipientEmail?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type QuotationEmailDispatchIndexMaxOrderByAggregateInput = {
+    dispatchId?: SortOrder
+    businessId?: SortOrder
+    quotationId?: SortOrder
+    providerMessageId?: SortOrder
+    recipientEmail?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type QuotationEmailDispatchIndexMinOrderByAggregateInput = {
+    dispatchId?: SortOrder
+    businessId?: SortOrder
+    quotationId?: SortOrder
+    providerMessageId?: SortOrder
+    recipientEmail?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type EnumPlatformAdminNotificationTypeFilter<$PrismaModel = never> = {

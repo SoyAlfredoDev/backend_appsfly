@@ -1,5 +1,6 @@
 import { createQuotation, getQuotationById, getQuotations, updateQuotationStatus, deleteQuotation } from '../services/quotationServices.js';
 import { sendQuotationEmailToCustomer } from '../services/quotationEmailService.js';
+import { syncQuotationEmailDeliveryFromResend } from '../services/quotationEmailDeliveryService.js';
 import defineQuotationNumber from '../libs/defineQuotationNumber.js';
 
 export const createQuotationController = async (req, res) => {
@@ -48,6 +49,14 @@ export const getQuotationsController = async (req, res) => {
 export const getQuotationByIdController = async (req, res) => {
     try {
         const { id } = req.params;
+        await syncQuotationEmailDeliveryFromResend(
+            id,
+            req.tenantBusinessId,
+            req.prisma,
+        ).catch((error) => {
+            console.warn("[quotation] Sync entregas Resend:", error.message);
+        });
+
         const quotation = await getQuotationById(id, req.prisma);
         if (!quotation) {
             return res.status(404).json({ message: "Quotation not found" });

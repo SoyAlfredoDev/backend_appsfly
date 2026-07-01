@@ -2,6 +2,10 @@ import { getBusinessByIdService } from "./businessService.js";
 import { getQuotationById, updateQuotationStatus } from "./quotationServices.js";
 import { sendQuotationEmail } from "../emails/dispatchers/quotation.dispatcher.js";
 import { generateQuotationPdfBuffer } from "./quotationPdfService.js";
+import {
+    markQuotationEmailSent,
+    syncQuotationEmailDeliveryFromResend,
+} from "./quotationEmailDeliveryService.js";
 
 const IVA_RATE = 0.19;
 
@@ -124,11 +128,27 @@ export async function sendQuotationEmailToCustomer(quotationId, businessId, pris
         ivaTotal,
         total,
         pdfBuffer,
+        quotationId,
+        businessId,
+    });
+
+    await markQuotationEmailSent({
+        quotationId,
+        businessId,
+        providerMessageId: result.providerMessageId,
+        recipientEmail: customerEmail,
+        prisma,
     });
 
     if (quotation.quotationStatus === "DRAFT") {
         await updateQuotationStatus(quotationId, "SENT", prisma);
     }
+
+    setImmediate(() => {
+        syncQuotationEmailDeliveryFromResend(quotationId, businessId, prisma).catch((error) => {
+            console.warn("[quotation-email] Sync entregas Resend post-envío:", error.message);
+        });
+    });
 
     return result;
 }

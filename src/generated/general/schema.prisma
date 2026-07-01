@@ -418,6 +418,20 @@ model PlatformEmailCampaignRecipient {
   @@index([providerMessageId])
 }
 
+/**
+ * Índice global para webhooks Resend → cotización en BD del tenant
+ */
+model QuotationEmailDispatchIndex {
+  dispatchId        String   @id @default(uuid())
+  businessId        String
+  quotationId       String
+  providerMessageId String   @unique
+  recipientEmail    String
+  createdAt         DateTime @default(now())
+
+  @@index([businessId, quotationId])
+}
+
 model PlatformAdminNotification {
   notificationId   String                        @id @default(uuid())
   notificationType PlatformAdminNotificationType @default(CAMPAIGN_SUCCESS)

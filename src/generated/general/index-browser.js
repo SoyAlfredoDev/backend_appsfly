@@ -397,6 +397,15 @@ exports.Prisma.PlatformEmailCampaignRecipientScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.QuotationEmailDispatchIndexScalarFieldEnum = {
+  dispatchId: 'dispatchId',
+  businessId: 'businessId',
+  quotationId: 'quotationId',
+  providerMessageId: 'providerMessageId',
+  recipientEmail: 'recipientEmail',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.PlatformAdminNotificationScalarFieldEnum = {
   notificationId: 'notificationId',
   notificationType: 'notificationType',
@@ -622,6 +631,7 @@ exports.Prisma.ModelName = {
   PlatformEmailCampaign: 'PlatformEmailCampaign',
   PlatformEmailCampaignRun: 'PlatformEmailCampaignRun',
   PlatformEmailCampaignRecipient: 'PlatformEmailCampaignRecipient',
+  QuotationEmailDispatchIndex: 'QuotationEmailDispatchIndex',
   PlatformAdminNotification: 'PlatformAdminNotification',
   PlatformAgentTask: 'PlatformAgentTask'
 };

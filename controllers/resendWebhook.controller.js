@@ -1,5 +1,6 @@
 import { Webhook } from "svix";
 import { processResendEmailWebhookEvent } from "../services/adminEmailCampaign/adminEmailCampaignResendWebhookService.js";
+import { processQuotationResendWebhookEvent } from "../services/quotationEmailDeliveryService.js";
 
 function isProductionEnvironment() {
     return (
@@ -51,8 +52,13 @@ export const resendWebhookController = async (req, res) => {
     res.status(200).json({ received: true });
 
     setImmediate(() => {
-        processResendEmailWebhookEvent(payload).catch((error) => {
-            console.error("[resend-webhook] Error procesando evento:", error);
-        });
+        processResendEmailWebhookEvent(payload)
+            .then(async (campaignResult) => {
+                if (campaignResult?.handled) return campaignResult;
+                return processQuotationResendWebhookEvent(payload);
+            })
+            .catch((error) => {
+                console.error("[resend-webhook] Error procesando evento:", error);
+            });
     });
 };

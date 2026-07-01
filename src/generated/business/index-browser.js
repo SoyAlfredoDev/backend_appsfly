@@ -416,6 +416,13 @@ exports.Prisma.QuotationScalarFieldEnum = {
   quotationStatus: 'quotationStatus',
   quotationComment: 'quotationComment',
   quotationExpiresAt: 'quotationExpiresAt',
+  quotationEmailDeliveryStatus: 'quotationEmailDeliveryStatus',
+  quotationEmailProviderMessageId: 'quotationEmailProviderMessageId',
+  quotationEmailSentTo: 'quotationEmailSentTo',
+  quotationEmailSentAt: 'quotationEmailSentAt',
+  quotationEmailDeliveredAt: 'quotationEmailDeliveredAt',
+  quotationEmailOpenedAt: 'quotationEmailOpenedAt',
+  quotationEmailErrorMessage: 'quotationEmailErrorMessage',
   createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -544,6 +551,14 @@ exports.QuotationStatus = exports.$Enums.QuotationStatus = {
   SENT: 'SENT',
   ACCEPTED: 'ACCEPTED',
   EXPIRED: 'EXPIRED'
+};
+
+exports.QuotationEmailDeliveryStatus = exports.$Enums.QuotationEmailDeliveryStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  FAILED: 'FAILED',
+  BOUNCED: 'BOUNCED'
 };
 
 exports.Prisma.ModelName = {

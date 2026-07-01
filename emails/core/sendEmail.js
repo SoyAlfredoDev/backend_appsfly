@@ -6,7 +6,7 @@ dotenv.config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const sendEmail = async ({ to, subject, html, text, from, replyTo, attachments }) => {
+export const sendEmail = async ({ to, subject, html, text, from, replyTo, attachments, tags }) => {
     try {
         const payload = {
             from: from?.trim() || getDefaultSenderFrom(),
@@ -26,6 +26,13 @@ export const sendEmail = async ({ to, subject, html, text, from, replyTo, attach
                 content: Buffer.isBuffer(file.content)
                     ? file.content.toString("base64")
                     : file.content,
+            }));
+        }
+
+        if (tags && typeof tags === "object" && Object.keys(tags).length > 0) {
+            payload.tags = Object.entries(tags).map(([name, value]) => ({
+                name,
+                value: String(value),
             }));
         }
 
