@@ -1,4 +1,5 @@
 import { createSale, getSaleById, getSales, getSalesForDashboardView, getMonthlySales, getDaySales, getSalesByCustomerIdService, countSalesMonthService, markSaleAsDelivered } from '../services/salesServices.js';
+import { sendSaleReceiptEmailToCustomer } from '../services/saleEmailService.js';
 import defineSaleNumber from '../libs/defineSaleNumber.js';
 import { isCreditSalesAllowed, isDeliveryControlEnabled } from '../services/businessSettingsService.js';
 
@@ -186,5 +187,24 @@ export const markSaleDeliveredController = async (req, res) => {
     }
 };
 
-
-
+export const sendSaleEmailController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await sendSaleReceiptEmailToCustomer(
+            id,
+            req.tenantBusinessId,
+            req.prisma,
+        );
+        res.status(200).json({
+            message: "Sale email sent successfully",
+            ...result,
+        });
+    } catch (error) {
+        console.error("(sales.controller.js): Error sending sale email:", error);
+        const status = error.statusCode || 500;
+        res.status(status).json({
+            message: error.message || "Failed to send sale email",
+            code: error.code,
+        });
+    }
+};

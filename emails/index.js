@@ -10,6 +10,7 @@
  */
 
 export { sendEmail } from "./core/sendEmail.js";
+export { getDefaultSenderFrom, getQuotationSenderFrom } from "./core/emailFrom.js";
 export { sendDualSubscriptionPaymentEmails } from "./dispatchers/subscriptionPayment.dispatcher.js";
 
 export {
@@ -46,6 +47,13 @@ export {
 } from "./users/invitations/invitation.template.js";
 
 export { sendUserInvitationEmail } from "./dispatchers/invitation.dispatcher.js";
+export { sendQuotationEmail } from "./dispatchers/quotation.dispatcher.js";
+
+export {
+    quotationEmailTemplate,
+    quotationEmailText,
+    quotationEmailSubject,
+} from "./users/quotations/quotationEmail.template.js";
 
 export {
     getAppsFlyEmailLogoUrl,

@@ -45,6 +45,8 @@ model User {
     Expense            Expense[]
     InventoryMovement  InventoryMovement[]
     AsmrCampaign       AsmrCampaign[]
+    Quotation          Quotation[]    @relation("QuotationCreatedBy")
+    QuotationDetail    QuotationDetail[]
 }
 
 model Customer {
@@ -65,6 +67,8 @@ model Customer {
     createdBy               User?        @relation(fields: [createdByUserId], references: [userId])
     Sale                    Sale[]
     SaleDetail              SaleDetail[]
+    Quotation               Quotation[]
+    QuotationDetail         QuotationDetail[]
 }
 
 model Product {
@@ -87,6 +91,7 @@ model Product {
     SaleDetail             SaleDetail[]
     PurchaseDetail         PurchaseDetail[]
     productStock           ProductStock?
+    QuotationDetail        QuotationDetail[]
 }
 
 model ProductStock {
@@ -151,6 +156,7 @@ model Service {
     updatedAt          DateTime         @updatedAt
     SaleDetail         SaleDetail[]
     PurchaseDetail     PurchaseDetail[]
+    QuotationDetail    QuotationDetail[]
 }
 
 model Category {
@@ -489,4 +495,47 @@ model TaxDocumentAuditLog {
 
     @@index([taxDocumentId])
     @@index([createdAt(sort: Desc)])
+}
+
+enum QuotationStatus {
+    DRAFT
+    SENT
+    ACCEPTED
+    EXPIRED
+}
+
+model Quotation {
+    quotationId        String            @id
+    quotationNumber    String?
+    quotationCustomerId String
+    quotationTotal     Int
+    quotationStatus    QuotationStatus   @default(DRAFT)
+    quotationComment   String?
+    quotationExpiresAt DateTime?
+    createdByUserId    String
+    user               User              @relation("QuotationCreatedBy", fields: [createdByUserId], references: [userId])
+    customer           Customer          @relation(fields: [quotationCustomerId], references: [customerId])
+    createdAt          DateTime          @default(now())
+    updatedAt          DateTime          @updatedAt
+    QuotationDetail    QuotationDetail[]
+}
+
+model QuotationDetail {
+    quotationDetailId        String   @id
+    quotationId              String
+    quotationDetailProductId String?
+    quotationDetailServiceId String?
+    quotationDetailQuantity  Int
+    quotationDetailPrice     Int
+    quotationDetailTotal     Int
+    quotationDetailType      String
+    createdByUserId          String
+    quotationCustomerId      String
+    customer                 Customer @relation(fields: [quotationCustomerId], references: [customerId])
+    user                     User     @relation(fields: [createdByUserId], references: [userId])
+    quotation                Quotation @relation(fields: [quotationId], references: [quotationId], onDelete: Cascade)
+    product                  Product? @relation(fields: [quotationDetailProductId], references: [productId])
+    service                  Service? @relation(fields: [quotationDetailServiceId], references: [serviceId])
+    createdAt                DateTime @default(now())
+    updatedAt                DateTime @updatedAt
 }

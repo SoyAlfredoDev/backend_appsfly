@@ -12,6 +12,15 @@ export function getDefaultSenderFrom() {
     return `AppsFly <no-reply@${domain}>`;
 }
 
+/** Remitente para cotizaciones (ej. no-reply@cotiza.cl vía QUOTATION_EMAIL_FROM). */
+export function getQuotationSenderFrom(businessName) {
+    const fromEnv = process.env.QUOTATION_EMAIL_FROM?.trim();
+    if (fromEnv) return fromEnv;
+    const domain = getPlatformEmailDomain();
+    const name = (businessName?.trim() || "Cotizaciones").replace(/[<>]/g, "");
+    return `${name} <no-reply@${domain}>`;
+}
+
 export function formatSenderFrom(senderName, senderEmail) {
     const email = senderEmail?.trim().toLowerCase();
     if (!email) return getDefaultSenderFrom();

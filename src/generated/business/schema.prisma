@@ -45,10 +45,12 @@ model User {
   Expense            Expense[]
   InventoryMovement  InventoryMovement[]
   AsmrCampaign       AsmrCampaign[]
+  Quotation          Quotation[]         @relation("QuotationCreatedBy")
+  QuotationDetail    QuotationDetail[]
 }
 
 model Customer {
-  customerId              String       @id @default(uuid())
+  customerId              String            @id @default(uuid())
   customerFirstName       String
   customerLastName        String
   customerEmail           String?
@@ -61,21 +63,23 @@ model Customer {
    * Foto de perfil — URL Cloudinary (opcional)
    */
   customerImageUrl        String?
-  createdAt               DateTime     @default(now())
-  updatedAt               DateTime     @updatedAt
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
   createdByUserId         String
-  createdBy               User?        @relation(fields: [createdByUserId], references: [userId])
+  createdBy               User?             @relation(fields: [createdByUserId], references: [userId])
   Sale                    Sale[]
   SaleDetail              SaleDetail[]
+  Quotation               Quotation[]
+  QuotationDetail         QuotationDetail[]
 }
 
 model Product {
-  productId             String           @id @default(uuid())
+  productId             String            @id @default(uuid())
   productName           String
   productDescription    String?
-  productSKU            String           @unique
+  productSKU            String            @unique
   categoryId            String
-  category              Category         @relation(fields: [categoryId], references: [categoryId])
+  category              Category          @relation(fields: [categoryId], references: [categoryId])
   productPrice          Int
   productPriceFixed     Boolean?
   productStatus         ProductStatus
@@ -83,14 +87,15 @@ model Product {
   /**
    * Permite vender el producto aunque quantityOnHand sea 0 o negativo
    */
-  productAllowZeroStock Boolean          @default(false)
+  productAllowZeroStock Boolean           @default(false)
   createdByUserId       String
-  user                  User             @relation(fields: [createdByUserId], references: [userId])
-  createdAt             DateTime         @default(now())
-  updatedAt             DateTime         @updatedAt
+  user                  User              @relation(fields: [createdByUserId], references: [userId])
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
   SaleDetail            SaleDetail[]
   PurchaseDetail        PurchaseDetail[]
   productStock          ProductStock?
+  QuotationDetail       QuotationDetail[]
 }
 
 model ProductStock {
@@ -139,22 +144,23 @@ model InventoryMovement {
 }
 
 model Service {
-  serviceId          String           @id @default(uuid())
+  serviceId          String            @id @default(uuid())
   serviceName        String
   serviceDescription String?
-  serviceSKU         String           @unique
+  serviceSKU         String            @unique
   servicePrice       Int
   servicePriceFixed  Boolean?
   serviceStatus      ProductStatus
   serviceUnit        ServiceUnit
   categoryId         String
-  category           Category         @relation(fields: [categoryId], references: [categoryId])
+  category           Category          @relation(fields: [categoryId], references: [categoryId])
   createdByUserId    String
-  user               User             @relation(fields: [createdByUserId], references: [userId])
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
+  user               User              @relation(fields: [createdByUserId], references: [userId])
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
   SaleDetail         SaleDetail[]
   PurchaseDetail     PurchaseDetail[]
+  QuotationDetail    QuotationDetail[]
 }
 
 model Category {
@@ -499,4 +505,47 @@ model TaxDocumentAuditLog {
 
   @@index([taxDocumentId])
   @@index([createdAt(sort: Desc)])
+}
+
+enum QuotationStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  EXPIRED
+}
+
+model Quotation {
+  quotationId         String            @id
+  quotationNumber     String?
+  quotationCustomerId String
+  quotationTotal      Int
+  quotationStatus     QuotationStatus   @default(DRAFT)
+  quotationComment    String?
+  quotationExpiresAt  DateTime?
+  createdByUserId     String
+  user                User              @relation("QuotationCreatedBy", fields: [createdByUserId], references: [userId])
+  customer            Customer          @relation(fields: [quotationCustomerId], references: [customerId])
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  QuotationDetail     QuotationDetail[]
+}
+
+model QuotationDetail {
+  quotationDetailId        String    @id
+  quotationId              String
+  quotationDetailProductId String?
+  quotationDetailServiceId String?
+  quotationDetailQuantity  Int
+  quotationDetailPrice     Int
+  quotationDetailTotal     Int
+  quotationDetailType      String
+  createdByUserId          String
+  quotationCustomerId      String
+  customer                 Customer  @relation(fields: [quotationCustomerId], references: [customerId])
+  user                     User      @relation(fields: [createdByUserId], references: [userId])
+  quotation                Quotation @relation(fields: [quotationId], references: [quotationId], onDelete: Cascade)
+  product                  Product?  @relation(fields: [quotationDetailProductId], references: [productId])
+  service                  Service?  @relation(fields: [quotationDetailServiceId], references: [serviceId])
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
 }

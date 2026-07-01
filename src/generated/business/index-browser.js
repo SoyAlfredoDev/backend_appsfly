@@ -408,6 +408,34 @@ exports.Prisma.TaxDocumentAuditLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.QuotationScalarFieldEnum = {
+  quotationId: 'quotationId',
+  quotationNumber: 'quotationNumber',
+  quotationCustomerId: 'quotationCustomerId',
+  quotationTotal: 'quotationTotal',
+  quotationStatus: 'quotationStatus',
+  quotationComment: 'quotationComment',
+  quotationExpiresAt: 'quotationExpiresAt',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.QuotationDetailScalarFieldEnum = {
+  quotationDetailId: 'quotationDetailId',
+  quotationId: 'quotationId',
+  quotationDetailProductId: 'quotationDetailProductId',
+  quotationDetailServiceId: 'quotationDetailServiceId',
+  quotationDetailQuantity: 'quotationDetailQuantity',
+  quotationDetailPrice: 'quotationDetailPrice',
+  quotationDetailTotal: 'quotationDetailTotal',
+  quotationDetailType: 'quotationDetailType',
+  createdByUserId: 'createdByUserId',
+  quotationCustomerId: 'quotationCustomerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -511,6 +539,13 @@ exports.TaxDocumentStatus = exports.$Enums.TaxDocumentStatus = {
   ERROR: 'ERROR'
 };
 
+exports.QuotationStatus = exports.$Enums.QuotationStatus = {
+  DRAFT: 'DRAFT',
+  SENT: 'SENT',
+  ACCEPTED: 'ACCEPTED',
+  EXPIRED: 'EXPIRED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Customer: 'Customer',
@@ -531,7 +566,9 @@ exports.Prisma.ModelName = {
   Purchase: 'Purchase',
   PurchaseDetail: 'PurchaseDetail',
   TaxDocument: 'TaxDocument',
-  TaxDocumentAuditLog: 'TaxDocumentAuditLog'
+  TaxDocumentAuditLog: 'TaxDocumentAuditLog',
+  Quotation: 'Quotation',
+  QuotationDetail: 'QuotationDetail'
 };
 
 /**

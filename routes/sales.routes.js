@@ -11,6 +11,7 @@ import {
     getSalesByCustomerIdController,
     countSalesMonthController,
     markSaleDeliveredController,
+    sendSaleEmailController,
 } from "../controllers/sales.controller.js";
 
 import { authRequired } from "../middlewares/auth.middleware.js";
@@ -48,6 +49,9 @@ router.get("/sales/:id", authRequired, dbSelectorMiddleware, getSaleByIdControll
 
 // 6b. Marcar venta como entregada
 router.patch("/sales/:id/delivery", authRequired, dbSelectorMiddleware, markSaleDeliveredController);
+
+// 6c. Enviar comprobante de venta por correo
+router.post("/sales/:id/send-email", authRequired, dbSelectorMiddleware, sendSaleEmailController);
 
 // 7. Create sale
 router.post("/sales", authRequired, dbSelectorMiddleware, pendingDailyClosureMiddleware, createSaleController);

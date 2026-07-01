@@ -6,15 +6,21 @@ dotenv.config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const sendEmail = async ({ to, subject, html, text, from }) => {
+export const sendEmail = async ({ to, subject, html, text, from, replyTo }) => {
     try {
-        const { data, error } = await resend.emails.send({
+        const payload = {
             from: from?.trim() || getDefaultSenderFrom(),
             to,
             subject,
             html,
             text,
-        });
+        };
+
+        if (replyTo?.trim()) {
+            payload.reply_to = replyTo.trim();
+        }
+
+        const { data, error } = await resend.emails.send(payload);
 
         if (error) {
             console.error("Error sending email:", error);
