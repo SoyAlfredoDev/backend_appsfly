@@ -28,7 +28,10 @@ export const createQuotationController = async (req, res) => {
         });
     } catch (error) {
         console.error("(quotation.controller.js): Error creating quotation:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({
+            message: error.message || "Internal server error",
+            code: error.code,
+        });
     }
 };
 
