@@ -12,6 +12,7 @@ import {
     countSalesMonthController,
     markSaleDeliveredController,
     sendSaleEmailController,
+    getSaleShareLinkController,
 } from "../controllers/sales.controller.js";
 
 import { authRequired } from "../middlewares/auth.middleware.js";
@@ -64,6 +65,9 @@ router.patch("/sales/:id/delivery", authRequired, dbSelectorMiddleware, markSale
 
 // 6c. Enviar comprobante de venta por correo
 router.post("/sales/:id/send-email", authRequired, dbSelectorMiddleware, sendSaleEmailController);
+
+// 6d. Enlace público para compartir comprobante (WhatsApp, etc.)
+router.get("/sales/:id/share-link", authRequired, dbSelectorMiddleware, getSaleShareLinkController);
 
 // 7. Create sale
 router.post("/sales", authRequired, dbSelectorMiddleware, pendingDailyClosureMiddleware, createSaleController);

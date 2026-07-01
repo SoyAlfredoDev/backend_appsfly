@@ -143,7 +143,10 @@ export const getSaleById = async (id, prisma) => {
                     select: {
                         customerId: true,
                         customerFirstName: true,
-                        customerLastName: true
+                        customerLastName: true,
+                        customerEmail: true,
+                        customerCodePhoneNumber: true,
+                        customerPhoneNumber: true,
                     }
                 },
                 user: {

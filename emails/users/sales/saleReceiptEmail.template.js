@@ -1,9 +1,8 @@
 import {
     escapeHtml,
     formatCurrency,
-    formatDateLong,
     receiptRow,
-    wrapEmailLayout,
+    wrapBusinessEmailLayout,
 } from "../../shared/layout.js";
 
 function lineItemRow({ index, name, sku, quantity, unitPrice, lineTotal, isLast }) {
@@ -62,6 +61,23 @@ function contactBlock({ businessName, contactEmail, contactPhone, contactAddress
     </table>`;
 }
 
+function publicLinkBlock(publicReceiptUrl) {
+    if (!publicReceiptUrl?.trim()) return "";
+    const url = escapeHtml(publicReceiptUrl.trim());
+    return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:0 0 20px;">
+      <tr>
+        <td align="center" style="padding:16px 20px;background-color:#ecfdf5;border-radius:10px;border:1px solid #a7f3d0;">
+          <p style="margin:0 0 12px;font-size:14px;color:#065f46;font-family:Arial,Helvetica,sans-serif;">
+            También puede ver y descargar su comprobante en línea:
+          </p>
+          <a href="${url}" style="display:inline-block;padding:12px 24px;background-color:#059669;color:#ffffff;text-decoration:none;font-weight:700;font-size:14px;border-radius:8px;font-family:Arial,Helvetica,sans-serif;">
+            Ver comprobante
+          </a>
+        </td>
+      </tr>
+    </table>`;
+}
+
 export function saleReceiptEmailSubject({ businessName, saleNumber, documentLabel }) {
     const biz = businessName?.trim() || "su proveedor";
     const num = saleNumber ? ` #${saleNumber}` : "";
@@ -71,6 +87,7 @@ export function saleReceiptEmailSubject({ businessName, saleNumber, documentLabe
 
 export function saleReceiptEmailTemplate({
     businessName,
+    businessLogoUrl = null,
     contactEmail,
     contactPhone,
     contactAddress,
@@ -84,6 +101,8 @@ export function saleReceiptEmailTemplate({
     netTotal,
     ivaTotal,
     total,
+    publicReceiptUrl = null,
+    hasPdfAttachment = false,
 }) {
     const itemRows = (items ?? [])
         .map((item, idx) =>
@@ -107,7 +126,10 @@ export function saleReceiptEmailTemplate({
         <strong class="email-heading" style="color:#021f41;">${escapeHtml(businessName)}</strong> le envía el siguiente
         <strong class="email-heading" style="color:#021f41;"> ${escapeHtml(documentLabel)}</strong>
         ${saleNumber ? `<strong class="email-heading" style="color:#021f41;"> #${escapeHtml(String(saleNumber))}</strong>` : ""}.
+        ${hasPdfAttachment ? " Adjuntamos el detalle en formato PDF." : ""}
       </p>
+
+      ${publicLinkBlock(publicReceiptUrl)}
 
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:20px;">
         ${receiptRow("Fecha", escapeHtml(saleDate || "—"))}
@@ -146,9 +168,11 @@ export function saleReceiptEmailTemplate({
         contactDocument,
       })}`;
 
-    return wrapEmailLayout({
+    return wrapBusinessEmailLayout({
         title: saleReceiptEmailSubject({ businessName, saleNumber, documentLabel }),
         preheader: `${documentLabel} de ${businessName} por ${formatCurrency(total)}.`,
+        businessName,
+        businessLogoUrl,
         bodyHtml,
     });
 }
@@ -168,16 +192,23 @@ export function saleReceiptEmailText({
     netTotal,
     ivaTotal,
     total,
+    publicReceiptUrl = null,
+    hasPdfAttachment = false,
 }) {
     const lines = (items ?? []).map((item, idx) =>
         `${idx + 1}. ${item.name} x${item.quantity} — ${formatCurrency(item.lineTotal)}`,
     );
 
+    const linkLine = publicReceiptUrl?.trim()
+        ? `\nVer comprobante en línea: ${publicReceiptUrl.trim()}\n`
+        : "";
+    const pdfLine = hasPdfAttachment ? "\n(Se adjunta PDF con el detalle.)\n" : "";
+
     return `${documentLabel}${saleNumber ? ` #${saleNumber}` : ""} — ${businessName}
 
 Estimado/a ${customerName},
 
-${businessName} le envía el siguiente ${documentLabel}.
+${businessName} le envía el siguiente ${documentLabel}.${pdfLine}${linkLine}
 
 Fecha: ${saleDate || "—"}
 Ítems: ${items?.length ?? 0}

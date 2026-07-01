@@ -40,6 +40,7 @@ import agentTaskRoutes from "./routes/agentTask.routes.js";
 import taxDocumentsRoutes from "./routes/taxDocuments.routes.js";
 import businessSettingsRoutes from "./routes/businessSettings.routes.js";
 import cronRoutes from "./routes/cron.routes.js";
+import publicSaleRoutes from "./routes/publicSale.routes.js";
 import { resendWebhookController } from "./controllers/resendWebhook.controller.js";
 
 import dotenv from "dotenv";
@@ -118,6 +119,7 @@ app.use(
 
 app.use(morgan("dev"));
 
+app.use("/api", publicSaleRoutes);
 app.use("/api", authRoutes);
 app.use("/api", customersRoutes);
 app.use("/api", usersRoutes);

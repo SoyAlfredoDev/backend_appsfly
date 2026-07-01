@@ -412,6 +412,20 @@ model QuotationEmailDispatchIndex {
     @@index([businessId, quotationId])
 }
 
+/** Índice global para enlaces públicos de comprobante de venta (sin acceso al sistema) */
+model SalePublicShareIndex {
+    shareId      String    @id @default(uuid())
+    shareToken   String    @unique
+    businessId   String
+    saleId       String
+    expiresAt    DateTime?
+    lastAccessAt DateTime?
+    createdAt    DateTime  @default(now())
+
+    @@unique([businessId, saleId])
+    @@index([shareToken])
+}
+
 model PlatformAdminNotification {
     notificationId   String                        @id @default(uuid())
     notificationType PlatformAdminNotificationType @default(CAMPAIGN_SUCCESS)

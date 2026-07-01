@@ -1,7 +1,5 @@
 import { getBusinessByIdService } from "./businessService.js";
-import { sendSaleReceiptEmail } from "../emails/dispatchers/saleReceipt.dispatcher.js";
-import { getOrCreateSaleShareLink } from "./salePublicShareService.js";
-import { generateSalePdfBuffer } from "./salePdfService.js";
+import { resolveSaleShareToken } from "./salePublicShareService.js";
 
 const IVA_RATE = 0.19;
 
@@ -42,6 +40,7 @@ function resolveBusinessContact(business) {
         phone,
         address,
         document,
+        footerNote: business?.businessReceiptFooterNote?.trim() || null,
     };
 }
 
@@ -61,6 +60,7 @@ function mapSaleDetailRow(detail) {
         quantity: detail.saleDetailQuantity,
         unitPrice: detail.saleDetailPrice,
         lineTotal: detail.saleDetailTotal,
+        type: detail.saleDetailType,
     };
 }
 
@@ -71,7 +71,7 @@ function mapPaymentRow(payment) {
     };
 }
 
-async function getSaleForEmail(saleId, prisma) {
+async function loadSaleForPublic(saleId, prisma) {
     return prisma.sale.findUnique({
         where: { saleId },
         include: {
@@ -79,22 +79,15 @@ async function getSaleForEmail(saleId, prisma) {
                 select: {
                     customerFirstName: true,
                     customerLastName: true,
-                    customerEmail: true,
                 },
             },
             SaleDetail: {
                 include: {
                     product: {
-                        select: {
-                            productName: true,
-                            productSKU: true,
-                        },
+                        select: { productName: true, productSKU: true },
                     },
                     service: {
-                        select: {
-                            serviceName: true,
-                            serviceSKU: true,
-                        },
+                        select: { serviceName: true, serviceSKU: true },
                     },
                 },
             },
@@ -108,39 +101,7 @@ async function getSaleForEmail(saleId, prisma) {
     });
 }
 
-export async function sendSaleReceiptEmailToCustomer(saleId, businessId, prisma) {
-    const sale = await getSaleForEmail(saleId, prisma);
-    if (!sale) {
-        const error = new Error("Venta no encontrada.");
-        error.statusCode = 404;
-        throw error;
-    }
-
-    const customerEmail = sale.customer?.customerEmail?.trim();
-    if (!customerEmail) {
-        const error = new Error("El cliente no tiene correo electrónico registrado.");
-        error.statusCode = 400;
-        error.code = "CUSTOMER_EMAIL_REQUIRED";
-        throw error;
-    }
-
-    const business = await getBusinessByIdService(businessId);
-    if (!business) {
-        const error = new Error("Negocio no encontrado.");
-        error.statusCode = 404;
-        throw error;
-    }
-
-    const contact = resolveBusinessContact(business);
-    if (!contact.email) {
-        const error = new Error(
-            "Configure el correo de la empresa en Configuración para enviar comprobantes.",
-        );
-        error.statusCode = 400;
-        error.code = "BUSINESS_REPLY_EMAIL_REQUIRED";
-        throw error;
-    }
-
+function buildPublicPayload(sale, business) {
     const items = (sale.SaleDetail ?? []).map(mapSaleDetailRow);
     const payments = (sale.Payment ?? []).map(mapPaymentRow);
     const total = Number(sale.saleTotal ?? 0);
@@ -168,11 +129,15 @@ export async function sendSaleReceiptEmailToCustomer(saleId, businessId, prisma)
     const documentLabel =
         DOCUMENT_LABELS[sale.documentType] || DOCUMENT_LABELS.RECEIPT;
 
-    const { shareUrl } = await getOrCreateSaleShareLink(businessId, saleId);
+    const businessContact = resolveBusinessContact(business);
 
-    const pdfBuffer = await generateSalePdfBuffer({
-        sale,
-        business,
+    return {
+        saleNumber: sale.saleNumber,
+        saleDate,
+        documentType: sale.documentType,
+        documentLabel,
+        saleComment: sale.saleComment,
+        customerName,
         items,
         payments,
         netTotal,
@@ -180,31 +145,33 @@ export async function sendSaleReceiptEmailToCustomer(saleId, businessId, prisma)
         total,
         totalPayments,
         pendingAmount,
-        customerName,
-        documentLabel,
-    });
+        business: businessContact,
+    };
+}
 
-    return sendSaleReceiptEmail({
-        to: customerEmail,
-        replyTo: contact.email,
-        businessName: contact.name,
-        businessLogoUrl: contact.logoUrl,
-        contactEmail: contact.email,
-        contactPhone: contact.phone,
-        contactAddress: contact.address,
-        contactDocument: contact.document,
-        customerName,
-        saleNumber: sale.saleNumber,
-        saleDate,
-        documentLabel,
-        saleComment: sale.saleComment,
-        items,
-        netTotal,
-        ivaTotal,
-        total,
-        publicReceiptUrl: shareUrl,
-        pdfBuffer,
-        saleId,
-        businessId,
-    });
+export async function getPublicSaleReceiptByToken(shareToken) {
+    const resolved = await resolveSaleShareToken(shareToken);
+    if (!resolved) {
+        const error = new Error("Enlace no válido o expirado.");
+        error.statusCode = 404;
+        error.code = "SHARE_NOT_FOUND";
+        throw error;
+    }
+
+    const sale = await loadSaleForPublic(resolved.saleId, resolved.prisma);
+    if (!sale) {
+        const error = new Error("Comprobante no encontrado.");
+        error.statusCode = 404;
+        error.code = "SALE_NOT_FOUND";
+        throw error;
+    }
+
+    const business = await getBusinessByIdService(resolved.businessId);
+    if (!business) {
+        const error = new Error("Empresa no encontrada.");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    return buildPublicPayload(sale, business);
 }

@@ -10,6 +10,7 @@ export async function sendSaleReceiptEmail({
     to,
     replyTo,
     businessName,
+    businessLogoUrl = null,
     contactEmail,
     contactPhone,
     contactAddress,
@@ -23,6 +24,10 @@ export async function sendSaleReceiptEmail({
     netTotal,
     ivaTotal,
     total,
+    publicReceiptUrl = null,
+    pdfBuffer = null,
+    saleId = null,
+    businessId = null,
 }) {
     const recipient = to?.trim().toLowerCase();
     if (!recipient) {
@@ -43,6 +48,7 @@ export async function sendSaleReceiptEmail({
 
     const templateData = {
         businessName,
+        businessLogoUrl,
         contactEmail,
         contactPhone,
         contactAddress,
@@ -56,6 +62,8 @@ export async function sendSaleReceiptEmail({
         netTotal,
         ivaTotal,
         total,
+        publicReceiptUrl,
+        hasPdfAttachment: Boolean(pdfBuffer),
     };
 
     const subject = saleReceiptEmailSubject({
@@ -66,6 +74,17 @@ export async function sendSaleReceiptEmail({
     const html = saleReceiptEmailTemplate(templateData);
     const text = saleReceiptEmailText(templateData);
 
+    const attachments = pdfBuffer
+        ? [{
+            filename: `comprobante-${saleNumber || "venta"}.pdf`,
+            content: pdfBuffer,
+        }]
+        : undefined;
+
+    const tags = saleId && businessId
+        ? { sale_id: saleId, business_id: businessId }
+        : undefined;
+
     await sendEmail({
         to: recipient,
         from: getQuotationSenderFrom(businessName),
@@ -73,7 +92,9 @@ export async function sendSaleReceiptEmail({
         subject,
         html,
         text,
+        attachments,
+        tags,
     });
 
-    return { sent: true, to: recipient, replyTo: replyTo.trim() };
+    return { sent: true, to: recipient, replyTo: replyTo.trim(), publicReceiptUrl };
 }

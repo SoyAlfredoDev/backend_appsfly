@@ -99,6 +99,11 @@ export type PlatformEmailCampaignRecipient = $Result.DefaultSelection<Prisma.$Pl
  */
 export type QuotationEmailDispatchIndex = $Result.DefaultSelection<Prisma.$QuotationEmailDispatchIndexPayload>
 /**
+ * Model SalePublicShareIndex
+ * * Índice global para enlaces públicos de comprobante de venta (sin acceso al sistema)
+ */
+export type SalePublicShareIndex = $Result.DefaultSelection<Prisma.$SalePublicShareIndexPayload>
+/**
  * Model PlatformAdminNotification
  * 
  */
@@ -710,6 +715,16 @@ export class PrismaClient<
   get quotationEmailDispatchIndex(): Prisma.QuotationEmailDispatchIndexDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.salePublicShareIndex`: Exposes CRUD operations for the **SalePublicShareIndex** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SalePublicShareIndices
+    * const salePublicShareIndices = await prisma.salePublicShareIndex.findMany()
+    * ```
+    */
+  get salePublicShareIndex(): Prisma.SalePublicShareIndexDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.platformAdminNotification`: Exposes CRUD operations for the **PlatformAdminNotification** model.
     * Example usage:
     * ```ts
@@ -1186,6 +1201,7 @@ export namespace Prisma {
     PlatformEmailCampaignRun: 'PlatformEmailCampaignRun',
     PlatformEmailCampaignRecipient: 'PlatformEmailCampaignRecipient',
     QuotationEmailDispatchIndex: 'QuotationEmailDispatchIndex',
+    SalePublicShareIndex: 'SalePublicShareIndex',
     PlatformAdminNotification: 'PlatformAdminNotification',
     PlatformAgentTask: 'PlatformAgentTask'
   };
@@ -1206,7 +1222,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "business" | "taxProviderAccount" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber" | "platformEmailProspect" | "platformEmailCampaign" | "platformEmailCampaignRun" | "platformEmailCampaignRecipient" | "quotationEmailDispatchIndex" | "platformAdminNotification" | "platformAgentTask"
+      modelProps: "user" | "business" | "taxProviderAccount" | "userBusiness" | "userGuest" | "plan" | "subscription" | "subscriptionCancellation" | "subscriptionPayment" | "ticket" | "ticketDetail" | "newsletterSubscriber" | "platformEmailProspect" | "platformEmailCampaign" | "platformEmailCampaignRun" | "platformEmailCampaignRecipient" | "quotationEmailDispatchIndex" | "salePublicShareIndex" | "platformAdminNotification" | "platformAgentTask"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2468,6 +2484,80 @@ export namespace Prisma {
           }
         }
       }
+      SalePublicShareIndex: {
+        payload: Prisma.$SalePublicShareIndexPayload<ExtArgs>
+        fields: Prisma.SalePublicShareIndexFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SalePublicShareIndexFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SalePublicShareIndexFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload>
+          }
+          findFirst: {
+            args: Prisma.SalePublicShareIndexFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SalePublicShareIndexFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload>
+          }
+          findMany: {
+            args: Prisma.SalePublicShareIndexFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload>[]
+          }
+          create: {
+            args: Prisma.SalePublicShareIndexCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload>
+          }
+          createMany: {
+            args: Prisma.SalePublicShareIndexCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SalePublicShareIndexCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload>[]
+          }
+          delete: {
+            args: Prisma.SalePublicShareIndexDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload>
+          }
+          update: {
+            args: Prisma.SalePublicShareIndexUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload>
+          }
+          deleteMany: {
+            args: Prisma.SalePublicShareIndexDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SalePublicShareIndexUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SalePublicShareIndexUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload>[]
+          }
+          upsert: {
+            args: Prisma.SalePublicShareIndexUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePublicShareIndexPayload>
+          }
+          aggregate: {
+            args: Prisma.SalePublicShareIndexAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSalePublicShareIndex>
+          }
+          groupBy: {
+            args: Prisma.SalePublicShareIndexGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SalePublicShareIndexGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SalePublicShareIndexCountArgs<ExtArgs>
+            result: $Utils.Optional<SalePublicShareIndexCountAggregateOutputType> | number
+          }
+        }
+      }
       PlatformAdminNotification: {
         payload: Prisma.$PlatformAdminNotificationPayload<ExtArgs>
         fields: Prisma.PlatformAdminNotificationFieldRefs
@@ -2729,6 +2819,7 @@ export namespace Prisma {
     platformEmailCampaignRun?: PlatformEmailCampaignRunOmit
     platformEmailCampaignRecipient?: PlatformEmailCampaignRecipientOmit
     quotationEmailDispatchIndex?: QuotationEmailDispatchIndexOmit
+    salePublicShareIndex?: SalePublicShareIndexOmit
     platformAdminNotification?: PlatformAdminNotificationOmit
     platformAgentTask?: PlatformAgentTaskOmit
   }
@@ -23983,6 +24074,1027 @@ export namespace Prisma {
 
 
   /**
+   * Model SalePublicShareIndex
+   */
+
+  export type AggregateSalePublicShareIndex = {
+    _count: SalePublicShareIndexCountAggregateOutputType | null
+    _min: SalePublicShareIndexMinAggregateOutputType | null
+    _max: SalePublicShareIndexMaxAggregateOutputType | null
+  }
+
+  export type SalePublicShareIndexMinAggregateOutputType = {
+    shareId: string | null
+    shareToken: string | null
+    businessId: string | null
+    saleId: string | null
+    expiresAt: Date | null
+    lastAccessAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SalePublicShareIndexMaxAggregateOutputType = {
+    shareId: string | null
+    shareToken: string | null
+    businessId: string | null
+    saleId: string | null
+    expiresAt: Date | null
+    lastAccessAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SalePublicShareIndexCountAggregateOutputType = {
+    shareId: number
+    shareToken: number
+    businessId: number
+    saleId: number
+    expiresAt: number
+    lastAccessAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SalePublicShareIndexMinAggregateInputType = {
+    shareId?: true
+    shareToken?: true
+    businessId?: true
+    saleId?: true
+    expiresAt?: true
+    lastAccessAt?: true
+    createdAt?: true
+  }
+
+  export type SalePublicShareIndexMaxAggregateInputType = {
+    shareId?: true
+    shareToken?: true
+    businessId?: true
+    saleId?: true
+    expiresAt?: true
+    lastAccessAt?: true
+    createdAt?: true
+  }
+
+  export type SalePublicShareIndexCountAggregateInputType = {
+    shareId?: true
+    shareToken?: true
+    businessId?: true
+    saleId?: true
+    expiresAt?: true
+    lastAccessAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SalePublicShareIndexAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalePublicShareIndex to aggregate.
+     */
+    where?: SalePublicShareIndexWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalePublicShareIndices to fetch.
+     */
+    orderBy?: SalePublicShareIndexOrderByWithRelationInput | SalePublicShareIndexOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SalePublicShareIndexWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalePublicShareIndices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalePublicShareIndices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SalePublicShareIndices
+    **/
+    _count?: true | SalePublicShareIndexCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SalePublicShareIndexMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SalePublicShareIndexMaxAggregateInputType
+  }
+
+  export type GetSalePublicShareIndexAggregateType<T extends SalePublicShareIndexAggregateArgs> = {
+        [P in keyof T & keyof AggregateSalePublicShareIndex]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSalePublicShareIndex[P]>
+      : GetScalarType<T[P], AggregateSalePublicShareIndex[P]>
+  }
+
+
+
+
+  export type SalePublicShareIndexGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalePublicShareIndexWhereInput
+    orderBy?: SalePublicShareIndexOrderByWithAggregationInput | SalePublicShareIndexOrderByWithAggregationInput[]
+    by: SalePublicShareIndexScalarFieldEnum[] | SalePublicShareIndexScalarFieldEnum
+    having?: SalePublicShareIndexScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SalePublicShareIndexCountAggregateInputType | true
+    _min?: SalePublicShareIndexMinAggregateInputType
+    _max?: SalePublicShareIndexMaxAggregateInputType
+  }
+
+  export type SalePublicShareIndexGroupByOutputType = {
+    shareId: string
+    shareToken: string
+    businessId: string
+    saleId: string
+    expiresAt: Date | null
+    lastAccessAt: Date | null
+    createdAt: Date
+    _count: SalePublicShareIndexCountAggregateOutputType | null
+    _min: SalePublicShareIndexMinAggregateOutputType | null
+    _max: SalePublicShareIndexMaxAggregateOutputType | null
+  }
+
+  type GetSalePublicShareIndexGroupByPayload<T extends SalePublicShareIndexGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SalePublicShareIndexGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SalePublicShareIndexGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SalePublicShareIndexGroupByOutputType[P]>
+            : GetScalarType<T[P], SalePublicShareIndexGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SalePublicShareIndexSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    shareId?: boolean
+    shareToken?: boolean
+    businessId?: boolean
+    saleId?: boolean
+    expiresAt?: boolean
+    lastAccessAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["salePublicShareIndex"]>
+
+  export type SalePublicShareIndexSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    shareId?: boolean
+    shareToken?: boolean
+    businessId?: boolean
+    saleId?: boolean
+    expiresAt?: boolean
+    lastAccessAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["salePublicShareIndex"]>
+
+  export type SalePublicShareIndexSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    shareId?: boolean
+    shareToken?: boolean
+    businessId?: boolean
+    saleId?: boolean
+    expiresAt?: boolean
+    lastAccessAt?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["salePublicShareIndex"]>
+
+  export type SalePublicShareIndexSelectScalar = {
+    shareId?: boolean
+    shareToken?: boolean
+    businessId?: boolean
+    saleId?: boolean
+    expiresAt?: boolean
+    lastAccessAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type SalePublicShareIndexOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"shareId" | "shareToken" | "businessId" | "saleId" | "expiresAt" | "lastAccessAt" | "createdAt", ExtArgs["result"]["salePublicShareIndex"]>
+
+  export type $SalePublicShareIndexPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SalePublicShareIndex"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      shareId: string
+      shareToken: string
+      businessId: string
+      saleId: string
+      expiresAt: Date | null
+      lastAccessAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["salePublicShareIndex"]>
+    composites: {}
+  }
+
+  type SalePublicShareIndexGetPayload<S extends boolean | null | undefined | SalePublicShareIndexDefaultArgs> = $Result.GetResult<Prisma.$SalePublicShareIndexPayload, S>
+
+  type SalePublicShareIndexCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SalePublicShareIndexFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SalePublicShareIndexCountAggregateInputType | true
+    }
+
+  export interface SalePublicShareIndexDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SalePublicShareIndex'], meta: { name: 'SalePublicShareIndex' } }
+    /**
+     * Find zero or one SalePublicShareIndex that matches the filter.
+     * @param {SalePublicShareIndexFindUniqueArgs} args - Arguments to find a SalePublicShareIndex
+     * @example
+     * // Get one SalePublicShareIndex
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SalePublicShareIndexFindUniqueArgs>(args: SelectSubset<T, SalePublicShareIndexFindUniqueArgs<ExtArgs>>): Prisma__SalePublicShareIndexClient<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SalePublicShareIndex that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SalePublicShareIndexFindUniqueOrThrowArgs} args - Arguments to find a SalePublicShareIndex
+     * @example
+     * // Get one SalePublicShareIndex
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SalePublicShareIndexFindUniqueOrThrowArgs>(args: SelectSubset<T, SalePublicShareIndexFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SalePublicShareIndexClient<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalePublicShareIndex that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalePublicShareIndexFindFirstArgs} args - Arguments to find a SalePublicShareIndex
+     * @example
+     * // Get one SalePublicShareIndex
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SalePublicShareIndexFindFirstArgs>(args?: SelectSubset<T, SalePublicShareIndexFindFirstArgs<ExtArgs>>): Prisma__SalePublicShareIndexClient<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalePublicShareIndex that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalePublicShareIndexFindFirstOrThrowArgs} args - Arguments to find a SalePublicShareIndex
+     * @example
+     * // Get one SalePublicShareIndex
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SalePublicShareIndexFindFirstOrThrowArgs>(args?: SelectSubset<T, SalePublicShareIndexFindFirstOrThrowArgs<ExtArgs>>): Prisma__SalePublicShareIndexClient<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SalePublicShareIndices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalePublicShareIndexFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SalePublicShareIndices
+     * const salePublicShareIndices = await prisma.salePublicShareIndex.findMany()
+     * 
+     * // Get first 10 SalePublicShareIndices
+     * const salePublicShareIndices = await prisma.salePublicShareIndex.findMany({ take: 10 })
+     * 
+     * // Only select the `shareId`
+     * const salePublicShareIndexWithShareIdOnly = await prisma.salePublicShareIndex.findMany({ select: { shareId: true } })
+     * 
+     */
+    findMany<T extends SalePublicShareIndexFindManyArgs>(args?: SelectSubset<T, SalePublicShareIndexFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SalePublicShareIndex.
+     * @param {SalePublicShareIndexCreateArgs} args - Arguments to create a SalePublicShareIndex.
+     * @example
+     * // Create one SalePublicShareIndex
+     * const SalePublicShareIndex = await prisma.salePublicShareIndex.create({
+     *   data: {
+     *     // ... data to create a SalePublicShareIndex
+     *   }
+     * })
+     * 
+     */
+    create<T extends SalePublicShareIndexCreateArgs>(args: SelectSubset<T, SalePublicShareIndexCreateArgs<ExtArgs>>): Prisma__SalePublicShareIndexClient<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SalePublicShareIndices.
+     * @param {SalePublicShareIndexCreateManyArgs} args - Arguments to create many SalePublicShareIndices.
+     * @example
+     * // Create many SalePublicShareIndices
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SalePublicShareIndexCreateManyArgs>(args?: SelectSubset<T, SalePublicShareIndexCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SalePublicShareIndices and returns the data saved in the database.
+     * @param {SalePublicShareIndexCreateManyAndReturnArgs} args - Arguments to create many SalePublicShareIndices.
+     * @example
+     * // Create many SalePublicShareIndices
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SalePublicShareIndices and only return the `shareId`
+     * const salePublicShareIndexWithShareIdOnly = await prisma.salePublicShareIndex.createManyAndReturn({
+     *   select: { shareId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SalePublicShareIndexCreateManyAndReturnArgs>(args?: SelectSubset<T, SalePublicShareIndexCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SalePublicShareIndex.
+     * @param {SalePublicShareIndexDeleteArgs} args - Arguments to delete one SalePublicShareIndex.
+     * @example
+     * // Delete one SalePublicShareIndex
+     * const SalePublicShareIndex = await prisma.salePublicShareIndex.delete({
+     *   where: {
+     *     // ... filter to delete one SalePublicShareIndex
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SalePublicShareIndexDeleteArgs>(args: SelectSubset<T, SalePublicShareIndexDeleteArgs<ExtArgs>>): Prisma__SalePublicShareIndexClient<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SalePublicShareIndex.
+     * @param {SalePublicShareIndexUpdateArgs} args - Arguments to update one SalePublicShareIndex.
+     * @example
+     * // Update one SalePublicShareIndex
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SalePublicShareIndexUpdateArgs>(args: SelectSubset<T, SalePublicShareIndexUpdateArgs<ExtArgs>>): Prisma__SalePublicShareIndexClient<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SalePublicShareIndices.
+     * @param {SalePublicShareIndexDeleteManyArgs} args - Arguments to filter SalePublicShareIndices to delete.
+     * @example
+     * // Delete a few SalePublicShareIndices
+     * const { count } = await prisma.salePublicShareIndex.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SalePublicShareIndexDeleteManyArgs>(args?: SelectSubset<T, SalePublicShareIndexDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalePublicShareIndices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalePublicShareIndexUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SalePublicShareIndices
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SalePublicShareIndexUpdateManyArgs>(args: SelectSubset<T, SalePublicShareIndexUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalePublicShareIndices and returns the data updated in the database.
+     * @param {SalePublicShareIndexUpdateManyAndReturnArgs} args - Arguments to update many SalePublicShareIndices.
+     * @example
+     * // Update many SalePublicShareIndices
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SalePublicShareIndices and only return the `shareId`
+     * const salePublicShareIndexWithShareIdOnly = await prisma.salePublicShareIndex.updateManyAndReturn({
+     *   select: { shareId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SalePublicShareIndexUpdateManyAndReturnArgs>(args: SelectSubset<T, SalePublicShareIndexUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SalePublicShareIndex.
+     * @param {SalePublicShareIndexUpsertArgs} args - Arguments to update or create a SalePublicShareIndex.
+     * @example
+     * // Update or create a SalePublicShareIndex
+     * const salePublicShareIndex = await prisma.salePublicShareIndex.upsert({
+     *   create: {
+     *     // ... data to create a SalePublicShareIndex
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SalePublicShareIndex we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SalePublicShareIndexUpsertArgs>(args: SelectSubset<T, SalePublicShareIndexUpsertArgs<ExtArgs>>): Prisma__SalePublicShareIndexClient<$Result.GetResult<Prisma.$SalePublicShareIndexPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SalePublicShareIndices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalePublicShareIndexCountArgs} args - Arguments to filter SalePublicShareIndices to count.
+     * @example
+     * // Count the number of SalePublicShareIndices
+     * const count = await prisma.salePublicShareIndex.count({
+     *   where: {
+     *     // ... the filter for the SalePublicShareIndices we want to count
+     *   }
+     * })
+    **/
+    count<T extends SalePublicShareIndexCountArgs>(
+      args?: Subset<T, SalePublicShareIndexCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SalePublicShareIndexCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SalePublicShareIndex.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalePublicShareIndexAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SalePublicShareIndexAggregateArgs>(args: Subset<T, SalePublicShareIndexAggregateArgs>): Prisma.PrismaPromise<GetSalePublicShareIndexAggregateType<T>>
+
+    /**
+     * Group by SalePublicShareIndex.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalePublicShareIndexGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SalePublicShareIndexGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SalePublicShareIndexGroupByArgs['orderBy'] }
+        : { orderBy?: SalePublicShareIndexGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SalePublicShareIndexGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSalePublicShareIndexGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SalePublicShareIndex model
+   */
+  readonly fields: SalePublicShareIndexFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SalePublicShareIndex.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SalePublicShareIndexClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SalePublicShareIndex model
+   */
+  interface SalePublicShareIndexFieldRefs {
+    readonly shareId: FieldRef<"SalePublicShareIndex", 'String'>
+    readonly shareToken: FieldRef<"SalePublicShareIndex", 'String'>
+    readonly businessId: FieldRef<"SalePublicShareIndex", 'String'>
+    readonly saleId: FieldRef<"SalePublicShareIndex", 'String'>
+    readonly expiresAt: FieldRef<"SalePublicShareIndex", 'DateTime'>
+    readonly lastAccessAt: FieldRef<"SalePublicShareIndex", 'DateTime'>
+    readonly createdAt: FieldRef<"SalePublicShareIndex", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SalePublicShareIndex findUnique
+   */
+  export type SalePublicShareIndexFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which SalePublicShareIndex to fetch.
+     */
+    where: SalePublicShareIndexWhereUniqueInput
+  }
+
+  /**
+   * SalePublicShareIndex findUniqueOrThrow
+   */
+  export type SalePublicShareIndexFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which SalePublicShareIndex to fetch.
+     */
+    where: SalePublicShareIndexWhereUniqueInput
+  }
+
+  /**
+   * SalePublicShareIndex findFirst
+   */
+  export type SalePublicShareIndexFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which SalePublicShareIndex to fetch.
+     */
+    where?: SalePublicShareIndexWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalePublicShareIndices to fetch.
+     */
+    orderBy?: SalePublicShareIndexOrderByWithRelationInput | SalePublicShareIndexOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalePublicShareIndices.
+     */
+    cursor?: SalePublicShareIndexWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalePublicShareIndices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalePublicShareIndices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalePublicShareIndices.
+     */
+    distinct?: SalePublicShareIndexScalarFieldEnum | SalePublicShareIndexScalarFieldEnum[]
+  }
+
+  /**
+   * SalePublicShareIndex findFirstOrThrow
+   */
+  export type SalePublicShareIndexFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which SalePublicShareIndex to fetch.
+     */
+    where?: SalePublicShareIndexWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalePublicShareIndices to fetch.
+     */
+    orderBy?: SalePublicShareIndexOrderByWithRelationInput | SalePublicShareIndexOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalePublicShareIndices.
+     */
+    cursor?: SalePublicShareIndexWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalePublicShareIndices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalePublicShareIndices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalePublicShareIndices.
+     */
+    distinct?: SalePublicShareIndexScalarFieldEnum | SalePublicShareIndexScalarFieldEnum[]
+  }
+
+  /**
+   * SalePublicShareIndex findMany
+   */
+  export type SalePublicShareIndexFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * Filter, which SalePublicShareIndices to fetch.
+     */
+    where?: SalePublicShareIndexWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalePublicShareIndices to fetch.
+     */
+    orderBy?: SalePublicShareIndexOrderByWithRelationInput | SalePublicShareIndexOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SalePublicShareIndices.
+     */
+    cursor?: SalePublicShareIndexWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalePublicShareIndices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalePublicShareIndices.
+     */
+    skip?: number
+    distinct?: SalePublicShareIndexScalarFieldEnum | SalePublicShareIndexScalarFieldEnum[]
+  }
+
+  /**
+   * SalePublicShareIndex create
+   */
+  export type SalePublicShareIndexCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SalePublicShareIndex.
+     */
+    data: XOR<SalePublicShareIndexCreateInput, SalePublicShareIndexUncheckedCreateInput>
+  }
+
+  /**
+   * SalePublicShareIndex createMany
+   */
+  export type SalePublicShareIndexCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SalePublicShareIndices.
+     */
+    data: SalePublicShareIndexCreateManyInput | SalePublicShareIndexCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SalePublicShareIndex createManyAndReturn
+   */
+  export type SalePublicShareIndexCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * The data used to create many SalePublicShareIndices.
+     */
+    data: SalePublicShareIndexCreateManyInput | SalePublicShareIndexCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SalePublicShareIndex update
+   */
+  export type SalePublicShareIndexUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SalePublicShareIndex.
+     */
+    data: XOR<SalePublicShareIndexUpdateInput, SalePublicShareIndexUncheckedUpdateInput>
+    /**
+     * Choose, which SalePublicShareIndex to update.
+     */
+    where: SalePublicShareIndexWhereUniqueInput
+  }
+
+  /**
+   * SalePublicShareIndex updateMany
+   */
+  export type SalePublicShareIndexUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SalePublicShareIndices.
+     */
+    data: XOR<SalePublicShareIndexUpdateManyMutationInput, SalePublicShareIndexUncheckedUpdateManyInput>
+    /**
+     * Filter which SalePublicShareIndices to update
+     */
+    where?: SalePublicShareIndexWhereInput
+    /**
+     * Limit how many SalePublicShareIndices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalePublicShareIndex updateManyAndReturn
+   */
+  export type SalePublicShareIndexUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * The data used to update SalePublicShareIndices.
+     */
+    data: XOR<SalePublicShareIndexUpdateManyMutationInput, SalePublicShareIndexUncheckedUpdateManyInput>
+    /**
+     * Filter which SalePublicShareIndices to update
+     */
+    where?: SalePublicShareIndexWhereInput
+    /**
+     * Limit how many SalePublicShareIndices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalePublicShareIndex upsert
+   */
+  export type SalePublicShareIndexUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SalePublicShareIndex to update in case it exists.
+     */
+    where: SalePublicShareIndexWhereUniqueInput
+    /**
+     * In case the SalePublicShareIndex found by the `where` argument doesn't exist, create a new SalePublicShareIndex with this data.
+     */
+    create: XOR<SalePublicShareIndexCreateInput, SalePublicShareIndexUncheckedCreateInput>
+    /**
+     * In case the SalePublicShareIndex was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SalePublicShareIndexUpdateInput, SalePublicShareIndexUncheckedUpdateInput>
+  }
+
+  /**
+   * SalePublicShareIndex delete
+   */
+  export type SalePublicShareIndexDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+    /**
+     * Filter which SalePublicShareIndex to delete.
+     */
+    where: SalePublicShareIndexWhereUniqueInput
+  }
+
+  /**
+   * SalePublicShareIndex deleteMany
+   */
+  export type SalePublicShareIndexDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalePublicShareIndices to delete
+     */
+    where?: SalePublicShareIndexWhereInput
+    /**
+     * Limit how many SalePublicShareIndices to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalePublicShareIndex without action
+   */
+  export type SalePublicShareIndexDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalePublicShareIndex
+     */
+    select?: SalePublicShareIndexSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalePublicShareIndex
+     */
+    omit?: SalePublicShareIndexOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model PlatformAdminNotification
    */
 
@@ -26511,6 +27623,19 @@ export namespace Prisma {
   export type QuotationEmailDispatchIndexScalarFieldEnum = (typeof QuotationEmailDispatchIndexScalarFieldEnum)[keyof typeof QuotationEmailDispatchIndexScalarFieldEnum]
 
 
+  export const SalePublicShareIndexScalarFieldEnum: {
+    shareId: 'shareId',
+    shareToken: 'shareToken',
+    businessId: 'businessId',
+    saleId: 'saleId',
+    expiresAt: 'expiresAt',
+    lastAccessAt: 'lastAccessAt',
+    createdAt: 'createdAt'
+  };
+
+  export type SalePublicShareIndexScalarFieldEnum = (typeof SalePublicShareIndexScalarFieldEnum)[keyof typeof SalePublicShareIndexScalarFieldEnum]
+
+
   export const PlatformAdminNotificationScalarFieldEnum: {
     notificationId: 'notificationId',
     notificationType: 'notificationType',
@@ -28767,6 +29892,69 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"QuotationEmailDispatchIndex"> | Date | string
   }
 
+  export type SalePublicShareIndexWhereInput = {
+    AND?: SalePublicShareIndexWhereInput | SalePublicShareIndexWhereInput[]
+    OR?: SalePublicShareIndexWhereInput[]
+    NOT?: SalePublicShareIndexWhereInput | SalePublicShareIndexWhereInput[]
+    shareId?: StringFilter<"SalePublicShareIndex"> | string
+    shareToken?: StringFilter<"SalePublicShareIndex"> | string
+    businessId?: StringFilter<"SalePublicShareIndex"> | string
+    saleId?: StringFilter<"SalePublicShareIndex"> | string
+    expiresAt?: DateTimeNullableFilter<"SalePublicShareIndex"> | Date | string | null
+    lastAccessAt?: DateTimeNullableFilter<"SalePublicShareIndex"> | Date | string | null
+    createdAt?: DateTimeFilter<"SalePublicShareIndex"> | Date | string
+  }
+
+  export type SalePublicShareIndexOrderByWithRelationInput = {
+    shareId?: SortOrder
+    shareToken?: SortOrder
+    businessId?: SortOrder
+    saleId?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    lastAccessAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SalePublicShareIndexWhereUniqueInput = Prisma.AtLeast<{
+    shareId?: string
+    shareToken?: string
+    businessId_saleId?: SalePublicShareIndexBusinessIdSaleIdCompoundUniqueInput
+    AND?: SalePublicShareIndexWhereInput | SalePublicShareIndexWhereInput[]
+    OR?: SalePublicShareIndexWhereInput[]
+    NOT?: SalePublicShareIndexWhereInput | SalePublicShareIndexWhereInput[]
+    businessId?: StringFilter<"SalePublicShareIndex"> | string
+    saleId?: StringFilter<"SalePublicShareIndex"> | string
+    expiresAt?: DateTimeNullableFilter<"SalePublicShareIndex"> | Date | string | null
+    lastAccessAt?: DateTimeNullableFilter<"SalePublicShareIndex"> | Date | string | null
+    createdAt?: DateTimeFilter<"SalePublicShareIndex"> | Date | string
+  }, "shareId" | "shareToken" | "businessId_saleId">
+
+  export type SalePublicShareIndexOrderByWithAggregationInput = {
+    shareId?: SortOrder
+    shareToken?: SortOrder
+    businessId?: SortOrder
+    saleId?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    lastAccessAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: SalePublicShareIndexCountOrderByAggregateInput
+    _max?: SalePublicShareIndexMaxOrderByAggregateInput
+    _min?: SalePublicShareIndexMinOrderByAggregateInput
+  }
+
+  export type SalePublicShareIndexScalarWhereWithAggregatesInput = {
+    AND?: SalePublicShareIndexScalarWhereWithAggregatesInput | SalePublicShareIndexScalarWhereWithAggregatesInput[]
+    OR?: SalePublicShareIndexScalarWhereWithAggregatesInput[]
+    NOT?: SalePublicShareIndexScalarWhereWithAggregatesInput | SalePublicShareIndexScalarWhereWithAggregatesInput[]
+    shareId?: StringWithAggregatesFilter<"SalePublicShareIndex"> | string
+    shareToken?: StringWithAggregatesFilter<"SalePublicShareIndex"> | string
+    businessId?: StringWithAggregatesFilter<"SalePublicShareIndex"> | string
+    saleId?: StringWithAggregatesFilter<"SalePublicShareIndex"> | string
+    expiresAt?: DateTimeNullableWithAggregatesFilter<"SalePublicShareIndex"> | Date | string | null
+    lastAccessAt?: DateTimeNullableWithAggregatesFilter<"SalePublicShareIndex"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"SalePublicShareIndex"> | Date | string
+  }
+
   export type PlatformAdminNotificationWhereInput = {
     AND?: PlatformAdminNotificationWhereInput | PlatformAdminNotificationWhereInput[]
     OR?: PlatformAdminNotificationWhereInput[]
@@ -30989,6 +32177,76 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SalePublicShareIndexCreateInput = {
+    shareId?: string
+    shareToken: string
+    businessId: string
+    saleId: string
+    expiresAt?: Date | string | null
+    lastAccessAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SalePublicShareIndexUncheckedCreateInput = {
+    shareId?: string
+    shareToken: string
+    businessId: string
+    saleId: string
+    expiresAt?: Date | string | null
+    lastAccessAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SalePublicShareIndexUpdateInput = {
+    shareId?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    businessId?: StringFieldUpdateOperationsInput | string
+    saleId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAccessAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalePublicShareIndexUncheckedUpdateInput = {
+    shareId?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    businessId?: StringFieldUpdateOperationsInput | string
+    saleId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAccessAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalePublicShareIndexCreateManyInput = {
+    shareId?: string
+    shareToken: string
+    businessId: string
+    saleId: string
+    expiresAt?: Date | string | null
+    lastAccessAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SalePublicShareIndexUpdateManyMutationInput = {
+    shareId?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    businessId?: StringFieldUpdateOperationsInput | string
+    saleId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAccessAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SalePublicShareIndexUncheckedUpdateManyInput = {
+    shareId?: StringFieldUpdateOperationsInput | string
+    shareToken?: StringFieldUpdateOperationsInput | string
+    businessId?: StringFieldUpdateOperationsInput | string
+    saleId?: StringFieldUpdateOperationsInput | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAccessAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PlatformAdminNotificationCreateInput = {
     notificationId?: string
     notificationType?: $Enums.PlatformAdminNotificationType
@@ -32881,6 +34139,41 @@ export namespace Prisma {
     quotationId?: SortOrder
     providerMessageId?: SortOrder
     recipientEmail?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SalePublicShareIndexBusinessIdSaleIdCompoundUniqueInput = {
+    businessId: string
+    saleId: string
+  }
+
+  export type SalePublicShareIndexCountOrderByAggregateInput = {
+    shareId?: SortOrder
+    shareToken?: SortOrder
+    businessId?: SortOrder
+    saleId?: SortOrder
+    expiresAt?: SortOrder
+    lastAccessAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SalePublicShareIndexMaxOrderByAggregateInput = {
+    shareId?: SortOrder
+    shareToken?: SortOrder
+    businessId?: SortOrder
+    saleId?: SortOrder
+    expiresAt?: SortOrder
+    lastAccessAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SalePublicShareIndexMinOrderByAggregateInput = {
+    shareId?: SortOrder
+    shareToken?: SortOrder
+    businessId?: SortOrder
+    saleId?: SortOrder
+    expiresAt?: SortOrder
+    lastAccessAt?: SortOrder
     createdAt?: SortOrder
   }
 

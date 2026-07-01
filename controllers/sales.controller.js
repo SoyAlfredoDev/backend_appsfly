@@ -1,5 +1,6 @@
 import { createSale, getSaleById, getSales, getSalesForDashboardView, getMonthlySales, getDaySales, getSalesByCustomerIdService, countSalesMonthService, markSaleAsDelivered } from '../services/salesServices.js';
 import { sendSaleReceiptEmailToCustomer } from '../services/saleEmailService.js';
+import { getOrCreateSaleShareLink } from '../services/salePublicShareService.js';
 import defineSaleNumber from '../libs/defineSaleNumber.js';
 import { isCreditSalesAllowed, isDeliveryControlEnabled } from '../services/businessSettingsService.js';
 
@@ -204,6 +205,29 @@ export const sendSaleEmailController = async (req, res) => {
         const status = error.statusCode || 500;
         res.status(status).json({
             message: error.message || "Failed to send sale email",
+            code: error.code,
+        });
+    }
+};
+
+export const getSaleShareLinkController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const sale = await getSaleById(id, req.prisma);
+        if (!sale) {
+            return res.status(404).json({ message: "Venta no encontrada." });
+        }
+
+        const link = await getOrCreateSaleShareLink(req.tenantBusinessId, id);
+        res.status(200).json({
+            message: "Share link ready",
+            ...link,
+        });
+    } catch (error) {
+        console.error("(sales.controller.js): Error creating sale share link:", error);
+        const status = error.statusCode || 500;
+        res.status(status).json({
+            message: error.message || "No se pudo generar el enlace.",
             code: error.code,
         });
     }
