@@ -27,6 +27,7 @@ export async function sendQuotationEmail({
     netTotal,
     ivaTotal,
     total,
+    pdfBuffer = null,
 }) {
     const recipient = to?.trim().toLowerCase();
     if (!recipient) {
@@ -63,8 +64,15 @@ export async function sendQuotationEmail({
     };
 
     const subject = quotationEmailSubject({ businessName, quotationNumber });
-    const html = quotationEmailTemplate(templateData);
-    const text = quotationEmailText(templateData);
+    const html = quotationEmailTemplate({ ...templateData, hasPdfAttachment: Boolean(pdfBuffer) });
+    const text = quotationEmailText({ ...templateData, hasPdfAttachment: Boolean(pdfBuffer) });
+
+    const attachments = pdfBuffer
+        ? [{
+            filename: `cotizacion-${quotationNumber || "documento"}.pdf`,
+            content: pdfBuffer,
+        }]
+        : undefined;
 
     await sendEmail({
         to: recipient,
@@ -73,6 +81,7 @@ export async function sendQuotationEmail({
         subject,
         html,
         text,
+        attachments,
     });
 
     return { sent: true, to: recipient, replyTo: replyTo.trim() };

@@ -1,6 +1,7 @@
 import { getBusinessByIdService } from "./businessService.js";
 import { getQuotationById, updateQuotationStatus } from "./quotationServices.js";
 import { sendQuotationEmail } from "../emails/dispatchers/quotation.dispatcher.js";
+import { generateQuotationPdfBuffer } from "./quotationPdfService.js";
 
 const IVA_RATE = 0.19;
 
@@ -95,6 +96,16 @@ export async function sendQuotationEmailToCustomer(quotationId, businessId, pris
         .join(" ")
         .trim() || "Cliente";
 
+    const pdfBuffer = await generateQuotationPdfBuffer({
+        quotation,
+        business,
+        items,
+        netTotal,
+        ivaTotal,
+        total,
+        customerName,
+    });
+
     const result = await sendQuotationEmail({
         to: customerEmail,
         replyTo: contact.email,
@@ -112,6 +123,7 @@ export async function sendQuotationEmailToCustomer(quotationId, businessId, pris
         netTotal,
         ivaTotal,
         total,
+        pdfBuffer,
     });
 
     if (quotation.quotationStatus === "DRAFT") {

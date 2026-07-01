@@ -83,6 +83,7 @@ export function quotationEmailTemplate({
     netTotal,
     ivaTotal,
     total,
+    hasPdfAttachment = false,
 }) {
     const itemRows = (items ?? [])
         .map((item, idx) =>
@@ -109,6 +110,7 @@ export function quotationEmailTemplate({
       <p class="email-body-text" style="margin:0 0 20px;font-size:16px;line-height:1.65;color:#374151;font-family:Arial,Helvetica,sans-serif;">
         <strong class="email-heading" style="color:#021f41;">${escapeHtml(businessName)}</strong> le envía la siguiente cotización
         ${quotationNumber ? `<strong class="email-heading" style="color:#021f41;"> #${escapeHtml(String(quotationNumber))}</strong>` : ""}.
+        ${hasPdfAttachment ? " Adjuntamos el detalle en formato PDF." : ""}
       </p>
 
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:20px;">
@@ -171,6 +173,7 @@ export function quotationEmailText({
     netTotal,
     ivaTotal,
     total,
+    hasPdfAttachment = false,
 }) {
     const lines = (items ?? []).map((item, idx) =>
         `${idx + 1}. ${item.name} x${item.quantity} — ${formatCurrency(item.lineTotal)}`,
@@ -180,7 +183,7 @@ export function quotationEmailText({
 
 Estimado/a ${customerName},
 
-${businessName} le envía la siguiente cotización.
+${businessName} le envía la siguiente cotización.${hasPdfAttachment ? " Adjuntamos el detalle en PDF." : ""}
 
 Fecha: ${quotationDate || "—"}
 ${quotationExpiresAt ? `Válida hasta: ${formatDateLong(quotationExpiresAt)}\n` : ""}
