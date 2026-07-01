@@ -17,6 +17,18 @@ import {
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
 import { pendingDailyClosureMiddleware } from "../middlewares/pendingDailyClosureMiddleware.js";
+import {
+    getQuotationsController,
+    getQuotationByIdController,
+    createQuotationController,
+    updateQuotationStatusController,
+    deleteQuotationController,
+    sendQuotationEmailController,
+} from "../controllers/quotation.controller.js";
+import {
+    createQuotationDetailController,
+    getQuotationDetailsByQuotationIdController,
+} from "../controllers/quotationDetail.controller.js";
 
 const router = Router();
 
@@ -55,5 +67,18 @@ router.post("/sales/:id/send-email", authRequired, dbSelectorMiddleware, sendSal
 
 // 7. Create sale
 router.post("/sales", authRequired, dbSelectorMiddleware, pendingDailyClosureMiddleware, createSaleController);
+
+/* ----------------------------
+   QUOTATIONS (co-located for deploy reliability)
+----------------------------- */
+
+router.get("/quotations", authRequired, dbSelectorMiddleware, getQuotationsController);
+router.get("/quotations/:id", authRequired, dbSelectorMiddleware, getQuotationByIdController);
+router.post("/quotations", authRequired, dbSelectorMiddleware, createQuotationController);
+router.post("/quotations/:id/send-email", authRequired, dbSelectorMiddleware, sendQuotationEmailController);
+router.patch("/quotations/:id/status", authRequired, dbSelectorMiddleware, updateQuotationStatusController);
+router.delete("/quotations/:id", authRequired, dbSelectorMiddleware, deleteQuotationController);
+router.post("/quotationDetails", authRequired, dbSelectorMiddleware, createQuotationDetailController);
+router.get("/quotationDetails/:id", authRequired, dbSelectorMiddleware, getQuotationDetailsByQuotationIdController);
 
 export default router;
