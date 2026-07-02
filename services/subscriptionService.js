@@ -13,6 +13,9 @@ export const createSubscriptionService = async (data) => {
 };
 
 export const getSubscriptionsByBusinessIdService = async (businessId) => {
+    if (!businessId) {
+        return [];
+    }
     // debo validar que este activo y no este vencido 
     try {
         const subscription = await general.subscription.findMany({

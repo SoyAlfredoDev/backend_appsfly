@@ -69,6 +69,19 @@ export const createSubscriptionController = async (req, res) => {
         } = req.body;
         const userId = req.user.payload.id;
 
+        if (!subscriptionId || !subscriptionBusinessId || !subscriptionPlanId) {
+            return res.status(400).json({
+                message: "Faltan datos para activar la suscripción. Vuelve a iniciar sesión e intenta de nuevo.",
+            });
+        }
+
+        if (req.tenantBusinessId && subscriptionBusinessId !== req.tenantBusinessId) {
+            return res.status(403).json({
+                message: "No puedes activar una suscripción para otro negocio.",
+                code: "TENANT_FORBIDDEN",
+            });
+        }
+
         const planSelected = await getPlanById(subscriptionPlanId);
         if (!planSelected) {
             return res.status(404).json({ message: "Plan not found." });
