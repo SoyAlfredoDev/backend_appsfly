@@ -36,7 +36,7 @@ const PLANS = [
         planId: "P001",
         planName: "Plan Básico",
         planDescription:
-            "Plan Básico — valor $9.990/mes. Promoción de lanzamiento: 2 meses gratis para negocios sin historial de suscripción.",
+            "Plan Básico — valor neto $9.990/mes (+ IVA). Promoción de lanzamiento: 2 meses gratis para negocios sin historial de suscripción.",
         planPrice: 0,
         planDuration: 2,
         planCurrency: "CLP",
@@ -46,7 +46,7 @@ const PLANS = [
     {
         planId: "P002",
         planName: "Plan Comercial",
-        planDescription: "Suscripción mensual recurrente vía Mercado Pago Chile.",
+        planDescription: "Suscripción mensual recurrente vía Mercado Pago Chile. Precio neto + IVA (19%).",
         planPrice: 9990,
         planDuration: 1,
         planCurrency: "CLP",
@@ -57,7 +57,7 @@ const PLANS = [
         planId: "P003",
         planName: "Plan Profesional",
         planDescription:
-            "Facturación electrónica, asistente con IA y comunicación por correo con tus clientes.",
+            "Facturación electrónica, asistente con IA y comunicación por correo con tus clientes. Precio neto + IVA (19%).",
         planPrice: 39990,
         planDuration: 1,
         planCurrency: "CLP",

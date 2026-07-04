@@ -10,6 +10,7 @@ import {
     getMercadoPagoPreapproval,
 } from "./mercadopago/index.js";
 import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
+import { getPlanPricing } from "../libs/planPricing.js";
 
 const general = new PrismaGeneral();
 
@@ -120,13 +121,15 @@ export async function createMercadoPagoCheckout({
         throw new Error("El negocio ya tiene una suscripción activa.");
     }
 
+    const pricing = getPlanPricing(planSelected.planPrice);
+
     const paymentRecord = await general.subscriptionPayment.create({
         data: {
             subscriptionPaymentId,
             subscriptionId: null,
             subscriptionBusinessId,
             subscriptionPlanId,
-            amount: planSelected.planPrice,
+            amount: pricing.total,
             currency: planSelected.planCurrency || "CLP",
             paymentMethod: "MERCADO_PAGO",
             status: "PENDING",
@@ -135,6 +138,9 @@ export async function createMercadoPagoCheckout({
                 pendingSubscriptionId,
                 checkoutStartedAt: new Date().toISOString(),
                 billingType: "MONTHLY_RECURRING",
+                netAmount: pricing.net,
+                ivaAmount: pricing.iva,
+                ivaRate: pricing.ivaRate,
             },
             createdByUserId,
         },
@@ -142,11 +148,14 @@ export async function createMercadoPagoCheckout({
 
     return {
         paymentId: paymentRecord.subscriptionPaymentId,
-        amount: Math.round(Number(planSelected.planPrice)),
+        amount: pricing.total,
+        netAmount: pricing.net,
+        ivaAmount: pricing.iva,
+        ivaRate: pricing.ivaRate,
         currency: planSelected.planCurrency || "CLP",
         planName: planSelected.planName,
         billingType: "MONTHLY_RECURRING",
-        billingLabel: "Suscripción mensual recurrente",
+        billingLabel: "Suscripción mensual recurrente (neto + IVA)",
     };
 }
 
