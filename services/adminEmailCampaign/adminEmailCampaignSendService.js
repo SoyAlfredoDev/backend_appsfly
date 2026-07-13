@@ -138,10 +138,62 @@ export async function ensureSystemEmailCampaigns(createdByUserId) {
     return results;
 }
 
+const STUCK_RUN_MAX_AGE_MS = 2 * 60 * 60 * 1000;
+
+/**
+ * Cierra runs/campañas colgadas (p. ej. proceso interrumpido en Vercel).
+ */
+export async function recoverStuckCampaignRuns({ maxAgeMs = STUCK_RUN_MAX_AGE_MS } = {}) {
+    const cutoff = new Date(Date.now() - maxAgeMs);
+    const stuckRuns = await general.platformEmailCampaignRun.findMany({
+        where: {
+            runStatus: "RUNNING",
+            startedAt: { lt: cutoff },
+        },
+    });
+
+    for (const run of stuckRuns) {
+        await syncRunMetricsFromRecipients(run.runId);
+        await general.platformEmailCampaignRun.update({
+            where: { runId: run.runId },
+            data: {
+                runStatus: "COMPLETED",
+                completedAt: new Date(),
+                errorLog: {
+                    recovered: true,
+                    note: "Run cerrado automáticamente tras quedar colgado (envío interrumpido).",
+                },
+            },
+        });
+    }
+
+    const sendingCampaigns = await general.platformEmailCampaign.findMany({
+        where: { campaignStatus: "SENDING" },
+    });
+
+    let recoveredCampaigns = 0;
+    for (const campaign of sendingCampaigns) {
+        const stillRunning = await general.platformEmailCampaignRun.count({
+            where: { campaignId: campaign.campaignId, runStatus: "RUNNING" },
+        });
+        if (stillRunning === 0) {
+            await general.platformEmailCampaign.update({
+                where: { campaignId: campaign.campaignId },
+                data: { campaignStatus: "SENT" },
+            });
+            recoveredCampaigns += 1;
+        }
+    }
+
+    return { recoveredRuns: stuckRuns.length, recoveredCampaigns };
+}
+
 export async function executePlatformEmailCampaign(
     campaignId,
     { force = false, source = "manual", dueMeta = null } = {},
 ) {
+    await recoverStuckCampaignRuns();
+
     const campaign = await getPlatformEmailCampaignByIdService(campaignId);
     if (!campaign) {
         throw new Error("CAMPAIGN_NOT_FOUND");
