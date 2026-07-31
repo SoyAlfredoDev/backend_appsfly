@@ -1,5 +1,10 @@
 import { getBusinessByIdService, updateBusinessByIdService } from "./businessService.js";
 import { getUserBusinessById } from "./userBusinessService.js";
+import {
+    DEFAULT_BUSINESS_TIMEZONE,
+    listAllowedBusinessTimezones,
+    sanitizeTimezone,
+} from "../libs/businessTimezone.js";
 
 const SETTINGS_SELECT = {
     businessId: true,
@@ -10,6 +15,7 @@ const SETTINGS_SELECT = {
     businessPhoneNumber: true,
     businessCodePhoneNumber: true,
     businessCountry: true,
+    businessTimezone: true,
     businessAllowCreditSales: true,
     businessDeliveryControlEnabled: true,
     businessReceiptLogoUrl: true,
@@ -37,6 +43,9 @@ export function serializeBusinessSettings(business) {
         businessPhoneNumber: business.businessPhoneNumber,
         businessCodePhoneNumber: business.businessCodePhoneNumber,
         businessCountry: business.businessCountry,
+        businessTimezone: sanitizeTimezone(
+            business.businessTimezone || DEFAULT_BUSINESS_TIMEZONE,
+        ),
         allowCreditSales: Boolean(business.businessAllowCreditSales),
         deliveryControlEnabled: Boolean(business.businessDeliveryControlEnabled),
         receiptLogoUrl: business.businessReceiptLogoUrl ?? null,
@@ -120,6 +129,20 @@ export async function updateBusinessSettingsForUser(userId, businessId, payload)
         data.businessReceiptFooterNote = trimOrNull(payload.receiptFooterNote);
     }
 
+    if (payload.businessTimezone !== undefined) {
+        const tz = sanitizeTimezone(payload.businessTimezone);
+        const allowed = listAllowedBusinessTimezones();
+        if (!allowed.includes(tz)) {
+            const error = new Error(
+                "Zona horaria no soportada. Contacta a soporte para habilitarla.",
+            );
+            error.statusCode = 400;
+            error.code = "INVALID_TIMEZONE";
+            throw error;
+        }
+        data.businessTimezone = tz;
+    }
+
     const updated = await updateBusinessByIdService(businessId, data);
     return serializeBusinessSettings(updated);
 }
@@ -132,4 +155,9 @@ export async function isCreditSalesAllowed(businessId) {
 export async function isDeliveryControlEnabled(businessId) {
     const business = await getBusinessByIdService(businessId);
     return Boolean(business?.businessDeliveryControlEnabled);
+}
+
+export async function getBusinessTimezoneSetting(businessId) {
+    const business = await getBusinessByIdService(businessId);
+    return sanitizeTimezone(business?.businessTimezone || DEFAULT_BUSINESS_TIMEZONE);
 }

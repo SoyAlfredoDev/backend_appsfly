@@ -1,7 +1,14 @@
 import { sumPaymentsByPaymentMethodsService } from "./paymentsService.js";
 import { sumExpensesByPaymentMethod } from "./expensesService.js";
+import {
+    businessMonthBoundsUtc,
+    DEFAULT_BUSINESS_TIMEZONE,
+    getTodayBusinessDate,
+} from "../libs/businessTimezone.js";
+import { normalizePagination, paginatedResult } from "../libs/pagination.js";
 
 const CASH_PAYMENT_METHOD = "2";
+const CASH_DETAIL_LIMIT = 100;
 
 const transactionInclude = {
     user: {
@@ -13,12 +20,39 @@ const transactionInclude = {
     },
 };
 
-export const getTransactions = async (prisma) => {
+export const getTransactions = async (prisma, options = {}) => {
     try {
-        return prisma.transactions.findMany({
-            orderBy: { createdAt: "desc" },
-            include: transactionInclude,
+        const { page, limit, q, defaultLimit = 50, maxLimit = 100 } = options;
+        const { skip, take, page: safePage, limit: safeLimit } = normalizePagination({
+            page,
+            limit,
+            defaultLimit,
+            maxLimit,
         });
+
+        const query = typeof q === "string" ? q.trim() : "";
+        const where = query
+            ? {
+                OR: [
+                    { transactionType: { contains: query, mode: "insensitive" } },
+                    { transactionDescription: { contains: query, mode: "insensitive" } },
+                    { transactionMethod: { contains: query, mode: "insensitive" } },
+                ],
+            }
+            : {};
+
+        const [total, rows] = await Promise.all([
+            prisma.transactions.count({ where }),
+            prisma.transactions.findMany({
+                where,
+                orderBy: { createdAt: "desc" },
+                include: transactionInclude,
+                skip,
+                take,
+            }),
+        ]);
+
+        return paginatedResult(rows, total, safePage, safeLimit);
     } catch (error) {
         console.error("(transactionsService.js): Error fetching transactions:", error);
         throw error;
@@ -49,44 +83,53 @@ export const createTransaction = async (data, prisma) => {
     }
 };
 
-export const getTransactionsSummary = async (prisma) => {
-    const rows = await getTransactions(prisma);
-    const now = new Date();
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+export const getTransactionsSummary = async (
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
+    const today = getTodayBusinessDate(timeZone);
+    const [year, month] = today.split("-").map(Number);
+    const { start: monthStart, endExclusive: monthEnd } = businessMonthBoundsUtc(
+        year,
+        month,
+        timeZone,
+    );
+
+    const [monthRows, movementCount, cashPayments, cashExpenses] = await Promise.all([
+        prisma.transactions.findMany({
+            where: { createdAt: { gte: monthStart, lt: monthEnd } },
+            select: { transactionNewValue: true },
+        }),
+        prisma.transactions.count(),
+        sumPaymentsByPaymentMethodsService(CASH_PAYMENT_METHOD, prisma),
+        sumExpensesByPaymentMethod(CASH_PAYMENT_METHOD, prisma),
+    ]);
 
     let totalInMonth = 0;
     let totalOutMonth = 0;
 
-    for (const row of rows) {
-        const created = new Date(row.createdAt);
-        if (created < monthStart || created >= monthEnd) continue;
-
+    for (const row of monthRows) {
         const { amount, direction } = parseStoredAmount(row.transactionNewValue);
         if (direction === "OUT") totalOutMonth += amount;
         else totalInMonth += amount;
     }
 
-    const [cashPayments, cashExpenses] = await Promise.all([
-        sumPaymentsByPaymentMethodsService(CASH_PAYMENT_METHOD, prisma),
-        sumExpensesByPaymentMethod(CASH_PAYMENT_METHOD, prisma),
-    ]);
-
     return {
         cashAvailable: Number(cashPayments) - Number(cashExpenses),
         totalInMonth,
         totalOutMonth,
-        movementCount: rows.length,
-        month: now.getMonth() + 1,
-        year: now.getFullYear(),
+        movementCount,
+        month,
+        year,
     };
 };
 
 export async function getCashAvailableDetail(prisma) {
-    const [payments, expenses] = await Promise.all([
+    const [payments, expenses, cashPaymentsAgg, cashExpensesAgg] = await Promise.all([
         prisma.payment.findMany({
             where: { paymentMethod: CASH_PAYMENT_METHOD },
             orderBy: { createdAt: "desc" },
+            take: CASH_DETAIL_LIMIT,
             include: {
                 Sale: { select: { saleId: true, saleNumber: true } },
                 user: {
@@ -100,6 +143,7 @@ export async function getCashAvailableDetail(prisma) {
         prisma.expense.findMany({
             where: { expensePaymentMethod: CASH_PAYMENT_METHOD },
             orderBy: { createdAt: "desc" },
+            take: CASH_DETAIL_LIMIT,
             include: {
                 user: {
                     select: {
@@ -109,21 +153,19 @@ export async function getCashAvailableDetail(prisma) {
                 },
             },
         }),
+        sumPaymentsByPaymentMethodsService(CASH_PAYMENT_METHOD, prisma),
+        sumExpensesByPaymentMethod(CASH_PAYMENT_METHOD, prisma),
     ]);
 
-    const cashPaymentsTotal = payments.reduce(
-        (sum, row) => sum + Number(row.paymentAmount ?? 0),
-        0,
-    );
-    const cashExpensesTotal = expenses.reduce(
-        (sum, row) => sum + Number(row.expenseAmount ?? 0),
-        0,
-    );
+    const cashPaymentsTotal = Number(cashPaymentsAgg) || 0;
+    const cashExpensesTotal = Number(cashExpensesAgg) || 0;
 
     return {
         cashAvailable: cashPaymentsTotal - cashExpensesTotal,
         cashPaymentsTotal,
         cashExpensesTotal,
+        truncated: true,
+        recentLimit: CASH_DETAIL_LIMIT,
         payments: payments.map((row) => ({
             id: row.paymentId,
             date: row.createdAt,
@@ -144,7 +186,7 @@ export async function getCashAvailableDetail(prisma) {
             user: row.user,
         })),
     };
-};
+}
 
 function parseStoredAmount(value) {
     if (value == null) return { amount: 0, direction: "IN" };

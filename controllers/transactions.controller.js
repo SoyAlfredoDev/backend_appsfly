@@ -60,7 +60,11 @@ export const createTransactionController = async (req, res) => {
 
 export const getTransactionsController = async (req, res) => {
     try {
-        const transactions = await getTransactions(req.prisma);
+        const transactions = await getTransactions(req.prisma, {
+            page: req.query.page,
+            limit: req.query.limit,
+            q: req.query.q,
+        });
         res.status(200).json(transactions);
     } catch (error) {
         console.error("(transactions.controller.js): Error fetching transactions:", error);
@@ -84,7 +88,10 @@ export const getTransactionByIdController = async (req, res) => {
 
 export const getTransactionsSummaryController = async (req, res) => {
     try {
-        const summary = await getTransactionsSummary(req.prisma);
+        const summary = await getTransactionsSummary(
+            req.prisma,
+            req.businessTimezone,
+        );
         res.status(200).json(summary);
     } catch (error) {
         console.error("(transactions.controller.js): Error fetching summary:", error);

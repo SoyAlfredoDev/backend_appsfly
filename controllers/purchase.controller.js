@@ -1,6 +1,9 @@
 import { createPurchase, getPurchaseById, getPurchases, getMonthlyPurchases, getDayPurchases, getPurchasesByProviderIdService, countPurchasesMonthService, createPurchaseComplete, updatePurchaseHeader, cancelPurchaseWithInventory } from '../services/purchaseServices.js';
 import { InsufficientStockError } from '../services/inventory/inventoryService.js';
 import definePurchaseNumber from '../libs/definePurchaseNumber.js';
+import { getTodayBusinessDate, DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
+
+const tzOf = (req) => req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE;
 
 export const createPurchaseController = async (req, res) => {
     try {
@@ -186,7 +189,7 @@ export const cancelPurchaseController = async (req, res) => {
 export const getMonthlyPurchasesController = async (req, res) => {
     try {
         const { month, year } = req.params;
-        res.status(200).json(await getMonthlyPurchases(Number(month), Number(year), req.prisma));
+        res.status(200).json(await getMonthlyPurchases(Number(month), Number(year), req.prisma, tzOf(req)));
     } catch (error) {
         console.error("(purchase.controller.js): Error getting monthly purchases:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -195,10 +198,11 @@ export const getMonthlyPurchasesController = async (req, res) => {
 
 export const getMonthlyPurchasesNowController = async (req, res) => {
     try {
-        const month = new Date().getMonth() + 1; // Months are zero-based
-        const year = new Date().getFullYear();
+        const today = getTodayBusinessDate(tzOf(req));
+        const month = Number(today.slice(5, 7));
+        const year = Number(today.slice(0, 4));
 
-        res.status(200).json(await getMonthlyPurchases(Number(month), Number(year), req.prisma));
+        res.status(200).json(await getMonthlyPurchases(Number(month), Number(year), req.prisma, tzOf(req)));
     } catch (error) {
         console.error("(purchase.controller.js): Error getting monthly purchases:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -208,7 +212,7 @@ export const getMonthlyPurchasesNowController = async (req, res) => {
 export const getDayPurchasesController = async (req, res) => {
     try {
         const { day, month, year } = req.params;
-        res.status(200).json(await getDayPurchases(Number(day), Number(month), Number(year), req.prisma));
+        res.status(200).json(await getDayPurchases(Number(day), Number(month), Number(year), req.prisma, tzOf(req)));
     } catch (error) {
         console.error("(purchase.controller.js): Error getting day purchases:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -230,7 +234,7 @@ export const getPurchasesByProviderIdController = async (req, res) => {
 export const countPurchasesMonthController = async (req, res) => {
     try {
         const { month, year } = req.params;
-        res.status(200).json(await countPurchasesMonthService(Number(month), Number(year), req.prisma));
+        res.status(200).json(await countPurchasesMonthService(Number(month), Number(year), req.prisma, tzOf(req)));
     } catch (error) {
         console.error("(purchase.controller.js): Error counting purchases:", error);
         res.status(500).json({ message: "Internal server error" });

@@ -3,11 +3,15 @@ import { getDailySalesService, getDailySaleByIdService, getDailySaleByDateServic
 import { getPendingClosureStatus, closeAllPendingClosures } from '../services/pendingDailyClosureService.js';
 import { createDailyClosureForDate } from '../services/dailySalesClosureService.js';
 import { getDailySaleDetailService } from '../services/dailySalesDetailService.js';
+import { DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
+
+const tzOf = (req) => req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE;
 
 export const createDailySaleController = async (req, res) => {
     try {
         const { dailySalesDay, dailySalesId } = req.body;
         const { prisma, user } = req;
+        const timeZone = tzOf(req);
 
         const existingSale = await getDailySaleByDateService(dailySalesDay, prisma);
         if (existingSale) {
@@ -22,6 +26,7 @@ export const createDailySaleController = async (req, res) => {
             dailySalesId: dailySalesId ?? randomUUID(),
             createdByUserId: user.payload.id,
             prisma,
+            timeZone,
         });
 
         return res.status(201).json(createdDailySale);
@@ -63,7 +68,7 @@ export const getDailySalesController = async (req, res) => {
 
 export const getClosureStatusController = async (req, res) => {
     try {
-        const status = await getPendingClosureStatus(req.prisma);
+        const status = await getPendingClosureStatus(req.prisma, tzOf(req));
         return res.status(200).json(status);
     } catch (error) {
         console.error("Error getting closure status:", error);
@@ -77,7 +82,11 @@ export const getClosureStatusController = async (req, res) => {
 export const closeAllPendingClosuresController = async (req, res) => {
     try {
         const { prisma, user } = req;
-        const result = await closeAllPendingClosures(prisma, user.payload.id);
+        const result = await closeAllPendingClosures(
+            prisma,
+            user.payload.id,
+            tzOf(req),
+        );
 
         if (result.closedCount === 0 && result.pendingDates.length === 0) {
             return res.status(200).json({
@@ -102,7 +111,7 @@ export const closeAllPendingClosuresController = async (req, res) => {
 export const getDailySaleDetailController = async (req, res) => {
     try {
         const { id } = req.params;
-        const detail = await getDailySaleDetailService(id, req.prisma);
+        const detail = await getDailySaleDetailService(id, req.prisma, tzOf(req));
 
         if (!detail) {
             return res.status(404).json({ message: 'Cierre diario no encontrado' });

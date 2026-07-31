@@ -3,6 +3,10 @@ import {
     getTodayBusinessDate,
     getBusinessDateFromDate,
 } from '../libs/businessDate.js';
+import {
+    DEFAULT_BUSINESS_TIMEZONE,
+    sanitizeTimezone,
+} from '../libs/businessTimezone.js';
 import { createDailyClosureForDate } from './dailySalesClosureService.js';
 
 /**
@@ -13,9 +17,12 @@ import { createDailyClosureForDate } from './dailySalesClosureService.js';
  * 2. Si el último día con ventas (excluyendo hoy) no tiene cierre → bloqueado (BLOQUEO_CIERRE_PENDIENTE).
  * 3. Sin ventas previas o último día cerrado → permitido.
  */
-export async function getPendingClosureStatus(prisma) {
-    const today = getTodayBusinessDate();
-    const fechasPendientes = await getAllPendingClosureDates(prisma);
+export async function getPendingClosureStatus(
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
+    const today = getTodayBusinessDate(timeZone);
+    const fechasPendientes = await getAllPendingClosureDates(prisma, timeZone);
 
     const todayClosure = await getDailySaleByDateService(today, prisma);
     if (todayClosure) {
@@ -28,7 +35,7 @@ export async function getPendingClosureStatus(prisma) {
         };
     }
 
-    const lastActivityDate = await getLastActivityDateBeforeToday(prisma, today);
+    const lastActivityDate = await getLastActivityDateBeforeToday(prisma, today, timeZone);
 
     if (!lastActivityDate) {
         return {
@@ -61,20 +68,28 @@ export async function getPendingClosureStatus(prisma) {
 }
 
 /** Días con ventas (antes de hoy) que aún no tienen registro en DailySales. */
-export async function getAllPendingClosureDates(prisma) {
-    const today = getTodayBusinessDate();
+export async function getAllPendingClosureDates(
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
+    const today = getTodayBusinessDate(timeZone);
+    const tz = sanitizeTimezone(timeZone);
 
-    const rows = await prisma.$queryRaw`
+    const rows = await prisma.$queryRawUnsafe(
+        `
         SELECT DISTINCT TO_CHAR(
-            ("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE 'America/Santiago',
+            ("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE $1,
             'YYYY-MM-DD'
         ) AS sale_date
         FROM "Sale"
         WHERE TO_CHAR(
-            ("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE 'America/Santiago',
+            ("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE $1,
             'YYYY-MM-DD'
-        ) < ${today}
-    `;
+        ) < $2
+        `,
+        tz,
+        today,
+    );
 
     const datesWithSales = new Set(
         rows.map((row) => row.sale_date).filter(Boolean),
@@ -98,8 +113,12 @@ export async function getAllPendingClosureDates(prisma) {
         .sort();
 }
 
-export async function closeAllPendingClosures(prisma, userId) {
-    const pendingDates = await getAllPendingClosureDates(prisma);
+export async function closeAllPendingClosures(
+    prisma,
+    userId,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
+    const pendingDates = await getAllPendingClosureDates(prisma, timeZone);
     const closed = [];
     const skipped = [];
 
@@ -109,6 +128,7 @@ export async function closeAllPendingClosures(prisma, userId) {
                 dailySalesDay,
                 createdByUserId: userId,
                 prisma,
+                timeZone,
             });
             closed.push({ dailySalesDay, dailySalesId: record.dailySalesId });
         } catch (error) {
@@ -129,7 +149,11 @@ export async function closeAllPendingClosures(prisma, userId) {
     };
 }
 
-async function getLastActivityDateBeforeToday(prisma, today) {
+async function getLastActivityDateBeforeToday(
+    prisma,
+    today,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
     const recentSales = await prisma.sale.findMany({
         orderBy: { createdAt: 'desc' },
         select: { createdAt: true },
@@ -137,7 +161,7 @@ async function getLastActivityDateBeforeToday(prisma, today) {
     });
 
     for (const sale of recentSales) {
-        const saleDate = getBusinessDateFromDate(sale.createdAt);
+        const saleDate = getBusinessDateFromDate(sale.createdAt, timeZone);
         if (saleDate < today) {
             return saleDate;
         }
@@ -146,8 +170,11 @@ async function getLastActivityDateBeforeToday(prisma, today) {
     return null;
 }
 
-export async function assertSalesAllowed(prisma) {
-    const status = await getPendingClosureStatus(prisma);
+export async function assertSalesAllowed(
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
+    const status = await getPendingClosureStatus(prisma, timeZone);
     if (!status.blocked) {
         return status;
     }

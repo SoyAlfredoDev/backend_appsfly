@@ -1,24 +1,19 @@
-import { getDailySaleByIdService } from './dailySalesService.js';
 import { getPaymentByDateService } from './paymentsService.js';
+import {
+    businessDayBoundsUtc,
+    DEFAULT_BUSINESS_TIMEZONE,
+    hourInTimezone,
+} from '../libs/businessTimezone.js';
 
-const BUSINESS_TIMEZONE = 'America/Santiago';
-
-function dayBounds(dateStr) {
-    const start = new Date(`${dateStr}T00:00:00.000Z`);
-    const end = new Date(`${dateStr}T23:59:59.999Z`);
-    return { start, end };
-}
-
-function hourInBusinessTz(date) {
-    const parts = new Intl.DateTimeFormat('en-US', {
-        timeZone: BUSINESS_TIMEZONE,
-        hour: 'numeric',
-        hour12: false,
-    }).formatToParts(date);
-    return Number(parts.find((p) => p.type === 'hour')?.value ?? 0);
-}
-
-export async function getDailySaleDetailService(id, prisma) {
+/**
+ * Detalle de un cierre diario: ventas del día operativo del negocio,
+ * desglose horario y totales del registro de cierre.
+ */
+export async function getDailySaleDetailService(
+    id,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
     const closure = await prisma.dailySales.findUnique({
         where: { dailySalesId: id },
         include: {
@@ -34,11 +29,11 @@ export async function getDailySaleDetailService(id, prisma) {
     if (!closure) return null;
 
     const day = closure.dailySalesDay;
-    const { start, end } = dayBounds(day);
+    const { start, endInclusive } = businessDayBoundsUtc(day, timeZone);
 
     const sales = await prisma.sale.findMany({
         where: {
-            createdAt: { gte: start, lte: end },
+            createdAt: { gte: start, lte: endInclusive },
         },
         include: {
             customer: {
@@ -58,7 +53,7 @@ export async function getDailySaleDetailService(id, prisma) {
         orderBy: { createdAt: 'asc' },
     });
 
-    const payments = await getPaymentByDateService(day, day, prisma);
+    const payments = await getPaymentByDateService(day, day, prisma, timeZone);
 
     const hourlySales = Array.from({ length: 24 }, (_, hour) => ({
         hour,
@@ -76,7 +71,7 @@ export async function getDailySaleDetailService(id, prisma) {
             (acc, p) => acc + (p.paymentAmount || 0),
             0,
         );
-        const hour = hourInBusinessTz(new Date(sale.createdAt));
+        const hour = hourInTimezone(new Date(sale.createdAt), timeZone);
         hourlySales[hour].total += saleTotal;
         hourlySales[hour].count += 1;
 
@@ -101,12 +96,18 @@ export async function getDailySaleDetailService(id, prisma) {
         closure,
         sales: salesSummary,
         payments: payments ?? [],
-        hourlySales: activeHours.length > 0 ? hourlySales : hourlySales.filter((h) => h.hour >= 8 && h.hour <= 22),
+        hourlySales:
+            activeHours.length > 0
+                ? hourlySales
+                : hourlySales.filter((h) => h.hour >= 8 && h.hour <= 22),
         totals: {
             sales: closure.dailySalesTotalSales ?? 0,
             income: closure.dailySalesTotalIncome ?? 0,
-            pending: (closure.dailySalesTotalSales ?? 0) - (closure.dailySalesTotalIncome ?? 0),
+            pending:
+                (closure.dailySalesTotalSales ?? 0) -
+                (closure.dailySalesTotalIncome ?? 0),
             transactions: closure.dailySalesNumberOfSales ?? 0,
         },
+        meta: { timeZone, day },
     };
 }

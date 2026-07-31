@@ -5,6 +5,11 @@ import {
     TRANSACTION_TYPES,
     TRANSACTION_DIRECTIONS,
 } from "./financial/financialLedgerService.js";
+import {
+    businessDayBoundsUtc,
+    businessMonthBoundsUtc,
+    DEFAULT_BUSINESS_TIMEZONE,
+} from "../libs/businessTimezone.js";
 
 export const createPurchase = async (data, prisma) => {
     try {
@@ -466,18 +471,22 @@ export const deletePurchase = async (id, prisma) => {
     }
 };
 
-export const getMonthlyPurchases = async (month, year, prisma) => {
+export const getMonthlyPurchases = async (
+    month,
+    year,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     try {
-        const startDate = new Date(year, month - 1, 1);
-        const endDate = new Date(year, month, 1);
+        const { start, endExclusive } = businessMonthBoundsUtc(year, month, timeZone);
         const total = await prisma.purchase.aggregate({
             _sum: {
                 purchaseTotal: true,
             },
             where: {
                 createdAt: {
-                    gte: startDate,
-                    lt: endDate,
+                    gte: start,
+                    lt: endExclusive,
                 },
             },
         });
@@ -493,10 +502,16 @@ export const getMonthlyPurchases = async (month, year, prisma) => {
     }
 };
 
-export const getDayPurchases = async (day, month, year, prisma) => {
+export const getDayPurchases = async (
+    day,
+    month,
+    year,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     try {
-        const startOfDay = new Date(year, month - 1, day, 0, 0, 0);
-        const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999);
+        const dateKey = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const { start, endInclusive } = businessDayBoundsUtc(dateKey, timeZone);
 
         const purchasesDay = await prisma.purchase.aggregate({
             _sum: {
@@ -504,8 +519,8 @@ export const getDayPurchases = async (day, month, year, prisma) => {
             },
             where: {
                 createdAt: {
-                    gte: startOfDay,
-                    lte: endOfDay,
+                    gte: start,
+                    lte: endInclusive,
                 },
             },
         });
@@ -556,22 +571,25 @@ export const getPurchasesByProviderIdService = async (providerId, prisma) => {
     }
 };
 
-export const countPurchasesMonthService = async (month, year, prisma) => {
+export const countPurchasesMonthService = async (
+    month,
+    year,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     try {
         // Validate input
         if (!month || !year) {
             throw new Error("Month and year are required");
         }
 
-        // Build date range in UTC to avoid timezone issues
-        const startDate = new Date(Date.UTC(year, month - 1, 1));
-        const endDate = new Date(Date.UTC(year, month, 1));
+        const { start, endExclusive } = businessMonthBoundsUtc(year, month, timeZone);
 
         const count = await prisma.purchase.count({
             where: {
                 createdAt: {
-                    gte: startDate,
-                    lt: endDate,
+                    gte: start,
+                    lt: endExclusive,
                 },
             },
         });

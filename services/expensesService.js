@@ -5,6 +5,10 @@ import {
     TRANSACTION_TYPES,
     TRANSACTION_DIRECTIONS,
 } from "./financial/financialLedgerService.js";
+import {
+    businessMonthBoundsUtc,
+    DEFAULT_BUSINESS_TIMEZONE,
+} from "../libs/businessTimezone.js";
 
 const parseMonthYear = (month, year) => {
   const m = parseInt(month, 10);
@@ -17,10 +21,9 @@ const parseMonthYear = (month, year) => {
   return { month: m, year: y };
 };
 
-const getMonthDateRange = (month, year) => {
-  const startDate = new Date(year, month - 1, 1);
-  const endDate = new Date(year, month, 1);
-  return { startDate, endDate };
+const getMonthDateRange = (month, year, timeZone = DEFAULT_BUSINESS_TIMEZONE) => {
+  const { start, endExclusive } = businessMonthBoundsUtc(year, month, timeZone);
+  return { startDate: start, endDate: endExclusive };
 };
 
 const expenseInclude = {
@@ -59,10 +62,15 @@ export const createExpenseService = async (data, prisma) => {
 };
 
 // 2. READ All Expenses (optional month/year filter)
-export const getExpensesService = async (prisma, month, year) => {
+export const getExpensesService = async (
+  prisma,
+  month,
+  year,
+  timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
   try {
     if (month != null && year != null) {
-      return getExpensesByMonthService(month, year, prisma);
+      return getExpensesByMonthService(month, year, prisma, timeZone);
     }
 
     const expenses = await prisma.expense.findMany({
@@ -82,10 +90,15 @@ export const getExpensesService = async (prisma, month, year) => {
   }
 };
 
-export const getExpensesByMonthService = async (month, year, prisma) => {
+export const getExpensesByMonthService = async (
+  month,
+  year,
+  prisma,
+  timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
   try {
     const { month: m, year: y } = parseMonthYear(month, year);
-    const { startDate, endDate } = getMonthDateRange(m, y);
+    const { startDate, endDate } = getMonthDateRange(m, y, timeZone);
 
     const expenses = await prisma.expense.findMany({
       where: {
@@ -182,9 +195,14 @@ export const sumExpensesByPaymentMethod = async (paymentMethod, prisma) => {
 };
 
 // 7. SUM Expenses by Month
-export const sumExpenseByMonthService = async (month, year, prisma) => {
+export const sumExpenseByMonthService = async (
+  month,
+  year,
+  prisma,
+  timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
   try {
-    const { total } = await getExpensesByMonthService(month, year, prisma);
+    const { total } = await getExpensesByMonthService(month, year, prisma, timeZone);
     return total;
   } catch (error) {
     console.error(

@@ -1,8 +1,13 @@
 import { createSale, getSaleById, getSales, getSalesForDashboardView, getMonthlySales, getDaySales, getSalesByCustomerIdService, countSalesMonthService, markSaleAsDelivered } from '../services/salesServices.js';
+import { assertSaleWorkOrdersAllowDelivery } from '../services/workOrdersService.js';
 import { sendSaleReceiptEmailToCustomer } from '../services/saleEmailService.js';
 import { getOrCreateSaleShareLink } from '../services/salePublicShareService.js';
 import defineSaleNumber from '../libs/defineSaleNumber.js';
 import { isCreditSalesAllowed, isDeliveryControlEnabled } from '../services/businessSettingsService.js';
+import { getBusinessByIdService } from '../services/businessService.js';
+import { getTodayBusinessDate, DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
+
+const tzOf = (req) => req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE;
 
 export const createSaleController = async (req, res) => {
     try {
@@ -35,8 +40,11 @@ export const createSaleController = async (req, res) => {
             : "RECEIPT";
 
         const deliveryControl = await isDeliveryControlEnabled(req.tenantBusinessId);
+        const business = await getBusinessByIdService(req.tenantBusinessId);
+        const isOptics = business?.businessType === "optics";
+        // En óptica la entrega la marca el flujo de OT; no dejar PENDING al crear la venta.
         let normalizedDeliveryStatus = null;
-        if (deliveryControl && saleDeliveryStatus === "PENDING") {
+        if (deliveryControl && saleDeliveryStatus === "PENDING" && !isOptics) {
             normalizedDeliveryStatus = "PENDING";
         }
 
@@ -66,8 +74,17 @@ export const createSaleController = async (req, res) => {
 
 export const getSalesController = async (req, res) => {
     try {
-        const sales = await getSales(req.prisma);
-        res.status(200).json(sales);
+        const { page, limit, q, deliveryStatus } = req.query;
+        const business = await getBusinessByIdService(req.tenantBusinessId);
+        const deliveryByWorkOrders = business?.businessType === "optics";
+        const result = await getSales(req.prisma, {
+            page,
+            limit,
+            q,
+            deliveryStatus,
+            deliveryByWorkOrders,
+        });
+        res.status(200).json(result);
     } catch (error) {
         console.error("(sales.controller.js): Error fetching sales:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -77,7 +94,7 @@ export const getSalesController = async (req, res) => {
 export const getDashboardSalesViewController = async (req, res) => {
     try {
         const { view } = req.params;
-        const sales = await getSalesForDashboardView(view, req.prisma);
+        const sales = await getSalesForDashboardView(view, req.prisma, tzOf(req));
         res.status(200).json(sales);
     } catch (error) {
         const status = error.statusCode ?? 500;
@@ -107,7 +124,7 @@ export const getSaleByIdController = async (req, res) => {
 export const getMonthlySalescontroller = async (req, res) => {
     try {
         const { month, year } = req.params;
-        res.status(200).json(await getMonthlySales(Number(month), Number(year), req.prisma));
+        res.status(200).json(await getMonthlySales(Number(month), Number(year), req.prisma, tzOf(req)));
     } catch (error) {
         console.error("(sales.controller.js): Error getting monthly sales:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -116,10 +133,10 @@ export const getMonthlySalescontroller = async (req, res) => {
 
 export const getMonthlySalesNowController = async (req, res) => {
     try {
-        const month = new Date().getMonth() + 1; // Months are zero-based
-        const year = new Date().getFullYear();
+        const today = getTodayBusinessDate(tzOf(req));
+        const [year, month] = today.split("-").map(Number);
 
-        res.status(200).json(await getMonthlySales(Number(month), Number(year), req.prisma));
+        res.status(200).json(await getMonthlySales(month, year, req.prisma, tzOf(req)));
     } catch (error) {
         console.error("(sales.controller.js): Error getting monthly sales:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -129,7 +146,7 @@ export const getMonthlySalesNowController = async (req, res) => {
 export const getDaySalesController = async (req, res) => {
     try {
         const { day, month, year } = req.params;
-        res.status(200).json(await getDaySales(Number(day), Number(month), Number(year), req.prisma));
+        res.status(200).json(await getDaySales(Number(day), Number(month), Number(year), req.prisma, tzOf(req)));
     } catch (error) {
         console.error("(sales.controller.js): Error getting day sales:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -151,7 +168,7 @@ export const getSalesByCustomerIdController = async (req, res) => {
 export const countSalesMonthController = async (req, res) => {
     try {
         const { month, year } = req.params;
-        res.status(200).json(await countSalesMonthService(Number(month), Number(year), req.prisma));
+        res.status(200).json(await countSalesMonthService(Number(month), Number(year), req.prisma, tzOf(req)));
     } catch (error) {
         console.error("(sales.controller.js): Error counting sales:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -169,6 +186,12 @@ export const markSaleDeliveredController = async (req, res) => {
                 message: "El control de entrega no está habilitado para este negocio.",
                 code: "DELIVERY_CONTROL_DISABLED",
             });
+        }
+
+        // Óptica: si la venta tiene OT, todas deben estar entregadas al cliente
+        const business = await getBusinessByIdService(req.tenantBusinessId);
+        if (business?.businessType === "optics") {
+            await assertSaleWorkOrdersAllowDelivery(id, req.prisma);
         }
 
         const sale = await markSaleAsDelivered(id, userId, req.prisma);

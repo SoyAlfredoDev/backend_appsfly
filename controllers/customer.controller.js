@@ -1,7 +1,31 @@
 import { createCustomer, getCustomers, getCustomersByRut, deleteCustomerByIdService, getCustomerByIdService, updateCustomer } from '../services/customersService.js'
 import { getSalesByCustomerIdService } from '../services/salesServices.js'
 import { getSaleDetailByCustomerIdService } from '../services/saleDetailsService.js'
+import { countPrescriptionsByCustomerId } from '../services/prescriptionsService.js'
 import { deleteCloudinaryImageByUrl, deleteCloudinaryImageIfReplaced } from '../services/cloudinaryService.js'
+import { parseBusinessDateOnly, DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js'
+
+const formatOptionalDate = (value, timeZone = DEFAULT_BUSINESS_TIMEZONE) =>
+    parseBusinessDateOnly(value, timeZone);
+
+const formatOptionalString = (value) => {
+    if (value === undefined) return undefined;
+    if (value === null) return null;
+    const trimmed = String(value).trim();
+    return trimmed || null;
+};
+
+/** Nombre requerido; resto opcional. Apellido vacío → "" (columna no nullable en BD). */
+const formatRequiredName = (str) => {
+    const trimmed = str?.trim()?.toLowerCase();
+    return trimmed || null;
+};
+
+const formatOptionalName = (str) => {
+    if (str === undefined) return undefined;
+    const trimmed = str?.trim()?.toLowerCase();
+    return trimmed || "";
+};
 
 export const createCustomerController = async (req, res) => {
     try {
@@ -15,25 +39,34 @@ export const createCustomerController = async (req, res) => {
             customerDocumentNumber,
             customerComment,
             customerImageUrl,
+            customerBirthDate,
             createdByUserId
         } = req.body
 
-        const formatString = (str) => str?.trim()?.toLowerCase() || null;
         const formatOptionalUrl = (url) => {
             const trimmed = url?.trim();
             return trimmed || null;
         };
 
+        const firstName = formatRequiredName(customerFirstName);
+        if (!firstName) {
+            return res.status(400).json({ message: "El nombre es obligatorio." });
+        }
+
         const data = {
-            customerFirstName: formatString(customerFirstName),
-            customerLastName: formatString(customerLastName),
-            customerEmail: formatString(customerEmail),
+            customerFirstName: firstName,
+            customerLastName: formatOptionalName(customerLastName) ?? "",
+            customerEmail: formatOptionalString(customerEmail)?.toLowerCase() ?? null,
             customerCodePhoneNumber,
             customerPhoneNumber,
             customerDocumentType,
-            customerDocumentNumber,
+            customerDocumentNumber: formatOptionalString(customerDocumentNumber),
             customerComment,
             customerImageUrl: formatOptionalUrl(customerImageUrl),
+            customerBirthDate: formatOptionalDate(
+                customerBirthDate,
+                req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE,
+            ),
             createdByUserId
         };
 
@@ -60,8 +93,12 @@ export const createCustomerController = async (req, res) => {
 
 export const getCustomerController = async (req, res) => {
     try {
-        const customers = await getCustomers(req.prisma)
-        res.status(200).json(customers)
+        const customers = await getCustomers(req.prisma, {
+            page: req.query.page,
+            limit: req.query.limit,
+            q: req.query.q,
+        });
+        res.status(200).json(customers);
     } catch (error) {
         console.error("(customer.controller.js): Error getting customers:", error);
         res.status(500).json({ message: "Internal server error" });
@@ -98,6 +135,11 @@ export const deleteCustomerByIdController = async (req, res) => {
         const customerHasSaleDetails = await getSaleDetailByCustomerIdService(customerId, req.prisma);
         if (customerHasSales.length > 0 || customerHasSaleDetails.length > 0) {
             return res.status(400).json({ message: "Cannot delete customer with existing sales" });
+        }
+
+        const prescriptionCount = await countPrescriptionsByCustomerId(customerId, req.prisma);
+        if (prescriptionCount > 0) {
+            return res.status(400).json({ message: "Cannot delete customer with existing prescriptions" });
         }
 
         await deleteCustomerByIdService(customerId, req.prisma);
@@ -141,25 +183,44 @@ export const updateCustomerController = async (req, res) => {
             customerDocumentNumber,
             customerComment,
             customerImageUrl,
+            customerBirthDate,
         } = req.body;
 
-        const formatString = (str) => str?.trim()?.toLowerCase() || null;
         const formatOptionalUrl = (url) => {
             const trimmed = url?.trim();
             return trimmed || null;
         };
 
+        const firstName = formatRequiredName(customerFirstName);
+        if (customerFirstName !== undefined && !firstName) {
+            return res.status(400).json({ message: "El nombre es obligatorio." });
+        }
+
         const data = {
-            customerFirstName: formatString(customerFirstName),
-            customerLastName: formatString(customerLastName),
-            customerEmail: formatString(customerEmail),
+            customerFirstName: firstName,
+            customerLastName: formatOptionalName(customerLastName),
+            customerEmail:
+                customerEmail !== undefined
+                    ? (formatOptionalString(customerEmail)?.toLowerCase() ?? null)
+                    : undefined,
             customerCodePhoneNumber,
             customerPhoneNumber,
             customerDocumentType,
-            customerDocumentNumber,
+            customerDocumentNumber:
+                customerDocumentNumber !== undefined
+                    ? formatOptionalString(customerDocumentNumber)
+                    : undefined,
             customerComment,
             customerImageUrl: formatOptionalUrl(customerImageUrl),
+            customerBirthDate: formatOptionalDate(
+                customerBirthDate,
+                req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE,
+            ),
         };
+
+        Object.keys(data).forEach((key) => {
+            if (data[key] === undefined) delete data[key];
+        });
 
         const existingCustomer = await getCustomerByIdService(customerId, req.prisma);
         if (!existingCustomer) {

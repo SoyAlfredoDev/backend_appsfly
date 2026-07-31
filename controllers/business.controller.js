@@ -4,6 +4,9 @@ import { registerUserBusinessServiceBusinessDB } from '../services/businessDB/us
 import { createUserBusinessService } from '../services/userBusinessService.js';
 import { getUserById } from '../services/usersService.js'
 import { runPrismaMigrate } from '../prisma/runMigrate.js'
+import { getPrismaForBusinessId } from "../db.js";
+import { seedOpticsCatalog } from "../libs/opticsCatalogSeed.js";
+import { cacheInvalidate } from "../libs/tenantCache.js";
 
 export const createBusinessController = async (req, res) => {
     const userId = req.user.payload.id;
@@ -108,6 +111,23 @@ export const createBusinessController = async (req, res) => {
                     throw new Error("Could not create user inside business DB.");
 
                 status.createdUserBusinessDB = true;
+
+                // 4.3 Seed catálogo óptica (categorías sistema + atributos)
+                if (String(businessData.businessType || "").toLowerCase() === "optics") {
+                    try {
+                        const tenantPrisma = await getPrismaForBusinessId(businessData.businessId);
+                        if (tenantPrisma) {
+                            await seedOpticsCatalog(tenantPrisma, userId);
+                            cacheInvalidate(businessData.businessId, "categories");
+                            cacheInvalidate(businessData.businessId, "categories:all-attrs");
+                            status.opticsCatalogSeeded = true;
+                        }
+                    } catch (seedErr) {
+                        console.error("(createBusiness): optics catalog seed failed:", seedErr);
+                        status.opticsCatalogSeeded = false;
+                        status.lastError = `optics seed: ${seedErr.message}`;
+                    }
+                }
 
             } catch (error) {
                 status.lastError = `4. User/relationship creation failed: ${error.message}`;

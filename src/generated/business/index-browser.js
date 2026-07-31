@@ -147,6 +147,8 @@ exports.Prisma.CustomerScalarFieldEnum = {
   customerDocumentNumber: 'customerDocumentNumber',
   customerComment: 'customerComment',
   customerImageUrl: 'customerImageUrl',
+  customerBirthDate: 'customerBirthDate',
+  customerAddress: 'customerAddress',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdByUserId: 'createdByUserId'
@@ -163,6 +165,19 @@ exports.Prisma.ProductScalarFieldEnum = {
   productStatus: 'productStatus',
   productUnit: 'productUnit',
   productAllowZeroStock: 'productAllowZeroStock',
+  productRequiresLabWork: 'productRequiresLabWork',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ScanCodeScalarFieldEnum = {
+  scanCodeId: 'scanCodeId',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  codeType: 'codeType',
+  codeValue: 'codeValue',
+  isPrimary: 'isPrimary',
   createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -213,8 +228,34 @@ exports.Prisma.ServiceScalarFieldEnum = {
 exports.Prisma.CategoryScalarFieldEnum = {
   categoryId: 'categoryId',
   categoryName: 'categoryName',
+  categoryCode: 'categoryCode',
+  isSystem: 'isSystem',
   createdByUserId: 'createdByUserId',
   allowedFor: 'allowedFor',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CategoryAttributeScalarFieldEnum = {
+  categoryAttributeId: 'categoryAttributeId',
+  categoryId: 'categoryId',
+  attributeKey: 'attributeKey',
+  attributeLabel: 'attributeLabel',
+  dataType: 'dataType',
+  optionsJson: 'optionsJson',
+  isSystem: 'isSystem',
+  isRequired: 'isRequired',
+  isVisible: 'isVisible',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProductAttributeValueScalarFieldEnum = {
+  productAttributeValueId: 'productAttributeValueId',
+  productId: 'productId',
+  categoryAttributeId: 'categoryAttributeId',
+  value: 'value',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -443,6 +484,124 @@ exports.Prisma.QuotationDetailScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PrescriptionScalarFieldEnum = {
+  prescriptionId: 'prescriptionId',
+  customerId: 'customerId',
+  prescriptionDate: 'prescriptionDate',
+  prescriptionExpiresAt: 'prescriptionExpiresAt',
+  prescribedBy: 'prescribedBy',
+  prescriptionType: 'prescriptionType',
+  odSphere: 'odSphere',
+  odCylinder: 'odCylinder',
+  odAxis: 'odAxis',
+  odAddition: 'odAddition',
+  odPrism: 'odPrism',
+  odBase: 'odBase',
+  oiSphere: 'oiSphere',
+  oiCylinder: 'oiCylinder',
+  oiAxis: 'oiAxis',
+  oiAddition: 'oiAddition',
+  oiPrism: 'oiPrism',
+  oiBase: 'oiBase',
+  pdBinocular: 'pdBinocular',
+  pdOd: 'pdOd',
+  pdOi: 'pdOi',
+  pdNear: 'pdNear',
+  prescriptionNotes: 'prescriptionNotes',
+  prescriptionImageUrl: 'prescriptionImageUrl',
+  entryMode: 'entryMode',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LaboratoryScalarFieldEnum = {
+  laboratoryId: 'laboratoryId',
+  laboratoryName: 'laboratoryName',
+  laboratoryDocumentType: 'laboratoryDocumentType',
+  laboratoryDocumentNumber: 'laboratoryDocumentNumber',
+  laboratoryAddress: 'laboratoryAddress',
+  laboratoryCodePhoneNumber: 'laboratoryCodePhoneNumber',
+  laboratoryPhoneNumber: 'laboratoryPhoneNumber',
+  laboratoryEmail: 'laboratoryEmail',
+  laboratoryComment: 'laboratoryComment',
+  laboratoryActive: 'laboratoryActive',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkOrderScalarFieldEnum = {
+  workOrderId: 'workOrderId',
+  workOrderNumber: 'workOrderNumber',
+  saleId: 'saleId',
+  saleDetailId: 'saleDetailId',
+  customerId: 'customerId',
+  prescriptionId: 'prescriptionId',
+  laboratoryId: 'laboratoryId',
+  labDispatchId: 'labDispatchId',
+  workOrderStatus: 'workOrderStatus',
+  workOrderNotes: 'workOrderNotes',
+  workOrderLabNotes: 'workOrderLabNotes',
+  quantity: 'quantity',
+  receivedAt: 'receivedAt',
+  deliveredAt: 'deliveredAt',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LabDispatchScalarFieldEnum = {
+  labDispatchId: 'labDispatchId',
+  labDispatchNumber: 'labDispatchNumber',
+  laboratoryId: 'laboratoryId',
+  labDispatchStatus: 'labDispatchStatus',
+  sentAt: 'sentAt',
+  sentByUserId: 'sentByUserId',
+  labDispatchNotes: 'labDispatchNotes',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PurchaseCertificateScalarFieldEnum = {
+  purchaseCertificateId: 'purchaseCertificateId',
+  saleId: 'saleId',
+  certificateNumber: 'certificateNumber',
+  certificateStatus: 'certificateStatus',
+  certificateIssuedDate: 'certificateIssuedDate',
+  certificateComment: 'certificateComment',
+  certificateResponsibleName: 'certificateResponsibleName',
+  customerNameSnapshot: 'customerNameSnapshot',
+  customerDocumentSnapshot: 'customerDocumentSnapshot',
+  businessNameSnapshot: 'businessNameSnapshot',
+  businessDocumentSnapshot: 'businessDocumentSnapshot',
+  businessAddressSnapshot: 'businessAddressSnapshot',
+  businessLogoSnapshot: 'businessLogoSnapshot',
+  certificateTotal: 'certificateTotal',
+  issuedAt: 'issuedAt',
+  issuedByUserId: 'issuedByUserId',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PurchaseCertificateDetailScalarFieldEnum = {
+  purchaseCertificateDetailId: 'purchaseCertificateDetailId',
+  purchaseCertificateId: 'purchaseCertificateId',
+  sourceSaleDetailId: 'sourceSaleDetailId',
+  lineType: 'lineType',
+  lineSku: 'lineSku',
+  lineDescription: 'lineDescription',
+  lineQuantity: 'lineQuantity',
+  lineUnitPrice: 'lineUnitPrice',
+  lineTotal: 'lineTotal',
+  sortOrder: 'sortOrder',
+  lineIncluded: 'lineIncluded',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -561,14 +720,40 @@ exports.QuotationEmailDeliveryStatus = exports.$Enums.QuotationEmailDeliveryStat
   BOUNCED: 'BOUNCED'
 };
 
+exports.WorkOrderStatus = exports.$Enums.WorkOrderStatus = {
+  CREATED: 'CREATED',
+  PENDING_SHIPMENT: 'PENDING_SHIPMENT',
+  SENT_TO_LAB: 'SENT_TO_LAB',
+  RECEIVED: 'RECEIVED',
+  QUALITY_CONTROL: 'QUALITY_CONTROL',
+  READY_FOR_DELIVERY: 'READY_FOR_DELIVERY',
+  DELIVERED: 'DELIVERED'
+};
+
+exports.LabDispatchStatus = exports.$Enums.LabDispatchStatus = {
+  SENT: 'SENT',
+  PARTIAL_RECEIVED: 'PARTIAL_RECEIVED',
+  RECEIVED: 'RECEIVED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.PurchaseCertificateStatus = exports.$Enums.PurchaseCertificateStatus = {
+  DRAFT: 'DRAFT',
+  ISSUED: 'ISSUED',
+  VOID: 'VOID'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Customer: 'Customer',
   Product: 'Product',
+  ScanCode: 'ScanCode',
   ProductStock: 'ProductStock',
   InventoryMovement: 'InventoryMovement',
   Service: 'Service',
   Category: 'Category',
+  CategoryAttribute: 'CategoryAttribute',
+  ProductAttributeValue: 'ProductAttributeValue',
   Sale: 'Sale',
   SaleDetail: 'SaleDetail',
   Payment: 'Payment',
@@ -583,7 +768,13 @@ exports.Prisma.ModelName = {
   TaxDocument: 'TaxDocument',
   TaxDocumentAuditLog: 'TaxDocumentAuditLog',
   Quotation: 'Quotation',
-  QuotationDetail: 'QuotationDetail'
+  QuotationDetail: 'QuotationDetail',
+  Prescription: 'Prescription',
+  Laboratory: 'Laboratory',
+  WorkOrder: 'WorkOrder',
+  LabDispatch: 'LabDispatch',
+  PurchaseCertificate: 'PurchaseCertificate',
+  PurchaseCertificateDetail: 'PurchaseCertificateDetail'
 };
 
 /**

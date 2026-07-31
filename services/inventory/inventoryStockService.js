@@ -1,4 +1,5 @@
 import { serializeProductsWithStock } from "../../utils/productStockSerializer.js";
+import { findProductIdsByExactCode } from "../scanCodesService.js";
 
 export async function getInventorySummary(prisma) {
     const stocks = await prisma.productStock.findMany({
@@ -41,7 +42,8 @@ export async function getInventorySummary(prisma) {
 }
 
 export async function getInventoryStockList(prisma, { q, lowStockOnly } = {}) {
-    const query = q?.trim().toLowerCase();
+    const query = q?.trim();
+    const codeProductIds = query ? await findProductIdsByExactCode(query, prisma) : [];
 
     const stocks = await prisma.productStock.findMany({
         where: {
@@ -52,6 +54,9 @@ export async function getInventoryStockList(prisma, { q, lowStockOnly } = {}) {
                           OR: [
                               { productName: { contains: query, mode: "insensitive" } },
                               { productSKU: { contains: query, mode: "insensitive" } },
+                              ...(codeProductIds.length
+                                  ? [{ productId: { in: codeProductIds } }]
+                                  : []),
                           ],
                       }
                     : {}),
@@ -76,12 +81,20 @@ export async function getInventoryStockList(prisma, { q, lowStockOnly } = {}) {
 
     let filtered = stocks;
 
+    if (query && codeProductIds.length) {
+        const exactSet = new Set(codeProductIds);
+        filtered = [
+            ...stocks.filter((s) => exactSet.has(s.productId)),
+            ...stocks.filter((s) => !exactSet.has(s.productId)),
+        ];
+    }
+
     if (lowStockOnly === true || lowStockOnly === "true") {
-        filtered = stocks.filter((s) => s.quantityOnHand <= s.reorderPoint);
+        filtered = filtered.filter((s) => s.quantityOnHand <= s.reorderPoint);
     }
 
     return filtered.map((stock) => {
-        const product = serializeProductsWithStock(stock.product);
+        const product = serializeProductsWithStock([stock.product])[0] || stock.product;
         const unitValue = stock.averageUnitCost || product.productPrice || 0;
 
         return {

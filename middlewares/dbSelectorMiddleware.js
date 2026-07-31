@@ -1,6 +1,7 @@
 // middlewares/dbSelectorMiddleware.js
 import { getPrismaForBusinessId } from "../db.js";
 import { resolveTenantMembership } from "../libs/resolveTenantMembership.js";
+import { getBusinessTimezoneById } from "../libs/getBusinessTimezone.js";
 import { getUserBusinessById } from "../services/userBusinessService.js";
 
 export async function dbSelectorMiddleware(req, res, next) {
@@ -29,6 +30,7 @@ export async function dbSelectorMiddleware(req, res, next) {
     const membership = resolved.membership;
     req.tenantBusinessId = membership.userBusinessBusinessId;
     req.tenantRole = membership.userBusinessRole;
+    req.businessTimezone = await getBusinessTimezoneById(req.tenantBusinessId);
 
     const prisma = await getPrismaForBusinessId(req.tenantBusinessId);
     if (!prisma) {

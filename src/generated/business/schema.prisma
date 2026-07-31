@@ -27,26 +27,33 @@ model User {
   updatedAt           DateTime  @updatedAt
 
   // Relaciones
-  customers          Customer[]
-  Product            Product[]
-  Service            Service[]
-  Category           Category[]
-  Sale               Sale[]              @relation("SaleCreatedBy")
-  salesDelivered     Sale[]              @relation("SaleDeliveredBy")
-  Payment            Payment[]
-  SaleDetail         SaleDetail[]
-  Purchase           Purchase[]          @relation("PurchaseCreatedBy")
-  purchasesCancelled Purchase[]          @relation("PurchaseCancelledBy")
-  PurchaseDetail     PurchaseDetail[]
-  Provider           Provider[]
-  CashExpense        CashExpense[]
-  DailySales         DailySales[]
-  Transactions       Transactions[]
-  Expense            Expense[]
-  InventoryMovement  InventoryMovement[]
-  AsmrCampaign       AsmrCampaign[]
-  Quotation          Quotation[]         @relation("QuotationCreatedBy")
-  QuotationDetail    QuotationDetail[]
+  customers                  Customer[]
+  Product                    Product[]
+  Service                    Service[]
+  Category                   Category[]
+  Sale                       Sale[]                @relation("SaleCreatedBy")
+  salesDelivered             Sale[]                @relation("SaleDeliveredBy")
+  Payment                    Payment[]
+  SaleDetail                 SaleDetail[]
+  Purchase                   Purchase[]            @relation("PurchaseCreatedBy")
+  purchasesCancelled         Purchase[]            @relation("PurchaseCancelledBy")
+  PurchaseDetail             PurchaseDetail[]
+  Provider                   Provider[]
+  CashExpense                CashExpense[]
+  DailySales                 DailySales[]
+  Transactions               Transactions[]
+  Expense                    Expense[]
+  InventoryMovement          InventoryMovement[]
+  AsmrCampaign               AsmrCampaign[]
+  Quotation                  Quotation[]           @relation("QuotationCreatedBy")
+  QuotationDetail            QuotationDetail[]
+  Prescription               Prescription[]
+  Laboratory                 Laboratory[]
+  WorkOrder                  WorkOrder[]
+  LabDispatchCreated         LabDispatch[]         @relation("LabDispatchCreatedBy")
+  LabDispatchSent            LabDispatch[]         @relation("LabDispatchSentBy")
+  PurchaseCertificateCreated PurchaseCertificate[] @relation("PurchaseCertificateCreatedBy")
+  PurchaseCertificateIssued  PurchaseCertificate[] @relation("PurchaseCertificateIssuedBy")
 }
 
 model Customer {
@@ -60,9 +67,17 @@ model Customer {
   customerDocumentNumber  String?
   customerComment         String?
   /**
-   * Foto de perfil — URL Cloudinary (opcional)
+   * Legacy: fotos históricas. En óptica las imágenes viven en Prescription.
    */
   customerImageUrl        String?
+  /**
+   * Fecha de nacimiento (útil en óptica; opcional)
+   */
+  customerBirthDate       DateTime?
+  /**
+   * Dirección (útil en óptica; opcional)
+   */
+  customerAddress         String?
   createdAt               DateTime          @default(now())
   updatedAt               DateTime          @updatedAt
   createdByUserId         String
@@ -71,31 +86,62 @@ model Customer {
   SaleDetail              SaleDetail[]
   Quotation               Quotation[]
   QuotationDetail         QuotationDetail[]
+  Prescription            Prescription[]
+  WorkOrder               WorkOrder[]
 }
 
 model Product {
-  productId             String            @id @default(uuid())
-  productName           String
-  productDescription    String?
-  productSKU            String            @unique
-  categoryId            String
-  category              Category          @relation(fields: [categoryId], references: [categoryId])
-  productPrice          Int
-  productPriceFixed     Boolean?
-  productStatus         ProductStatus
-  productUnit           ProductUnit
+  productId              String                  @id @default(uuid())
+  productName            String
+  productDescription     String?
+  productSKU             String                  @unique
+  categoryId             String
+  category               Category                @relation(fields: [categoryId], references: [categoryId])
+  productPrice           Int
+  productPriceFixed      Boolean?
+  productStatus          ProductStatus
+  productUnit            ProductUnit
   /**
    * Permite vender el producto aunque quantityOnHand sea 0 o negativo
    */
-  productAllowZeroStock Boolean           @default(false)
-  createdByUserId       String
-  user                  User              @relation(fields: [createdByUserId], references: [userId])
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime          @updatedAt
-  SaleDetail            SaleDetail[]
-  PurchaseDetail        PurchaseDetail[]
-  productStock          ProductStock?
-  QuotationDetail       QuotationDetail[]
+  productAllowZeroStock  Boolean                 @default(false)
+  /**
+   * Si true, al venderse puede generar Orden de Trabajo (óptica)
+   */
+  productRequiresLabWork Boolean                 @default(false)
+  createdByUserId        String
+  user                   User                    @relation(fields: [createdByUserId], references: [userId])
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  SaleDetail             SaleDetail[]
+  PurchaseDetail         PurchaseDetail[]
+  productStock           ProductStock?
+  QuotationDetail        QuotationDetail[]
+  attributeValues        ProductAttributeValue[]
+}
+
+/**
+ * Códigos escaneables (barcode/QR/SKU alias) polimórficos por entidad.
+ */
+model ScanCode {
+  scanCodeId      String   @id @default(uuid())
+  /**
+   * PRODUCT | SERVICE | WORK_ORDER | CUSTOMER | …
+   */
+  entityType      String
+  entityId        String
+  /**
+   * BARCODE | QR | SKU_ALIAS
+   */
+  codeType        String
+  codeValue       String   @unique
+  isPrimary       Boolean  @default(false)
+  createdByUserId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([entityType, entityId])
+  @@index([codeType])
 }
 
 model ProductStock {
@@ -164,19 +210,83 @@ model Service {
 }
 
 model Category {
-  categoryId      String       @id @default(uuid())
+  categoryId      String              @id @default(uuid())
   categoryName    String
+  /**
+   * Código estable de sistema (FRAMES, LENSES, …). Null en categorías custom.
+   */
+  categoryCode    String?             @unique
+  /**
+   * Categorías seed óptica: no eliminables
+   */
+  isSystem        Boolean             @default(false)
   createdByUserId String
   allowedFor      UsageContext
   products        Product[]
   services        Service[]
-  user            User         @relation(fields: [createdByUserId], references: [userId])
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  attributes      CategoryAttribute[]
+  user            User                @relation(fields: [createdByUserId], references: [userId])
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+}
+
+/**
+ * Definición de atributo dinámico por categoría (EAV).
+ */
+model CategoryAttribute {
+  categoryAttributeId String   @id @default(uuid())
+  categoryId          String
+  category            Category @relation(fields: [categoryId], references: [categoryId], onDelete: Cascade)
+
+  attributeKey   String
+  attributeLabel String
+  /**
+   * TEXT | NUMBER | BOOLEAN | SELECT
+   */
+  dataType       String  @default("TEXT")
+  /**
+   * JSON array de opciones para SELECT
+   */
+  optionsJson    String?
+  isSystem       Boolean @default(false)
+  isRequired     Boolean @default(false)
+  isVisible      Boolean @default(true)
+  sortOrder      Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  values ProductAttributeValue[]
+
+  @@unique([categoryId, attributeKey])
+  @@index([categoryId, sortOrder])
+}
+
+/**
+ * Valor de atributo de un producto (EAV).
+ */
+model ProductAttributeValue {
+  productAttributeValueId String  @id @default(uuid())
+  productId               String
+  product                 Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
+
+  categoryAttributeId String
+  categoryAttribute   CategoryAttribute @relation(fields: [categoryAttributeId], references: [categoryAttributeId], onDelete: Cascade)
+
+  /**
+   * Valor serializado a texto; la UI interpreta según dataType
+   */
+  value String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, categoryAttributeId])
+  @@index([categoryAttributeId])
 }
 
 model Sale {
-  saleId                String              @id
+  saleId                String                @id
   saleCustomerId        String
   saleTotal             Int
   saleTotalPayments     Int
@@ -188,28 +298,30 @@ model Sale {
    */
   saleImageUrl          String?
   saleNumber            String?
-  user                  User                @relation("SaleCreatedBy", fields: [createdByUserId], references: [userId])
-  customer              Customer            @relation(fields: [saleCustomerId], references: [customerId])
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @updatedAt
+  user                  User                  @relation("SaleCreatedBy", fields: [createdByUserId], references: [userId])
+  customer              Customer              @relation(fields: [saleCustomerId], references: [customerId])
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
   SaleDetail            SaleDetail[]
   Payment               Payment[]
   taxDocuments          TaxDocument[]
+  WorkOrder             WorkOrder[]
+  PurchaseCertificate   PurchaseCertificate[]
   /**
    * Tipo de comprobante solicitado al registrar la venta
    */
-  documentType          DocumentType        @default(RECEIPT)
+  documentType          DocumentType          @default(RECEIPT)
   /**
    * Control de entrega de productos (independiente del pago)
    */
   saleDeliveryStatus    SaleDeliveryStatus?
   saleDeliveredAt       DateTime?
   saleDeliveredByUserId String?
-  deliveredBy           User?               @relation("SaleDeliveredBy", fields: [saleDeliveredByUserId], references: [userId])
+  deliveredBy           User?                 @relation("SaleDeliveredBy", fields: [saleDeliveredByUserId], references: [userId])
 }
 
 model SaleDetail {
-  saleDetailId        String   @id
+  saleDetailId        String      @id
   saleId              String
   saleDetailProductId String?
   saleDetailServiceId String?
@@ -219,13 +331,14 @@ model SaleDetail {
   saleDetailType      String
   createdByUserId     String
   saleCustomerId      String
-  customer            Customer @relation(fields: [saleCustomerId], references: [customerId])
-  user                User     @relation(fields: [createdByUserId], references: [userId])
-  sale                Sale     @relation(fields: [saleId], references: [saleId])
-  product             Product? @relation(fields: [saleDetailProductId], references: [productId])
-  service             Service? @relation(fields: [saleDetailServiceId], references: [serviceId])
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  customer            Customer    @relation(fields: [saleCustomerId], references: [customerId])
+  user                User        @relation(fields: [createdByUserId], references: [userId])
+  sale                Sale        @relation(fields: [saleId], references: [saleId])
+  product             Product?    @relation(fields: [saleDetailProductId], references: [productId])
+  service             Service?    @relation(fields: [saleDetailServiceId], references: [serviceId])
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  WorkOrder           WorkOrder[]
 }
 
 model Payment {
@@ -563,4 +676,238 @@ model QuotationDetail {
   service                  Service?  @relation(fields: [quotationDetailServiceId], references: [serviceId])
   createdAt                DateTime  @default(now())
   updatedAt                DateTime  @updatedAt
+}
+
+/**
+ * Receta óptica asociada a un cliente.
+ * Historial: un cliente puede tener muchas recetas.
+ * entryMode: PHOTO | MANUAL | MIXED
+ */
+model Prescription {
+  prescriptionId String   @id @default(uuid())
+  customerId     String
+  customer       Customer @relation(fields: [customerId], references: [customerId])
+
+  prescriptionDate      DateTime?
+  prescriptionExpiresAt DateTime?
+  prescribedBy          String?
+  /**
+   * lejos | cerca | multifocal | progresivo | otro
+   */
+  prescriptionType      String?
+
+  odSphere   String?
+  odCylinder String?
+  odAxis     String?
+  odAddition String?
+  odPrism    String?
+  odBase     String?
+
+  oiSphere   String?
+  oiCylinder String?
+  oiAxis     String?
+  oiAddition String?
+  oiPrism    String?
+  oiBase     String?
+
+  pdBinocular String?
+  pdOd        String?
+  pdOi        String?
+  pdNear      String?
+
+  prescriptionNotes    String?
+  /**
+   * Foto/archivo de la receta — URL Cloudinary (opcional)
+   */
+  prescriptionImageUrl String?
+  /**
+   * PHOTO | MANUAL | MIXED
+   */
+  entryMode            String  @default("MANUAL")
+
+  createdByUserId String
+  createdBy       User        @relation(fields: [createdByUserId], references: [userId])
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  WorkOrder       WorkOrder[]
+
+  @@index([customerId, createdAt(sort: Desc)])
+}
+
+enum WorkOrderStatus {
+  CREATED
+  PENDING_SHIPMENT
+  SENT_TO_LAB
+  RECEIVED
+  QUALITY_CONTROL
+  READY_FOR_DELIVERY
+  DELIVERED
+}
+
+enum LabDispatchStatus {
+  SENT
+  PARTIAL_RECEIVED
+  RECEIVED
+  CANCELLED
+}
+
+/**
+ * Laboratorio óptico (tallado / montaje)
+ */
+model Laboratory {
+  laboratoryId              String        @id @default(uuid())
+  laboratoryName            String
+  laboratoryDocumentType    String?
+  laboratoryDocumentNumber  String?
+  laboratoryAddress         String?
+  laboratoryCodePhoneNumber String?
+  laboratoryPhoneNumber     String?
+  laboratoryEmail           String?
+  laboratoryComment         String?
+  laboratoryActive          Boolean       @default(true)
+  createdByUserId           String
+  createdBy                 User          @relation(fields: [createdByUserId], references: [userId])
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+  WorkOrder                 WorkOrder[]
+  LabDispatch               LabDispatch[]
+}
+
+/**
+ * Orden de Trabajo (OT) — flujo óptico asociado a una venta.
+ * Una venta puede tener varias OT (p. ej. un producto óptico por OT).
+ */
+model WorkOrder {
+  workOrderId       String          @id @default(uuid())
+  workOrderNumber   String?
+  saleId            String
+  sale              Sale            @relation(fields: [saleId], references: [saleId])
+  saleDetailId      String?
+  saleDetail        SaleDetail?     @relation(fields: [saleDetailId], references: [saleDetailId])
+  customerId        String
+  customer          Customer        @relation(fields: [customerId], references: [customerId])
+  prescriptionId    String?
+  prescription      Prescription?   @relation(fields: [prescriptionId], references: [prescriptionId])
+  laboratoryId      String?
+  laboratory        Laboratory?     @relation(fields: [laboratoryId], references: [laboratoryId])
+  labDispatchId     String?
+  labDispatch       LabDispatch?    @relation(fields: [labDispatchId], references: [labDispatchId])
+  workOrderStatus   WorkOrderStatus @default(CREATED)
+  workOrderNotes    String?
+  workOrderLabNotes String?
+  quantity          Int             @default(1)
+  receivedAt        DateTime?
+  deliveredAt       DateTime?
+  createdByUserId   String
+  createdBy         User            @relation(fields: [createdByUserId], references: [userId])
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([saleId])
+  @@index([customerId, createdAt(sort: Desc)])
+  @@index([laboratoryId, workOrderStatus])
+  @@index([labDispatchId])
+  @@index([workOrderStatus, createdAt(sort: Desc)])
+}
+
+/**
+ * Despacho a laboratorio: agrupa varias OT del mismo laboratorio en un envío.
+ * La recepción de OT puede ser parcial (por OT).
+ */
+model LabDispatch {
+  labDispatchId     String            @id @default(uuid())
+  labDispatchNumber String?
+  laboratoryId      String
+  laboratory        Laboratory        @relation(fields: [laboratoryId], references: [laboratoryId])
+  labDispatchStatus LabDispatchStatus @default(SENT)
+  sentAt            DateTime?
+  sentByUserId      String?
+  sentBy            User?             @relation("LabDispatchSentBy", fields: [sentByUserId], references: [userId])
+  labDispatchNotes  String?
+  createdByUserId   String
+  createdBy         User              @relation("LabDispatchCreatedBy", fields: [createdByUserId], references: [userId])
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  WorkOrder         WorkOrder[]
+
+  @@index([laboratoryId, createdAt(sort: Desc)])
+  @@index([labDispatchStatus, createdAt(sort: Desc)])
+}
+
+enum PurchaseCertificateStatus {
+  DRAFT
+  ISSUED
+  VOID
+}
+
+/**
+ * Certificado de compra (óptica) — documento independiente para reembolsos
+ * (ISAPRE, FONASA, seguros, convenios). No modifica la venta original.
+ * Las líneas son un snapshot editable al emitir.
+ */
+model PurchaseCertificate {
+  purchaseCertificateId String                    @id @default(uuid())
+  saleId                String
+  sale                  Sale                      @relation(fields: [saleId], references: [saleId])
+  certificateNumber     String?
+  certificateStatus     PurchaseCertificateStatus @default(DRAFT)
+
+  /**
+   * Fecha impresa en el certificado (editable)
+   */
+  certificateIssuedDate      DateTime?
+  certificateComment         String?
+  /**
+   * Nombre que aparece en firma del responsable
+   */
+  certificateResponsibleName String?
+
+  customerNameSnapshot     String?
+  customerDocumentSnapshot String?
+  businessNameSnapshot     String?
+  businessDocumentSnapshot String?
+  businessAddressSnapshot  String?
+  businessLogoSnapshot     String?
+
+  certificateTotal Int @default(0)
+
+  issuedAt        DateTime?
+  issuedByUserId  String?
+  issuedBy        User?     @relation("PurchaseCertificateIssuedBy", fields: [issuedByUserId], references: [userId])
+  createdByUserId String
+  createdBy       User      @relation("PurchaseCertificateCreatedBy", fields: [createdByUserId], references: [userId])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  details PurchaseCertificateDetail[]
+
+  @@index([saleId, createdAt(sort: Desc)])
+  @@index([certificateStatus, createdAt(sort: Desc)])
+}
+
+model PurchaseCertificateDetail {
+  purchaseCertificateDetailId String              @id @default(uuid())
+  purchaseCertificateId       String
+  purchaseCertificate         PurchaseCertificate @relation(fields: [purchaseCertificateId], references: [purchaseCertificateId], onDelete: Cascade)
+
+  /**
+   * Referencia blanda a la línea de venta (sin FK; solo auditoría)
+   */
+  sourceSaleDetailId String?
+  lineType           String?
+  lineSku            String?
+  lineDescription    String
+  lineQuantity       Int     @default(1)
+  lineUnitPrice      Int     @default(0)
+  lineTotal          Int     @default(0)
+  sortOrder          Int     @default(0)
+  /**
+   * Si false, no se imprime en el PDF (permite omitir líneas sin borrar)
+   */
+  lineIncluded       Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([purchaseCertificateId, sortOrder])
 }

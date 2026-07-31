@@ -1,3 +1,5 @@
+import { normalizePagination, paginatedResult } from "../libs/pagination.js";
+
 // Create a customer
 export const createCustomer = async (data, prisma) => {
     try {
@@ -9,15 +11,57 @@ export const createCustomer = async (data, prisma) => {
     }
 };
 
-// Get all customers
-export const getCustomers = async (prisma) => {
+function buildCustomerSearchWhere(q) {
+    const query = typeof q === "string" ? q.trim() : "";
+    if (!query) return {};
+    return {
+        OR: [
+            { customerFirstName: { contains: query, mode: "insensitive" } },
+            { customerLastName: { contains: query, mode: "insensitive" } },
+            { customerDocumentNumber: { contains: query, mode: "insensitive" } },
+            { customerEmail: { contains: query, mode: "insensitive" } },
+            { customerPhoneNumber: { contains: query, mode: "insensitive" } },
+        ],
+    };
+}
+
+/**
+ * Listado paginado de clientes.
+ * Opciones: page, limit, q (búsqueda).
+ */
+export const getCustomers = async (prisma, options = {}) => {
     try {
-        return prisma.customer.findMany({
-            orderBy: [
-                { customerFirstName: 'asc' },
-                { customerLastName: 'asc' }
-            ]
+        const {
+            page,
+            limit,
+            q,
+            defaultLimit = 50,
+            maxLimit = 200,
+        } = options;
+
+        const { skip, take, page: safePage, limit: safeLimit } = normalizePagination({
+            page,
+            limit,
+            defaultLimit,
+            maxLimit,
         });
+
+        const where = buildCustomerSearchWhere(q);
+
+        const [total, rows] = await Promise.all([
+            prisma.customer.count({ where }),
+            prisma.customer.findMany({
+                where,
+                orderBy: [
+                    { customerFirstName: "asc" },
+                    { customerLastName: "asc" },
+                ],
+                skip,
+                take,
+            }),
+        ]);
+
+        return paginatedResult(rows, total, safePage, safeLimit);
     } catch (error) {
         console.error("(customersService.js): Error getting customers:", error);
         throw error;

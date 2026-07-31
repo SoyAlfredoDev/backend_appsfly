@@ -4,6 +4,7 @@ import { getSalesByDate } from './salesServices.js';
 import { getPaymentByDateService } from './paymentsService.js';
 import { getSaleDetailByDate } from './saleDetailsService.js';
 import { businessDateHasSales } from '../libs/businessSalesDate.js';
+import { DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
 
 function sumPaymentsByMethod(payments, method) {
     return payments
@@ -11,11 +12,17 @@ function sumPaymentsByMethod(payments, method) {
         .reduce((acc, p) => acc + (p.paymentAmount || 0), 0);
 }
 
-export async function buildDailyClosurePayload(dailySalesDay, createdByUserId, prisma, dailySalesId = randomUUID()) {
+export async function buildDailyClosurePayload(
+    dailySalesDay,
+    createdByUserId,
+    prisma,
+    dailySalesId = randomUUID(),
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
     const [salesCount, payments, saleDetails] = await Promise.all([
-        getSalesByDate(dailySalesDay, dailySalesDay, prisma),
-        getPaymentByDateService(dailySalesDay, dailySalesDay, prisma),
-        getSaleDetailByDate(dailySalesDay, dailySalesDay, prisma),
+        getSalesByDate(dailySalesDay, dailySalesDay, prisma, timeZone),
+        getPaymentByDateService(dailySalesDay, dailySalesDay, prisma, timeZone),
+        getSaleDetailByDate(dailySalesDay, dailySalesDay, prisma, timeZone),
     ]);
 
     const safePayments = Array.isArray(payments) ? payments : [];
@@ -40,7 +47,13 @@ export async function buildDailyClosurePayload(dailySalesDay, createdByUserId, p
     };
 }
 
-export async function createDailyClosureForDate({ dailySalesDay, createdByUserId, prisma, dailySalesId }) {
+export async function createDailyClosureForDate({
+    dailySalesDay,
+    createdByUserId,
+    prisma,
+    dailySalesId,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+}) {
     const normalizedDay = String(dailySalesDay ?? '').trim();
     if (!normalizedDay) {
         const err = new Error('Fecha de cierre inválida.');
@@ -48,7 +61,7 @@ export async function createDailyClosureForDate({ dailySalesDay, createdByUserId
         throw err;
     }
 
-    const hasSales = await businessDateHasSales(prisma, normalizedDay);
+    const hasSales = await businessDateHasSales(prisma, normalizedDay, timeZone);
     if (!hasSales) {
         const err = new Error(`No hay ventas registradas para ${normalizedDay}. No se puede generar cierre.`);
         err.code = 'NO_SALES';
@@ -67,6 +80,7 @@ export async function createDailyClosureForDate({ dailySalesDay, createdByUserId
         createdByUserId,
         prisma,
         dailySalesId ?? randomUUID(),
+        timeZone,
     );
 
     return createDailySaleService(data, prisma);

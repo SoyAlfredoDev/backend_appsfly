@@ -1,4 +1,10 @@
 import { applyInventoryMovement } from "./inventoryService.js";
+import {
+    businessDateRangeBoundsUtc,
+    businessDayBoundsUtc,
+    DEFAULT_BUSINESS_TIMEZONE,
+} from "../../libs/businessTimezone.js";
+import { findProductIdsByExactCode } from "../scanCodesService.js";
 
 const MOVEMENT_TYPE_LABELS = {
     VENTA: "Venta",
@@ -19,6 +25,7 @@ export async function getInventoryMovements(prisma, filters = {}) {
         to,
         page = 1,
         limit = 50,
+        timeZone = DEFAULT_BUSINESS_TIMEZONE,
     } = filters;
 
     const safePage = Math.max(1, Number(page) || 1);
@@ -37,12 +44,22 @@ export async function getInventoryMovements(prisma, filters = {}) {
 
     if (from || to) {
         where.createdAt = {};
-        if (from) where.createdAt.gte = new Date(`${from}T00:00:00.000Z`);
-        if (to) where.createdAt.lte = new Date(`${to}T23:59:59.999Z`);
+        if (from && to) {
+            const { start, endInclusive } = businessDateRangeBoundsUtc(from, to, timeZone);
+            where.createdAt.gte = start;
+            where.createdAt.lte = endInclusive;
+        } else if (from) {
+            const { start } = businessDayBoundsUtc(from, timeZone);
+            where.createdAt.gte = start;
+        } else {
+            const { endInclusive } = businessDayBoundsUtc(to, timeZone);
+            where.createdAt.lte = endInclusive;
+        }
     }
 
     const query = q?.trim();
     if (query) {
+        const codeProductIds = await findProductIdsByExactCode(query, prisma);
         where.OR = [
             { referenceLabel: { contains: query, mode: "insensitive" } },
             { reason: { contains: query, mode: "insensitive" } },
@@ -56,6 +73,9 @@ export async function getInventoryMovements(prisma, filters = {}) {
                     productSKU: { contains: query, mode: "insensitive" },
                 },
             },
+            ...(codeProductIds.length
+                ? [{ productId: { in: codeProductIds } }]
+                : []),
         ];
     }
 

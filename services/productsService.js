@@ -1,4 +1,12 @@
 import { serializeProductWithStock, serializeProductsWithStock } from "../utils/productStockSerializer.js";
+import { normalizePagination, paginatedResult } from "../libs/pagination.js";
+import {
+    syncSkuAlias,
+    upsertCodesForProduct,
+    listCodesForEntity,
+    findProductIdsByExactCode,
+    SCAN_ENTITY,
+} from "./scanCodesService.js";
 
 const productStockInclude = {
     productStock: {
@@ -11,10 +19,87 @@ const productStockInclude = {
     },
 };
 
-// Create a product with initial stock record (TenantDB)
+const productDetailInclude = {
+    category: {
+        select: {
+            categoryId: true,
+            categoryName: true,
+            categoryCode: true,
+            isSystem: true,
+        },
+    },
+    attributeValues: {
+        include: {
+            categoryAttribute: {
+                select: {
+                    categoryAttributeId: true,
+                    attributeKey: true,
+                    attributeLabel: true,
+                    dataType: true,
+                    isVisible: true,
+                },
+            },
+        },
+    },
+    ...productStockInclude,
+};
+
+async function attachCodes(product, prisma) {
+    if (!product) return product;
+    const codes = await listCodesForEntity(
+        SCAN_ENTITY.PRODUCT,
+        product.productId,
+        prisma,
+    );
+    return { ...product, codes };
+}
+
+async function syncProductAttributes(tx, productId, categoryId, attributes) {
+    if (!attributes || typeof attributes !== "object") return;
+
+    const defs = await tx.categoryAttribute.findMany({
+        where: { categoryId, isVisible: true },
+    });
+    const byKey = new Map(defs.map((d) => [d.attributeKey, d]));
+    const byId = new Map(defs.map((d) => [d.categoryAttributeId, d]));
+
+    for (const [key, raw] of Object.entries(attributes)) {
+        const def = byKey.get(key) || byId.get(key);
+        if (!def) continue;
+
+        let value = raw;
+        if (value === undefined || value === null || value === "") {
+            await tx.productAttributeValue.deleteMany({
+                where: {
+                    productId,
+                    categoryAttributeId: def.categoryAttributeId,
+                },
+            });
+            continue;
+        }
+        if (typeof value === "boolean") value = value ? "true" : "false";
+        else value = String(value);
+
+        await tx.productAttributeValue.upsert({
+            where: {
+                productId_categoryAttributeId: {
+                    productId,
+                    categoryAttributeId: def.categoryAttributeId,
+                },
+            },
+            create: {
+                productId,
+                categoryAttributeId: def.categoryAttributeId,
+                value,
+            },
+            update: { value },
+        });
+    }
+}
+
 export const createProduct = async (data, prisma) => {
     try {
-        const { initialStock, ...productData } = data;
+        const { initialStock, attributes, codes, ...productData } = data;
         const startingQty = Number.isFinite(Number(initialStock))
             ? Math.max(0, Math.floor(Number(initialStock)))
             : 0;
@@ -29,49 +114,151 @@ export const createProduct = async (data, prisma) => {
                 },
             });
 
+            await syncProductAttributes(
+                tx,
+                created.productId,
+                created.categoryId,
+                attributes,
+            );
+
+            await syncSkuAlias(
+                tx,
+                created.productId,
+                created.productSKU,
+                created.createdByUserId,
+            );
+            await upsertCodesForProduct(
+                tx,
+                created.productId,
+                codes,
+                created.createdByUserId,
+            );
+
             return tx.product.findUnique({
                 where: { productId: created.productId },
-                include: {
-                    category: {
-                        select: {
-                            categoryId: true,
-                            categoryName: true,
-                        },
-                    },
-                    ...productStockInclude,
-                },
+                include: productDetailInclude,
             });
         });
 
-        return product;
+        return attachCodes(product, prisma);
     } catch (error) {
         console.error("(productsService.js): Error creating product:", error);
         throw error;
     }
 };
 
-// Get all products with stock
-export const getProducts = async (prisma) => {
-    try {
-        const res = await prisma.product.findMany({
-            include: {
-                category: {
-                    select: {
-                        categoryId: true,
-                        categoryName: true,
-                    },
-                },
-                ...productStockInclude,
-            },
+export const updateProduct = async (productId, data, prisma) => {
+    const existing = await prisma.product.findUnique({ where: { productId } });
+    if (!existing) {
+        const error = new Error("Producto no encontrado.");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    const { initialStock: _ignore, attributes, codes, ...productData } = data;
+    const nextCategoryId = productData.categoryId || existing.categoryId;
+    const nextSku = productData.productSKU ?? existing.productSKU;
+
+    const product = await prisma.$transaction(async (tx) => {
+        if (productData.categoryId && productData.categoryId !== existing.categoryId) {
+            await tx.productAttributeValue.deleteMany({ where: { productId } });
+        }
+
+        await tx.product.update({
+            where: { productId },
+            data: productData,
         });
-        return serializeProductsWithStock(res);
+
+        await syncProductAttributes(tx, productId, nextCategoryId, attributes);
+
+        await syncSkuAlias(tx, productId, nextSku, existing.createdByUserId);
+        if (codes !== undefined) {
+            await upsertCodesForProduct(tx, productId, codes, existing.createdByUserId);
+        }
+
+        return tx.product.findUnique({
+            where: { productId },
+            include: productDetailInclude,
+        });
+    });
+
+    return attachCodes(product, prisma);
+};
+
+export const getProductById = async (productId, prisma) => {
+    const product = await prisma.product.findUnique({
+        where: { productId },
+        include: productDetailInclude,
+    });
+    return attachCodes(product, prisma);
+};
+
+export const getProducts = async (prisma, options = {}) => {
+    try {
+        const {
+            page,
+            limit,
+            q,
+            categoryId,
+            defaultLimit = 50,
+            maxLimit = 200,
+        } = options;
+
+        const { skip, take, page: safePage, limit: safeLimit } = normalizePagination({
+            page,
+            limit,
+            defaultLimit,
+            maxLimit,
+        });
+
+        const query = typeof q === "string" ? q.trim() : "";
+        const where = {};
+        if (categoryId) where.categoryId = categoryId;
+        if (query) {
+            const codeProductIds = await findProductIdsByExactCode(query, prisma);
+            where.OR = [
+                { productName: { contains: query, mode: "insensitive" } },
+                { productSKU: { contains: query, mode: "insensitive" } },
+                { productDescription: { contains: query, mode: "insensitive" } },
+                ...(codeProductIds.length
+                    ? [{ productId: { in: codeProductIds } }]
+                    : []),
+            ];
+        }
+
+        const [total, res] = await Promise.all([
+            prisma.product.count({ where }),
+            prisma.product.findMany({
+                where,
+                include: {
+                    category: {
+                        select: {
+                            categoryId: true,
+                            categoryName: true,
+                            categoryCode: true,
+                            isSystem: true,
+                        },
+                    },
+                    ...productStockInclude,
+                },
+                orderBy: { productName: "asc" },
+                skip,
+                take,
+            }),
+        ]);
+
+        return paginatedResult(
+            serializeProductsWithStock(res),
+            total,
+            safePage,
+            safeLimit,
+        );
     } catch (error) {
         console.error("(productsService.js): Error getting products:", error);
         throw error;
     }
 };
 
-// Get product with analytics (360 view) with Pagination
 export const getProductWithAnalytics = async (productId, prisma, page = 1, limit = 10) => {
     try {
         const skip = (page - 1) * limit;
@@ -82,15 +269,7 @@ export const getProductWithAnalytics = async (productId, prisma, page = 1, limit
 
         const productPromise = prisma.product.findUnique({
             where: { productId },
-            include: {
-                category: {
-                    select: {
-                        categoryId: true,
-                        categoryName: true,
-                    },
-                },
-                ...productStockInclude,
-            },
+            include: productDetailInclude,
         });
 
         const analyticsPromise = prisma.saleDetail.aggregate({
@@ -141,6 +320,8 @@ export const getProductWithAnalytics = async (productId, prisma, page = 1, limit
 
         if (!product) return null;
 
+        const productWithCodes = await attachCodes(product, prisma);
+
         const history = historyRaw.map((detail) => ({
             saleDetailId: detail.saleDetailId,
             saleDetailCreatedAt: detail.createdAt,
@@ -155,7 +336,7 @@ export const getProductWithAnalytics = async (productId, prisma, page = 1, limit
         }));
 
         return {
-            product: serializeProductWithStock(product),
+            product: serializeProductWithStock(productWithCodes),
             analytics: {
                 totalSold: analytics._sum.saleDetailTotal || 0,
                 unitsSold: analytics._sum.saleDetailQuantity || 0,

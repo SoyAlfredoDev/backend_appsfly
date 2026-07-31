@@ -1,4 +1,11 @@
-import { getBusinessDateFromDate, getTodayBusinessDate } from '../libs/businessDate.js';
+import { getTodayBusinessDate } from '../libs/businessDate.js';
+import {
+    businessDateRangeBoundsUtc,
+    businessDayBoundsUtc,
+    businessMonthBoundsUtc,
+    DEFAULT_BUSINESS_TIMEZONE,
+} from '../libs/businessTimezone.js';
+import { normalizePagination, paginatedResult } from '../libs/pagination.js';
 
 const SALE_LIST_INCLUDE = {
     customer: {
@@ -66,16 +73,84 @@ export const createSale = async (data, prisma) => {
     }
 };
 
-export const getSales = async (prisma) => {
+export const getSales = async (prisma, options = {}) => {
     try {
-        const salesOriginal = await prisma.sale.findMany({
-            include: SALE_LIST_INCLUDE,
-            orderBy: {
-                createdAt: 'desc',
-            },
+        const {
+            page,
+            limit,
+            q,
+            deliveryStatus,
+            deliveryByWorkOrders = false,
+            defaultLimit = 50,
+            maxLimit = 100,
+        } = options;
+
+        const { skip, take, page: safePage, limit: safeLimit } = normalizePagination({
+            page,
+            limit,
+            defaultLimit,
+            maxLimit,
         });
 
-        return salesOriginal.map(mapSaleListRow);
+        const where = {};
+        if (deliveryStatus && deliveryStatus !== 'all') {
+            if (deliveryByWorkOrders) {
+                // Óptica: pendiente = tiene OT no entregada; entregado = tiene OT y todas entregadas
+                if (deliveryStatus === 'pending') {
+                    where.WorkOrder = {
+                        some: { workOrderStatus: { not: 'DELIVERED' } },
+                    };
+                } else {
+                    where.AND = [
+                        { WorkOrder: { some: {} } },
+                        { WorkOrder: { none: { workOrderStatus: { not: 'DELIVERED' } } } },
+                    ];
+                }
+            } else {
+                where.saleDeliveryStatus =
+                    deliveryStatus === 'pending' ? 'PENDING' : 'DELIVERED';
+            }
+        }
+
+        const query = typeof q === 'string' ? q.trim() : '';
+        if (query) {
+            where.OR = [
+                { saleNumber: { contains: query, mode: 'insensitive' } },
+                {
+                    customer: {
+                        customerFirstName: { contains: query, mode: 'insensitive' },
+                    },
+                },
+                {
+                    customer: {
+                        customerLastName: { contains: query, mode: 'insensitive' },
+                    },
+                },
+                {
+                    customer: {
+                        customerDocumentNumber: { contains: query, mode: 'insensitive' },
+                    },
+                },
+            ];
+        }
+
+        const [total, salesOriginal] = await Promise.all([
+            prisma.sale.count({ where }),
+            prisma.sale.findMany({
+                where,
+                include: SALE_LIST_INCLUDE,
+                orderBy: { createdAt: 'desc' },
+                skip,
+                take,
+            }),
+        ]);
+
+        return paginatedResult(
+            salesOriginal.map(mapSaleListRow),
+            total,
+            safePage,
+            safeLimit,
+        );
     } catch (error) {
         console.error("(salesServices.js): Error getting sales:", error);
         throw error
@@ -84,7 +159,11 @@ export const getSales = async (prisma) => {
 
 const DASHBOARD_SALE_VIEWS = new Set(['today', 'todayIncome', 'month', 'pending']);
 
-export const getSalesForDashboardView = async (view, prisma) => {
+export const getSalesForDashboardView = async (
+    view,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     if (!DASHBOARD_SALE_VIEWS.has(view)) {
         const error = new Error('Vista de dashboard no válida');
         error.statusCode = 400;
@@ -92,41 +171,34 @@ export const getSalesForDashboardView = async (view, prisma) => {
     }
 
     try {
+        const today = getTodayBusinessDate(timeZone);
+        const [year, month] = today.split('-').map(Number);
+        let where = {};
+
+        if (view === 'today' || view === 'todayIncome') {
+            const { start, endExclusive } = businessDayBoundsUtc(today, timeZone);
+            where = { createdAt: { gte: start, lt: endExclusive } };
+        } else {
+            const { start, endExclusive } = businessMonthBoundsUtc(year, month, timeZone);
+            where = { createdAt: { gte: start, lt: endExclusive } };
+        }
+
+        if (view === 'todayIncome') {
+            where.saleTotalPayments = { gt: 0 };
+        }
+        if (view === 'pending') {
+            where.salePendingAmount = { gt: 0 };
+        }
+
         const salesOriginal = await prisma.sale.findMany({
+            where,
             include: SALE_LIST_INCLUDE,
             orderBy: {
                 createdAt: 'desc',
             },
         });
 
-        const sales = salesOriginal.map(mapSaleListRow);
-        const today = getTodayBusinessDate();
-        const monthPrefix = today.slice(0, 7);
-
-        switch (view) {
-            case 'today':
-                return sales.filter(
-                    (sale) => getBusinessDateFromDate(sale.createdAt) === today,
-                );
-            case 'todayIncome':
-                return sales.filter(
-                    (sale) =>
-                        getBusinessDateFromDate(sale.createdAt) === today
-                        && (sale.saleTotalPayments ?? 0) > 0,
-                );
-            case 'month':
-                return sales.filter((sale) =>
-                    getBusinessDateFromDate(sale.createdAt).startsWith(monthPrefix),
-                );
-            case 'pending':
-                return sales.filter(
-                    (sale) =>
-                        getBusinessDateFromDate(sale.createdAt).startsWith(monthPrefix)
-                        && (sale.salePendingAmount ?? 0) > 0,
-                );
-            default:
-                return sales;
-        }
+        return salesOriginal.map(mapSaleListRow);
     } catch (error) {
         console.error("(salesServices.js): Error getting dashboard sales view:", error);
         throw error;
@@ -295,18 +367,22 @@ export const deleteSale = async (id, prisma) => {
     }
 };
 
-export const getMonthlySales = async (month, year, prisma) => {
+export const getMonthlySales = async (
+    month,
+    year,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     try {
-        const startDate = new Date(year, month - 1, 1);
-        const endDate = new Date(year, month, 1);
+        const { start, endExclusive } = businessMonthBoundsUtc(year, month, timeZone);
         const total = await prisma.sale.aggregate({
             _sum: {
                 saleTotal: true,
             },
             where: {
                 createdAt: {
-                    gte: startDate,
-                    lt: endDate,
+                    gte: start,
+                    lt: endExclusive,
                 },
             },
         });
@@ -316,8 +392,8 @@ export const getMonthlySales = async (month, year, prisma) => {
             },
             where: {
                 createdAt: {
-                    gte: startDate,
-                    lt: endDate,
+                    gte: start,
+                    lt: endExclusive,
                 },
             },
         });
@@ -333,10 +409,16 @@ export const getMonthlySales = async (month, year, prisma) => {
     }
 };
 
-export const getDaySales = async (day, month, year, prisma) => {
+export const getDaySales = async (
+    day,
+    month,
+    year,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     try {
-        const startOfDay = new Date(year, month - 1, day, 0, 0, 0);
-        const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999);
+        const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const { start, endInclusive } = businessDayBoundsUtc(dateKey, timeZone);
 
         const salesDay = await prisma.sale.aggregate({
             _sum: {
@@ -344,8 +426,8 @@ export const getDaySales = async (day, month, year, prisma) => {
             },
             where: {
                 createdAt: {
-                    gte: startOfDay,
-                    lte: endOfDay,
+                    gte: start,
+                    lte: endInclusive,
                 },
             },
         });
@@ -357,16 +439,24 @@ export const getDaySales = async (day, month, year, prisma) => {
     }
 };
 
-// get sales between two dates, return an array of sales
-export const getSalesByDate = async (startDate, endDate, prisma) => {
+// get sales between two dates (inclusive), interpreted in business timezone
+export const getSalesByDate = async (
+    startDate,
+    endDate,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     try {
-        const start = new Date(`${startDate}T00:00:00.000Z`);
-        const end = new Date(`${endDate}T23:59:59.999Z`);
+        const { start, endInclusive } = businessDateRangeBoundsUtc(
+            startDate,
+            endDate,
+            timeZone,
+        );
         const sales = await prisma.sale.findMany({
             where: {
                 createdAt: {
                     gte: start,
-                    lte: end,
+                    lte: endInclusive,
                 },
             },
         });
@@ -400,22 +490,25 @@ export const getSalesByCustomerIdService = async (customerId, prisma) => {
     }
 };
 
-export const countSalesMonthService = async (month, year, prisma) => {
+export const countSalesMonthService = async (
+    month,
+    year,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     try {
         // Validate input
         if (!month || !year) {
             throw new Error("Month and year are required");
         }
 
-        // Build date range in UTC to avoid timezone issues
-        const startDate = new Date(Date.UTC(year, month - 1, 1));
-        const endDate = new Date(Date.UTC(year, month, 1));
+        const { start, endExclusive } = businessMonthBoundsUtc(year, month, timeZone);
 
         const count = await prisma.sale.count({
             where: {
                 createdAt: {
-                    gte: startDate,
-                    lt: endDate,
+                    gte: start,
+                    lt: endExclusive,
                 },
             },
         });

@@ -4706,6 +4706,7 @@ export namespace Prisma {
     businessStatus: $Enums.BusinessStatus | null
     businessAllowCreditSales: boolean | null
     businessDeliveryControlEnabled: boolean | null
+    businessTimezone: string | null
     businessReceiptLogoUrl: string | null
     businessReceiptAddress: string | null
     businessReceiptPhone: string | null
@@ -4734,6 +4735,7 @@ export namespace Prisma {
     businessStatus: $Enums.BusinessStatus | null
     businessAllowCreditSales: boolean | null
     businessDeliveryControlEnabled: boolean | null
+    businessTimezone: string | null
     businessReceiptLogoUrl: string | null
     businessReceiptAddress: string | null
     businessReceiptPhone: string | null
@@ -4763,6 +4765,7 @@ export namespace Prisma {
     businessProcess: number
     businessAllowCreditSales: number
     businessDeliveryControlEnabled: number
+    businessTimezone: number
     businessReceiptLogoUrl: number
     businessReceiptAddress: number
     businessReceiptPhone: number
@@ -4793,6 +4796,7 @@ export namespace Prisma {
     businessStatus?: true
     businessAllowCreditSales?: true
     businessDeliveryControlEnabled?: true
+    businessTimezone?: true
     businessReceiptLogoUrl?: true
     businessReceiptAddress?: true
     businessReceiptPhone?: true
@@ -4821,6 +4825,7 @@ export namespace Prisma {
     businessStatus?: true
     businessAllowCreditSales?: true
     businessDeliveryControlEnabled?: true
+    businessTimezone?: true
     businessReceiptLogoUrl?: true
     businessReceiptAddress?: true
     businessReceiptPhone?: true
@@ -4850,6 +4855,7 @@ export namespace Prisma {
     businessProcess?: true
     businessAllowCreditSales?: true
     businessDeliveryControlEnabled?: true
+    businessTimezone?: true
     businessReceiptLogoUrl?: true
     businessReceiptAddress?: true
     businessReceiptPhone?: true
@@ -4952,6 +4958,7 @@ export namespace Prisma {
     businessProcess: JsonValue | null
     businessAllowCreditSales: boolean
     businessDeliveryControlEnabled: boolean
+    businessTimezone: string
     businessReceiptLogoUrl: string | null
     businessReceiptAddress: string | null
     businessReceiptPhone: string | null
@@ -4998,6 +5005,7 @@ export namespace Prisma {
     businessProcess?: boolean
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: boolean
     businessReceiptLogoUrl?: boolean
     businessReceiptAddress?: boolean
     businessReceiptPhone?: boolean
@@ -5035,6 +5043,7 @@ export namespace Prisma {
     businessProcess?: boolean
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: boolean
     businessReceiptLogoUrl?: boolean
     businessReceiptAddress?: boolean
     businessReceiptPhone?: boolean
@@ -5065,6 +5074,7 @@ export namespace Prisma {
     businessProcess?: boolean
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: boolean
     businessReceiptLogoUrl?: boolean
     businessReceiptAddress?: boolean
     businessReceiptPhone?: boolean
@@ -5095,6 +5105,7 @@ export namespace Prisma {
     businessProcess?: boolean
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: boolean
     businessReceiptLogoUrl?: boolean
     businessReceiptAddress?: boolean
     businessReceiptPhone?: boolean
@@ -5106,7 +5117,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BusinessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "businessName" | "businessType" | "businessDocumentType" | "businessDocumentNumber" | "businessEmail" | "businessPhoneNumber" | "businessCodePhoneNumber" | "businessCountry" | "businessCodeWhatsappNumber" | "businessWhatsappNumber" | "businessConnectionDB" | "businessEntity" | "businessStatus" | "businessProcess" | "businessAllowCreditSales" | "businessDeliveryControlEnabled" | "businessReceiptLogoUrl" | "businessReceiptAddress" | "businessReceiptPhone" | "businessReceiptEmail" | "businessReceiptSocial" | "businessReceiptFooterNote" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
+  export type BusinessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "businessName" | "businessType" | "businessDocumentType" | "businessDocumentNumber" | "businessEmail" | "businessPhoneNumber" | "businessCodePhoneNumber" | "businessCountry" | "businessCodeWhatsappNumber" | "businessWhatsappNumber" | "businessConnectionDB" | "businessEntity" | "businessStatus" | "businessProcess" | "businessAllowCreditSales" | "businessDeliveryControlEnabled" | "businessTimezone" | "businessReceiptLogoUrl" | "businessReceiptAddress" | "businessReceiptPhone" | "businessReceiptEmail" | "businessReceiptSocial" | "businessReceiptFooterNote" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
   export type BusinessInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | Business$createdByArgs<ExtArgs>
     UserGuest?: boolean | Business$UserGuestArgs<ExtArgs>
@@ -5153,6 +5164,10 @@ export namespace Prisma {
       businessProcess: Prisma.JsonValue | null
       businessAllowCreditSales: boolean
       businessDeliveryControlEnabled: boolean
+      /**
+       * * IANA timezone del negocio (día operativo, reportes, cierres). Default Chile.
+       */
+      businessTimezone: string
       businessReceiptLogoUrl: string | null
       businessReceiptAddress: string | null
       businessReceiptPhone: string | null
@@ -5609,6 +5624,7 @@ export namespace Prisma {
     readonly businessProcess: FieldRef<"Business", 'Json'>
     readonly businessAllowCreditSales: FieldRef<"Business", 'Boolean'>
     readonly businessDeliveryControlEnabled: FieldRef<"Business", 'Boolean'>
+    readonly businessTimezone: FieldRef<"Business", 'String'>
     readonly businessReceiptLogoUrl: FieldRef<"Business", 'String'>
     readonly businessReceiptAddress: FieldRef<"Business", 'String'>
     readonly businessReceiptPhone: FieldRef<"Business", 'String'>
@@ -27324,6 +27340,7 @@ export namespace Prisma {
     businessProcess: 'businessProcess',
     businessAllowCreditSales: 'businessAllowCreditSales',
     businessDeliveryControlEnabled: 'businessDeliveryControlEnabled',
+    businessTimezone: 'businessTimezone',
     businessReceiptLogoUrl: 'businessReceiptLogoUrl',
     businessReceiptAddress: 'businessReceiptAddress',
     businessReceiptPhone: 'businessReceiptPhone',
@@ -28252,6 +28269,7 @@ export namespace Prisma {
     businessProcess?: JsonNullableFilter<"Business">
     businessAllowCreditSales?: BoolFilter<"Business"> | boolean
     businessDeliveryControlEnabled?: BoolFilter<"Business"> | boolean
+    businessTimezone?: StringFilter<"Business"> | string
     businessReceiptLogoUrl?: StringNullableFilter<"Business"> | string | null
     businessReceiptAddress?: StringNullableFilter<"Business"> | string | null
     businessReceiptPhone?: StringNullableFilter<"Business"> | string | null
@@ -28288,6 +28306,7 @@ export namespace Prisma {
     businessProcess?: SortOrderInput | SortOrder
     businessAllowCreditSales?: SortOrder
     businessDeliveryControlEnabled?: SortOrder
+    businessTimezone?: SortOrder
     businessReceiptLogoUrl?: SortOrderInput | SortOrder
     businessReceiptAddress?: SortOrderInput | SortOrder
     businessReceiptPhone?: SortOrderInput | SortOrder
@@ -28327,6 +28346,7 @@ export namespace Prisma {
     businessProcess?: JsonNullableFilter<"Business">
     businessAllowCreditSales?: BoolFilter<"Business"> | boolean
     businessDeliveryControlEnabled?: BoolFilter<"Business"> | boolean
+    businessTimezone?: StringFilter<"Business"> | string
     businessReceiptLogoUrl?: StringNullableFilter<"Business"> | string | null
     businessReceiptAddress?: StringNullableFilter<"Business"> | string | null
     businessReceiptPhone?: StringNullableFilter<"Business"> | string | null
@@ -28363,6 +28383,7 @@ export namespace Prisma {
     businessProcess?: SortOrderInput | SortOrder
     businessAllowCreditSales?: SortOrder
     businessDeliveryControlEnabled?: SortOrder
+    businessTimezone?: SortOrder
     businessReceiptLogoUrl?: SortOrderInput | SortOrder
     businessReceiptAddress?: SortOrderInput | SortOrder
     businessReceiptPhone?: SortOrderInput | SortOrder
@@ -28398,6 +28419,7 @@ export namespace Prisma {
     businessProcess?: JsonNullableWithAggregatesFilter<"Business">
     businessAllowCreditSales?: BoolWithAggregatesFilter<"Business"> | boolean
     businessDeliveryControlEnabled?: BoolWithAggregatesFilter<"Business"> | boolean
+    businessTimezone?: StringWithAggregatesFilter<"Business"> | string
     businessReceiptLogoUrl?: StringNullableWithAggregatesFilter<"Business"> | string | null
     businessReceiptAddress?: StringNullableWithAggregatesFilter<"Business"> | string | null
     businessReceiptPhone?: StringNullableWithAggregatesFilter<"Business"> | string | null
@@ -30282,6 +30304,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -30317,6 +30340,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -30352,6 +30376,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30387,6 +30412,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30422,6 +30448,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -30451,6 +30478,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30479,6 +30507,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32757,6 +32786,7 @@ export namespace Prisma {
     businessProcess?: SortOrder
     businessAllowCreditSales?: SortOrder
     businessDeliveryControlEnabled?: SortOrder
+    businessTimezone?: SortOrder
     businessReceiptLogoUrl?: SortOrder
     businessReceiptAddress?: SortOrder
     businessReceiptPhone?: SortOrder
@@ -32785,6 +32815,7 @@ export namespace Prisma {
     businessStatus?: SortOrder
     businessAllowCreditSales?: SortOrder
     businessDeliveryControlEnabled?: SortOrder
+    businessTimezone?: SortOrder
     businessReceiptLogoUrl?: SortOrder
     businessReceiptAddress?: SortOrder
     businessReceiptPhone?: SortOrder
@@ -32813,6 +32844,7 @@ export namespace Prisma {
     businessStatus?: SortOrder
     businessAllowCreditSales?: SortOrder
     businessDeliveryControlEnabled?: SortOrder
+    businessTimezone?: SortOrder
     businessReceiptLogoUrl?: SortOrder
     businessReceiptAddress?: SortOrder
     businessReceiptPhone?: SortOrder
@@ -36436,6 +36468,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -36470,6 +36503,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -36910,6 +36944,7 @@ export namespace Prisma {
     businessProcess?: JsonNullableFilter<"Business">
     businessAllowCreditSales?: BoolFilter<"Business"> | boolean
     businessDeliveryControlEnabled?: BoolFilter<"Business"> | boolean
+    businessTimezone?: StringFilter<"Business"> | string
     businessReceiptLogoUrl?: StringNullableFilter<"Business"> | string | null
     businessReceiptAddress?: StringNullableFilter<"Business"> | string | null
     businessReceiptPhone?: StringNullableFilter<"Business"> | string | null
@@ -37682,6 +37717,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -37716,6 +37752,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -37766,6 +37803,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37800,6 +37838,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37889,6 +37928,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -37923,6 +37963,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -38034,6 +38075,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38068,6 +38110,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38157,6 +38200,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -38191,6 +38235,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -38302,6 +38347,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38336,6 +38382,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38586,6 +38633,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -38620,6 +38668,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -38862,6 +38911,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38896,6 +38946,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39009,6 +39060,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -39043,6 +39095,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -39201,6 +39254,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39235,6 +39289,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39377,6 +39432,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -39411,6 +39467,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -39602,6 +39659,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39636,6 +39694,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40758,6 +40817,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: boolean
     businessDeliveryControlEnabled?: boolean
+    businessTimezone?: string
     businessReceiptLogoUrl?: string | null
     businessReceiptAddress?: string | null
     businessReceiptPhone?: string | null
@@ -40958,6 +41018,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40992,6 +41053,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41026,6 +41088,7 @@ export namespace Prisma {
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
     businessAllowCreditSales?: BoolFieldUpdateOperationsInput | boolean
     businessDeliveryControlEnabled?: BoolFieldUpdateOperationsInput | boolean
+    businessTimezone?: StringFieldUpdateOperationsInput | string
     businessReceiptLogoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptAddress?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptPhone?: NullableStringFieldUpdateOperationsInput | string | null

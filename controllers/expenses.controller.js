@@ -11,6 +11,9 @@ import {
   deleteCloudinaryImageByUrl,
   deleteCloudinaryImageIfReplaced,
 } from "../services/cloudinaryService.js";
+import { DEFAULT_BUSINESS_TIMEZONE } from "../libs/businessTimezone.js";
+
+const tzOf = (req) => req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE;
 
 export const createExpenseController = async (req, res) => {
   try {
@@ -40,9 +43,10 @@ export const createExpenseController = async (req, res) => {
 export const getExpensesController = async (req, res) => {
   try {
     const { month, year } = req.query;
+    const timeZone = tzOf(req);
 
     if (month != null && year != null) {
-      const result = await getExpensesService(req.prisma, month, year);
+      const result = await getExpensesService(req.prisma, month, year, timeZone);
       return res.status(200).json(result);
     }
 
@@ -138,7 +142,12 @@ export const sumExpensesByPaymentMethodController = async (req, res) => {
 export const sumExpenseByMonthController = async (req, res) => {
   try {
     const { month, year } = req.params;
-    const total = await sumExpenseByMonthService(month, year, req.prisma);
+    const total = await sumExpenseByMonthService(
+      month,
+      year,
+      req.prisma,
+      tzOf(req),
+    );
     return res.status(200).json({ total });
   } catch (error) {
     return res.status(500).json({ error: error.message });

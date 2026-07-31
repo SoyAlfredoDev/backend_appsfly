@@ -155,6 +155,7 @@ exports.Prisma.BusinessScalarFieldEnum = {
   businessProcess: 'businessProcess',
   businessAllowCreditSales: 'businessAllowCreditSales',
   businessDeliveryControlEnabled: 'businessDeliveryControlEnabled',
+  businessTimezone: 'businessTimezone',
   businessReceiptLogoUrl: 'businessReceiptLogoUrl',
   businessReceiptAddress: 'businessReceiptAddress',
   businessReceiptPhone: 'businessReceiptPhone',

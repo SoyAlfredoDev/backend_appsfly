@@ -1,32 +1,49 @@
+import {
+    businessDateRangeBoundsUtc,
+    businessMonthBoundsUtc,
+    DEFAULT_BUSINESS_TIMEZONE,
+    sanitizeTimezone,
+    zonedDateTimeToUtc,
+} from "../libs/businessTimezone.js";
+
 const MAX_INVENTORY_RANGE_DAYS = 366;
 
-/** Mismo criterio de periodo que salesServices.getMonthlySales (hora local del servidor). */
-function localMonthRange(month, year) {
-    const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 1);
+/** Mismo criterio de periodo que salesServices.getMonthlySales (TZ del negocio). */
+function localMonthRange(month, year, timeZone = DEFAULT_BUSINESS_TIMEZONE) {
+    const { start, endExclusive } = businessMonthBoundsUtc(year, month, timeZone);
+    return { startDate: start, endDate: endExclusive };
+}
+
+function businessYearBoundsUtc(year, timeZone = DEFAULT_BUSINESS_TIMEZONE) {
+    const startDate = zonedDateTimeToUtc(`${year}-01-01`, timeZone);
+    const endDate = zonedDateTimeToUtc(`${year + 1}-01-01`, timeZone);
     return { startDate, endDate };
 }
 
-function utcYearRange(year) {
-    const startDate = new Date(Date.UTC(year, 0, 1));
-    const endDate = new Date(Date.UTC(year + 1, 0, 1));
-    return { startDate, endDate };
-}
+function parseDateRange(startDate, endDate, timeZone = DEFAULT_BUSINESS_TIMEZONE) {
+    const startKey = String(startDate).slice(0, 10);
+    const endKey = String(endDate).slice(0, 10);
 
-function parseDateRange(startDate, endDate) {
-    const start = new Date(`${startDate}T00:00:00.000Z`);
-    const end = new Date(`${endDate}T23:59:59.999Z`);
-    if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(startKey) || !/^\d{4}-\d{2}-\d{2}$/.test(endKey)) {
         throw new Error("INVALID_DATE_RANGE");
     }
-    if (start > end) {
+    if (startKey > endKey) {
         throw new Error("INVALID_DATE_ORDER");
     }
-    const diffDays = (end - start) / (1000 * 60 * 60 * 24);
+
+    const [sy, sm, sd] = startKey.split("-").map(Number);
+    const [ey, em, ed] = endKey.split("-").map(Number);
+    const diffDays =
+        (Date.UTC(ey, em - 1, ed) - Date.UTC(sy, sm - 1, sd)) / (1000 * 60 * 60 * 24);
     if (diffDays > MAX_INVENTORY_RANGE_DAYS) {
         throw new Error("DATE_RANGE_TOO_LARGE");
     }
-    return { start, end };
+
+    const { start, endInclusive } = businessDateRangeBoundsUtc(startKey, endKey, timeZone);
+    if (Number.isNaN(start.getTime()) || Number.isNaN(endInclusive.getTime())) {
+        throw new Error("INVALID_DATE_RANGE");
+    }
+    return { start, end: endInclusive };
 }
 
 function toNumber(value) {
@@ -34,8 +51,13 @@ function toNumber(value) {
     return typeof value === "bigint" ? Number(value) : Number(value);
 }
 
-export async function getMonthlySalesReport(month, year, prisma) {
-    const { startDate, endDate } = localMonthRange(month, year);
+export async function getMonthlySalesReport(
+    month,
+    year,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
+    const { startDate, endDate } = localMonthRange(month, year, timeZone);
 
     const [summary, sales] = await Promise.all([
         prisma.sale.aggregate({
@@ -90,21 +112,31 @@ export async function getMonthlySalesReport(month, year, prisma) {
     };
 }
 
-export async function getYearlySalesReport(year, prisma) {
-    const { startDate, endDate } = utcYearRange(year);
+export async function getYearlySalesReport(
+    year,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
+    const { startDate, endDate } = businessYearBoundsUtc(year, timeZone);
+    const tz = sanitizeTimezone(timeZone);
 
-    const monthlyRows = await prisma.$queryRaw`
+    const monthlyRows = await prisma.$queryRawUnsafe(
+        `
         SELECT
-            EXTRACT(MONTH FROM "createdAt")::int AS month,
+            EXTRACT(MONTH FROM (("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE $1))::int AS month,
             COUNT(*)::int AS "transactionCount",
             COALESCE(SUM("saleTotal"), 0)::int AS "totalSales",
             COALESCE(SUM("saleTotalPayments"), 0)::int AS "totalPaid",
             COALESCE(SUM("salePendingAmount"), 0)::int AS "totalPending"
         FROM "Sale"
-        WHERE "createdAt" >= ${startDate} AND "createdAt" < ${endDate}
-        GROUP BY EXTRACT(MONTH FROM "createdAt")
+        WHERE "createdAt" >= $2 AND "createdAt" < $3
+        GROUP BY EXTRACT(MONTH FROM (("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE $1))
         ORDER BY month ASC
-    `;
+        `,
+        tz,
+        startDate,
+        endDate,
+    );
 
     const monthMap = new Map(
         monthlyRows.map((row) => [Number(row.month), row]),
@@ -143,8 +175,9 @@ export async function getYearlySalesReport(year, prisma) {
 export async function getInventoryMovementsReport(
     { startDate, endDate, categoryId },
     prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
 ) {
-    const { start, end } = parseDateRange(startDate, endDate);
+    const { start, end } = parseDateRange(startDate, endDate, timeZone);
 
     const productFilter = categoryId
         ? { categoryId }
@@ -266,9 +299,14 @@ function formatSellerName(user) {
  * Ventas agrupadas por vendedor o detalle de un vendedor en un rango de fechas.
  * @param {{ startDate: string, endDate: string, sellerId?: string | null }} filters
  * @param {import('@prisma/client').PrismaClient} prisma
+ * @param {string} [timeZone]
  */
-export async function getSalesBySellerReport({ startDate, endDate, sellerId }, prisma) {
-    const { start, end } = parseDateRange(startDate, endDate);
+export async function getSalesBySellerReport(
+    { startDate, endDate, sellerId },
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
+    const { start, end } = parseDateRange(startDate, endDate, timeZone);
     const sellerFilter = sellerId?.trim() || null;
 
     if (sellerFilter) {

@@ -5,6 +5,7 @@ import {
     getSalesBySellerReport,
 } from "../services/reportsService.js";
 import { assertUserBelongsToBusiness } from "../services/userBusinessService.js";
+import { DEFAULT_BUSINESS_TIMEZONE } from "../libs/businessTimezone.js";
 
 const REPORT_ERRORS = {
     INVALID_DATE_RANGE: "Rango de fechas inválido.",
@@ -13,10 +14,13 @@ const REPORT_ERRORS = {
     INVALID_SELLER: "El vendedor seleccionado no pertenece a este negocio.",
 };
 
+const tzOf = (req) => req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE;
+
 export const generateReportController = async (req, res) => {
     try {
         const { type } = req.params;
         const prisma = req.prisma;
+        const timeZone = tzOf(req);
 
         switch (type) {
             case "monthly-sales": {
@@ -25,7 +29,7 @@ export const generateReportController = async (req, res) => {
                 if (!month || month < 1 || month > 12 || !year || year < 2000) {
                     return res.status(400).json({ error: "Mes y año inválidos." });
                 }
-                const data = await getMonthlySalesReport(month, year, prisma);
+                const data = await getMonthlySalesReport(month, year, prisma, timeZone);
                 return res.status(200).json(data);
             }
             case "yearly-sales": {
@@ -33,7 +37,7 @@ export const generateReportController = async (req, res) => {
                 if (!year || year < 2000) {
                     return res.status(400).json({ error: "Año inválido." });
                 }
-                const data = await getYearlySalesReport(year, prisma);
+                const data = await getYearlySalesReport(year, prisma, timeZone);
                 return res.status(200).json(data);
             }
             case "inventory-movements": {
@@ -49,6 +53,7 @@ export const generateReportController = async (req, res) => {
                             categoryId: categoryId || null,
                         },
                         prisma,
+                        timeZone,
                     );
                     return res.status(200).json(data);
                 } catch (rangeError) {
@@ -84,6 +89,7 @@ export const generateReportController = async (req, res) => {
                             sellerId: trimmedSellerId,
                         },
                         prisma,
+                        timeZone,
                     );
                     return res.status(200).json(data);
                 } catch (rangeError) {

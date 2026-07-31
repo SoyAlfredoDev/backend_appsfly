@@ -57,6 +57,10 @@ model Business {
   businessProcess                Json?
   businessAllowCreditSales       Boolean        @default(false)
   businessDeliveryControlEnabled Boolean        @default(false)
+  /**
+   * IANA timezone del negocio (día operativo, reportes, cierres). Default Chile.
+   */
+  businessTimezone               String         @default("America/Santiago")
   businessReceiptLogoUrl         String?
   businessReceiptAddress         String?
   businessReceiptPhone           String?

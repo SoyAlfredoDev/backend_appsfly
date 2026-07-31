@@ -5,6 +5,7 @@ import {
     TRANSACTION_TYPES,
     TRANSACTION_DIRECTIONS,
 } from "./financial/financialLedgerService.js";
+import { businessDateRangeBoundsUtc, DEFAULT_BUSINESS_TIMEZONE } from "../libs/businessTimezone.js";
 
 export const createPaymentService = async (data, prisma) => {
     try {
@@ -76,17 +77,25 @@ export const getPaymentBySaleIdService = async (id, prisma) => {
     }
 }
 
-export const getPaymentByDateService = async (startDate, endDate, prisma) => {
+export const getPaymentByDateService = async (
+    startDate,
+    endDate,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     try {
-        const start = new Date(`${startDate}T00:00:00.000Z`);
-        const end = new Date(`${endDate}T23:59:59.999Z`);
+        const { start, endInclusive } = businessDateRangeBoundsUtc(
+            startDate,
+            endDate,
+            timeZone,
+        );
         const payments = await prisma.payment.findMany({
             where: {
                 createdAt: {
                     gte: start,
-                    lte: end
-                }
-            }
+                    lte: endInclusive,
+                },
+            },
         });
         return payments || [];
     } catch (error) {

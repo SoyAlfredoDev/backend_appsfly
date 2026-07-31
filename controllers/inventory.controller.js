@@ -7,6 +7,7 @@ import {
     createManualAdjustment,
 } from "../services/inventory/inventoryMovementQueryService.js";
 import { InsufficientStockError } from "../services/inventory/inventoryService.js";
+import { DEFAULT_BUSINESS_TIMEZONE } from "../libs/businessTimezone.js";
 
 export const getInventorySummaryController = async (req, res) => {
     try {
@@ -40,6 +41,7 @@ export const getInventoryMovementsController = async (req, res) => {
             to,
             page,
             limit,
+            timeZone: req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE,
         });
         res.status(200).json(result);
     } catch (error) {

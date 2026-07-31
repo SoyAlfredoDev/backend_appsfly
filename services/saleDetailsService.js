@@ -1,4 +1,5 @@
 import { applyInventoryMovement, InsufficientStockError } from "./inventory/inventoryService.js";
+import { businessDateRangeBoundsUtc, DEFAULT_BUSINESS_TIMEZONE } from "../libs/businessTimezone.js";
 
 export { InsufficientStockError };
 
@@ -130,18 +131,26 @@ export const deleteSaleDetail = async (id, prisma) => {
 };
 
 
-// get detail sales between two dates, return an array of sales
-export const getSaleDetailByDate = async (startDate, endDate, prisma) => {
+// get detail sales between two dates (inclusive), business timezone
+export const getSaleDetailByDate = async (
+    startDate,
+    endDate,
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) => {
     try {
-        const start = new Date(`${startDate}T00:00:00.000Z`);
-        const end = new Date(`${endDate}T23:59:59.999Z`);
+        const { start, endInclusive } = businessDateRangeBoundsUtc(
+            startDate,
+            endDate,
+            timeZone,
+        );
         const saleDetails = await prisma.saleDetail.findMany({
             where: {
                 createdAt: {
                     gte: start,
-                    lte: end
-                }
-            }
+                    lte: endInclusive,
+                },
+            },
         });
         return saleDetails || [];
     } catch (error) {
