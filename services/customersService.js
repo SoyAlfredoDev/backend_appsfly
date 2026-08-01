@@ -14,14 +14,23 @@ export const createCustomer = async (data, prisma) => {
 function buildCustomerSearchWhere(q) {
     const query = typeof q === "string" ? q.trim() : "";
     if (!query) return {};
+
+    const fieldMatchers = (token) => [
+        { customerFirstName: { contains: token, mode: "insensitive" } },
+        { customerLastName: { contains: token, mode: "insensitive" } },
+        { customerDocumentNumber: { contains: token, mode: "insensitive" } },
+        { customerEmail: { contains: token, mode: "insensitive" } },
+        { customerPhoneNumber: { contains: token, mode: "insensitive" } },
+    ];
+
+    const tokens = query.split(/\s+/).filter(Boolean);
+    if (tokens.length === 1) {
+        return { OR: fieldMatchers(tokens[0]) };
+    }
+
+    // "maria veronica" → cada palabra debe coincidir en algún campo (nombre compuesto)
     return {
-        OR: [
-            { customerFirstName: { contains: query, mode: "insensitive" } },
-            { customerLastName: { contains: query, mode: "insensitive" } },
-            { customerDocumentNumber: { contains: query, mode: "insensitive" } },
-            { customerEmail: { contains: query, mode: "insensitive" } },
-            { customerPhoneNumber: { contains: query, mode: "insensitive" } },
-        ],
+        AND: tokens.map((token) => ({ OR: fieldMatchers(token) })),
     };
 }
 
