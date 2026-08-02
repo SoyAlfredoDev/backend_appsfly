@@ -75,6 +75,7 @@ console.log(">>>>> ENVIRONMENT:", isProduction ? "Production" : "Development", {
 
 const productionOrigins = [
   "https://appsfly.app",
+  "https://optica.appsfly.app",
   "https://frontend-appsfly.vercel.app",
   "https://www.appsfly.app",
   "https://appsfly.netlify.app",
