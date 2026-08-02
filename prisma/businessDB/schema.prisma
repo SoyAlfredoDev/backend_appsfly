@@ -866,3 +866,62 @@ model PurchaseCertificateDetail {
 
     @@index([purchaseCertificateId, sortOrder])
 }
+
+/**
+ * Configuración de agendamiento público (1 fila por tenant).
+ * dayOfWeek en AppointmentWeeklyAvailability: 0 = domingo … 6 = sábado.
+ */
+model AppointmentSettings {
+    settingsId            String   @id @default("default")
+    appointmentsEnabled   Boolean  @default(false)
+    slotDurationMinutes   Int      @default(30)
+    maxDaysAhead          Int      @default(30)
+    visitorMessage        String?
+    createdAt             DateTime @default(now())
+    updatedAt             DateTime @updatedAt
+
+    weeklyAvailability AppointmentWeeklyAvailability[]
+}
+
+model AppointmentWeeklyAvailability {
+    availabilityId String              @id @default(uuid())
+    settingsId     String              @default("default")
+    settings       AppointmentSettings @relation(fields: [settingsId], references: [settingsId], onDelete: Cascade)
+    /** 0 = domingo … 6 = sábado */
+    dayOfWeek      Int
+    /** HH:mm en timezone del negocio */
+    startTime      String
+    /** HH:mm en timezone del negocio */
+    endTime        String
+    createdAt      DateTime            @default(now())
+    updatedAt      DateTime            @updatedAt
+
+    @@index([settingsId, dayOfWeek])
+}
+
+enum AppointmentStatus {
+    PENDING
+    CONFIRMED
+    CANCELLED
+    COMPLETED
+    RESCHEDULED
+}
+
+model Appointment {
+    appointmentId   String            @id @default(uuid())
+    firstName       String
+    lastName        String
+    phoneCode       String            @default("+56")
+    phoneNumber     String
+    contactConsent  Boolean
+    startsAt        DateTime
+    endsAt          DateTime
+    status          AppointmentStatus @default(PENDING)
+    notes           String?
+    staffNotes      String?
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+
+    @@index([startsAt, endsAt])
+    @@index([status, startsAt])
+}

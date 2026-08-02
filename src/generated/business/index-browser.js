@@ -604,6 +604,42 @@ exports.Prisma.PurchaseCertificateDetailScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AppointmentSettingsScalarFieldEnum = {
+  settingsId: 'settingsId',
+  appointmentsEnabled: 'appointmentsEnabled',
+  slotDurationMinutes: 'slotDurationMinutes',
+  maxDaysAhead: 'maxDaysAhead',
+  visitorMessage: 'visitorMessage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AppointmentWeeklyAvailabilityScalarFieldEnum = {
+  availabilityId: 'availabilityId',
+  settingsId: 'settingsId',
+  dayOfWeek: 'dayOfWeek',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AppointmentScalarFieldEnum = {
+  appointmentId: 'appointmentId',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  phoneCode: 'phoneCode',
+  phoneNumber: 'phoneNumber',
+  contactConsent: 'contactConsent',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  status: 'status',
+  notes: 'notes',
+  staffNotes: 'staffNotes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -745,6 +781,14 @@ exports.PurchaseCertificateStatus = exports.$Enums.PurchaseCertificateStatus = {
   VOID: 'VOID'
 };
 
+exports.AppointmentStatus = exports.$Enums.AppointmentStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED',
+  RESCHEDULED: 'RESCHEDULED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Customer: 'Customer',
@@ -776,7 +820,10 @@ exports.Prisma.ModelName = {
   WorkOrder: 'WorkOrder',
   LabDispatch: 'LabDispatch',
   PurchaseCertificate: 'PurchaseCertificate',
-  PurchaseCertificateDetail: 'PurchaseCertificateDetail'
+  PurchaseCertificateDetail: 'PurchaseCertificateDetail',
+  AppointmentSettings: 'AppointmentSettings',
+  AppointmentWeeklyAvailability: 'AppointmentWeeklyAvailability',
+  Appointment: 'Appointment'
 };
 
 /**
