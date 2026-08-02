@@ -5,7 +5,14 @@ import defineQuotationNumber from '../libs/defineQuotationNumber.js';
 
 export const createQuotationController = async (req, res) => {
     try {
-        const { quotationId, quotationCustomerId, quotationTotal, quotationComment, quotationExpiresAt } = req.body;
+        const {
+            quotationId,
+            quotationCustomerId,
+            quotationTotal,
+            quotationComment,
+            quotationExpiresAt,
+            prescriptionId,
+        } = req.body;
         const userId = req.user.payload.id;
         const numberQuotation = await defineQuotationNumber(req.prisma);
 
@@ -19,6 +26,7 @@ export const createQuotationController = async (req, res) => {
             quotationTotal: total,
             quotationComment,
             quotationExpiresAt: quotationExpiresAt ? new Date(quotationExpiresAt) : null,
+            prescriptionId: prescriptionId || null,
             quotationStatus: "DRAFT"
         };
 
@@ -29,7 +37,8 @@ export const createQuotationController = async (req, res) => {
         });
     } catch (error) {
         console.error("(quotation.controller.js): Error creating quotation:", error);
-        res.status(500).json({
+        const status = error.statusCode || 500;
+        res.status(status).json({
             message: error.message || "Internal server error",
             code: error.code,
         });

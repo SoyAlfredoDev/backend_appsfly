@@ -643,6 +643,11 @@ model Quotation {
   quotationStatus                 QuotationStatus               @default(DRAFT)
   quotationComment                String?
   quotationExpiresAt              DateTime?
+  /**
+   * Receta óptica vinculada (opcional) — mismo patrón que WorkOrder
+   */
+  prescriptionId                  String?
+  prescription                    Prescription?                 @relation(fields: [prescriptionId], references: [prescriptionId])
   quotationEmailDeliveryStatus    QuotationEmailDeliveryStatus?
   quotationEmailProviderMessageId String?
   quotationEmailSentTo            String?
@@ -656,6 +661,8 @@ model Quotation {
   createdAt                       DateTime                      @default(now())
   updatedAt                       DateTime                      @updatedAt
   QuotationDetail                 QuotationDetail[]
+
+  @@index([prescriptionId])
 }
 
 model QuotationDetail {
@@ -730,6 +737,7 @@ model Prescription {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   WorkOrder       WorkOrder[]
+  Quotation       Quotation[]
 
   @@index([customerId, createdAt(sort: Desc)])
 }
@@ -778,30 +786,31 @@ model Laboratory {
  * Una venta puede tener varias OT (p. ej. un producto óptico por OT).
  */
 model WorkOrder {
-  workOrderId       String          @id @default(uuid())
-  workOrderNumber   String?
-  saleId            String
-  sale              Sale            @relation(fields: [saleId], references: [saleId])
-  saleDetailId      String?
-  saleDetail        SaleDetail?     @relation(fields: [saleDetailId], references: [saleDetailId])
-  customerId        String
-  customer          Customer        @relation(fields: [customerId], references: [customerId])
-  prescriptionId    String?
-  prescription      Prescription?   @relation(fields: [prescriptionId], references: [prescriptionId])
-  laboratoryId      String?
-  laboratory        Laboratory?     @relation(fields: [laboratoryId], references: [laboratoryId])
-  labDispatchId     String?
-  labDispatch       LabDispatch?    @relation(fields: [labDispatchId], references: [labDispatchId])
-  workOrderStatus   WorkOrderStatus @default(CREATED)
-  workOrderNotes    String?
-  workOrderLabNotes String?
-  quantity          Int             @default(1)
-  receivedAt        DateTime?
-  deliveredAt       DateTime?
-  createdByUserId   String
-  createdBy         User            @relation(fields: [createdByUserId], references: [userId])
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
+  workOrderId        String          @id @default(uuid())
+  workOrderNumber    String?
+  saleId             String
+  sale               Sale            @relation(fields: [saleId], references: [saleId])
+  saleDetailId       String?
+  saleDetail         SaleDetail?     @relation(fields: [saleDetailId], references: [saleDetailId])
+  customerId         String
+  customer           Customer        @relation(fields: [customerId], references: [customerId])
+  prescriptionId     String?
+  prescription       Prescription?   @relation(fields: [prescriptionId], references: [prescriptionId])
+  laboratoryId       String?
+  laboratory         Laboratory?     @relation(fields: [laboratoryId], references: [laboratoryId])
+  labDispatchId      String?
+  labDispatch        LabDispatch?    @relation(fields: [labDispatchId], references: [labDispatchId])
+  workOrderStatus    WorkOrderStatus @default(CREATED)
+  workOrderNotes     String?
+  workOrderLabNotes  String?
+  quantity           Int             @default(1)
+  receivedAt         DateTime?
+  readyForDeliveryAt DateTime?
+  deliveredAt        DateTime?
+  createdByUserId    String
+  createdBy          User            @relation(fields: [createdByUserId], references: [userId])
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
 
   @@index([saleId])
   @@index([customerId, createdAt(sort: Desc)])

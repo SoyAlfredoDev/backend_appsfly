@@ -4616,10 +4616,12 @@ export namespace Prisma {
 
   export type PrescriptionCountOutputType = {
     WorkOrder: number
+    Quotation: number
   }
 
   export type PrescriptionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     WorkOrder?: boolean | PrescriptionCountOutputTypeCountWorkOrderArgs
+    Quotation?: boolean | PrescriptionCountOutputTypeCountQuotationArgs
   }
 
   // Custom InputTypes
@@ -4638,6 +4640,13 @@ export namespace Prisma {
    */
   export type PrescriptionCountOutputTypeCountWorkOrderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WorkOrderWhereInput
+  }
+
+  /**
+   * PrescriptionCountOutputType without action
+   */
+  export type PrescriptionCountOutputTypeCountQuotationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuotationWhereInput
   }
 
 
@@ -33363,6 +33372,7 @@ export namespace Prisma {
     quotationStatus: $Enums.QuotationStatus | null
     quotationComment: string | null
     quotationExpiresAt: Date | null
+    prescriptionId: string | null
     quotationEmailDeliveryStatus: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId: string | null
     quotationEmailSentTo: string | null
@@ -33383,6 +33393,7 @@ export namespace Prisma {
     quotationStatus: $Enums.QuotationStatus | null
     quotationComment: string | null
     quotationExpiresAt: Date | null
+    prescriptionId: string | null
     quotationEmailDeliveryStatus: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId: string | null
     quotationEmailSentTo: string | null
@@ -33403,6 +33414,7 @@ export namespace Prisma {
     quotationStatus: number
     quotationComment: number
     quotationExpiresAt: number
+    prescriptionId: number
     quotationEmailDeliveryStatus: number
     quotationEmailProviderMessageId: number
     quotationEmailSentTo: number
@@ -33433,6 +33445,7 @@ export namespace Prisma {
     quotationStatus?: true
     quotationComment?: true
     quotationExpiresAt?: true
+    prescriptionId?: true
     quotationEmailDeliveryStatus?: true
     quotationEmailProviderMessageId?: true
     quotationEmailSentTo?: true
@@ -33453,6 +33466,7 @@ export namespace Prisma {
     quotationStatus?: true
     quotationComment?: true
     quotationExpiresAt?: true
+    prescriptionId?: true
     quotationEmailDeliveryStatus?: true
     quotationEmailProviderMessageId?: true
     quotationEmailSentTo?: true
@@ -33473,6 +33487,7 @@ export namespace Prisma {
     quotationStatus?: true
     quotationComment?: true
     quotationExpiresAt?: true
+    prescriptionId?: true
     quotationEmailDeliveryStatus?: true
     quotationEmailProviderMessageId?: true
     quotationEmailSentTo?: true
@@ -33580,6 +33595,7 @@ export namespace Prisma {
     quotationStatus: $Enums.QuotationStatus
     quotationComment: string | null
     quotationExpiresAt: Date | null
+    prescriptionId: string | null
     quotationEmailDeliveryStatus: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId: string | null
     quotationEmailSentTo: string | null
@@ -33619,6 +33635,7 @@ export namespace Prisma {
     quotationStatus?: boolean
     quotationComment?: boolean
     quotationExpiresAt?: boolean
+    prescriptionId?: boolean
     quotationEmailDeliveryStatus?: boolean
     quotationEmailProviderMessageId?: boolean
     quotationEmailSentTo?: boolean
@@ -33629,6 +33646,7 @@ export namespace Prisma {
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    prescription?: boolean | Quotation$prescriptionArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
     QuotationDetail?: boolean | Quotation$QuotationDetailArgs<ExtArgs>
@@ -33643,6 +33661,7 @@ export namespace Prisma {
     quotationStatus?: boolean
     quotationComment?: boolean
     quotationExpiresAt?: boolean
+    prescriptionId?: boolean
     quotationEmailDeliveryStatus?: boolean
     quotationEmailProviderMessageId?: boolean
     quotationEmailSentTo?: boolean
@@ -33653,6 +33672,7 @@ export namespace Prisma {
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    prescription?: boolean | Quotation$prescriptionArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["quotation"]>
@@ -33665,6 +33685,7 @@ export namespace Prisma {
     quotationStatus?: boolean
     quotationComment?: boolean
     quotationExpiresAt?: boolean
+    prescriptionId?: boolean
     quotationEmailDeliveryStatus?: boolean
     quotationEmailProviderMessageId?: boolean
     quotationEmailSentTo?: boolean
@@ -33675,6 +33696,7 @@ export namespace Prisma {
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    prescription?: boolean | Quotation$prescriptionArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["quotation"]>
@@ -33687,6 +33709,7 @@ export namespace Prisma {
     quotationStatus?: boolean
     quotationComment?: boolean
     quotationExpiresAt?: boolean
+    prescriptionId?: boolean
     quotationEmailDeliveryStatus?: boolean
     quotationEmailProviderMessageId?: boolean
     quotationEmailSentTo?: boolean
@@ -33699,18 +33722,21 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type QuotationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"quotationId" | "quotationNumber" | "quotationCustomerId" | "quotationTotal" | "quotationStatus" | "quotationComment" | "quotationExpiresAt" | "quotationEmailDeliveryStatus" | "quotationEmailProviderMessageId" | "quotationEmailSentTo" | "quotationEmailSentAt" | "quotationEmailDeliveredAt" | "quotationEmailOpenedAt" | "quotationEmailErrorMessage" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["quotation"]>
+  export type QuotationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"quotationId" | "quotationNumber" | "quotationCustomerId" | "quotationTotal" | "quotationStatus" | "quotationComment" | "quotationExpiresAt" | "prescriptionId" | "quotationEmailDeliveryStatus" | "quotationEmailProviderMessageId" | "quotationEmailSentTo" | "quotationEmailSentAt" | "quotationEmailDeliveredAt" | "quotationEmailOpenedAt" | "quotationEmailErrorMessage" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["quotation"]>
   export type QuotationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prescription?: boolean | Quotation$prescriptionArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
     QuotationDetail?: boolean | Quotation$QuotationDetailArgs<ExtArgs>
     _count?: boolean | QuotationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type QuotationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prescription?: boolean | Quotation$prescriptionArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
   }
   export type QuotationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prescription?: boolean | Quotation$prescriptionArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
   }
@@ -33718,6 +33744,7 @@ export namespace Prisma {
   export type $QuotationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Quotation"
     objects: {
+      prescription: Prisma.$PrescriptionPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
       customer: Prisma.$CustomerPayload<ExtArgs>
       QuotationDetail: Prisma.$QuotationDetailPayload<ExtArgs>[]
@@ -33730,6 +33757,10 @@ export namespace Prisma {
       quotationStatus: $Enums.QuotationStatus
       quotationComment: string | null
       quotationExpiresAt: Date | null
+      /**
+       * * Receta óptica vinculada (opcional) — mismo patrón que WorkOrder
+       */
+      prescriptionId: string | null
       quotationEmailDeliveryStatus: $Enums.QuotationEmailDeliveryStatus | null
       quotationEmailProviderMessageId: string | null
       quotationEmailSentTo: string | null
@@ -34134,6 +34165,7 @@ export namespace Prisma {
    */
   export interface Prisma__QuotationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    prescription<T extends Quotation$prescriptionArgs<ExtArgs> = {}>(args?: Subset<T, Quotation$prescriptionArgs<ExtArgs>>): Prisma__PrescriptionClient<$Result.GetResult<Prisma.$PrescriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     customer<T extends CustomerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CustomerDefaultArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     QuotationDetail<T extends Quotation$QuotationDetailArgs<ExtArgs> = {}>(args?: Subset<T, Quotation$QuotationDetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuotationDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -34173,6 +34205,7 @@ export namespace Prisma {
     readonly quotationStatus: FieldRef<"Quotation", 'QuotationStatus'>
     readonly quotationComment: FieldRef<"Quotation", 'String'>
     readonly quotationExpiresAt: FieldRef<"Quotation", 'DateTime'>
+    readonly prescriptionId: FieldRef<"Quotation", 'String'>
     readonly quotationEmailDeliveryStatus: FieldRef<"Quotation", 'QuotationEmailDeliveryStatus'>
     readonly quotationEmailProviderMessageId: FieldRef<"Quotation", 'String'>
     readonly quotationEmailSentTo: FieldRef<"Quotation", 'String'>
@@ -34576,6 +34609,25 @@ export namespace Prisma {
      * Limit how many Quotations to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Quotation.prescription
+   */
+  export type Quotation$prescriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prescription
+     */
+    select?: PrescriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prescription
+     */
+    omit?: PrescriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrescriptionInclude<ExtArgs> | null
+    where?: PrescriptionWhereInput
   }
 
   /**
@@ -36233,6 +36285,7 @@ export namespace Prisma {
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     WorkOrder?: boolean | Prescription$WorkOrderArgs<ExtArgs>
+    Quotation?: boolean | Prescription$QuotationArgs<ExtArgs>
     _count?: boolean | PrescriptionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["prescription"]>
 
@@ -36338,6 +36391,7 @@ export namespace Prisma {
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     WorkOrder?: boolean | Prescription$WorkOrderArgs<ExtArgs>
+    Quotation?: boolean | Prescription$QuotationArgs<ExtArgs>
     _count?: boolean | PrescriptionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PrescriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -36355,6 +36409,7 @@ export namespace Prisma {
       customer: Prisma.$CustomerPayload<ExtArgs>
       createdBy: Prisma.$UserPayload<ExtArgs>
       WorkOrder: Prisma.$WorkOrderPayload<ExtArgs>[]
+      Quotation: Prisma.$QuotationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       prescriptionId: string
@@ -36791,6 +36846,7 @@ export namespace Prisma {
     customer<T extends CustomerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CustomerDefaultArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     WorkOrder<T extends Prescription$WorkOrderArgs<ExtArgs> = {}>(args?: Subset<T, Prescription$WorkOrderArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Quotation<T extends Prescription$QuotationArgs<ExtArgs> = {}>(args?: Subset<T, Prescription$QuotationArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuotationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -37265,6 +37321,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: WorkOrderScalarFieldEnum | WorkOrderScalarFieldEnum[]
+  }
+
+  /**
+   * Prescription.Quotation
+   */
+  export type Prescription$QuotationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Quotation
+     */
+    select?: QuotationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Quotation
+     */
+    omit?: QuotationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuotationInclude<ExtArgs> | null
+    where?: QuotationWhereInput
+    orderBy?: QuotationOrderByWithRelationInput | QuotationOrderByWithRelationInput[]
+    cursor?: QuotationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: QuotationScalarFieldEnum | QuotationScalarFieldEnum[]
   }
 
   /**
@@ -38540,6 +38620,7 @@ export namespace Prisma {
     workOrderLabNotes: string | null
     quantity: number | null
     receivedAt: Date | null
+    readyForDeliveryAt: Date | null
     deliveredAt: Date | null
     createdByUserId: string | null
     createdAt: Date | null
@@ -38560,6 +38641,7 @@ export namespace Prisma {
     workOrderLabNotes: string | null
     quantity: number | null
     receivedAt: Date | null
+    readyForDeliveryAt: Date | null
     deliveredAt: Date | null
     createdByUserId: string | null
     createdAt: Date | null
@@ -38580,6 +38662,7 @@ export namespace Prisma {
     workOrderLabNotes: number
     quantity: number
     receivedAt: number
+    readyForDeliveryAt: number
     deliveredAt: number
     createdByUserId: number
     createdAt: number
@@ -38610,6 +38693,7 @@ export namespace Prisma {
     workOrderLabNotes?: true
     quantity?: true
     receivedAt?: true
+    readyForDeliveryAt?: true
     deliveredAt?: true
     createdByUserId?: true
     createdAt?: true
@@ -38630,6 +38714,7 @@ export namespace Prisma {
     workOrderLabNotes?: true
     quantity?: true
     receivedAt?: true
+    readyForDeliveryAt?: true
     deliveredAt?: true
     createdByUserId?: true
     createdAt?: true
@@ -38650,6 +38735,7 @@ export namespace Prisma {
     workOrderLabNotes?: true
     quantity?: true
     receivedAt?: true
+    readyForDeliveryAt?: true
     deliveredAt?: true
     createdByUserId?: true
     createdAt?: true
@@ -38757,6 +38843,7 @@ export namespace Prisma {
     workOrderLabNotes: string | null
     quantity: number
     receivedAt: Date | null
+    readyForDeliveryAt: Date | null
     deliveredAt: Date | null
     createdByUserId: string
     createdAt: Date
@@ -38796,6 +38883,7 @@ export namespace Prisma {
     workOrderLabNotes?: boolean
     quantity?: boolean
     receivedAt?: boolean
+    readyForDeliveryAt?: boolean
     deliveredAt?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
@@ -38823,6 +38911,7 @@ export namespace Prisma {
     workOrderLabNotes?: boolean
     quantity?: boolean
     receivedAt?: boolean
+    readyForDeliveryAt?: boolean
     deliveredAt?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
@@ -38850,6 +38939,7 @@ export namespace Prisma {
     workOrderLabNotes?: boolean
     quantity?: boolean
     receivedAt?: boolean
+    readyForDeliveryAt?: boolean
     deliveredAt?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
@@ -38877,13 +38967,14 @@ export namespace Prisma {
     workOrderLabNotes?: boolean
     quantity?: boolean
     receivedAt?: boolean
+    readyForDeliveryAt?: boolean
     deliveredAt?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WorkOrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"workOrderId" | "workOrderNumber" | "saleId" | "saleDetailId" | "customerId" | "prescriptionId" | "laboratoryId" | "labDispatchId" | "workOrderStatus" | "workOrderNotes" | "workOrderLabNotes" | "quantity" | "receivedAt" | "deliveredAt" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["workOrder"]>
+  export type WorkOrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"workOrderId" | "workOrderNumber" | "saleId" | "saleDetailId" | "customerId" | "prescriptionId" | "laboratoryId" | "labDispatchId" | "workOrderStatus" | "workOrderNotes" | "workOrderLabNotes" | "quantity" | "receivedAt" | "readyForDeliveryAt" | "deliveredAt" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["workOrder"]>
   export type WorkOrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sale?: boolean | SaleDefaultArgs<ExtArgs>
     saleDetail?: boolean | WorkOrder$saleDetailArgs<ExtArgs>
@@ -38937,6 +39028,7 @@ export namespace Prisma {
       workOrderLabNotes: string | null
       quantity: number
       receivedAt: Date | null
+      readyForDeliveryAt: Date | null
       deliveredAt: Date | null
       createdByUserId: string
       createdAt: Date
@@ -39384,6 +39476,7 @@ export namespace Prisma {
     readonly workOrderLabNotes: FieldRef<"WorkOrder", 'String'>
     readonly quantity: FieldRef<"WorkOrder", 'Int'>
     readonly receivedAt: FieldRef<"WorkOrder", 'DateTime'>
+    readonly readyForDeliveryAt: FieldRef<"WorkOrder", 'DateTime'>
     readonly deliveredAt: FieldRef<"WorkOrder", 'DateTime'>
     readonly createdByUserId: FieldRef<"WorkOrder", 'String'>
     readonly createdAt: FieldRef<"WorkOrder", 'DateTime'>
@@ -44044,6 +44137,7 @@ export namespace Prisma {
     quotationStatus: 'quotationStatus',
     quotationComment: 'quotationComment',
     quotationExpiresAt: 'quotationExpiresAt',
+    prescriptionId: 'prescriptionId',
     quotationEmailDeliveryStatus: 'quotationEmailDeliveryStatus',
     quotationEmailProviderMessageId: 'quotationEmailProviderMessageId',
     quotationEmailSentTo: 'quotationEmailSentTo',
@@ -44144,6 +44238,7 @@ export namespace Prisma {
     workOrderLabNotes: 'workOrderLabNotes',
     quantity: 'quantity',
     receivedAt: 'receivedAt',
+    readyForDeliveryAt: 'readyForDeliveryAt',
     deliveredAt: 'deliveredAt',
     createdByUserId: 'createdByUserId',
     createdAt: 'createdAt',
@@ -46798,6 +46893,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFilter<"Quotation"> | $Enums.QuotationStatus
     quotationComment?: StringNullableFilter<"Quotation"> | string | null
     quotationExpiresAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    prescriptionId?: StringNullableFilter<"Quotation"> | string | null
     quotationEmailDeliveryStatus?: EnumQuotationEmailDeliveryStatusNullableFilter<"Quotation"> | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: StringNullableFilter<"Quotation"> | string | null
     quotationEmailSentTo?: StringNullableFilter<"Quotation"> | string | null
@@ -46808,6 +46904,7 @@ export namespace Prisma {
     createdByUserId?: StringFilter<"Quotation"> | string
     createdAt?: DateTimeFilter<"Quotation"> | Date | string
     updatedAt?: DateTimeFilter<"Quotation"> | Date | string
+    prescription?: XOR<PrescriptionNullableScalarRelationFilter, PrescriptionWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
     QuotationDetail?: QuotationDetailListRelationFilter
@@ -46821,6 +46918,7 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrderInput | SortOrder
     quotationExpiresAt?: SortOrderInput | SortOrder
+    prescriptionId?: SortOrderInput | SortOrder
     quotationEmailDeliveryStatus?: SortOrderInput | SortOrder
     quotationEmailProviderMessageId?: SortOrderInput | SortOrder
     quotationEmailSentTo?: SortOrderInput | SortOrder
@@ -46831,6 +46929,7 @@ export namespace Prisma {
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    prescription?: PrescriptionOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     customer?: CustomerOrderByWithRelationInput
     QuotationDetail?: QuotationDetailOrderByRelationAggregateInput
@@ -46847,6 +46946,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFilter<"Quotation"> | $Enums.QuotationStatus
     quotationComment?: StringNullableFilter<"Quotation"> | string | null
     quotationExpiresAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    prescriptionId?: StringNullableFilter<"Quotation"> | string | null
     quotationEmailDeliveryStatus?: EnumQuotationEmailDeliveryStatusNullableFilter<"Quotation"> | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: StringNullableFilter<"Quotation"> | string | null
     quotationEmailSentTo?: StringNullableFilter<"Quotation"> | string | null
@@ -46857,6 +46957,7 @@ export namespace Prisma {
     createdByUserId?: StringFilter<"Quotation"> | string
     createdAt?: DateTimeFilter<"Quotation"> | Date | string
     updatedAt?: DateTimeFilter<"Quotation"> | Date | string
+    prescription?: XOR<PrescriptionNullableScalarRelationFilter, PrescriptionWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
     QuotationDetail?: QuotationDetailListRelationFilter
@@ -46870,6 +46971,7 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrderInput | SortOrder
     quotationExpiresAt?: SortOrderInput | SortOrder
+    prescriptionId?: SortOrderInput | SortOrder
     quotationEmailDeliveryStatus?: SortOrderInput | SortOrder
     quotationEmailProviderMessageId?: SortOrderInput | SortOrder
     quotationEmailSentTo?: SortOrderInput | SortOrder
@@ -46898,6 +47000,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusWithAggregatesFilter<"Quotation"> | $Enums.QuotationStatus
     quotationComment?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     quotationExpiresAt?: DateTimeNullableWithAggregatesFilter<"Quotation"> | Date | string | null
+    prescriptionId?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     quotationEmailDeliveryStatus?: EnumQuotationEmailDeliveryStatusNullableWithAggregatesFilter<"Quotation"> | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     quotationEmailSentTo?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
@@ -47049,6 +47152,7 @@ export namespace Prisma {
     customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     WorkOrder?: WorkOrderListRelationFilter
+    Quotation?: QuotationListRelationFilter
   }
 
   export type PrescriptionOrderByWithRelationInput = {
@@ -47083,6 +47187,7 @@ export namespace Prisma {
     customer?: CustomerOrderByWithRelationInput
     createdBy?: UserOrderByWithRelationInput
     WorkOrder?: WorkOrderOrderByRelationAggregateInput
+    Quotation?: QuotationOrderByRelationAggregateInput
   }
 
   export type PrescriptionWhereUniqueInput = Prisma.AtLeast<{
@@ -47120,6 +47225,7 @@ export namespace Prisma {
     customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     WorkOrder?: WorkOrderListRelationFilter
+    Quotation?: QuotationListRelationFilter
   }, "prescriptionId">
 
   export type PrescriptionOrderByWithAggregationInput = {
@@ -47308,6 +47414,7 @@ export namespace Prisma {
     workOrderLabNotes?: StringNullableFilter<"WorkOrder"> | string | null
     quantity?: IntFilter<"WorkOrder"> | number
     receivedAt?: DateTimeNullableFilter<"WorkOrder"> | Date | string | null
+    readyForDeliveryAt?: DateTimeNullableFilter<"WorkOrder"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"WorkOrder"> | Date | string | null
     createdByUserId?: StringFilter<"WorkOrder"> | string
     createdAt?: DateTimeFilter<"WorkOrder"> | Date | string
@@ -47335,6 +47442,7 @@ export namespace Prisma {
     workOrderLabNotes?: SortOrderInput | SortOrder
     quantity?: SortOrder
     receivedAt?: SortOrderInput | SortOrder
+    readyForDeliveryAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
@@ -47365,6 +47473,7 @@ export namespace Prisma {
     workOrderLabNotes?: StringNullableFilter<"WorkOrder"> | string | null
     quantity?: IntFilter<"WorkOrder"> | number
     receivedAt?: DateTimeNullableFilter<"WorkOrder"> | Date | string | null
+    readyForDeliveryAt?: DateTimeNullableFilter<"WorkOrder"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"WorkOrder"> | Date | string | null
     createdByUserId?: StringFilter<"WorkOrder"> | string
     createdAt?: DateTimeFilter<"WorkOrder"> | Date | string
@@ -47392,6 +47501,7 @@ export namespace Prisma {
     workOrderLabNotes?: SortOrderInput | SortOrder
     quantity?: SortOrder
     receivedAt?: SortOrderInput | SortOrder
+    readyForDeliveryAt?: SortOrderInput | SortOrder
     deliveredAt?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
@@ -47420,6 +47530,7 @@ export namespace Prisma {
     workOrderLabNotes?: StringNullableWithAggregatesFilter<"WorkOrder"> | string | null
     quantity?: IntWithAggregatesFilter<"WorkOrder"> | number
     receivedAt?: DateTimeNullableWithAggregatesFilter<"WorkOrder"> | Date | string | null
+    readyForDeliveryAt?: DateTimeNullableWithAggregatesFilter<"WorkOrder"> | Date | string | null
     deliveredAt?: DateTimeNullableWithAggregatesFilter<"WorkOrder"> | Date | string | null
     createdByUserId?: StringWithAggregatesFilter<"WorkOrder"> | string
     createdAt?: DateTimeWithAggregatesFilter<"WorkOrder"> | Date | string
@@ -50243,6 +50354,7 @@ export namespace Prisma {
     quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    prescription?: PrescriptionCreateNestedOneWithoutQuotationInput
     user: UserCreateNestedOneWithoutQuotationInput
     customer: CustomerCreateNestedOneWithoutQuotationInput
     QuotationDetail?: QuotationDetailCreateNestedManyWithoutQuotationInput
@@ -50256,6 +50368,7 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    prescriptionId?: string | null
     quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: string | null
     quotationEmailSentTo?: string | null
@@ -50285,6 +50398,7 @@ export namespace Prisma {
     quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescription?: PrescriptionUpdateOneWithoutQuotationNestedInput
     user?: UserUpdateOneRequiredWithoutQuotationNestedInput
     customer?: CustomerUpdateOneRequiredWithoutQuotationNestedInput
     QuotationDetail?: QuotationDetailUpdateManyWithoutQuotationNestedInput
@@ -50298,6 +50412,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50319,6 +50434,7 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    prescriptionId?: string | null
     quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: string | null
     quotationEmailSentTo?: string | null
@@ -50357,6 +50473,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50499,6 +50616,7 @@ export namespace Prisma {
     customer: CustomerCreateNestedOneWithoutPrescriptionInput
     createdBy: UserCreateNestedOneWithoutPrescriptionInput
     WorkOrder?: WorkOrderCreateNestedManyWithoutPrescriptionInput
+    Quotation?: QuotationCreateNestedManyWithoutPrescriptionInput
   }
 
   export type PrescriptionUncheckedCreateInput = {
@@ -50531,6 +50649,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     WorkOrder?: WorkOrderUncheckedCreateNestedManyWithoutPrescriptionInput
+    Quotation?: QuotationUncheckedCreateNestedManyWithoutPrescriptionInput
   }
 
   export type PrescriptionUpdateInput = {
@@ -50563,6 +50682,7 @@ export namespace Prisma {
     customer?: CustomerUpdateOneRequiredWithoutPrescriptionNestedInput
     createdBy?: UserUpdateOneRequiredWithoutPrescriptionNestedInput
     WorkOrder?: WorkOrderUpdateManyWithoutPrescriptionNestedInput
+    Quotation?: QuotationUpdateManyWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateInput = {
@@ -50595,6 +50715,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     WorkOrder?: WorkOrderUncheckedUpdateManyWithoutPrescriptionNestedInput
+    Quotation?: QuotationUncheckedUpdateManyWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionCreateManyInput = {
@@ -50815,6 +50936,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -50841,6 +50963,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -50855,6 +50978,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50881,6 +51005,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50901,6 +51026,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -50915,6 +51041,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50934,6 +51061,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -53264,6 +53392,11 @@ export namespace Prisma {
     not?: NestedEnumQuotationEmailDeliveryStatusNullableFilter<$PrismaModel> | $Enums.QuotationEmailDeliveryStatus | null
   }
 
+  export type PrescriptionNullableScalarRelationFilter = {
+    is?: PrescriptionWhereInput | null
+    isNot?: PrescriptionWhereInput | null
+  }
+
   export type QuotationCountOrderByAggregateInput = {
     quotationId?: SortOrder
     quotationNumber?: SortOrder
@@ -53272,6 +53405,7 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrder
     quotationExpiresAt?: SortOrder
+    prescriptionId?: SortOrder
     quotationEmailDeliveryStatus?: SortOrder
     quotationEmailProviderMessageId?: SortOrder
     quotationEmailSentTo?: SortOrder
@@ -53296,6 +53430,7 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrder
     quotationExpiresAt?: SortOrder
+    prescriptionId?: SortOrder
     quotationEmailDeliveryStatus?: SortOrder
     quotationEmailProviderMessageId?: SortOrder
     quotationEmailSentTo?: SortOrder
@@ -53316,6 +53451,7 @@ export namespace Prisma {
     quotationStatus?: SortOrder
     quotationComment?: SortOrder
     quotationExpiresAt?: SortOrder
+    prescriptionId?: SortOrder
     quotationEmailDeliveryStatus?: SortOrder
     quotationEmailProviderMessageId?: SortOrder
     quotationEmailSentTo?: SortOrder
@@ -53567,11 +53703,6 @@ export namespace Prisma {
     isNot?: SaleDetailWhereInput | null
   }
 
-  export type PrescriptionNullableScalarRelationFilter = {
-    is?: PrescriptionWhereInput | null
-    isNot?: PrescriptionWhereInput | null
-  }
-
   export type LaboratoryNullableScalarRelationFilter = {
     is?: LaboratoryWhereInput | null
     isNot?: LaboratoryWhereInput | null
@@ -53596,6 +53727,7 @@ export namespace Prisma {
     workOrderLabNotes?: SortOrder
     quantity?: SortOrder
     receivedAt?: SortOrder
+    readyForDeliveryAt?: SortOrder
     deliveredAt?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
@@ -53620,6 +53752,7 @@ export namespace Prisma {
     workOrderLabNotes?: SortOrder
     quantity?: SortOrder
     receivedAt?: SortOrder
+    readyForDeliveryAt?: SortOrder
     deliveredAt?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
@@ -53640,6 +53773,7 @@ export namespace Prisma {
     workOrderLabNotes?: SortOrder
     quantity?: SortOrder
     receivedAt?: SortOrder
+    readyForDeliveryAt?: SortOrder
     deliveredAt?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
@@ -56809,6 +56943,12 @@ export namespace Prisma {
     update?: XOR<XOR<TaxDocumentUpdateToOneWithWhereWithoutAuditLogsInput, TaxDocumentUpdateWithoutAuditLogsInput>, TaxDocumentUncheckedUpdateWithoutAuditLogsInput>
   }
 
+  export type PrescriptionCreateNestedOneWithoutQuotationInput = {
+    create?: XOR<PrescriptionCreateWithoutQuotationInput, PrescriptionUncheckedCreateWithoutQuotationInput>
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutQuotationInput
+    connect?: PrescriptionWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutQuotationInput = {
     create?: XOR<UserCreateWithoutQuotationInput, UserUncheckedCreateWithoutQuotationInput>
     connectOrCreate?: UserCreateOrConnectWithoutQuotationInput
@@ -56841,6 +56981,16 @@ export namespace Prisma {
 
   export type NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput = {
     set?: $Enums.QuotationEmailDeliveryStatus | null
+  }
+
+  export type PrescriptionUpdateOneWithoutQuotationNestedInput = {
+    create?: XOR<PrescriptionCreateWithoutQuotationInput, PrescriptionUncheckedCreateWithoutQuotationInput>
+    connectOrCreate?: PrescriptionCreateOrConnectWithoutQuotationInput
+    upsert?: PrescriptionUpsertWithoutQuotationInput
+    disconnect?: PrescriptionWhereInput | boolean
+    delete?: PrescriptionWhereInput | boolean
+    connect?: PrescriptionWhereUniqueInput
+    update?: XOR<XOR<PrescriptionUpdateToOneWithWhereWithoutQuotationInput, PrescriptionUpdateWithoutQuotationInput>, PrescriptionUncheckedUpdateWithoutQuotationInput>
   }
 
   export type UserUpdateOneRequiredWithoutQuotationNestedInput = {
@@ -56980,11 +57130,25 @@ export namespace Prisma {
     connect?: WorkOrderWhereUniqueInput | WorkOrderWhereUniqueInput[]
   }
 
+  export type QuotationCreateNestedManyWithoutPrescriptionInput = {
+    create?: XOR<QuotationCreateWithoutPrescriptionInput, QuotationUncheckedCreateWithoutPrescriptionInput> | QuotationCreateWithoutPrescriptionInput[] | QuotationUncheckedCreateWithoutPrescriptionInput[]
+    connectOrCreate?: QuotationCreateOrConnectWithoutPrescriptionInput | QuotationCreateOrConnectWithoutPrescriptionInput[]
+    createMany?: QuotationCreateManyPrescriptionInputEnvelope
+    connect?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
+  }
+
   export type WorkOrderUncheckedCreateNestedManyWithoutPrescriptionInput = {
     create?: XOR<WorkOrderCreateWithoutPrescriptionInput, WorkOrderUncheckedCreateWithoutPrescriptionInput> | WorkOrderCreateWithoutPrescriptionInput[] | WorkOrderUncheckedCreateWithoutPrescriptionInput[]
     connectOrCreate?: WorkOrderCreateOrConnectWithoutPrescriptionInput | WorkOrderCreateOrConnectWithoutPrescriptionInput[]
     createMany?: WorkOrderCreateManyPrescriptionInputEnvelope
     connect?: WorkOrderWhereUniqueInput | WorkOrderWhereUniqueInput[]
+  }
+
+  export type QuotationUncheckedCreateNestedManyWithoutPrescriptionInput = {
+    create?: XOR<QuotationCreateWithoutPrescriptionInput, QuotationUncheckedCreateWithoutPrescriptionInput> | QuotationCreateWithoutPrescriptionInput[] | QuotationUncheckedCreateWithoutPrescriptionInput[]
+    connectOrCreate?: QuotationCreateOrConnectWithoutPrescriptionInput | QuotationCreateOrConnectWithoutPrescriptionInput[]
+    createMany?: QuotationCreateManyPrescriptionInputEnvelope
+    connect?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
   }
 
   export type CustomerUpdateOneRequiredWithoutPrescriptionNestedInput = {
@@ -57017,6 +57181,20 @@ export namespace Prisma {
     deleteMany?: WorkOrderScalarWhereInput | WorkOrderScalarWhereInput[]
   }
 
+  export type QuotationUpdateManyWithoutPrescriptionNestedInput = {
+    create?: XOR<QuotationCreateWithoutPrescriptionInput, QuotationUncheckedCreateWithoutPrescriptionInput> | QuotationCreateWithoutPrescriptionInput[] | QuotationUncheckedCreateWithoutPrescriptionInput[]
+    connectOrCreate?: QuotationCreateOrConnectWithoutPrescriptionInput | QuotationCreateOrConnectWithoutPrescriptionInput[]
+    upsert?: QuotationUpsertWithWhereUniqueWithoutPrescriptionInput | QuotationUpsertWithWhereUniqueWithoutPrescriptionInput[]
+    createMany?: QuotationCreateManyPrescriptionInputEnvelope
+    set?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
+    disconnect?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
+    delete?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
+    connect?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
+    update?: QuotationUpdateWithWhereUniqueWithoutPrescriptionInput | QuotationUpdateWithWhereUniqueWithoutPrescriptionInput[]
+    updateMany?: QuotationUpdateManyWithWhereWithoutPrescriptionInput | QuotationUpdateManyWithWhereWithoutPrescriptionInput[]
+    deleteMany?: QuotationScalarWhereInput | QuotationScalarWhereInput[]
+  }
+
   export type WorkOrderUncheckedUpdateManyWithoutPrescriptionNestedInput = {
     create?: XOR<WorkOrderCreateWithoutPrescriptionInput, WorkOrderUncheckedCreateWithoutPrescriptionInput> | WorkOrderCreateWithoutPrescriptionInput[] | WorkOrderUncheckedCreateWithoutPrescriptionInput[]
     connectOrCreate?: WorkOrderCreateOrConnectWithoutPrescriptionInput | WorkOrderCreateOrConnectWithoutPrescriptionInput[]
@@ -57029,6 +57207,20 @@ export namespace Prisma {
     update?: WorkOrderUpdateWithWhereUniqueWithoutPrescriptionInput | WorkOrderUpdateWithWhereUniqueWithoutPrescriptionInput[]
     updateMany?: WorkOrderUpdateManyWithWhereWithoutPrescriptionInput | WorkOrderUpdateManyWithWhereWithoutPrescriptionInput[]
     deleteMany?: WorkOrderScalarWhereInput | WorkOrderScalarWhereInput[]
+  }
+
+  export type QuotationUncheckedUpdateManyWithoutPrescriptionNestedInput = {
+    create?: XOR<QuotationCreateWithoutPrescriptionInput, QuotationUncheckedCreateWithoutPrescriptionInput> | QuotationCreateWithoutPrescriptionInput[] | QuotationUncheckedCreateWithoutPrescriptionInput[]
+    connectOrCreate?: QuotationCreateOrConnectWithoutPrescriptionInput | QuotationCreateOrConnectWithoutPrescriptionInput[]
+    upsert?: QuotationUpsertWithWhereUniqueWithoutPrescriptionInput | QuotationUpsertWithWhereUniqueWithoutPrescriptionInput[]
+    createMany?: QuotationCreateManyPrescriptionInputEnvelope
+    set?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
+    disconnect?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
+    delete?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
+    connect?: QuotationWhereUniqueInput | QuotationWhereUniqueInput[]
+    update?: QuotationUpdateWithWhereUniqueWithoutPrescriptionInput | QuotationUpdateWithWhereUniqueWithoutPrescriptionInput[]
+    updateMany?: QuotationUpdateManyWithWhereWithoutPrescriptionInput | QuotationUpdateManyWithWhereWithoutPrescriptionInput[]
+    deleteMany?: QuotationScalarWhereInput | QuotationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutLaboratoryInput = {
@@ -58711,6 +58903,7 @@ export namespace Prisma {
     quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    prescription?: PrescriptionCreateNestedOneWithoutQuotationInput
     customer: CustomerCreateNestedOneWithoutQuotationInput
     QuotationDetail?: QuotationDetailCreateNestedManyWithoutQuotationInput
   }
@@ -58723,6 +58916,7 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    prescriptionId?: string | null
     quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: string | null
     quotationEmailSentTo?: string | null
@@ -58812,6 +59006,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     customer: CustomerCreateNestedOneWithoutPrescriptionInput
     WorkOrder?: WorkOrderCreateNestedManyWithoutPrescriptionInput
+    Quotation?: QuotationCreateNestedManyWithoutPrescriptionInput
   }
 
   export type PrescriptionUncheckedCreateWithoutCreatedByInput = {
@@ -58843,6 +59038,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     WorkOrder?: WorkOrderUncheckedCreateNestedManyWithoutPrescriptionInput
+    Quotation?: QuotationUncheckedCreateNestedManyWithoutPrescriptionInput
   }
 
   export type PrescriptionCreateOrConnectWithoutCreatedByInput = {
@@ -58907,6 +59103,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -58932,6 +59129,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -59722,6 +59920,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFilter<"Quotation"> | $Enums.QuotationStatus
     quotationComment?: StringNullableFilter<"Quotation"> | string | null
     quotationExpiresAt?: DateTimeNullableFilter<"Quotation"> | Date | string | null
+    prescriptionId?: StringNullableFilter<"Quotation"> | string | null
     quotationEmailDeliveryStatus?: EnumQuotationEmailDeliveryStatusNullableFilter<"Quotation"> | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: StringNullableFilter<"Quotation"> | string | null
     quotationEmailSentTo?: StringNullableFilter<"Quotation"> | string | null
@@ -59886,6 +60085,7 @@ export namespace Prisma {
     workOrderLabNotes?: StringNullableFilter<"WorkOrder"> | string | null
     quantity?: IntFilter<"WorkOrder"> | number
     receivedAt?: DateTimeNullableFilter<"WorkOrder"> | Date | string | null
+    readyForDeliveryAt?: DateTimeNullableFilter<"WorkOrder"> | Date | string | null
     deliveredAt?: DateTimeNullableFilter<"WorkOrder"> | Date | string | null
     createdByUserId?: StringFilter<"WorkOrder"> | string
     createdAt?: DateTimeFilter<"WorkOrder"> | Date | string
@@ -60194,6 +60394,7 @@ export namespace Prisma {
     quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    prescription?: PrescriptionCreateNestedOneWithoutQuotationInput
     user: UserCreateNestedOneWithoutQuotationInput
     QuotationDetail?: QuotationDetailCreateNestedManyWithoutQuotationInput
   }
@@ -60205,6 +60406,7 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    prescriptionId?: string | null
     quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: string | null
     quotationEmailSentTo?: string | null
@@ -60295,6 +60497,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     createdBy: UserCreateNestedOneWithoutPrescriptionInput
     WorkOrder?: WorkOrderCreateNestedManyWithoutPrescriptionInput
+    Quotation?: QuotationCreateNestedManyWithoutPrescriptionInput
   }
 
   export type PrescriptionUncheckedCreateWithoutCustomerInput = {
@@ -60326,6 +60529,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     WorkOrder?: WorkOrderUncheckedCreateNestedManyWithoutPrescriptionInput
+    Quotation?: QuotationUncheckedCreateNestedManyWithoutPrescriptionInput
   }
 
   export type PrescriptionCreateOrConnectWithoutCustomerInput = {
@@ -60346,6 +60550,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -60370,6 +60575,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -62845,6 +63051,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -62869,6 +63076,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -63657,6 +63865,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -63681,6 +63890,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -66637,6 +66847,75 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PrescriptionCreateWithoutQuotationInput = {
+    prescriptionId?: string
+    prescriptionDate?: Date | string | null
+    prescriptionExpiresAt?: Date | string | null
+    prescribedBy?: string | null
+    prescriptionType?: string | null
+    odSphere?: string | null
+    odCylinder?: string | null
+    odAxis?: string | null
+    odAddition?: string | null
+    odPrism?: string | null
+    odBase?: string | null
+    oiSphere?: string | null
+    oiCylinder?: string | null
+    oiAxis?: string | null
+    oiAddition?: string | null
+    oiPrism?: string | null
+    oiBase?: string | null
+    pdBinocular?: string | null
+    pdOd?: string | null
+    pdOi?: string | null
+    pdNear?: string | null
+    prescriptionNotes?: string | null
+    prescriptionImageUrl?: string | null
+    entryMode?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customer: CustomerCreateNestedOneWithoutPrescriptionInput
+    createdBy: UserCreateNestedOneWithoutPrescriptionInput
+    WorkOrder?: WorkOrderCreateNestedManyWithoutPrescriptionInput
+  }
+
+  export type PrescriptionUncheckedCreateWithoutQuotationInput = {
+    prescriptionId?: string
+    customerId: string
+    prescriptionDate?: Date | string | null
+    prescriptionExpiresAt?: Date | string | null
+    prescribedBy?: string | null
+    prescriptionType?: string | null
+    odSphere?: string | null
+    odCylinder?: string | null
+    odAxis?: string | null
+    odAddition?: string | null
+    odPrism?: string | null
+    odBase?: string | null
+    oiSphere?: string | null
+    oiCylinder?: string | null
+    oiAxis?: string | null
+    oiAddition?: string | null
+    oiPrism?: string | null
+    oiBase?: string | null
+    pdBinocular?: string | null
+    pdOd?: string | null
+    pdOi?: string | null
+    pdNear?: string | null
+    prescriptionNotes?: string | null
+    prescriptionImageUrl?: string | null
+    entryMode?: string
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    WorkOrder?: WorkOrderUncheckedCreateNestedManyWithoutPrescriptionInput
+  }
+
+  export type PrescriptionCreateOrConnectWithoutQuotationInput = {
+    where: PrescriptionWhereUniqueInput
+    create: XOR<PrescriptionCreateWithoutQuotationInput, PrescriptionUncheckedCreateWithoutQuotationInput>
+  }
+
   export type UserCreateWithoutQuotationInput = {
     userId: string
     userFirstName: string
@@ -66811,6 +67090,81 @@ export namespace Prisma {
   export type QuotationDetailCreateManyQuotationInputEnvelope = {
     data: QuotationDetailCreateManyQuotationInput | QuotationDetailCreateManyQuotationInput[]
     skipDuplicates?: boolean
+  }
+
+  export type PrescriptionUpsertWithoutQuotationInput = {
+    update: XOR<PrescriptionUpdateWithoutQuotationInput, PrescriptionUncheckedUpdateWithoutQuotationInput>
+    create: XOR<PrescriptionCreateWithoutQuotationInput, PrescriptionUncheckedCreateWithoutQuotationInput>
+    where?: PrescriptionWhereInput
+  }
+
+  export type PrescriptionUpdateToOneWithWhereWithoutQuotationInput = {
+    where?: PrescriptionWhereInput
+    data: XOR<PrescriptionUpdateWithoutQuotationInput, PrescriptionUncheckedUpdateWithoutQuotationInput>
+  }
+
+  export type PrescriptionUpdateWithoutQuotationInput = {
+    prescriptionId?: StringFieldUpdateOperationsInput | string
+    prescriptionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescriptionExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescribedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    prescriptionType?: NullableStringFieldUpdateOperationsInput | string | null
+    odSphere?: NullableStringFieldUpdateOperationsInput | string | null
+    odCylinder?: NullableStringFieldUpdateOperationsInput | string | null
+    odAxis?: NullableStringFieldUpdateOperationsInput | string | null
+    odAddition?: NullableStringFieldUpdateOperationsInput | string | null
+    odPrism?: NullableStringFieldUpdateOperationsInput | string | null
+    odBase?: NullableStringFieldUpdateOperationsInput | string | null
+    oiSphere?: NullableStringFieldUpdateOperationsInput | string | null
+    oiCylinder?: NullableStringFieldUpdateOperationsInput | string | null
+    oiAxis?: NullableStringFieldUpdateOperationsInput | string | null
+    oiAddition?: NullableStringFieldUpdateOperationsInput | string | null
+    oiPrism?: NullableStringFieldUpdateOperationsInput | string | null
+    oiBase?: NullableStringFieldUpdateOperationsInput | string | null
+    pdBinocular?: NullableStringFieldUpdateOperationsInput | string | null
+    pdOd?: NullableStringFieldUpdateOperationsInput | string | null
+    pdOi?: NullableStringFieldUpdateOperationsInput | string | null
+    pdNear?: NullableStringFieldUpdateOperationsInput | string | null
+    prescriptionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    prescriptionImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    entryMode?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customer?: CustomerUpdateOneRequiredWithoutPrescriptionNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutPrescriptionNestedInput
+    WorkOrder?: WorkOrderUpdateManyWithoutPrescriptionNestedInput
+  }
+
+  export type PrescriptionUncheckedUpdateWithoutQuotationInput = {
+    prescriptionId?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    prescriptionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescriptionExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescribedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    prescriptionType?: NullableStringFieldUpdateOperationsInput | string | null
+    odSphere?: NullableStringFieldUpdateOperationsInput | string | null
+    odCylinder?: NullableStringFieldUpdateOperationsInput | string | null
+    odAxis?: NullableStringFieldUpdateOperationsInput | string | null
+    odAddition?: NullableStringFieldUpdateOperationsInput | string | null
+    odPrism?: NullableStringFieldUpdateOperationsInput | string | null
+    odBase?: NullableStringFieldUpdateOperationsInput | string | null
+    oiSphere?: NullableStringFieldUpdateOperationsInput | string | null
+    oiCylinder?: NullableStringFieldUpdateOperationsInput | string | null
+    oiAxis?: NullableStringFieldUpdateOperationsInput | string | null
+    oiAddition?: NullableStringFieldUpdateOperationsInput | string | null
+    oiPrism?: NullableStringFieldUpdateOperationsInput | string | null
+    oiBase?: NullableStringFieldUpdateOperationsInput | string | null
+    pdBinocular?: NullableStringFieldUpdateOperationsInput | string | null
+    pdOd?: NullableStringFieldUpdateOperationsInput | string | null
+    pdOi?: NullableStringFieldUpdateOperationsInput | string | null
+    pdNear?: NullableStringFieldUpdateOperationsInput | string | null
+    prescriptionNotes?: NullableStringFieldUpdateOperationsInput | string | null
+    prescriptionImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    entryMode?: StringFieldUpdateOperationsInput | string
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    WorkOrder?: WorkOrderUncheckedUpdateManyWithoutPrescriptionNestedInput
   }
 
   export type UserUpsertWithoutQuotationInput = {
@@ -67133,6 +67487,7 @@ export namespace Prisma {
     quotationEmailErrorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    prescription?: PrescriptionCreateNestedOneWithoutQuotationInput
     user: UserCreateNestedOneWithoutQuotationInput
     customer: CustomerCreateNestedOneWithoutQuotationInput
   }
@@ -67145,6 +67500,7 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    prescriptionId?: string | null
     quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: string | null
     quotationEmailSentTo?: string | null
@@ -67425,6 +67781,7 @@ export namespace Prisma {
     quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescription?: PrescriptionUpdateOneWithoutQuotationNestedInput
     user?: UserUpdateOneRequiredWithoutQuotationNestedInput
     customer?: CustomerUpdateOneRequiredWithoutQuotationNestedInput
   }
@@ -67437,6 +67794,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67693,6 +68051,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -67717,6 +68076,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -67730,6 +68090,58 @@ export namespace Prisma {
 
   export type WorkOrderCreateManyPrescriptionInputEnvelope = {
     data: WorkOrderCreateManyPrescriptionInput | WorkOrderCreateManyPrescriptionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type QuotationCreateWithoutPrescriptionInput = {
+    quotationId: string
+    quotationNumber?: string | null
+    quotationTotal: number
+    quotationStatus?: $Enums.QuotationStatus
+    quotationComment?: string | null
+    quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutQuotationInput
+    customer: CustomerCreateNestedOneWithoutQuotationInput
+    QuotationDetail?: QuotationDetailCreateNestedManyWithoutQuotationInput
+  }
+
+  export type QuotationUncheckedCreateWithoutPrescriptionInput = {
+    quotationId: string
+    quotationNumber?: string | null
+    quotationCustomerId: string
+    quotationTotal: number
+    quotationStatus?: $Enums.QuotationStatus
+    quotationComment?: string | null
+    quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    QuotationDetail?: QuotationDetailUncheckedCreateNestedManyWithoutQuotationInput
+  }
+
+  export type QuotationCreateOrConnectWithoutPrescriptionInput = {
+    where: QuotationWhereUniqueInput
+    create: XOR<QuotationCreateWithoutPrescriptionInput, QuotationUncheckedCreateWithoutPrescriptionInput>
+  }
+
+  export type QuotationCreateManyPrescriptionInputEnvelope = {
+    data: QuotationCreateManyPrescriptionInput | QuotationCreateManyPrescriptionInput[]
     skipDuplicates?: boolean
   }
 
@@ -67899,6 +68311,22 @@ export namespace Prisma {
     data: XOR<WorkOrderUpdateManyMutationInput, WorkOrderUncheckedUpdateManyWithoutPrescriptionInput>
   }
 
+  export type QuotationUpsertWithWhereUniqueWithoutPrescriptionInput = {
+    where: QuotationWhereUniqueInput
+    update: XOR<QuotationUpdateWithoutPrescriptionInput, QuotationUncheckedUpdateWithoutPrescriptionInput>
+    create: XOR<QuotationCreateWithoutPrescriptionInput, QuotationUncheckedCreateWithoutPrescriptionInput>
+  }
+
+  export type QuotationUpdateWithWhereUniqueWithoutPrescriptionInput = {
+    where: QuotationWhereUniqueInput
+    data: XOR<QuotationUpdateWithoutPrescriptionInput, QuotationUncheckedUpdateWithoutPrescriptionInput>
+  }
+
+  export type QuotationUpdateManyWithWhereWithoutPrescriptionInput = {
+    where: QuotationScalarWhereInput
+    data: XOR<QuotationUpdateManyMutationInput, QuotationUncheckedUpdateManyWithoutPrescriptionInput>
+  }
+
   export type UserCreateWithoutLaboratoryInput = {
     userId: string
     userFirstName: string
@@ -67994,6 +68422,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -68018,6 +68447,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -68359,6 +68789,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     customer: CustomerCreateNestedOneWithoutPrescriptionInput
     createdBy: UserCreateNestedOneWithoutPrescriptionInput
+    Quotation?: QuotationCreateNestedManyWithoutPrescriptionInput
   }
 
   export type PrescriptionUncheckedCreateWithoutWorkOrderInput = {
@@ -68390,6 +68821,7 @@ export namespace Prisma {
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    Quotation?: QuotationUncheckedCreateNestedManyWithoutPrescriptionInput
   }
 
   export type PrescriptionCreateOrConnectWithoutWorkOrderInput = {
@@ -68747,6 +69179,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     customer?: CustomerUpdateOneRequiredWithoutPrescriptionNestedInput
     createdBy?: UserUpdateOneRequiredWithoutPrescriptionNestedInput
+    Quotation?: QuotationUpdateManyWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateWithoutWorkOrderInput = {
@@ -68778,6 +69211,7 @@ export namespace Prisma {
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Quotation?: QuotationUncheckedUpdateManyWithoutPrescriptionNestedInput
   }
 
   export type LaboratoryUpsertWithoutWorkOrderInput = {
@@ -69176,6 +69610,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -69200,6 +69635,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -70361,6 +70797,7 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    prescriptionId?: string | null
     quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: string | null
     quotationEmailSentTo?: string | null
@@ -70445,6 +70882,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -71335,6 +71773,7 @@ export namespace Prisma {
     quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescription?: PrescriptionUpdateOneWithoutQuotationNestedInput
     customer?: CustomerUpdateOneRequiredWithoutQuotationNestedInput
     QuotationDetail?: QuotationDetailUpdateManyWithoutQuotationNestedInput
   }
@@ -71347,6 +71786,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71367,6 +71807,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71449,6 +71890,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     customer?: CustomerUpdateOneRequiredWithoutPrescriptionNestedInput
     WorkOrder?: WorkOrderUpdateManyWithoutPrescriptionNestedInput
+    Quotation?: QuotationUpdateManyWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateWithoutCreatedByInput = {
@@ -71480,6 +71922,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     WorkOrder?: WorkOrderUncheckedUpdateManyWithoutPrescriptionNestedInput
+    Quotation?: QuotationUncheckedUpdateManyWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateManyWithoutCreatedByInput = {
@@ -71569,6 +72012,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71594,6 +72038,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71613,6 +72058,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -71862,6 +72308,7 @@ export namespace Prisma {
     quotationStatus?: $Enums.QuotationStatus
     quotationComment?: string | null
     quotationExpiresAt?: Date | string | null
+    prescriptionId?: string | null
     quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: string | null
     quotationEmailSentTo?: string | null
@@ -71931,6 +72378,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -72058,6 +72506,7 @@ export namespace Prisma {
     quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prescription?: PrescriptionUpdateOneWithoutQuotationNestedInput
     user?: UserUpdateOneRequiredWithoutQuotationNestedInput
     QuotationDetail?: QuotationDetailUpdateManyWithoutQuotationNestedInput
   }
@@ -72069,6 +72518,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72089,6 +72539,7 @@ export namespace Prisma {
     quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
     quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
     quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    prescriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
     quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
     quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72172,6 +72623,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutPrescriptionNestedInput
     WorkOrder?: WorkOrderUpdateManyWithoutPrescriptionNestedInput
+    Quotation?: QuotationUpdateManyWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateWithoutCustomerInput = {
@@ -72203,6 +72655,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     WorkOrder?: WorkOrderUncheckedUpdateManyWithoutPrescriptionNestedInput
+    Quotation?: QuotationUncheckedUpdateManyWithoutPrescriptionNestedInput
   }
 
   export type PrescriptionUncheckedUpdateManyWithoutCustomerInput = {
@@ -72243,6 +72696,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72267,6 +72721,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -72286,6 +72741,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73001,6 +73457,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -73178,6 +73635,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73202,6 +73660,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73221,6 +73680,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73305,6 +73765,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -73319,6 +73780,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73343,6 +73805,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73362,6 +73825,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73583,7 +74047,28 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type QuotationCreateManyPrescriptionInput = {
+    quotationId: string
+    quotationNumber?: string | null
+    quotationCustomerId: string
+    quotationTotal: number
+    quotationStatus?: $Enums.QuotationStatus
+    quotationComment?: string | null
+    quotationExpiresAt?: Date | string | null
+    quotationEmailDeliveryStatus?: $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: string | null
+    quotationEmailSentTo?: string | null
+    quotationEmailSentAt?: Date | string | null
+    quotationEmailDeliveredAt?: Date | string | null
+    quotationEmailOpenedAt?: Date | string | null
+    quotationEmailErrorMessage?: string | null
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73597,6 +74082,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73621,6 +74107,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73640,7 +74127,70 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuotationUpdateWithoutPrescriptionInput = {
+    quotationId?: StringFieldUpdateOperationsInput | string
+    quotationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationTotal?: IntFieldUpdateOperationsInput | number
+    quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
+    quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutQuotationNestedInput
+    customer?: CustomerUpdateOneRequiredWithoutQuotationNestedInput
+    QuotationDetail?: QuotationDetailUpdateManyWithoutQuotationNestedInput
+  }
+
+  export type QuotationUncheckedUpdateWithoutPrescriptionInput = {
+    quotationId?: StringFieldUpdateOperationsInput | string
+    quotationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationCustomerId?: StringFieldUpdateOperationsInput | string
+    quotationTotal?: IntFieldUpdateOperationsInput | number
+    quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
+    quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    QuotationDetail?: QuotationDetailUncheckedUpdateManyWithoutQuotationNestedInput
+  }
+
+  export type QuotationUncheckedUpdateManyWithoutPrescriptionInput = {
+    quotationId?: StringFieldUpdateOperationsInput | string
+    quotationNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationCustomerId?: StringFieldUpdateOperationsInput | string
+    quotationTotal?: IntFieldUpdateOperationsInput | number
+    quotationStatus?: EnumQuotationStatusFieldUpdateOperationsInput | $Enums.QuotationStatus
+    quotationComment?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveryStatus?: NullableEnumQuotationEmailDeliveryStatusFieldUpdateOperationsInput | $Enums.QuotationEmailDeliveryStatus | null
+    quotationEmailProviderMessageId?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentTo?: NullableStringFieldUpdateOperationsInput | string | null
+    quotationEmailSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailDeliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailOpenedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quotationEmailErrorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73659,6 +74209,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -73685,6 +74236,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73709,6 +74261,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73728,6 +74281,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73785,6 +74339,7 @@ export namespace Prisma {
     workOrderLabNotes?: string | null
     quantity?: number
     receivedAt?: Date | string | null
+    readyForDeliveryAt?: Date | string | null
     deliveredAt?: Date | string | null
     createdByUserId: string
     createdAt?: Date | string
@@ -73799,6 +74354,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73823,6 +74379,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73842,6 +74399,7 @@ export namespace Prisma {
     workOrderLabNotes?: NullableStringFieldUpdateOperationsInput | string | null
     quantity?: IntFieldUpdateOperationsInput | number
     receivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    readyForDeliveryAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deliveredAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

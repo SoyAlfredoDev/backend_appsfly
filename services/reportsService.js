@@ -455,3 +455,146 @@ export async function getSalesBySellerReport(
         rows,
     };
 }
+
+const WORK_ORDER_STATUS_LABELS = {
+    CREATED: "Creada",
+    PENDING_SHIPMENT: "Pendiente de Envío",
+    SENT_TO_LAB: "Enviada a Laboratorio",
+    RECEIVED: "Recibida",
+    QUALITY_CONTROL: "Control de Calidad",
+    READY_FOR_DELIVERY: "Lista para Entrega",
+    DELIVERED: "Entregada",
+};
+
+function daysBetween(from, to) {
+    if (!from || !to) return null;
+    const a = from instanceof Date ? from : new Date(from);
+    const b = to instanceof Date ? to : new Date(to);
+    if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return null;
+    return Math.round(((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24)) * 10) / 10;
+}
+
+function averageDays(values) {
+    const nums = values.filter((v) => typeof v === "number" && !Number.isNaN(v));
+    if (nums.length === 0) return null;
+    const sum = nums.reduce((acc, n) => acc + n, 0);
+    return Math.round((sum / nums.length) * 10) / 10;
+}
+
+/**
+ * Órdenes de trabajo / labs / tiempos en un rango de fechas (por createdAt).
+ * @param {{ startDate: string, endDate: string, laboratoryId?: string | null, status?: string | null }} filters
+ */
+export async function getWorkOrdersReport(
+    { startDate, endDate, laboratoryId, status },
+    prisma,
+    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+) {
+    const { start, end } = parseDateRange(startDate, endDate, timeZone);
+    const labFilter = laboratoryId?.trim() || null;
+    const statusFilter = status?.trim() || null;
+
+    const where = {
+        createdAt: { gte: start, lte: end },
+        ...(labFilter ? { laboratoryId: labFilter } : {}),
+        ...(statusFilter ? { workOrderStatus: statusFilter } : {}),
+    };
+
+    const workOrders = await prisma.workOrder.findMany({
+        where,
+        select: {
+            workOrderId: true,
+            workOrderNumber: true,
+            workOrderStatus: true,
+            createdAt: true,
+            receivedAt: true,
+            readyForDeliveryAt: true,
+            deliveredAt: true,
+            laboratory: { select: { laboratoryId: true, laboratoryName: true } },
+            customer: {
+                select: { customerFirstName: true, customerLastName: true },
+            },
+            sale: { select: { saleNumber: true } },
+            saleDetail: {
+                select: {
+                    product: { select: { productName: true } },
+                },
+            },
+        },
+        orderBy: { createdAt: "desc" },
+    });
+
+    const byStatus = {};
+    const byLab = {};
+    const daysCreatedToReceived = [];
+    const daysCreatedToReady = [];
+    const daysCreatedToDelivered = [];
+    const daysReadyToDelivered = [];
+
+    const rows = workOrders.map((wo) => {
+        const status = wo.workOrderStatus;
+        byStatus[status] = (byStatus[status] || 0) + 1;
+
+        const labName = wo.laboratory?.laboratoryName || "Sin laboratorio";
+        byLab[labName] = (byLab[labName] || 0) + 1;
+
+        const dReceived = daysBetween(wo.createdAt, wo.receivedAt);
+        const dReady = daysBetween(wo.createdAt, wo.readyForDeliveryAt);
+        const dDelivered = daysBetween(wo.createdAt, wo.deliveredAt);
+        const dReadyToDel = daysBetween(wo.readyForDeliveryAt, wo.deliveredAt);
+
+        if (dReceived != null) daysCreatedToReceived.push(dReceived);
+        if (dReady != null) daysCreatedToReady.push(dReady);
+        if (dDelivered != null) daysCreatedToDelivered.push(dDelivered);
+        if (dReadyToDel != null) daysReadyToDelivered.push(dReadyToDel);
+
+        const customerName =
+            `${wo.customer?.customerFirstName ?? ""} ${wo.customer?.customerLastName ?? ""}`.trim() ||
+            "—";
+
+        return {
+            id: wo.workOrderId,
+            number: wo.workOrderNumber,
+            saleNumber: wo.sale?.saleNumber ?? "—",
+            customer: customerName,
+            product: wo.saleDetail?.product?.productName ?? "—",
+            laboratory: labName,
+            status,
+            statusLabel: WORK_ORDER_STATUS_LABELS[status] || status,
+            createdAt: wo.createdAt,
+            receivedAt: wo.receivedAt,
+            readyForDeliveryAt: wo.readyForDeliveryAt,
+            deliveredAt: wo.deliveredAt,
+            daysCreatedToReceived: dReceived,
+            daysCreatedToReady: dReady,
+            daysCreatedToDelivered: dDelivered,
+            daysReadyToDelivered: dReadyToDel,
+        };
+    });
+
+    return {
+        reportType: "work-orders",
+        period: {
+            startDate,
+            endDate,
+            laboratoryId: labFilter,
+            status: statusFilter,
+        },
+        summary: {
+            totalWorkOrders: rows.length,
+            byStatus,
+            byLab,
+            avgDaysCreatedToReceived: averageDays(daysCreatedToReceived),
+            avgDaysCreatedToReady: averageDays(daysCreatedToReady),
+            avgDaysCreatedToDelivered: averageDays(daysCreatedToDelivered),
+            avgDaysReadyToDelivered: averageDays(daysReadyToDelivered),
+            deliveredCount: byStatus.DELIVERED || 0,
+            readyCount: byStatus.READY_FOR_DELIVERY || 0,
+            inLabCount:
+                (byStatus.SENT_TO_LAB || 0) +
+                (byStatus.RECEIVED || 0) +
+                (byStatus.QUALITY_CONTROL || 0),
+        },
+        rows,
+    };
+}

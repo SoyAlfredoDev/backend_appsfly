@@ -55,6 +55,8 @@ const workOrderInclude = {
             customerFirstName: true,
             customerLastName: true,
             customerDocumentNumber: true,
+            customerCodePhoneNumber: true,
+            customerPhoneNumber: true,
         },
     },
     labDispatch: {
@@ -361,6 +363,7 @@ export const updateWorkOrderStatus = async (workOrderId, nextStatus, prisma, { u
 
     const data = { workOrderStatus: nextStatus };
     if (nextStatus === "RECEIVED") data.receivedAt = new Date();
+    if (nextStatus === "READY_FOR_DELIVERY") data.readyForDeliveryAt = new Date();
     if (nextStatus === "DELIVERED") data.deliveredAt = new Date();
 
     const updated = await prisma.workOrder.update({

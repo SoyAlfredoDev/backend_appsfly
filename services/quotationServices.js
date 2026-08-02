@@ -33,6 +33,33 @@ function sumQuotationDetails(details = []) {
     return details.reduce((acc, detail) => acc + (detail.quotationDetailTotal ?? 0), 0);
 }
 
+const PRESCRIPTION_SELECT = {
+    prescriptionId: true,
+    prescriptionDate: true,
+    prescriptionType: true,
+    prescribedBy: true,
+    entryMode: true,
+    odSphere: true,
+    odCylinder: true,
+    odAxis: true,
+    odAddition: true,
+    oiSphere: true,
+    oiCylinder: true,
+    oiAxis: true,
+    oiAddition: true,
+    pdBinocular: true,
+};
+
+async function assertPrescriptionBelongsToCustomer(prescriptionId, customerId, prisma) {
+    if (!prescriptionId) return;
+    const rx = await prisma.prescription.findUnique({ where: { prescriptionId } });
+    if (!rx || rx.customerId !== customerId) {
+        const error = new Error("La receta no pertenece al cliente de la cotización.");
+        error.statusCode = 400;
+        throw error;
+    }
+}
+
 function mapQuotationListRow(quotation) {
     const totalDetails = sumQuotationDetails(quotation.QuotationDetail);
     const quotationDate = formatQuotationDate(quotation.createdAt);
@@ -45,6 +72,11 @@ function mapQuotationListRow(quotation) {
 
 export const createQuotation = async (data, prisma) => {
     try {
+        await assertPrescriptionBelongsToCustomer(
+            data.prescriptionId,
+            data.quotationCustomerId,
+            prisma,
+        );
         const res = await prisma.quotation.create({ data });
         return res;
     } catch (error) {
@@ -91,6 +123,9 @@ export const getQuotationById = async (id, prisma) => {
                         userLastName: true
                     }
                 },
+                prescription: {
+                    select: PRESCRIPTION_SELECT,
+                },
                 QuotationDetail: {
                     include: {
                         product: {
@@ -124,6 +159,48 @@ export const getQuotationById = async (id, prisma) => {
         };
     } catch (error) {
         console.error("(quotationServices.js): Error getting quotation by ID:", error);
+        throw error;
+    }
+};
+
+export const updateQuotation = async (id, body, prisma) => {
+    try {
+        const existing = await prisma.quotation.findUnique({
+            where: { quotationId: id },
+            select: { quotationId: true, quotationCustomerId: true },
+        });
+        if (!existing) {
+            const error = new Error("Cotización no encontrada.");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        const data = {};
+        if (body.quotationComment !== undefined) data.quotationComment = body.quotationComment;
+        if (body.quotationExpiresAt !== undefined) {
+            data.quotationExpiresAt = body.quotationExpiresAt
+                ? new Date(body.quotationExpiresAt)
+                : null;
+        }
+        if (body.prescriptionId !== undefined) {
+            const prescriptionId = body.prescriptionId || null;
+            await assertPrescriptionBelongsToCustomer(
+                prescriptionId,
+                existing.quotationCustomerId,
+                prisma,
+            );
+            data.prescriptionId = prescriptionId;
+        }
+
+        return await prisma.quotation.update({
+            where: { quotationId: id },
+            data,
+            include: {
+                prescription: { select: PRESCRIPTION_SELECT },
+            },
+        });
+    } catch (error) {
+        console.error("(quotationServices.js): Error updating quotation:", error);
         throw error;
     }
 };

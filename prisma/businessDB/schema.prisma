@@ -607,6 +607,9 @@ model Quotation {
     quotationStatus    QuotationStatus   @default(DRAFT)
     quotationComment   String?
     quotationExpiresAt DateTime?
+    /** Receta óptica vinculada (opcional) — mismo patrón que WorkOrder */
+    prescriptionId     String?
+    prescription       Prescription?     @relation(fields: [prescriptionId], references: [prescriptionId])
     quotationEmailDeliveryStatus QuotationEmailDeliveryStatus?
     quotationEmailProviderMessageId String?
     quotationEmailSentTo String?
@@ -620,6 +623,8 @@ model Quotation {
     createdAt          DateTime          @default(now())
     updatedAt          DateTime          @updatedAt
     QuotationDetail    QuotationDetail[]
+
+    @@index([prescriptionId])
 }
 
 model QuotationDetail {
@@ -688,6 +693,7 @@ model Prescription {
     createdAt             DateTime @default(now())
     updatedAt             DateTime @updatedAt
     WorkOrder             WorkOrder[]
+    Quotation             Quotation[]
 
     @@index([customerId, createdAt(sort: Desc)])
 }
@@ -753,6 +759,7 @@ model WorkOrder {
     workOrderLabNotes  String?
     quantity           Int             @default(1)
     receivedAt         DateTime?
+    readyForDeliveryAt DateTime?
     deliveredAt        DateTime?
     createdByUserId    String
     createdBy          User            @relation(fields: [createdByUserId], references: [userId])

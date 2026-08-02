@@ -3,6 +3,7 @@ import {
     getYearlySalesReport,
     getInventoryMovementsReport,
     getSalesBySellerReport,
+    getWorkOrdersReport,
 } from "../services/reportsService.js";
 import { assertUserBelongsToBusiness } from "../services/userBusinessService.js";
 import { DEFAULT_BUSINESS_TIMEZONE } from "../libs/businessTimezone.js";
@@ -87,6 +88,31 @@ export const generateReportController = async (req, res) => {
                             startDate,
                             endDate,
                             sellerId: trimmedSellerId,
+                        },
+                        prisma,
+                        timeZone,
+                    );
+                    return res.status(200).json(data);
+                } catch (rangeError) {
+                    const message = REPORT_ERRORS[rangeError.message];
+                    if (message) {
+                        return res.status(400).json({ error: message });
+                    }
+                    throw rangeError;
+                }
+            }
+            case "work-orders": {
+                const { startDate, endDate, laboratoryId, status } = req.query;
+                if (!startDate || !endDate) {
+                    return res.status(400).json({ error: "Debes indicar fecha de inicio y fin." });
+                }
+                try {
+                    const data = await getWorkOrdersReport(
+                        {
+                            startDate,
+                            endDate,
+                            laboratoryId: laboratoryId || null,
+                            status: status || null,
                         },
                         prisma,
                         timeZone,
