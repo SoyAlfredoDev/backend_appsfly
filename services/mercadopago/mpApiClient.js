@@ -345,4 +345,32 @@ export async function getMercadoPagoAuthorizedPayment(authorizedPaymentId) {
     return data;
 }
 
+/**
+ * Lista cobros autorizados de un preapproval (renovaciones).
+ * @see https://www.mercadopago.cl/developers/es/reference/subscriptions/_authorized_payments_search/get
+ */
+export async function searchMercadoPagoAuthorizedPaymentsByPreapproval(preapprovalId, { limit = 20 } = {}) {
+    const token = getMercadoPagoAccessToken();
+    if (!token) {
+        throw new Error("Mercado Pago no está configurado.");
+    }
+
+    const params = new URLSearchParams({
+        preapproval_id: String(preapprovalId),
+        limit: String(limit),
+    });
+
+    const response = await fetch(`${MP_API_BASE}/authorized_payments/search?${params}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        console.error("[mercadopago/mpApiClient] authorized_payments search error:", data);
+        throw new Error(data?.message || "No se pudieron listar cobros recurrentes en Mercado Pago.");
+    }
+
+    return Array.isArray(data.results) ? data.results : [];
+}
+
 export { getFrontendBaseUrl, getBackendBaseUrl, buildWebhookUrl };

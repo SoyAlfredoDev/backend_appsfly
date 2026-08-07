@@ -9,6 +9,7 @@ export {
     mapMercadoPagoPreapprovalStatus,
     getMercadoPagoPreapproval,
     getMercadoPagoAuthorizedPayment,
+    searchMercadoPagoAuthorizedPaymentsByPreapproval,
     getFrontendBaseUrl,
     getBackendBaseUrl,
     buildWebhookUrl,

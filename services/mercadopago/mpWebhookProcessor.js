@@ -509,7 +509,7 @@ async function handleSubscriptionPreapproval(resourceId, action) {
 }
 
 /**
- * Procesamiento principal del webhook (ejecutar de forma asíncrona tras HTTP 200).
+ * Procesamiento principal del webhook Mercado Pago (inline en el controller).
  */
 export async function processMercadoPagoWebhookNotification({
     topic,
