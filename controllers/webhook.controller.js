@@ -13,8 +13,11 @@ function isProductionEnvironment() {
 }
 
 /**
- * Webhook IPN Mercado Pago — responde 200/201 de inmediato y procesa en background.
- * Ruta pública (sin auth); protegida por validación x-signature.
+ * Webhook IPN Mercado Pago — protegido por x-signature.
+ *
+ * Importante (Vercel/serverless): NO usar setImmediate tras el 200.
+ * El runtime congela la función al responder y se perdían renovaciones.
+ * Procesamos inline y luego respondemos 200.
  */
 export const mercadoPagoWebhookController = async (req, res) => {
     const notification = extractWebhookNotification(req);
@@ -43,15 +46,25 @@ export const mercadoPagoWebhookController = async (req, res) => {
         console.warn("[webhook] Validación de firma omitida (MERCADO_PAGO_WEBHOOK_SECRET no configurado).");
     }
 
-    res.status(200).json({ received: true, id: notification.resourceId });
-
-    setImmediate(() => {
-        processMercadoPagoWebhookNotification({
+    try {
+        const result = await processMercadoPagoWebhookNotification({
             topic: notification.topic,
             action: notification.action,
             resourceId: notification.resourceId,
-        }).catch((error) => {
-            console.error("[webhook] Error en procesamiento asíncrono:", error);
         });
-    });
+
+        return res.status(200).json({
+            received: true,
+            id: notification.resourceId,
+            reason: result?.reason ?? null,
+        });
+    } catch (error) {
+        console.error("[webhook] Error procesando notificación Mercado Pago:", error);
+        // 200 para no spamear reintentos por errores de aplicación; el log queda para auditoría.
+        return res.status(200).json({
+            received: true,
+            id: notification.resourceId,
+            error: "PROCESSING_FAILED",
+        });
+    }
 };

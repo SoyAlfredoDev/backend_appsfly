@@ -307,19 +307,42 @@ async function handlePaymentTopic(resourceId, action) {
     return { processed: true, reason: "PENDING" };
 }
 
+/**
+ * Cobros recurrentes MP: el invoice suele venir como `processed` y el pago anidado como `approved`.
+ * No usar solo authorized.status — enmascara payment.status.
+ */
+function isAuthorizedPaymentSuccessful(authorized) {
+    const invoiceStatus = String(authorized?.status || "").toLowerCase();
+    const paymentStatus = String(authorized?.payment?.status || "").toLowerCase();
+
+    if (paymentStatus === "approved" || paymentStatus === "authorized") return true;
+    if (["approved", "authorized", "processed"].includes(invoiceStatus)) {
+        // processed sin pago anidado aún: tratar como éxito (cobro debitado)
+        if (!authorized?.payment) return invoiceStatus === "processed" || invoiceStatus === "approved";
+        return !["rejected", "cancelled", "canceled", "refunded", "charged_back"].includes(paymentStatus);
+    }
+    return false;
+}
+
+function isAuthorizedPaymentFailed(authorized) {
+    const invoiceStatus = String(authorized?.status || "").toLowerCase();
+    const paymentStatus = String(authorized?.payment?.status || "").toLowerCase();
+    return ["rejected", "cancelled", "canceled", "refunded", "charged_back"].includes(paymentStatus)
+        || ["rejected", "cancelled", "canceled"].includes(invoiceStatus);
+}
+
 async function handleSubscriptionAuthorizedPayment(resourceId, action) {
     const authorized = await getMercadoPagoAuthorizedPayment(resourceId);
     const preapprovalId = authorized.preapproval_id;
     const paymentId = authorized.payment?.id || authorized.payment_id;
     const eventType = action || "subscription_authorized_payment";
+    const mpPaymentKey = paymentId ? String(paymentId) : String(resourceId);
 
     let subscription = preapprovalId
         ? await findSubscriptionByPreapprovalId(preapprovalId)
         : null;
 
-    const status = String(authorized.status || authorized.payment?.status || "").toLowerCase();
-
-    if (status === "approved" || status === "authorized") {
+    if (isAuthorizedPaymentSuccessful(authorized)) {
         if (!subscription && preapprovalId) {
             const preapproval = await getMercadoPagoPreapproval(preapprovalId);
             if (preapproval.external_reference) {
@@ -337,6 +360,25 @@ async function handleSubscriptionAuthorizedPayment(resourceId, action) {
                 return { processed: true, reason: "RECURRING_PAYMENT_IGNORED_CANCELLED", subscription };
             }
 
+            const alreadyRecorded = await general.subscriptionPayment.findFirst({
+                where: {
+                    subscriptionBusinessId: subscription.subscriptionBusinessId,
+                    OR: [
+                        { mpPaymentId: mpPaymentKey },
+                        { mpPaymentId: String(resourceId) },
+                    ],
+                    status: "APPROVED",
+                },
+            });
+            if (alreadyRecorded) {
+                return {
+                    processed: true,
+                    reason: "RECURRING_PAYMENT_ALREADY_RECORDED",
+                    subscription,
+                    payment: alreadyRecorded,
+                };
+            }
+
             const extended = await extendSubscriptionRenewal(subscription.subscriptionBusinessId);
             const amount = Number(
                 authorized.transaction_amount
@@ -348,16 +390,22 @@ async function handleSubscriptionAuthorizedPayment(resourceId, action) {
                 subscription: extended ?? subscription,
                 amount,
                 currency: authorized.currency_id || "CLP",
-                mpPaymentId: paymentId ? String(paymentId) : String(resourceId),
+                mpPaymentId: mpPaymentKey,
                 mpPreapprovalId: preapprovalId ? String(preapprovalId) : null,
-                metadata: { source: "webhook_renewal", eventType },
+                metadata: {
+                    source: "webhook_renewal",
+                    eventType,
+                    authorizedPaymentId: String(resourceId),
+                    authorizedStatus: authorized.status,
+                    paymentStatus: authorized.payment?.status ?? null,
+                },
             });
 
             const context = await loadPaymentContext(paymentRecord.subscriptionPaymentId);
             await dispatchSuccessEmails({
                 paymentRecord: context ?? paymentRecord,
                 subscription: extended ?? subscription,
-                transactionId: paymentId ? String(paymentId) : String(resourceId),
+                transactionId: mpPaymentKey,
                 eventType,
             });
 
@@ -371,7 +419,7 @@ async function handleSubscriptionAuthorizedPayment(resourceId, action) {
         return { processed: false, reason: "SUBSCRIPTION_NOT_FOUND" };
     }
 
-    if (["rejected", "cancelled", "canceled", "refunded"].includes(status)) {
+    if (isAuthorizedPaymentFailed(authorized)) {
         if (subscription) {
             await expireBusinessSubscription(subscription.subscriptionBusinessId);
             await general.subscription.update({
