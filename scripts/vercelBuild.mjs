@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
-import { mkdir, copyFile } from "node:fs/promises";
+import { resolve4 } from "node:dns/promises";
+import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
@@ -15,9 +16,64 @@ export function shouldMigrateSharedDatabase(env = process.env) {
   return Boolean(env.DATABASE_SHARED_MIGRATION_URL?.trim());
 }
 
+export function databaseHostname(url) {
+  const trimmed = url?.trim();
+  if (!trimmed) return null;
+  try {
+    return new URL(trimmed).hostname || null;
+  } catch {
+    return null;
+  }
+}
+
+export function pinHostnameInHosts(hosts, hostname, address) {
+  const line = `${address} ${hostname}`;
+  const entries = hosts.split(/\r?\n/).map((entry) => entry.trim());
+  if (entries.includes(line))
+    return hosts.endsWith("\n") || hosts.length === 0 ? hosts : `${hosts}\n`;
+  const base = hosts.endsWith("\n") || hosts.length === 0 ? hosts : `${hosts}\n`;
+  return `${base}${line}\n`;
+}
+
 /**
- * Prisma migrations need Neon's direct host. The pooled `-pooler` host used at
- * runtime often times out while a suspended compute wakes up.
+ * Vercel build machines cannot route IPv6. Neon publishes both address
+ * families, and Prisma tries IPv6 first, so pin the hostname to IPv4.
+ */
+export async function preferIpv4DatabaseHost(url, io = {}) {
+  const hostname = databaseHostname(url);
+  if (!hostname) return false;
+
+  const lookup = io.resolve4 ?? resolve4;
+  const readHosts = io.readFile ?? readFile;
+  const writeHosts = io.writeFile ?? writeFile;
+  const hostsPath = io.hostsPath ?? "/etc/hosts";
+
+  let addresses;
+  try {
+    addresses = await lookup(hostname);
+  } catch (error) {
+    console.warn(`Could not resolve an IPv4 address for ${hostname}: ${error.message}`);
+    return false;
+  }
+
+  const address = addresses?.find((value) => typeof value === "string" && value.trim());
+  if (!address) return false;
+
+  try {
+    const current = await readHosts(hostsPath, "utf8");
+    const next = pinHostnameInHosts(current, hostname, address.trim());
+    if (next !== current) await writeHosts(hostsPath, next);
+    console.log(`Pinned ${hostname} to IPv4 for Prisma migrations.`);
+    return true;
+  } catch (error) {
+    console.warn(`Could not pin ${hostname} to IPv4: ${error.message}`);
+    return false;
+  }
+}
+
+/**
+ * Prisma migrations need Neon's direct host. The pooled `-pooler` host is only
+ * for runtime queries.
  */
 export function migrationDatabaseUrl(url) {
   const trimmed = url?.trim();
@@ -109,15 +165,28 @@ export async function bundleApi() {
   return bundlePath;
 }
 
+async function prepareMigrationHost(schema, env) {
+  const migrateEnv = migrationEnvForSchema(schema, env);
+  const normalized = schema.replaceAll("\\", "/");
+  const key = normalized.includes("/sharedDB/")
+    ? "DATABASE_SHARED_MIGRATION_URL"
+    : "DATABASE_GENERAL_URL";
+  await preferIpv4DatabaseHost(migrateEnv[key]);
+}
+
 export async function deployControlPlaneMigrations(env = process.env) {
-  runPrismaMigrate(path.join(backendDir, "prisma", "generalDB", "schema.prisma"), env);
+  const generalSchema = path.join(backendDir, "prisma", "generalDB", "schema.prisma");
+  await prepareMigrationHost(generalSchema, env);
+  runPrismaMigrate(generalSchema, env);
   if (!shouldMigrateSharedDatabase(env)) {
     console.warn(
       "DATABASE_SHARED_MIGRATION_URL is not set. Shared data-plane migrations were skipped.",
     );
     return;
   }
-  runPrismaMigrate(path.join(backendDir, "prisma", "sharedDB", "schema.prisma"), env);
+  const sharedSchema = path.join(backendDir, "prisma", "sharedDB", "schema.prisma");
+  await prepareMigrationHost(sharedSchema, env);
+  runPrismaMigrate(sharedSchema, env);
 }
 
 async function main() {

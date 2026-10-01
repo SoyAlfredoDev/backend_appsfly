@@ -15,6 +15,8 @@ import {
   isRetryableDatabaseError,
   migrationDatabaseUrl,
   migrationEnvForSchema,
+  pinHostnameInHosts,
+  preferIpv4DatabaseHost,
   shouldMigrateSharedDatabase,
 } from "../scripts/vercelBuild.mjs";
 
@@ -115,6 +117,34 @@ describe("Vercel build migrations", () => {
   it("retries only when the database server cannot be reached", () => {
     expect(isRetryableDatabaseError("Error: P1001: Can't reach database server")).toBe(true);
     expect(isRetryableDatabaseError("Error: P3018: A migration failed to apply")).toBe(false);
+  });
+
+  it("pins the migration hostname to IPv4 without storing the database password", async () => {
+    const files = { "/etc/hosts": "127.0.0.1 localhost\n" };
+    const pinned = await preferIpv4DatabaseHost(
+      "postgresql://user:secret@ep-dawn-voice-adasrur5.c-2.us-east-1.aws.neon.tech/db",
+      {
+        resolve4: async () => ["44.198.216.75"],
+        readFile: async (filePath) => files[filePath],
+        writeFile: async (filePath, contents) => {
+          files[filePath] = contents;
+        },
+        hostsPath: "/etc/hosts",
+      },
+    );
+
+    expect(pinned).toBe(true);
+    expect(files["/etc/hosts"]).toBe(
+      "127.0.0.1 localhost\n44.198.216.75 ep-dawn-voice-adasrur5.c-2.us-east-1.aws.neon.tech\n",
+    );
+    expect(files["/etc/hosts"]).not.toContain("secret");
+    expect(
+      pinHostnameInHosts(
+        files["/etc/hosts"],
+        "ep-dawn-voice-adasrur5.c-2.us-east-1.aws.neon.tech",
+        "44.198.216.75",
+      ),
+    ).toBe(files["/etc/hosts"]);
   });
 });
 
