@@ -11,7 +11,12 @@ import {
   toPublicRecord,
   UtilityAccessError,
 } from "../services/database/tenantUtilityAccess.js";
-import { shouldMigrateSharedDatabase } from "../scripts/vercelBuild.mjs";
+import {
+  isRetryableDatabaseError,
+  migrationDatabaseUrl,
+  migrationEnvForSchema,
+  shouldMigrateSharedDatabase,
+} from "../scripts/vercelBuild.mjs";
 
 describe("public user responses", () => {
   it("removes the password hash before a user leaves the API", () => {
@@ -77,6 +82,39 @@ describe("Vercel build migrations", () => {
       shouldMigrateSharedDatabase({ DATABASE_SHARED_MIGRATION_URL: " postgresql://owner " }),
     ).toBe(true);
     expect(shouldMigrateSharedDatabase({})).toBe(false);
+  });
+
+  it("uses Neon's direct host and a longer connect timeout for migrations", () => {
+    const url = migrationDatabaseUrl(
+      "postgresql://user:secret@ep-dawn-voice-adasrur5-pooler.c-2.us-east-1.aws.neon.tech/db?sslmode=require&pgbouncer=true",
+    );
+    const parsed = new URL(url ?? "");
+
+    expect(parsed.hostname).toBe("ep-dawn-voice-adasrur5.c-2.us-east-1.aws.neon.tech");
+    expect(parsed.searchParams.get("connect_timeout")).toBe("30");
+    expect(parsed.searchParams.get("sslmode")).toBe("require");
+    expect(parsed.searchParams.has("pgbouncer")).toBe(false);
+    expect(parsed.password).toBe("secret");
+  });
+
+  it("rewrites only the migration URL for each schema", () => {
+    const env = {
+      DATABASE_GENERAL_URL: "postgresql://user:secret@ep-general-pooler.example/general",
+      DATABASE_SHARED_URL: "postgresql://runtime:secret@ep-shared-pooler.example/shared",
+      DATABASE_SHARED_MIGRATION_URL: "postgresql://owner:secret@ep-shared-pooler.example/shared",
+    };
+
+    const general = migrationEnvForSchema("prisma/generalDB/schema.prisma", env);
+    const shared = migrationEnvForSchema("prisma/sharedDB/schema.prisma", env);
+
+    expect(new URL(general.DATABASE_GENERAL_URL).hostname).toBe("ep-general.example");
+    expect(shared.DATABASE_SHARED_URL).toBe(env.DATABASE_SHARED_URL);
+    expect(new URL(shared.DATABASE_SHARED_MIGRATION_URL).hostname).toBe("ep-shared.example");
+  });
+
+  it("retries only when the database server cannot be reached", () => {
+    expect(isRetryableDatabaseError("Error: P1001: Can't reach database server")).toBe(true);
+    expect(isRetryableDatabaseError("Error: P3018: A migration failed to apply")).toBe(false);
   });
 });
 
