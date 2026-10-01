@@ -264,6 +264,25 @@ export const BusinessStatus: {
 export type BusinessStatus = (typeof BusinessStatus)[keyof typeof BusinessStatus]
 
 
+export const TenantDatabaseMode: {
+  SHARED: 'SHARED',
+  DEDICATED: 'DEDICATED'
+};
+
+export type TenantDatabaseMode = (typeof TenantDatabaseMode)[keyof typeof TenantDatabaseMode]
+
+
+export const TenantDatabaseStatus: {
+  UNASSIGNED: 'UNASSIGNED',
+  PROVISIONING: 'PROVISIONING',
+  ACTIVE: 'ACTIVE',
+  MIGRATING: 'MIGRATING',
+  FAILED: 'FAILED'
+};
+
+export type TenantDatabaseStatus = (typeof TenantDatabaseStatus)[keyof typeof TenantDatabaseStatus]
+
+
 export const BusinessEntity: {
   INDIVIDUAL: 'INDIVIDUAL',
   COMPANY: 'COMPANY'
@@ -393,6 +412,14 @@ export const Role: typeof $Enums.Role
 export type BusinessStatus = $Enums.BusinessStatus
 
 export const BusinessStatus: typeof $Enums.BusinessStatus
+
+export type TenantDatabaseMode = $Enums.TenantDatabaseMode
+
+export const TenantDatabaseMode: typeof $Enums.TenantDatabaseMode
+
+export type TenantDatabaseStatus = $Enums.TenantDatabaseStatus
+
+export const TenantDatabaseStatus: typeof $Enums.TenantDatabaseStatus
 
 export type BusinessEntity = $Enums.BusinessEntity
 
@@ -801,7 +828,7 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.19.2
+   * Prisma Client JS version: 6.19.3
    * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
    */
   export type PrismaVersion = {
@@ -4702,6 +4729,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber: string | null
     businessWhatsappNumber: string | null
     businessConnectionDB: string | null
+    businessDatabaseMode: $Enums.TenantDatabaseMode | null
+    businessDatabaseStatus: $Enums.TenantDatabaseStatus | null
+    businessDatabaseSecretRef: string | null
+    businessSchemaVersion: string | null
     businessEntity: $Enums.BusinessEntity | null
     businessStatus: $Enums.BusinessStatus | null
     businessAllowCreditSales: boolean | null
@@ -4731,6 +4762,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber: string | null
     businessWhatsappNumber: string | null
     businessConnectionDB: string | null
+    businessDatabaseMode: $Enums.TenantDatabaseMode | null
+    businessDatabaseStatus: $Enums.TenantDatabaseStatus | null
+    businessDatabaseSecretRef: string | null
+    businessSchemaVersion: string | null
     businessEntity: $Enums.BusinessEntity | null
     businessStatus: $Enums.BusinessStatus | null
     businessAllowCreditSales: boolean | null
@@ -4760,6 +4795,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber: number
     businessWhatsappNumber: number
     businessConnectionDB: number
+    businessDatabaseMode: number
+    businessDatabaseStatus: number
+    businessDatabaseSecretRef: number
+    businessSchemaVersion: number
     businessEntity: number
     businessStatus: number
     businessProcess: number
@@ -4792,6 +4831,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: true
     businessWhatsappNumber?: true
     businessConnectionDB?: true
+    businessDatabaseMode?: true
+    businessDatabaseStatus?: true
+    businessDatabaseSecretRef?: true
+    businessSchemaVersion?: true
     businessEntity?: true
     businessStatus?: true
     businessAllowCreditSales?: true
@@ -4821,6 +4864,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: true
     businessWhatsappNumber?: true
     businessConnectionDB?: true
+    businessDatabaseMode?: true
+    businessDatabaseStatus?: true
+    businessDatabaseSecretRef?: true
+    businessSchemaVersion?: true
     businessEntity?: true
     businessStatus?: true
     businessAllowCreditSales?: true
@@ -4850,6 +4897,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: true
     businessWhatsappNumber?: true
     businessConnectionDB?: true
+    businessDatabaseMode?: true
+    businessDatabaseStatus?: true
+    businessDatabaseSecretRef?: true
+    businessSchemaVersion?: true
     businessEntity?: true
     businessStatus?: true
     businessProcess?: true
@@ -4953,6 +5004,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber: string | null
     businessWhatsappNumber: string | null
     businessConnectionDB: string | null
+    businessDatabaseMode: $Enums.TenantDatabaseMode
+    businessDatabaseStatus: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef: string | null
+    businessSchemaVersion: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess: JsonValue | null
@@ -5000,6 +5055,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: boolean
     businessWhatsappNumber?: boolean
     businessConnectionDB?: boolean
+    businessDatabaseMode?: boolean
+    businessDatabaseStatus?: boolean
+    businessDatabaseSecretRef?: boolean
+    businessSchemaVersion?: boolean
     businessEntity?: boolean
     businessStatus?: boolean
     businessProcess?: boolean
@@ -5038,6 +5097,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: boolean
     businessWhatsappNumber?: boolean
     businessConnectionDB?: boolean
+    businessDatabaseMode?: boolean
+    businessDatabaseStatus?: boolean
+    businessDatabaseSecretRef?: boolean
+    businessSchemaVersion?: boolean
     businessEntity?: boolean
     businessStatus?: boolean
     businessProcess?: boolean
@@ -5069,6 +5132,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: boolean
     businessWhatsappNumber?: boolean
     businessConnectionDB?: boolean
+    businessDatabaseMode?: boolean
+    businessDatabaseStatus?: boolean
+    businessDatabaseSecretRef?: boolean
+    businessSchemaVersion?: boolean
     businessEntity?: boolean
     businessStatus?: boolean
     businessProcess?: boolean
@@ -5100,6 +5167,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: boolean
     businessWhatsappNumber?: boolean
     businessConnectionDB?: boolean
+    businessDatabaseMode?: boolean
+    businessDatabaseStatus?: boolean
+    businessDatabaseSecretRef?: boolean
+    businessSchemaVersion?: boolean
     businessEntity?: boolean
     businessStatus?: boolean
     businessProcess?: boolean
@@ -5117,7 +5188,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BusinessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "businessName" | "businessType" | "businessDocumentType" | "businessDocumentNumber" | "businessEmail" | "businessPhoneNumber" | "businessCodePhoneNumber" | "businessCountry" | "businessCodeWhatsappNumber" | "businessWhatsappNumber" | "businessConnectionDB" | "businessEntity" | "businessStatus" | "businessProcess" | "businessAllowCreditSales" | "businessDeliveryControlEnabled" | "businessTimezone" | "businessReceiptLogoUrl" | "businessReceiptAddress" | "businessReceiptPhone" | "businessReceiptEmail" | "businessReceiptSocial" | "businessReceiptFooterNote" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
+  export type BusinessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "businessName" | "businessType" | "businessDocumentType" | "businessDocumentNumber" | "businessEmail" | "businessPhoneNumber" | "businessCodePhoneNumber" | "businessCountry" | "businessCodeWhatsappNumber" | "businessWhatsappNumber" | "businessConnectionDB" | "businessDatabaseMode" | "businessDatabaseStatus" | "businessDatabaseSecretRef" | "businessSchemaVersion" | "businessEntity" | "businessStatus" | "businessProcess" | "businessAllowCreditSales" | "businessDeliveryControlEnabled" | "businessTimezone" | "businessReceiptLogoUrl" | "businessReceiptAddress" | "businessReceiptPhone" | "businessReceiptEmail" | "businessReceiptSocial" | "businessReceiptFooterNote" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
   export type BusinessInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | Business$createdByArgs<ExtArgs>
     UserGuest?: boolean | Business$UserGuestArgs<ExtArgs>
@@ -5158,7 +5229,17 @@ export namespace Prisma {
       businessCountry: string
       businessCodeWhatsappNumber: string | null
       businessWhatsappNumber: string | null
+      /**
+       * Legado: URL directa usada únicamente por tenants DEDICATED. No exponer por API.
+       */
       businessConnectionDB: string | null
+      businessDatabaseMode: $Enums.TenantDatabaseMode
+      businessDatabaseStatus: $Enums.TenantDatabaseStatus
+      /**
+       * Referencia al secreto administrado; nunca contiene la contraseña en respuestas API.
+       */
+      businessDatabaseSecretRef: string | null
+      businessSchemaVersion: string | null
       businessEntity: $Enums.BusinessEntity
       businessStatus: $Enums.BusinessStatus
       businessProcess: Prisma.JsonValue | null
@@ -5619,6 +5700,10 @@ export namespace Prisma {
     readonly businessCodeWhatsappNumber: FieldRef<"Business", 'String'>
     readonly businessWhatsappNumber: FieldRef<"Business", 'String'>
     readonly businessConnectionDB: FieldRef<"Business", 'String'>
+    readonly businessDatabaseMode: FieldRef<"Business", 'TenantDatabaseMode'>
+    readonly businessDatabaseStatus: FieldRef<"Business", 'TenantDatabaseStatus'>
+    readonly businessDatabaseSecretRef: FieldRef<"Business", 'String'>
+    readonly businessSchemaVersion: FieldRef<"Business", 'String'>
     readonly businessEntity: FieldRef<"Business", 'BusinessEntity'>
     readonly businessStatus: FieldRef<"Business", 'BusinessStatus'>
     readonly businessProcess: FieldRef<"Business", 'Json'>
@@ -9646,6 +9731,7 @@ export namespace Prisma {
     planDuration: number | null
     planCurrency: string | null
     planActive: boolean | null
+    planDatabaseMode: $Enums.TenantDatabaseMode | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9658,6 +9744,7 @@ export namespace Prisma {
     planDuration: number | null
     planCurrency: string | null
     planActive: boolean | null
+    planDatabaseMode: $Enums.TenantDatabaseMode | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9671,6 +9758,7 @@ export namespace Prisma {
     planDuration: number
     planCurrency: number
     planActive: number
+    planDatabaseMode: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -9695,6 +9783,7 @@ export namespace Prisma {
     planDuration?: true
     planCurrency?: true
     planActive?: true
+    planDatabaseMode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9707,6 +9796,7 @@ export namespace Prisma {
     planDuration?: true
     planCurrency?: true
     planActive?: true
+    planDatabaseMode?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -9720,6 +9810,7 @@ export namespace Prisma {
     planDuration?: true
     planCurrency?: true
     planActive?: true
+    planDatabaseMode?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -9820,6 +9911,7 @@ export namespace Prisma {
     planDuration: number
     planCurrency: string
     planActive: boolean
+    planDatabaseMode: $Enums.TenantDatabaseMode
     createdAt: Date
     updatedAt: Date
     _count: PlanCountAggregateOutputType | null
@@ -9852,6 +9944,7 @@ export namespace Prisma {
     planDuration?: boolean
     planCurrency?: boolean
     planActive?: boolean
+    planDatabaseMode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     subscriptions?: boolean | Plan$subscriptionsArgs<ExtArgs>
@@ -9868,6 +9961,7 @@ export namespace Prisma {
     planDuration?: boolean
     planCurrency?: boolean
     planActive?: boolean
+    planDatabaseMode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["plan"]>
@@ -9881,6 +9975,7 @@ export namespace Prisma {
     planDuration?: boolean
     planCurrency?: boolean
     planActive?: boolean
+    planDatabaseMode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["plan"]>
@@ -9894,11 +9989,12 @@ export namespace Prisma {
     planDuration?: boolean
     planCurrency?: boolean
     planActive?: boolean
+    planDatabaseMode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"planId" | "planName" | "planDescription" | "planFeatures" | "planPrice" | "planDuration" | "planCurrency" | "planActive" | "createdAt" | "updatedAt", ExtArgs["result"]["plan"]>
+  export type PlanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"planId" | "planName" | "planDescription" | "planFeatures" | "planPrice" | "planDuration" | "planCurrency" | "planActive" | "planDatabaseMode" | "createdAt" | "updatedAt", ExtArgs["result"]["plan"]>
   export type PlanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     subscriptions?: boolean | Plan$subscriptionsArgs<ExtArgs>
     subscriptionPayments?: boolean | Plan$subscriptionPaymentsArgs<ExtArgs>
@@ -9922,6 +10018,7 @@ export namespace Prisma {
       planDuration: number
       planCurrency: string
       planActive: boolean
+      planDatabaseMode: $Enums.TenantDatabaseMode
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["plan"]>
@@ -10357,6 +10454,7 @@ export namespace Prisma {
     readonly planDuration: FieldRef<"Plan", 'Int'>
     readonly planCurrency: FieldRef<"Plan", 'String'>
     readonly planActive: FieldRef<"Plan", 'Boolean'>
+    readonly planDatabaseMode: FieldRef<"Plan", 'TenantDatabaseMode'>
     readonly createdAt: FieldRef<"Plan", 'DateTime'>
     readonly updatedAt: FieldRef<"Plan", 'DateTime'>
   }
@@ -27335,6 +27433,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber: 'businessCodeWhatsappNumber',
     businessWhatsappNumber: 'businessWhatsappNumber',
     businessConnectionDB: 'businessConnectionDB',
+    businessDatabaseMode: 'businessDatabaseMode',
+    businessDatabaseStatus: 'businessDatabaseStatus',
+    businessDatabaseSecretRef: 'businessDatabaseSecretRef',
+    businessSchemaVersion: 'businessSchemaVersion',
     businessEntity: 'businessEntity',
     businessStatus: 'businessStatus',
     businessProcess: 'businessProcess',
@@ -27411,6 +27513,7 @@ export namespace Prisma {
     planDuration: 'planDuration',
     planCurrency: 'planCurrency',
     planActive: 'planActive',
+    planDatabaseMode: 'planDatabaseMode',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -27770,6 +27873,34 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TenantDatabaseMode'
+   */
+  export type EnumTenantDatabaseModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TenantDatabaseMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'TenantDatabaseMode[]'
+   */
+  export type ListEnumTenantDatabaseModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TenantDatabaseMode[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TenantDatabaseStatus'
+   */
+  export type EnumTenantDatabaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TenantDatabaseStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'TenantDatabaseStatus[]'
+   */
+  export type ListEnumTenantDatabaseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TenantDatabaseStatus[]'>
     
 
 
@@ -28264,6 +28395,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: StringNullableFilter<"Business"> | string | null
     businessWhatsappNumber?: StringNullableFilter<"Business"> | string | null
     businessConnectionDB?: StringNullableFilter<"Business"> | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFilter<"Business"> | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFilter<"Business"> | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: StringNullableFilter<"Business"> | string | null
+    businessSchemaVersion?: StringNullableFilter<"Business"> | string | null
     businessEntity?: EnumBusinessEntityFilter<"Business"> | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFilter<"Business"> | $Enums.BusinessStatus
     businessProcess?: JsonNullableFilter<"Business">
@@ -28301,6 +28436,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: SortOrderInput | SortOrder
     businessWhatsappNumber?: SortOrderInput | SortOrder
     businessConnectionDB?: SortOrderInput | SortOrder
+    businessDatabaseMode?: SortOrder
+    businessDatabaseStatus?: SortOrder
+    businessDatabaseSecretRef?: SortOrderInput | SortOrder
+    businessSchemaVersion?: SortOrderInput | SortOrder
     businessEntity?: SortOrder
     businessStatus?: SortOrder
     businessProcess?: SortOrderInput | SortOrder
@@ -28341,6 +28480,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: StringNullableFilter<"Business"> | string | null
     businessWhatsappNumber?: StringNullableFilter<"Business"> | string | null
     businessConnectionDB?: StringNullableFilter<"Business"> | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFilter<"Business"> | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFilter<"Business"> | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: StringNullableFilter<"Business"> | string | null
+    businessSchemaVersion?: StringNullableFilter<"Business"> | string | null
     businessEntity?: EnumBusinessEntityFilter<"Business"> | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFilter<"Business"> | $Enums.BusinessStatus
     businessProcess?: JsonNullableFilter<"Business">
@@ -28378,6 +28521,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: SortOrderInput | SortOrder
     businessWhatsappNumber?: SortOrderInput | SortOrder
     businessConnectionDB?: SortOrderInput | SortOrder
+    businessDatabaseMode?: SortOrder
+    businessDatabaseStatus?: SortOrder
+    businessDatabaseSecretRef?: SortOrderInput | SortOrder
+    businessSchemaVersion?: SortOrderInput | SortOrder
     businessEntity?: SortOrder
     businessStatus?: SortOrder
     businessProcess?: SortOrderInput | SortOrder
@@ -28414,6 +28561,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: StringNullableWithAggregatesFilter<"Business"> | string | null
     businessWhatsappNumber?: StringNullableWithAggregatesFilter<"Business"> | string | null
     businessConnectionDB?: StringNullableWithAggregatesFilter<"Business"> | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeWithAggregatesFilter<"Business"> | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusWithAggregatesFilter<"Business"> | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: StringNullableWithAggregatesFilter<"Business"> | string | null
+    businessSchemaVersion?: StringNullableWithAggregatesFilter<"Business"> | string | null
     businessEntity?: EnumBusinessEntityWithAggregatesFilter<"Business"> | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusWithAggregatesFilter<"Business"> | $Enums.BusinessStatus
     businessProcess?: JsonNullableWithAggregatesFilter<"Business">
@@ -28687,6 +28838,7 @@ export namespace Prisma {
     planDuration?: IntFilter<"Plan"> | number
     planCurrency?: StringFilter<"Plan"> | string
     planActive?: BoolFilter<"Plan"> | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFilter<"Plan"> | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFilter<"Plan"> | Date | string
     updatedAt?: DateTimeFilter<"Plan"> | Date | string
     subscriptions?: SubscriptionListRelationFilter
@@ -28702,6 +28854,7 @@ export namespace Prisma {
     planDuration?: SortOrder
     planCurrency?: SortOrder
     planActive?: SortOrder
+    planDatabaseMode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     subscriptions?: SubscriptionOrderByRelationAggregateInput
@@ -28720,6 +28873,7 @@ export namespace Prisma {
     planDuration?: IntFilter<"Plan"> | number
     planCurrency?: StringFilter<"Plan"> | string
     planActive?: BoolFilter<"Plan"> | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFilter<"Plan"> | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFilter<"Plan"> | Date | string
     updatedAt?: DateTimeFilter<"Plan"> | Date | string
     subscriptions?: SubscriptionListRelationFilter
@@ -28735,6 +28889,7 @@ export namespace Prisma {
     planDuration?: SortOrder
     planCurrency?: SortOrder
     planActive?: SortOrder
+    planDatabaseMode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PlanCountOrderByAggregateInput
@@ -28756,6 +28911,7 @@ export namespace Prisma {
     planDuration?: IntWithAggregatesFilter<"Plan"> | number
     planCurrency?: StringWithAggregatesFilter<"Plan"> | string
     planActive?: BoolWithAggregatesFilter<"Plan"> | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeWithAggregatesFilter<"Plan"> | $Enums.TenantDatabaseMode
     createdAt?: DateTimeWithAggregatesFilter<"Plan"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Plan"> | Date | string
   }
@@ -30299,6 +30455,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -30335,6 +30495,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -30371,6 +30535,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -30407,6 +30575,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -30443,6 +30615,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -30473,6 +30649,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -30502,6 +30682,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -30789,6 +30973,7 @@ export namespace Prisma {
     planDuration: number
     planCurrency?: string
     planActive?: boolean
+    planDatabaseMode?: $Enums.TenantDatabaseMode
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptions?: SubscriptionCreateNestedManyWithoutPlanInput
@@ -30804,6 +30989,7 @@ export namespace Prisma {
     planDuration: number
     planCurrency?: string
     planActive?: boolean
+    planDatabaseMode?: $Enums.TenantDatabaseMode
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutPlanInput
@@ -30819,6 +31005,7 @@ export namespace Prisma {
     planDuration?: IntFieldUpdateOperationsInput | number
     planCurrency?: StringFieldUpdateOperationsInput | string
     planActive?: BoolFieldUpdateOperationsInput | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: SubscriptionUpdateManyWithoutPlanNestedInput
@@ -30834,6 +31021,7 @@ export namespace Prisma {
     planDuration?: IntFieldUpdateOperationsInput | number
     planCurrency?: StringFieldUpdateOperationsInput | string
     planActive?: BoolFieldUpdateOperationsInput | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
@@ -30849,6 +31037,7 @@ export namespace Prisma {
     planDuration: number
     planCurrency?: string
     planActive?: boolean
+    planDatabaseMode?: $Enums.TenantDatabaseMode
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30862,6 +31051,7 @@ export namespace Prisma {
     planDuration?: IntFieldUpdateOperationsInput | number
     planCurrency?: StringFieldUpdateOperationsInput | string
     planActive?: BoolFieldUpdateOperationsInput | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30875,6 +31065,7 @@ export namespace Prisma {
     planDuration?: IntFieldUpdateOperationsInput | number
     planCurrency?: StringFieldUpdateOperationsInput | string
     planActive?: BoolFieldUpdateOperationsInput | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32721,6 +32912,20 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type EnumTenantDatabaseModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TenantDatabaseMode | EnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    in?: $Enums.TenantDatabaseMode[] | ListEnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TenantDatabaseMode[] | ListEnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTenantDatabaseModeFilter<$PrismaModel> | $Enums.TenantDatabaseMode
+  }
+
+  export type EnumTenantDatabaseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TenantDatabaseStatus | EnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TenantDatabaseStatus[] | ListEnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TenantDatabaseStatus[] | ListEnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTenantDatabaseStatusFilter<$PrismaModel> | $Enums.TenantDatabaseStatus
+  }
+
   export type EnumBusinessEntityFilter<$PrismaModel = never> = {
     equals?: $Enums.BusinessEntity | EnumBusinessEntityFieldRefInput<$PrismaModel>
     in?: $Enums.BusinessEntity[] | ListEnumBusinessEntityFieldRefInput<$PrismaModel>
@@ -32781,6 +32986,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: SortOrder
     businessWhatsappNumber?: SortOrder
     businessConnectionDB?: SortOrder
+    businessDatabaseMode?: SortOrder
+    businessDatabaseStatus?: SortOrder
+    businessDatabaseSecretRef?: SortOrder
+    businessSchemaVersion?: SortOrder
     businessEntity?: SortOrder
     businessStatus?: SortOrder
     businessProcess?: SortOrder
@@ -32811,6 +33020,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: SortOrder
     businessWhatsappNumber?: SortOrder
     businessConnectionDB?: SortOrder
+    businessDatabaseMode?: SortOrder
+    businessDatabaseStatus?: SortOrder
+    businessDatabaseSecretRef?: SortOrder
+    businessSchemaVersion?: SortOrder
     businessEntity?: SortOrder
     businessStatus?: SortOrder
     businessAllowCreditSales?: SortOrder
@@ -32840,6 +33053,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: SortOrder
     businessWhatsappNumber?: SortOrder
     businessConnectionDB?: SortOrder
+    businessDatabaseMode?: SortOrder
+    businessDatabaseStatus?: SortOrder
+    businessDatabaseSecretRef?: SortOrder
+    businessSchemaVersion?: SortOrder
     businessEntity?: SortOrder
     businessStatus?: SortOrder
     businessAllowCreditSales?: SortOrder
@@ -32872,6 +33089,26 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type EnumTenantDatabaseModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TenantDatabaseMode | EnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    in?: $Enums.TenantDatabaseMode[] | ListEnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TenantDatabaseMode[] | ListEnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTenantDatabaseModeWithAggregatesFilter<$PrismaModel> | $Enums.TenantDatabaseMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTenantDatabaseModeFilter<$PrismaModel>
+    _max?: NestedEnumTenantDatabaseModeFilter<$PrismaModel>
+  }
+
+  export type EnumTenantDatabaseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TenantDatabaseStatus | EnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TenantDatabaseStatus[] | ListEnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TenantDatabaseStatus[] | ListEnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTenantDatabaseStatusWithAggregatesFilter<$PrismaModel> | $Enums.TenantDatabaseStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTenantDatabaseStatusFilter<$PrismaModel>
+    _max?: NestedEnumTenantDatabaseStatusFilter<$PrismaModel>
   }
 
   export type EnumBusinessEntityWithAggregatesFilter<$PrismaModel = never> = {
@@ -33197,6 +33434,7 @@ export namespace Prisma {
     planDuration?: SortOrder
     planCurrency?: SortOrder
     planActive?: SortOrder
+    planDatabaseMode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -33214,6 +33452,7 @@ export namespace Prisma {
     planDuration?: SortOrder
     planCurrency?: SortOrder
     planActive?: SortOrder
+    planDatabaseMode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -33226,6 +33465,7 @@ export namespace Prisma {
     planDuration?: SortOrder
     planCurrency?: SortOrder
     planActive?: SortOrder
+    planDatabaseMode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -34881,6 +35121,14 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type EnumTenantDatabaseModeFieldUpdateOperationsInput = {
+    set?: $Enums.TenantDatabaseMode
+  }
+
+  export type EnumTenantDatabaseStatusFieldUpdateOperationsInput = {
+    set?: $Enums.TenantDatabaseStatus
+  }
+
   export type EnumBusinessEntityFieldUpdateOperationsInput = {
     set?: $Enums.BusinessEntity
   }
@@ -35916,6 +36164,20 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedEnumTenantDatabaseModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TenantDatabaseMode | EnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    in?: $Enums.TenantDatabaseMode[] | ListEnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TenantDatabaseMode[] | ListEnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTenantDatabaseModeFilter<$PrismaModel> | $Enums.TenantDatabaseMode
+  }
+
+  export type NestedEnumTenantDatabaseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TenantDatabaseStatus | EnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TenantDatabaseStatus[] | ListEnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TenantDatabaseStatus[] | ListEnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTenantDatabaseStatusFilter<$PrismaModel> | $Enums.TenantDatabaseStatus
+  }
+
   export type NestedEnumBusinessEntityFilter<$PrismaModel = never> = {
     equals?: $Enums.BusinessEntity | EnumBusinessEntityFieldRefInput<$PrismaModel>
     in?: $Enums.BusinessEntity[] | ListEnumBusinessEntityFieldRefInput<$PrismaModel>
@@ -35945,6 +36207,26 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTenantDatabaseModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TenantDatabaseMode | EnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    in?: $Enums.TenantDatabaseMode[] | ListEnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TenantDatabaseMode[] | ListEnumTenantDatabaseModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTenantDatabaseModeWithAggregatesFilter<$PrismaModel> | $Enums.TenantDatabaseMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTenantDatabaseModeFilter<$PrismaModel>
+    _max?: NestedEnumTenantDatabaseModeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTenantDatabaseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TenantDatabaseStatus | EnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TenantDatabaseStatus[] | ListEnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TenantDatabaseStatus[] | ListEnumTenantDatabaseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTenantDatabaseStatusWithAggregatesFilter<$PrismaModel> | $Enums.TenantDatabaseStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTenantDatabaseStatusFilter<$PrismaModel>
+    _max?: NestedEnumTenantDatabaseStatusFilter<$PrismaModel>
   }
 
   export type NestedEnumBusinessEntityWithAggregatesFilter<$PrismaModel = never> = {
@@ -36463,6 +36745,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -36498,6 +36784,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -36939,6 +37229,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: StringNullableFilter<"Business"> | string | null
     businessWhatsappNumber?: StringNullableFilter<"Business"> | string | null
     businessConnectionDB?: StringNullableFilter<"Business"> | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFilter<"Business"> | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFilter<"Business"> | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: StringNullableFilter<"Business"> | string | null
+    businessSchemaVersion?: StringNullableFilter<"Business"> | string | null
     businessEntity?: EnumBusinessEntityFilter<"Business"> | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFilter<"Business"> | $Enums.BusinessStatus
     businessProcess?: JsonNullableFilter<"Business">
@@ -37712,6 +38006,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -37747,6 +38045,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -37798,6 +38100,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -37833,6 +38139,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -37923,6 +38233,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -37958,6 +38272,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38070,6 +38388,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38105,6 +38427,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38195,6 +38521,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38230,6 +38560,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38342,6 +38676,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38377,6 +38715,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38591,6 +38933,7 @@ export namespace Prisma {
     planDuration: number
     planCurrency?: string
     planActive?: boolean
+    planDatabaseMode?: $Enums.TenantDatabaseMode
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptionPayments?: SubscriptionPaymentCreateNestedManyWithoutPlanInput
@@ -38605,6 +38948,7 @@ export namespace Prisma {
     planDuration: number
     planCurrency?: string
     planActive?: boolean
+    planDatabaseMode?: $Enums.TenantDatabaseMode
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptionPayments?: SubscriptionPaymentUncheckedCreateNestedManyWithoutPlanInput
@@ -38628,6 +38972,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38663,6 +39011,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38863,6 +39215,7 @@ export namespace Prisma {
     planDuration?: IntFieldUpdateOperationsInput | number
     planCurrency?: StringFieldUpdateOperationsInput | string
     planActive?: BoolFieldUpdateOperationsInput | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptionPayments?: SubscriptionPaymentUpdateManyWithoutPlanNestedInput
@@ -38877,6 +39230,7 @@ export namespace Prisma {
     planDuration?: IntFieldUpdateOperationsInput | number
     planCurrency?: StringFieldUpdateOperationsInput | string
     planActive?: BoolFieldUpdateOperationsInput | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptionPayments?: SubscriptionPaymentUncheckedUpdateManyWithoutPlanNestedInput
@@ -38906,6 +39260,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -38941,6 +39299,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -39055,6 +39417,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -39090,6 +39456,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -39249,6 +39619,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -39284,6 +39658,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -39427,6 +39805,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -39462,6 +39844,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -39498,6 +39884,7 @@ export namespace Prisma {
     planDuration: number
     planCurrency?: string
     planActive?: boolean
+    planDatabaseMode?: $Enums.TenantDatabaseMode
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptions?: SubscriptionCreateNestedManyWithoutPlanInput
@@ -39512,6 +39899,7 @@ export namespace Prisma {
     planDuration: number
     planCurrency?: string
     planActive?: boolean
+    planDatabaseMode?: $Enums.TenantDatabaseMode
     createdAt?: Date | string
     updatedAt?: Date | string
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutPlanInput
@@ -39654,6 +40042,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -39689,6 +40081,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -39731,6 +40127,7 @@ export namespace Prisma {
     planDuration?: IntFieldUpdateOperationsInput | number
     planCurrency?: StringFieldUpdateOperationsInput | string
     planActive?: BoolFieldUpdateOperationsInput | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: SubscriptionUpdateManyWithoutPlanNestedInput
@@ -39745,6 +40142,7 @@ export namespace Prisma {
     planDuration?: IntFieldUpdateOperationsInput | number
     planCurrency?: StringFieldUpdateOperationsInput | string
     planActive?: BoolFieldUpdateOperationsInput | boolean
+    planDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutPlanNestedInput
@@ -40812,6 +41210,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: string | null
     businessWhatsappNumber?: string | null
     businessConnectionDB?: string | null
+    businessDatabaseMode?: $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: string | null
+    businessSchemaVersion?: string | null
     businessEntity: $Enums.BusinessEntity
     businessStatus: $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -41013,6 +41415,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -41048,6 +41454,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue
@@ -41083,6 +41493,10 @@ export namespace Prisma {
     businessCodeWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessWhatsappNumber?: NullableStringFieldUpdateOperationsInput | string | null
     businessConnectionDB?: NullableStringFieldUpdateOperationsInput | string | null
+    businessDatabaseMode?: EnumTenantDatabaseModeFieldUpdateOperationsInput | $Enums.TenantDatabaseMode
+    businessDatabaseStatus?: EnumTenantDatabaseStatusFieldUpdateOperationsInput | $Enums.TenantDatabaseStatus
+    businessDatabaseSecretRef?: NullableStringFieldUpdateOperationsInput | string | null
+    businessSchemaVersion?: NullableStringFieldUpdateOperationsInput | string | null
     businessEntity?: EnumBusinessEntityFieldUpdateOperationsInput | $Enums.BusinessEntity
     businessStatus?: EnumBusinessStatusFieldUpdateOperationsInput | $Enums.BusinessStatus
     businessProcess?: NullableJsonNullValueInput | InputJsonValue

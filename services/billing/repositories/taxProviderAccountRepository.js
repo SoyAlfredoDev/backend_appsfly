@@ -1,10 +1,10 @@
-import { PrismaClient as PrismaGeneral } from "../../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../../dbGeneral.js";
 import {
     decryptCredential,
     encryptCredential,
 } from "../../../libs/taxCredentialCipher.js";
 
-const general = new PrismaGeneral();
+
 
 function decryptAccountRow(row) {
     if (!row) return null;

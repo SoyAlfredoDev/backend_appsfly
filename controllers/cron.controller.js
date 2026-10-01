@@ -42,7 +42,7 @@ export async function cronEmailCampaignsController(req, res) {
         console.error("(cron.emailCampaigns):", error);
         return res.status(500).json({
             message: "Error al ejecutar campañas programadas.",
-            error: error.message,
+            code: "CRON_EMAIL_CAMPAIGNS_FAILED",
         });
     }
 }
@@ -61,7 +61,7 @@ export async function cronMpSubscriptionRenewalsController(req, res) {
         console.error("(cron.mpSubscriptionRenewals):", error);
         return res.status(500).json({
             message: "Error al reconciliar renovaciones Mercado Pago.",
-            error: error.message,
+            code: "CRON_MP_RENEWALS_FAILED",
         });
     }
 }

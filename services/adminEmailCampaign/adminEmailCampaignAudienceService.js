@@ -1,4 +1,4 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 
 import {
     addDaysToDateParts,
@@ -11,7 +11,7 @@ import {
 import { buildProspectUnsubscribeUrl } from "../emailProspect/emailProspectService.js";
 import { getFrontendBaseUrl } from "../../emails/shared/layout.js";
 
-const general = new PrismaGeneral();
+
 
 function isSubscriptionActive(sub) {
 

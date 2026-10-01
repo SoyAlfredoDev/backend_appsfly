@@ -3,7 +3,7 @@
 generator client {
     provider      = "prisma-client-js"
     output        = "../../src/generated/general"
-    binaryTargets = ["native", "windows", "debian-openssl-3.0.x"]
+    binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -52,7 +52,13 @@ model Business {
     businessCountry            String
     businessCodeWhatsappNumber String?
     businessWhatsappNumber     String?
+    /// Legado: URL directa usada únicamente por tenants DEDICATED. No exponer por API.
     businessConnectionDB       String?
+    businessDatabaseMode       TenantDatabaseMode   @default(DEDICATED)
+    businessDatabaseStatus     TenantDatabaseStatus @default(UNASSIGNED)
+    /// Referencia al secreto administrado; nunca contiene la contraseña en respuestas API.
+    businessDatabaseSecretRef  String?
+    businessSchemaVersion      String?
     businessEntity             BusinessEntity
     businessStatus             BusinessStatus
     businessProcess            Json?
@@ -78,6 +84,8 @@ model Business {
     subscriptionPayments SubscriptionPayment[]
     subscriptionCancellations SubscriptionCancellation[]
     taxProviderAccount          TaxProviderAccount?
+
+    @@index([businessDatabaseMode, businessDatabaseStatus])
 }
 
 /// Cuenta Auth.cl por empresa (multi-tenant). companyId = businessId del tenant.
@@ -148,6 +156,7 @@ model Plan {
     planDuration    Int // Duración del plan en meses
     planCurrency    String   @default("CLP")
     planActive      Boolean  @default(true)
+    planDatabaseMode TenantDatabaseMode @default(SHARED)
     createdAt       DateTime @default(now())
     updatedAt       DateTime @updatedAt
 
@@ -551,6 +560,19 @@ enum BusinessStatus {
     INACTIVE
     SUSPENDED
     PENDING
+}
+
+enum TenantDatabaseMode {
+    SHARED
+    DEDICATED
+}
+
+enum TenantDatabaseStatus {
+    UNASSIGNED
+    PROVISIONING
+    ACTIVE
+    MIGRATING
+    FAILED
 }
 
 enum BusinessEntity {

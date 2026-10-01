@@ -1,127 +1,123 @@
 import {
-    businessDateRangeBoundsUtc,
-    businessMonthBoundsUtc,
-    DEFAULT_BUSINESS_TIMEZONE,
-    sanitizeTimezone,
-    zonedDateTimeToUtc,
+  businessDateRangeBoundsUtc,
+  businessMonthBoundsUtc,
+  DEFAULT_BUSINESS_TIMEZONE,
+  sanitizeTimezone,
+  zonedDateTimeToUtc,
 } from "../libs/businessTimezone.js";
 
 const MAX_INVENTORY_RANGE_DAYS = 366;
 
 /** Mismo criterio de periodo que salesServices.getMonthlySales (TZ del negocio). */
 function localMonthRange(month, year, timeZone = DEFAULT_BUSINESS_TIMEZONE) {
-    const { start, endExclusive } = businessMonthBoundsUtc(year, month, timeZone);
-    return { startDate: start, endDate: endExclusive };
+  const { start, endExclusive } = businessMonthBoundsUtc(year, month, timeZone);
+  return { startDate: start, endDate: endExclusive };
 }
 
 function businessYearBoundsUtc(year, timeZone = DEFAULT_BUSINESS_TIMEZONE) {
-    const startDate = zonedDateTimeToUtc(`${year}-01-01`, timeZone);
-    const endDate = zonedDateTimeToUtc(`${year + 1}-01-01`, timeZone);
-    return { startDate, endDate };
+  const startDate = zonedDateTimeToUtc(`${year}-01-01`, timeZone);
+  const endDate = zonedDateTimeToUtc(`${year + 1}-01-01`, timeZone);
+  return { startDate, endDate };
 }
 
 function parseDateRange(startDate, endDate, timeZone = DEFAULT_BUSINESS_TIMEZONE) {
-    const startKey = String(startDate).slice(0, 10);
-    const endKey = String(endDate).slice(0, 10);
+  const startKey = String(startDate).slice(0, 10);
+  const endKey = String(endDate).slice(0, 10);
 
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(startKey) || !/^\d{4}-\d{2}-\d{2}$/.test(endKey)) {
-        throw new Error("INVALID_DATE_RANGE");
-    }
-    if (startKey > endKey) {
-        throw new Error("INVALID_DATE_ORDER");
-    }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(startKey) || !/^\d{4}-\d{2}-\d{2}$/.test(endKey)) {
+    throw new Error("INVALID_DATE_RANGE");
+  }
+  if (startKey > endKey) {
+    throw new Error("INVALID_DATE_ORDER");
+  }
 
-    const [sy, sm, sd] = startKey.split("-").map(Number);
-    const [ey, em, ed] = endKey.split("-").map(Number);
-    const diffDays =
-        (Date.UTC(ey, em - 1, ed) - Date.UTC(sy, sm - 1, sd)) / (1000 * 60 * 60 * 24);
-    if (diffDays > MAX_INVENTORY_RANGE_DAYS) {
-        throw new Error("DATE_RANGE_TOO_LARGE");
-    }
+  const [sy, sm, sd] = startKey.split("-").map(Number);
+  const [ey, em, ed] = endKey.split("-").map(Number);
+  const diffDays = (Date.UTC(ey, em - 1, ed) - Date.UTC(sy, sm - 1, sd)) / (1000 * 60 * 60 * 24);
+  if (diffDays > MAX_INVENTORY_RANGE_DAYS) {
+    throw new Error("DATE_RANGE_TOO_LARGE");
+  }
 
-    const { start, endInclusive } = businessDateRangeBoundsUtc(startKey, endKey, timeZone);
-    if (Number.isNaN(start.getTime()) || Number.isNaN(endInclusive.getTime())) {
-        throw new Error("INVALID_DATE_RANGE");
-    }
-    return { start, end: endInclusive };
+  const { start, endInclusive } = businessDateRangeBoundsUtc(startKey, endKey, timeZone);
+  if (Number.isNaN(start.getTime()) || Number.isNaN(endInclusive.getTime())) {
+    throw new Error("INVALID_DATE_RANGE");
+  }
+  return { start, end: endInclusive };
 }
 
 function toNumber(value) {
-    if (value == null) return 0;
-    return typeof value === "bigint" ? Number(value) : Number(value);
+  if (value == null) return 0;
+  return typeof value === "bigint" ? Number(value) : Number(value);
 }
 
 export async function getMonthlySalesReport(
-    month,
-    year,
-    prisma,
-    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+  month,
+  year,
+  prisma,
+  timeZone = DEFAULT_BUSINESS_TIMEZONE,
 ) {
-    const { startDate, endDate } = localMonthRange(month, year, timeZone);
+  const { startDate, endDate } = localMonthRange(month, year, timeZone);
 
-    const [summary, sales] = await Promise.all([
-        prisma.sale.aggregate({
-            _sum: {
-                saleTotal: true,
-                saleTotalPayments: true,
-                salePendingAmount: true,
-            },
-            _count: { saleId: true },
-            where: {
-                createdAt: { gte: startDate, lt: endDate },
-            },
-        }),
-        prisma.sale.findMany({
-            where: { createdAt: { gte: startDate, lt: endDate } },
-            select: {
-                saleId: true,
-                saleNumber: true,
-                saleTotal: true,
-                saleTotalPayments: true,
-                salePendingAmount: true,
-                createdAt: true,
-                customer: {
-                    select: {
-                        customerFirstName: true,
-                        customerLastName: true,
-                    },
-                },
-            },
-            orderBy: { createdAt: "desc" },
-        }),
-    ]);
-
-    return {
-        reportType: "monthly-sales",
-        period: { month, year },
-        summary: {
-            totalSales: summary._sum.saleTotal ?? 0,
-            totalPaid: summary._sum.saleTotalPayments ?? 0,
-            totalPending: summary._sum.salePendingAmount ?? 0,
-            transactionCount: summary._count.saleId ?? 0,
+  const [summary, sales] = await Promise.all([
+    prisma.sale.aggregate({
+      _sum: {
+        saleTotal: true,
+        saleTotalPayments: true,
+        salePendingAmount: true,
+      },
+      _count: { saleId: true },
+      where: {
+        createdAt: { gte: startDate, lt: endDate },
+      },
+    }),
+    prisma.sale.findMany({
+      where: { createdAt: { gte: startDate, lt: endDate } },
+      select: {
+        saleId: true,
+        saleNumber: true,
+        saleTotal: true,
+        saleTotalPayments: true,
+        salePendingAmount: true,
+        createdAt: true,
+        customer: {
+          select: {
+            customerFirstName: true,
+            customerLastName: true,
+          },
         },
-        rows: sales.map((sale) => ({
-            id: sale.saleId,
-            number: sale.saleNumber,
-            date: sale.createdAt,
-            customer: `${sale.customer?.customerFirstName ?? ""} ${sale.customer?.customerLastName ?? ""}`.trim(),
-            total: sale.saleTotal,
-            paid: sale.saleTotalPayments,
-            pending: sale.salePendingAmount,
-        })),
-    };
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
+
+  return {
+    reportType: "monthly-sales",
+    period: { month, year },
+    summary: {
+      totalSales: summary._sum.saleTotal ?? 0,
+      totalPaid: summary._sum.saleTotalPayments ?? 0,
+      totalPending: summary._sum.salePendingAmount ?? 0,
+      transactionCount: summary._count.saleId ?? 0,
+    },
+    rows: sales.map((sale) => ({
+      id: sale.saleId,
+      number: sale.saleNumber,
+      date: sale.createdAt,
+      customer:
+        `${sale.customer?.customerFirstName ?? ""} ${sale.customer?.customerLastName ?? ""}`.trim(),
+      total: sale.saleTotal,
+      paid: sale.saleTotalPayments,
+      pending: sale.salePendingAmount,
+    })),
+  };
 }
 
-export async function getYearlySalesReport(
-    year,
-    prisma,
-    timeZone = DEFAULT_BUSINESS_TIMEZONE,
-) {
-    const { startDate, endDate } = businessYearBoundsUtc(year, timeZone);
-    const tz = sanitizeTimezone(timeZone);
+export async function getYearlySalesReport(year, prisma, timeZone = DEFAULT_BUSINESS_TIMEZONE) {
+  const { startDate, endDate } = businessYearBoundsUtc(year, timeZone);
+  const tz = sanitizeTimezone(timeZone);
 
-    const monthlyRows = await prisma.$queryRawUnsafe(
-        `
+  const monthlyRows = await prisma.$queryRawUnsafe(
+    `
         SELECT
             EXTRACT(MONTH FROM (("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE $1))::int AS month,
             COUNT(*)::int AS "transactionCount",
@@ -133,166 +129,150 @@ export async function getYearlySalesReport(
         GROUP BY EXTRACT(MONTH FROM (("createdAt" AT TIME ZONE 'UTC') AT TIME ZONE $1))
         ORDER BY month ASC
         `,
-        tz,
-        startDate,
-        endDate,
-    );
+    tz,
+    startDate,
+    endDate,
+  );
 
-    const monthMap = new Map(
-        monthlyRows.map((row) => [Number(row.month), row]),
-    );
+  const monthMap = new Map(monthlyRows.map((row) => [Number(row.month), row]));
 
-    const rows = Array.from({ length: 12 }, (_, index) => {
-        const month = index + 1;
-        const data = monthMap.get(month);
-        return {
-            month,
-            transactionCount: toNumber(data?.transactionCount),
-            totalSales: toNumber(data?.totalSales),
-            totalPaid: toNumber(data?.totalPaid),
-            totalPending: toNumber(data?.totalPending),
-        };
-    });
-
-    const summary = rows.reduce(
-        (acc, row) => ({
-            totalSales: acc.totalSales + row.totalSales,
-            totalPaid: acc.totalPaid + row.totalPaid,
-            totalPending: acc.totalPending + row.totalPending,
-            transactionCount: acc.transactionCount + row.transactionCount,
-        }),
-        { totalSales: 0, totalPaid: 0, totalPending: 0, transactionCount: 0 },
-    );
-
+  const rows = Array.from({ length: 12 }, (_, index) => {
+    const month = index + 1;
+    const data = monthMap.get(month);
     return {
-        reportType: "yearly-sales",
-        period: { year },
-        summary,
-        rows,
+      month,
+      transactionCount: toNumber(data?.transactionCount),
+      totalSales: toNumber(data?.totalSales),
+      totalPaid: toNumber(data?.totalPaid),
+      totalPending: toNumber(data?.totalPending),
     };
+  });
+
+  const summary = rows.reduce(
+    (acc, row) => ({
+      totalSales: acc.totalSales + row.totalSales,
+      totalPaid: acc.totalPaid + row.totalPaid,
+      totalPending: acc.totalPending + row.totalPending,
+      transactionCount: acc.transactionCount + row.transactionCount,
+    }),
+    { totalSales: 0, totalPaid: 0, totalPending: 0, transactionCount: 0 },
+  );
+
+  return {
+    reportType: "yearly-sales",
+    period: { year },
+    summary,
+    rows,
+  };
 }
 
 export async function getInventoryMovementsReport(
-    { startDate, endDate, categoryId },
-    prisma,
-    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+  { startDate, endDate, categoryId },
+  prisma,
+  timeZone = DEFAULT_BUSINESS_TIMEZONE,
 ) {
-    const { start, end } = parseDateRange(startDate, endDate, timeZone);
+  const { start, end } = parseDateRange(startDate, endDate, timeZone);
 
-    const productFilter = categoryId
-        ? { categoryId }
-        : undefined;
+  const productFilter = categoryId ? { categoryId } : undefined;
 
-    const saleWhere = {
-        createdAt: { gte: start, lte: end },
-        saleDetailProductId: { not: null },
-        ...(categoryId
-            ? { product: { categoryId } }
-            : {}),
-    };
+  const saleWhere = {
+    createdAt: { gte: start, lte: end },
+    saleDetailProductId: { not: null },
+    ...(categoryId ? { product: { categoryId } } : {}),
+  };
 
-    const purchaseWhere = {
-        createdAt: { gte: start, lte: end },
-        purchaseDetailProductId: { not: null },
-        ...(categoryId
-            ? { product: { categoryId } }
-            : {}),
-    };
+  const purchaseWhere = {
+    createdAt: { gte: start, lte: end },
+    purchaseDetailProductId: { not: null },
+    ...(categoryId ? { product: { categoryId } } : {}),
+  };
 
-    const [saleMovements, purchaseMovements, productCount] = await Promise.all([
-        prisma.saleDetail.findMany({
-            where: saleWhere,
-            select: {
-                saleDetailId: true,
-                saleDetailQuantity: true,
-                saleDetailTotal: true,
-                createdAt: true,
-                product: {
-                    select: {
-                        productSKU: true,
-                        productName: true,
-                        category: { select: { categoryName: true } },
-                    },
-                },
-                sale: { select: { saleNumber: true } },
-            },
-            orderBy: { createdAt: "desc" },
-        }),
-        prisma.purchaseDetail.findMany({
-            where: purchaseWhere,
-            select: {
-                purchaseDetailId: true,
-                purchaseDetailQuantity: true,
-                purchaseDetailTotal: true,
-                createdAt: true,
-                product: {
-                    select: {
-                        productSKU: true,
-                        productName: true,
-                        category: { select: { categoryName: true } },
-                    },
-                },
-                purchase: { select: { purchaseNumber: true } },
-            },
-            orderBy: { createdAt: "desc" },
-        }),
-        productFilter
-            ? prisma.product.count({ where: productFilter })
-            : prisma.product.count(),
-    ]);
-
-    const outboundQty = saleMovements.reduce(
-        (sum, row) => sum + row.saleDetailQuantity,
-        0,
-    );
-    const inboundQty = purchaseMovements.reduce(
-        (sum, row) => sum + row.purchaseDetailQuantity,
-        0,
-    );
-
-    const rows = [
-        ...saleMovements.map((row) => ({
-            id: row.saleDetailId,
-            movementType: "SALIDA",
-            documentNumber: row.sale?.saleNumber ?? "—",
-            date: row.createdAt,
-            sku: row.product?.productSKU ?? "—",
-            productName: row.product?.productName ?? "—",
-            category: row.product?.category?.categoryName ?? "—",
-            quantity: row.saleDetailQuantity,
-            total: row.saleDetailTotal,
-        })),
-        ...purchaseMovements.map((row) => ({
-            id: row.purchaseDetailId,
-            movementType: "ENTRADA",
-            documentNumber: row.purchase?.purchaseNumber ?? "—",
-            date: row.createdAt,
-            sku: row.product?.productSKU ?? "—",
-            productName: row.product?.productName ?? "—",
-            category: row.product?.category?.categoryName ?? "—",
-            quantity: row.purchaseDetailQuantity,
-            total: row.purchaseDetailTotal,
-        })),
-    ].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    return {
-        reportType: "inventory-movements",
-        period: { startDate, endDate, categoryId: categoryId || null },
-        summary: {
-            outboundMovements: saleMovements.length,
-            inboundMovements: purchaseMovements.length,
-            outboundQuantity: outboundQty,
-            inboundQuantity: inboundQty,
-            netQuantity: inboundQty - outboundQty,
-            productCount,
+  const [saleMovements, purchaseMovements, productCount] = await Promise.all([
+    prisma.saleDetail.findMany({
+      where: saleWhere,
+      select: {
+        saleDetailId: true,
+        saleDetailQuantity: true,
+        saleDetailTotal: true,
+        createdAt: true,
+        product: {
+          select: {
+            productSKU: true,
+            productName: true,
+            category: { select: { categoryName: true } },
+          },
         },
-        rows,
-    };
+        sale: { select: { saleNumber: true } },
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.purchaseDetail.findMany({
+      where: purchaseWhere,
+      select: {
+        purchaseDetailId: true,
+        purchaseDetailQuantity: true,
+        purchaseDetailTotal: true,
+        createdAt: true,
+        product: {
+          select: {
+            productSKU: true,
+            productName: true,
+            category: { select: { categoryName: true } },
+          },
+        },
+        purchase: { select: { purchaseNumber: true } },
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+    productFilter ? prisma.product.count({ where: productFilter }) : prisma.product.count(),
+  ]);
+
+  const outboundQty = saleMovements.reduce((sum, row) => sum + row.saleDetailQuantity, 0);
+  const inboundQty = purchaseMovements.reduce((sum, row) => sum + row.purchaseDetailQuantity, 0);
+
+  const rows = [
+    ...saleMovements.map((row) => ({
+      id: row.saleDetailId,
+      movementType: "SALIDA",
+      documentNumber: row.sale?.saleNumber ?? "—",
+      date: row.createdAt,
+      sku: row.product?.productSKU ?? "—",
+      productName: row.product?.productName ?? "—",
+      category: row.product?.category?.categoryName ?? "—",
+      quantity: row.saleDetailQuantity,
+      total: row.saleDetailTotal,
+    })),
+    ...purchaseMovements.map((row) => ({
+      id: row.purchaseDetailId,
+      movementType: "ENTRADA",
+      documentNumber: row.purchase?.purchaseNumber ?? "—",
+      date: row.createdAt,
+      sku: row.product?.productSKU ?? "—",
+      productName: row.product?.productName ?? "—",
+      category: row.product?.category?.categoryName ?? "—",
+      quantity: row.purchaseDetailQuantity,
+      total: row.purchaseDetailTotal,
+    })),
+  ].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  return {
+    reportType: "inventory-movements",
+    period: { startDate, endDate, categoryId: categoryId || null },
+    summary: {
+      outboundMovements: saleMovements.length,
+      inboundMovements: purchaseMovements.length,
+      outboundQuantity: outboundQty,
+      inboundQuantity: inboundQty,
+      netQuantity: inboundQty - outboundQty,
+      productCount,
+    },
+    rows,
+  };
 }
 
 function formatSellerName(user) {
-    if (!user) return "Sin vendedor";
-    return `${user.userFirstName ?? ""} ${user.userLastName ?? ""}`.trim() || "Sin vendedor";
+  if (!user) return "Sin vendedor";
+  return `${user.userFirstName ?? ""} ${user.userLastName ?? ""}`.trim() || "Sin vendedor";
 }
 
 /**
@@ -302,183 +282,184 @@ function formatSellerName(user) {
  * @param {string} [timeZone]
  */
 export async function getSalesBySellerReport(
-    { startDate, endDate, sellerId },
-    prisma,
-    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+  { startDate, endDate, sellerId },
+  prisma,
+  timeZone = DEFAULT_BUSINESS_TIMEZONE,
 ) {
-    const { start, end } = parseDateRange(startDate, endDate, timeZone);
-    const sellerFilter = sellerId?.trim() || null;
+  const { start, end } = parseDateRange(startDate, endDate, timeZone);
+  const sellerFilter = sellerId?.trim() || null;
 
-    if (sellerFilter) {
-        const seller = await prisma.user.findUnique({
-            where: { userId: sellerFilter },
-            select: {
-                userId: true,
-                userFirstName: true,
-                userLastName: true,
-            },
-        });
-
-        if (!seller) {
-            throw new Error("INVALID_SELLER");
-        }
-
-        const sellerName = formatSellerName(seller);
-
-        const [aggregate, sales] = await Promise.all([
-            prisma.sale.aggregate({
-                _sum: {
-                    saleTotal: true,
-                    saleTotalPayments: true,
-                    salePendingAmount: true,
-                },
-                _count: { saleId: true },
-                where: {
-                    createdByUserId: sellerFilter,
-                    createdAt: { gte: start, lte: end },
-                },
-            }),
-            prisma.sale.findMany({
-                where: {
-                    createdByUserId: sellerFilter,
-                    createdAt: { gte: start, lte: end },
-                },
-                select: {
-                    saleId: true,
-                    saleNumber: true,
-                    saleTotal: true,
-                    saleTotalPayments: true,
-                    salePendingAmount: true,
-                    createdAt: true,
-                    customer: {
-                        select: {
-                            customerFirstName: true,
-                            customerLastName: true,
-                        },
-                    },
-                },
-                orderBy: { createdAt: "desc" },
-            }),
-        ]);
-
-        return {
-            reportType: "sales-by-seller",
-            viewMode: "detail",
-            period: {
-                startDate,
-                endDate,
-                sellerId: sellerFilter,
-                sellerName,
-            },
-            summary: {
-                totalSales: aggregate._sum.saleTotal ?? 0,
-                totalPaid: aggregate._sum.saleTotalPayments ?? 0,
-                totalPending: aggregate._sum.salePendingAmount ?? 0,
-                transactionCount: aggregate._count.saleId ?? 0,
-                sellerCount: 1,
-            },
-            rows: sales.map((sale) => ({
-                id: sale.saleId,
-                number: sale.saleNumber,
-                date: sale.createdAt,
-                sellerId: sellerFilter,
-                sellerName,
-                customer: `${sale.customer?.customerFirstName ?? ""} ${sale.customer?.customerLastName ?? ""}`.trim(),
-                total: sale.saleTotal,
-                paid: sale.saleTotalPayments,
-                pending: sale.salePendingAmount,
-            })),
-        };
-    }
-
-    const groups = await prisma.sale.groupBy({
-        by: ["createdByUserId"],
-        where: { createdAt: { gte: start, lte: end } },
-        _sum: {
-            saleTotal: true,
-            saleTotalPayments: true,
-            salePendingAmount: true,
-        },
-        _count: { saleId: true },
+  if (sellerFilter) {
+    const seller = await prisma.user.findFirst({
+      where: { userId: sellerFilter },
+      select: {
+        userId: true,
+        userFirstName: true,
+        userLastName: true,
+      },
     });
 
-    const userIds = groups.map((group) => group.createdByUserId);
-    const users = userIds.length
-        ? await prisma.user.findMany({
-              where: { userId: { in: userIds } },
-              select: {
-                  userId: true,
-                  userFirstName: true,
-                  userLastName: true,
-              },
-          })
-        : [];
+    if (!seller) {
+      throw new Error("INVALID_SELLER");
+    }
 
-    const userMap = new Map(users.map((user) => [user.userId, user]));
+    const sellerName = formatSellerName(seller);
 
-    const rows = groups
-        .map((group) => {
-            const user = userMap.get(group.createdByUserId);
-            return {
-                sellerId: group.createdByUserId,
-                sellerName: formatSellerName(user),
-                transactionCount: group._count.saleId ?? 0,
-                totalSales: group._sum.saleTotal ?? 0,
-                totalPaid: group._sum.saleTotalPayments ?? 0,
-                totalPending: group._sum.salePendingAmount ?? 0,
-            };
-        })
-        .sort((a, b) => b.totalSales - a.totalSales);
-
-    const summary = rows.reduce(
-        (acc, row) => ({
-            totalSales: acc.totalSales + row.totalSales,
-            totalPaid: acc.totalPaid + row.totalPaid,
-            totalPending: acc.totalPending + row.totalPending,
-            transactionCount: acc.transactionCount + row.transactionCount,
-            sellerCount: acc.sellerCount + 1,
-        }),
-        {
-            totalSales: 0,
-            totalPaid: 0,
-            totalPending: 0,
-            transactionCount: 0,
-            sellerCount: 0,
+    const [aggregate, sales] = await Promise.all([
+      prisma.sale.aggregate({
+        _sum: {
+          saleTotal: true,
+          saleTotalPayments: true,
+          salePendingAmount: true,
         },
-    );
+        _count: { saleId: true },
+        where: {
+          createdByUserId: sellerFilter,
+          createdAt: { gte: start, lte: end },
+        },
+      }),
+      prisma.sale.findMany({
+        where: {
+          createdByUserId: sellerFilter,
+          createdAt: { gte: start, lte: end },
+        },
+        select: {
+          saleId: true,
+          saleNumber: true,
+          saleTotal: true,
+          saleTotalPayments: true,
+          salePendingAmount: true,
+          createdAt: true,
+          customer: {
+            select: {
+              customerFirstName: true,
+              customerLastName: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      }),
+    ]);
 
     return {
-        reportType: "sales-by-seller",
-        viewMode: "summary",
-        period: { startDate, endDate, sellerId: null, sellerName: null },
-        summary,
-        rows,
+      reportType: "sales-by-seller",
+      viewMode: "detail",
+      period: {
+        startDate,
+        endDate,
+        sellerId: sellerFilter,
+        sellerName,
+      },
+      summary: {
+        totalSales: aggregate._sum.saleTotal ?? 0,
+        totalPaid: aggregate._sum.saleTotalPayments ?? 0,
+        totalPending: aggregate._sum.salePendingAmount ?? 0,
+        transactionCount: aggregate._count.saleId ?? 0,
+        sellerCount: 1,
+      },
+      rows: sales.map((sale) => ({
+        id: sale.saleId,
+        number: sale.saleNumber,
+        date: sale.createdAt,
+        sellerId: sellerFilter,
+        sellerName,
+        customer:
+          `${sale.customer?.customerFirstName ?? ""} ${sale.customer?.customerLastName ?? ""}`.trim(),
+        total: sale.saleTotal,
+        paid: sale.saleTotalPayments,
+        pending: sale.salePendingAmount,
+      })),
     };
+  }
+
+  const groups = await prisma.sale.groupBy({
+    by: ["createdByUserId"],
+    where: { createdAt: { gte: start, lte: end } },
+    _sum: {
+      saleTotal: true,
+      saleTotalPayments: true,
+      salePendingAmount: true,
+    },
+    _count: { saleId: true },
+  });
+
+  const userIds = groups.map((group) => group.createdByUserId);
+  const users = userIds.length
+    ? await prisma.user.findMany({
+        where: { userId: { in: userIds } },
+        select: {
+          userId: true,
+          userFirstName: true,
+          userLastName: true,
+        },
+      })
+    : [];
+
+  const userMap = new Map(users.map((user) => [user.userId, user]));
+
+  const rows = groups
+    .map((group) => {
+      const user = userMap.get(group.createdByUserId);
+      return {
+        sellerId: group.createdByUserId,
+        sellerName: formatSellerName(user),
+        transactionCount: group._count.saleId ?? 0,
+        totalSales: group._sum.saleTotal ?? 0,
+        totalPaid: group._sum.saleTotalPayments ?? 0,
+        totalPending: group._sum.salePendingAmount ?? 0,
+      };
+    })
+    .sort((a, b) => b.totalSales - a.totalSales);
+
+  const summary = rows.reduce(
+    (acc, row) => ({
+      totalSales: acc.totalSales + row.totalSales,
+      totalPaid: acc.totalPaid + row.totalPaid,
+      totalPending: acc.totalPending + row.totalPending,
+      transactionCount: acc.transactionCount + row.transactionCount,
+      sellerCount: acc.sellerCount + 1,
+    }),
+    {
+      totalSales: 0,
+      totalPaid: 0,
+      totalPending: 0,
+      transactionCount: 0,
+      sellerCount: 0,
+    },
+  );
+
+  return {
+    reportType: "sales-by-seller",
+    viewMode: "summary",
+    period: { startDate, endDate, sellerId: null, sellerName: null },
+    summary,
+    rows,
+  };
 }
 
 const WORK_ORDER_STATUS_LABELS = {
-    CREATED: "Creada",
-    PENDING_SHIPMENT: "Pendiente de Envío",
-    SENT_TO_LAB: "Enviada a Laboratorio",
-    RECEIVED: "Recibida",
-    QUALITY_CONTROL: "Control de Calidad",
-    READY_FOR_DELIVERY: "Lista para Entrega",
-    DELIVERED: "Entregada",
+  CREATED: "Creada",
+  PENDING_SHIPMENT: "Pendiente de Envío",
+  SENT_TO_LAB: "Enviada a Laboratorio",
+  RECEIVED: "Recibida",
+  QUALITY_CONTROL: "Control de Calidad",
+  READY_FOR_DELIVERY: "Lista para Entrega",
+  DELIVERED: "Entregada",
 };
 
 function daysBetween(from, to) {
-    if (!from || !to) return null;
-    const a = from instanceof Date ? from : new Date(from);
-    const b = to instanceof Date ? to : new Date(to);
-    if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return null;
-    return Math.round(((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24)) * 10) / 10;
+  if (!from || !to) return null;
+  const a = from instanceof Date ? from : new Date(from);
+  const b = to instanceof Date ? to : new Date(to);
+  if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return null;
+  return Math.round(((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24)) * 10) / 10;
 }
 
 function averageDays(values) {
-    const nums = values.filter((v) => typeof v === "number" && !Number.isNaN(v));
-    if (nums.length === 0) return null;
-    const sum = nums.reduce((acc, n) => acc + n, 0);
-    return Math.round((sum / nums.length) * 10) / 10;
+  const nums = values.filter((v) => typeof v === "number" && !Number.isNaN(v));
+  if (nums.length === 0) return null;
+  const sum = nums.reduce((acc, n) => acc + n, 0);
+  return Math.round((sum / nums.length) * 10) / 10;
 }
 
 /**
@@ -486,115 +467,113 @@ function averageDays(values) {
  * @param {{ startDate: string, endDate: string, laboratoryId?: string | null, status?: string | null }} filters
  */
 export async function getWorkOrdersReport(
-    { startDate, endDate, laboratoryId, status },
-    prisma,
-    timeZone = DEFAULT_BUSINESS_TIMEZONE,
+  { startDate, endDate, laboratoryId, status },
+  prisma,
+  timeZone = DEFAULT_BUSINESS_TIMEZONE,
 ) {
-    const { start, end } = parseDateRange(startDate, endDate, timeZone);
-    const labFilter = laboratoryId?.trim() || null;
-    const statusFilter = status?.trim() || null;
+  const { start, end } = parseDateRange(startDate, endDate, timeZone);
+  const labFilter = laboratoryId?.trim() || null;
+  const statusFilter = status?.trim() || null;
 
-    const where = {
-        createdAt: { gte: start, lte: end },
-        ...(labFilter ? { laboratoryId: labFilter } : {}),
-        ...(statusFilter ? { workOrderStatus: statusFilter } : {}),
-    };
+  const where = {
+    createdAt: { gte: start, lte: end },
+    ...(labFilter ? { laboratoryId: labFilter } : {}),
+    ...(statusFilter ? { workOrderStatus: statusFilter } : {}),
+  };
 
-    const workOrders = await prisma.workOrder.findMany({
-        where,
+  const workOrders = await prisma.workOrder.findMany({
+    where,
+    select: {
+      workOrderId: true,
+      workOrderNumber: true,
+      workOrderStatus: true,
+      createdAt: true,
+      receivedAt: true,
+      readyForDeliveryAt: true,
+      deliveredAt: true,
+      laboratory: { select: { laboratoryId: true, laboratoryName: true } },
+      customer: {
+        select: { customerFirstName: true, customerLastName: true },
+      },
+      sale: { select: { saleNumber: true } },
+      saleDetail: {
         select: {
-            workOrderId: true,
-            workOrderNumber: true,
-            workOrderStatus: true,
-            createdAt: true,
-            receivedAt: true,
-            readyForDeliveryAt: true,
-            deliveredAt: true,
-            laboratory: { select: { laboratoryId: true, laboratoryName: true } },
-            customer: {
-                select: { customerFirstName: true, customerLastName: true },
-            },
-            sale: { select: { saleNumber: true } },
-            saleDetail: {
-                select: {
-                    product: { select: { productName: true } },
-                },
-            },
+          product: { select: { productName: true } },
         },
-        orderBy: { createdAt: "desc" },
-    });
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
-    const byStatus = {};
-    const byLab = {};
-    const daysCreatedToReceived = [];
-    const daysCreatedToReady = [];
-    const daysCreatedToDelivered = [];
-    const daysReadyToDelivered = [];
+  const byStatus = {};
+  const byLab = {};
+  const daysCreatedToReceived = [];
+  const daysCreatedToReady = [];
+  const daysCreatedToDelivered = [];
+  const daysReadyToDelivered = [];
 
-    const rows = workOrders.map((wo) => {
-        const status = wo.workOrderStatus;
-        byStatus[status] = (byStatus[status] || 0) + 1;
+  const rows = workOrders.map((wo) => {
+    const status = wo.workOrderStatus;
+    byStatus[status] = (byStatus[status] || 0) + 1;
 
-        const labName = wo.laboratory?.laboratoryName || "Sin laboratorio";
-        byLab[labName] = (byLab[labName] || 0) + 1;
+    const labName = wo.laboratory?.laboratoryName || "Sin laboratorio";
+    byLab[labName] = (byLab[labName] || 0) + 1;
 
-        const dReceived = daysBetween(wo.createdAt, wo.receivedAt);
-        const dReady = daysBetween(wo.createdAt, wo.readyForDeliveryAt);
-        const dDelivered = daysBetween(wo.createdAt, wo.deliveredAt);
-        const dReadyToDel = daysBetween(wo.readyForDeliveryAt, wo.deliveredAt);
+    const dReceived = daysBetween(wo.createdAt, wo.receivedAt);
+    const dReady = daysBetween(wo.createdAt, wo.readyForDeliveryAt);
+    const dDelivered = daysBetween(wo.createdAt, wo.deliveredAt);
+    const dReadyToDel = daysBetween(wo.readyForDeliveryAt, wo.deliveredAt);
 
-        if (dReceived != null) daysCreatedToReceived.push(dReceived);
-        if (dReady != null) daysCreatedToReady.push(dReady);
-        if (dDelivered != null) daysCreatedToDelivered.push(dDelivered);
-        if (dReadyToDel != null) daysReadyToDelivered.push(dReadyToDel);
+    if (dReceived != null) daysCreatedToReceived.push(dReceived);
+    if (dReady != null) daysCreatedToReady.push(dReady);
+    if (dDelivered != null) daysCreatedToDelivered.push(dDelivered);
+    if (dReadyToDel != null) daysReadyToDelivered.push(dReadyToDel);
 
-        const customerName =
-            `${wo.customer?.customerFirstName ?? ""} ${wo.customer?.customerLastName ?? ""}`.trim() ||
-            "—";
-
-        return {
-            id: wo.workOrderId,
-            number: wo.workOrderNumber,
-            saleNumber: wo.sale?.saleNumber ?? "—",
-            customer: customerName,
-            product: wo.saleDetail?.product?.productName ?? "—",
-            laboratory: labName,
-            status,
-            statusLabel: WORK_ORDER_STATUS_LABELS[status] || status,
-            createdAt: wo.createdAt,
-            receivedAt: wo.receivedAt,
-            readyForDeliveryAt: wo.readyForDeliveryAt,
-            deliveredAt: wo.deliveredAt,
-            daysCreatedToReceived: dReceived,
-            daysCreatedToReady: dReady,
-            daysCreatedToDelivered: dDelivered,
-            daysReadyToDelivered: dReadyToDel,
-        };
-    });
+    const customerName =
+      `${wo.customer?.customerFirstName ?? ""} ${wo.customer?.customerLastName ?? ""}`.trim() ||
+      "—";
 
     return {
-        reportType: "work-orders",
-        period: {
-            startDate,
-            endDate,
-            laboratoryId: labFilter,
-            status: statusFilter,
-        },
-        summary: {
-            totalWorkOrders: rows.length,
-            byStatus,
-            byLab,
-            avgDaysCreatedToReceived: averageDays(daysCreatedToReceived),
-            avgDaysCreatedToReady: averageDays(daysCreatedToReady),
-            avgDaysCreatedToDelivered: averageDays(daysCreatedToDelivered),
-            avgDaysReadyToDelivered: averageDays(daysReadyToDelivered),
-            deliveredCount: byStatus.DELIVERED || 0,
-            readyCount: byStatus.READY_FOR_DELIVERY || 0,
-            inLabCount:
-                (byStatus.SENT_TO_LAB || 0) +
-                (byStatus.RECEIVED || 0) +
-                (byStatus.QUALITY_CONTROL || 0),
-        },
-        rows,
+      id: wo.workOrderId,
+      number: wo.workOrderNumber,
+      saleNumber: wo.sale?.saleNumber ?? "—",
+      customer: customerName,
+      product: wo.saleDetail?.product?.productName ?? "—",
+      laboratory: labName,
+      status,
+      statusLabel: WORK_ORDER_STATUS_LABELS[status] || status,
+      createdAt: wo.createdAt,
+      receivedAt: wo.receivedAt,
+      readyForDeliveryAt: wo.readyForDeliveryAt,
+      deliveredAt: wo.deliveredAt,
+      daysCreatedToReceived: dReceived,
+      daysCreatedToReady: dReady,
+      daysCreatedToDelivered: dDelivered,
+      daysReadyToDelivered: dReadyToDel,
     };
+  });
+
+  return {
+    reportType: "work-orders",
+    period: {
+      startDate,
+      endDate,
+      laboratoryId: labFilter,
+      status: statusFilter,
+    },
+    summary: {
+      totalWorkOrders: rows.length,
+      byStatus,
+      byLab,
+      avgDaysCreatedToReceived: averageDays(daysCreatedToReceived),
+      avgDaysCreatedToReady: averageDays(daysCreatedToReady),
+      avgDaysCreatedToDelivered: averageDays(daysCreatedToDelivered),
+      avgDaysReadyToDelivered: averageDays(daysReadyToDelivered),
+      deliveredCount: byStatus.DELIVERED || 0,
+      readyCount: byStatus.READY_FOR_DELIVERY || 0,
+      inLabCount:
+        (byStatus.SENT_TO_LAB || 0) + (byStatus.RECEIVED || 0) + (byStatus.QUALITY_CONTROL || 0),
+    },
+    rows,
+  };
 }

@@ -1,6 +1,6 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 
-const general = new PrismaGeneral();
+
 
 function normalizeEmail(email) {
     return String(email ?? "").trim().toLowerCase();

@@ -1,4 +1,4 @@
-import { PrismaClient as PrismaGeneral } from "../src/generated/general/index.js";
+import { generalPrisma as general } from "../dbGeneral.js";
 import { getPlanById } from "./planService.js";
 import { createSubscriptionService, getSubscriptionsByBusinessIdService } from "./subscriptionService.js";
 import {
@@ -12,7 +12,7 @@ import {
 import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
 import { getPlanPricing } from "../libs/planPricing.js";
 
-const general = new PrismaGeneral();
+
 
 const FREE_TRIAL_PLAN_ID = "P001";
 

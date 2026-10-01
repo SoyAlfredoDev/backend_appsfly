@@ -1,11 +1,11 @@
-import { PrismaClient as PrismaGeneral } from '../src/generated/general/index.js'
+import { generalPrisma as general } from "../dbGeneral.js";
 import { getAdminSubscriptionsService } from './subscriptionService.js'
 import { getAdminBusinessesService, getAdminBusinessByIdService } from './businessService.js'
 import { getPrismaForBusinessId } from '../db.js'
 import userSuperAdmin from '../superAdmin.js'
 import { getAdminSubscriptionPayments as fetchAdminSubscriptionPayments } from './subscriptionPaymentService.js'
 
-const general = new PrismaGeneral()
+
 
 export const getKpis = async () => {
     try {

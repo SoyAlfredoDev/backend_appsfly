@@ -1,50 +1,80 @@
-// db.js
-import { PrismaClient as prismaBusiness } from "./src/generated/business/index.js";
-import { getConnectionDBServicio } from "./services/businessService.js";
-import { getUserBusinessById } from './services/userBusinessService.js';
+import { PrismaClient as PrismaBusiness } from "./src/generated/business/index.js";
+import { getSharedTenantClient } from "./services/database/sharedTenantClient.ts";
+import { serverlessDatabaseUrl } from "./services/database/serverlessDatabaseUrl.ts";
+import { getBusinessDatabasePlacement } from "./services/businessService.js";
+import { getUserBusinessById } from "./services/userBusinessService.js";
 
-// Cache de instancias Prisma por businessId
-const prismaClients = {};
+const dedicatedClients = new Map();
+const maxDedicatedClients = Math.max(1, Number(process.env.TENANT_CLIENT_CACHE_MAX || 50));
+const dedicatedClientIdleMs = Math.max(
+  60_000,
+  Number(process.env.TENANT_CLIENT_IDLE_MS || 15 * 60_000),
+);
 
-export async function getPrismaForBusinessId(businessId) {
-    try {
-        if (prismaClients[businessId]) {
-            return prismaClients[businessId];
-        }
-        const url = await getConnectionDBServicio(businessId);
-        if (!url) return null;
-        const client = new prismaBusiness({
-            datasources: { db: { url } },
-        });
-        prismaClients[businessId] = client;
-        return client;
-    } catch (error) {
-        console.error("(getPrismaForBusinessId):", error);
-        return null;
-    }
+async function disconnectEntry(entry) {
+  try {
+    await entry.client.$disconnect();
+  } catch (error) {
+    console.error("(db): Error disconnecting tenant Prisma client:", error);
+  }
 }
 
-// Crea o reutiliza PrismaClient para un negocio
+async function evictIdleDedicatedClients() {
+  const now = Date.now();
+  for (const [businessId, entry] of dedicatedClients.entries()) {
+    if (now - entry.lastUsedAt < dedicatedClientIdleMs) continue;
+    dedicatedClients.delete(businessId);
+    await disconnectEntry(entry);
+  }
+
+  while (dedicatedClients.size > maxDedicatedClients) {
+    const oldest = dedicatedClients.entries().next().value;
+    if (!oldest) break;
+    const [businessId, entry] = oldest;
+    dedicatedClients.delete(businessId);
+    await disconnectEntry(entry);
+  }
+}
+
+async function getDedicatedClient(businessId, url) {
+  const cached = dedicatedClients.get(businessId);
+  if (cached) {
+    cached.lastUsedAt = Date.now();
+    dedicatedClients.delete(businessId);
+    dedicatedClients.set(businessId, cached);
+    return cached.client;
+  }
+
+  const client = new PrismaBusiness({
+    datasources: { db: { url: serverlessDatabaseUrl(url) ?? url } },
+  });
+  dedicatedClients.set(businessId, { client, lastUsedAt: Date.now() });
+  await evictIdleDedicatedClients();
+  return client;
+}
+
+export async function getPrismaForBusinessId(businessId) {
+  const placement = await getBusinessDatabasePlacement(businessId);
+  if (!placement) return null;
+
+  if (placement.businessDatabaseMode === "SHARED") {
+    return getSharedTenantClient(businessId);
+  }
+
+  if (!placement.businessConnectionDB) return null;
+  return getDedicatedClient(businessId, placement.businessConnectionDB);
+}
+
 export async function getPrismaForBusiness(userId) {
-    try {
-        const userBusiness = await getUserBusinessById(userId);
-        if (!userBusiness || !userBusiness[0]) {
-            throw new Error(`No se encontró relación entre usuario y negocio para userId=${userId}`);
-        };
-        const businessId = userBusiness[0].userBusinessBusinessId;
-        // Si ya existe una conexión activa, la reutilizamos
-        if (prismaClients[businessId]) {
-            return prismaClients[businessId];
-        };
-        const url = await getConnectionDBServicio(businessId);
-        if (!url) throw new Error(`No existe URL de base de datos para el negocio ${businessId}`);
-        const client = new prismaBusiness({
-            datasources: { db: { url } },
-        });
-        prismaClients[businessId] = client;
-        return client;
-    } catch (error) {
-        console.error("(getPrismaForBusiness):", error);
-        throw new Error(`Error obteniendo Prisma para usuario ${userId}: ${error.message}`);
-    }
+  const memberships = await getUserBusinessById(userId);
+  if (!memberships?.[0]) {
+    throw new Error(`No se encontró relación entre usuario y negocio para userId=${userId}`);
+  }
+  return getPrismaForBusinessId(memberships[0].userBusinessBusinessId);
+}
+
+export async function disconnectTenantClients() {
+  const entries = [...dedicatedClients.values()];
+  dedicatedClients.clear();
+  await Promise.allSettled(entries.map(disconnectEntry));
 }

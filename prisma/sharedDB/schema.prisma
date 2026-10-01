@@ -1,0 +1,1101 @@
+// GENERATED from prisma/businessDB/schema.prisma. Run npm run shared:schema after tenant schema changes.
+// npx prisma migrate dev --schema=prisma/businessDB/schema.prisma --name init_business
+// npx prisma generate --schema ./prisma/businessDB/schema.prisma
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../../src/generated/shared"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_SHARED_URL")
+  directUrl = env("DATABASE_SHARED_MIGRATION_URL")
+}
+
+model User {
+  businessId          String    @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  userId              String
+  userFirstName       String
+  userLastName        String
+  userEmail           String
+  userLastConnection  DateTime?
+  userCodePhoneNumber String?
+  userPhoneNumber     String?
+  userDocumentType    String?
+  userDocumentNumber  String?
+  userRole            Role
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  // Relaciones
+  customers                  Customer[]
+  Product                    Product[]
+  Service                    Service[]
+  Category                   Category[]
+  Sale                       Sale[]                @relation("SaleCreatedBy")
+  salesDelivered             Sale[]                @relation("SaleDeliveredBy")
+  Payment                    Payment[]
+  SaleDetail                 SaleDetail[]
+  Purchase                   Purchase[]            @relation("PurchaseCreatedBy")
+  purchasesCancelled         Purchase[]            @relation("PurchaseCancelledBy")
+  PurchaseDetail             PurchaseDetail[]
+  Provider                   Provider[]
+  CashExpense                CashExpense[]
+  DailySales                 DailySales[]
+  Transactions               Transactions[]
+  Expense                    Expense[]
+  InventoryMovement          InventoryMovement[]
+  AsmrCampaign               AsmrCampaign[]
+  Quotation                  Quotation[]           @relation("QuotationCreatedBy")
+  QuotationDetail            QuotationDetail[]
+  Prescription               Prescription[]
+  Laboratory                 Laboratory[]
+  WorkOrder                  WorkOrder[]
+  LabDispatchCreated         LabDispatch[]         @relation("LabDispatchCreatedBy")
+  LabDispatchSent            LabDispatch[]         @relation("LabDispatchSentBy")
+  PurchaseCertificateCreated PurchaseCertificate[] @relation("PurchaseCertificateCreatedBy")
+  PurchaseCertificateIssued  PurchaseCertificate[] @relation("PurchaseCertificateIssuedBy")
+
+  @@id([businessId, userId])
+  @@unique([businessId, userEmail])
+  @@index([businessId])
+}
+
+model Customer {
+  businessId              String            @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  customerId              String            @id @default(uuid())
+  customerFirstName       String
+  customerLastName        String
+  customerEmail           String?
+  customerCodePhoneNumber String?
+  customerPhoneNumber     String?
+  customerDocumentType    String?
+  customerDocumentNumber  String?
+  customerComment         String?
+  /**
+   * Legacy: fotos históricas. En óptica las imágenes viven en Prescription.
+   */
+  customerImageUrl        String?
+  /**
+   * Fecha de nacimiento (útil en óptica; opcional)
+   */
+  customerBirthDate       DateTime?
+  /**
+   * Dirección (útil en óptica; opcional)
+   */
+  customerAddress         String?
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  createdByUserId         String
+  createdBy               User?             @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  Sale                    Sale[]
+  SaleDetail              SaleDetail[]
+  Quotation               Quotation[]
+  QuotationDetail         QuotationDetail[]
+  Prescription            Prescription[]
+  WorkOrder               WorkOrder[]
+
+  @@unique([businessId, customerId])
+  @@index([businessId])
+}
+
+model Product {
+  businessId             String                  @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  productId              String                  @id @default(uuid())
+  productName            String
+  productDescription     String?
+  productSKU             String
+  categoryId             String
+  category               Category                @relation(fields: [businessId, categoryId], references: [businessId, categoryId])
+  productPrice           Int
+  productPriceFixed      Boolean?
+  productStatus          ProductStatus
+  productUnit            ProductUnit
+  /**
+   * Permite vender el producto aunque quantityOnHand sea 0 o negativo
+   */
+  productAllowZeroStock  Boolean                 @default(false)
+  /**
+   * Si true, al venderse puede generar Orden de Trabajo (óptica)
+   */
+  productRequiresLabWork Boolean                 @default(false)
+  createdByUserId        String
+  user                   User                    @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  SaleDetail             SaleDetail[]
+  PurchaseDetail         PurchaseDetail[]
+  productStock           ProductStock?
+  QuotationDetail        QuotationDetail[]
+  attributeValues        ProductAttributeValue[]
+
+  @@unique([businessId, productId])
+  @@unique([businessId, productSKU])
+  @@index([businessId])
+}
+
+/**
+ * Códigos escaneables (barcode/QR/SKU alias) polimórficos por entidad.
+ */
+model ScanCode {
+  businessId      String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  scanCodeId      String   @id @default(uuid())
+  /**
+   * PRODUCT | SERVICE | WORK_ORDER | CUSTOMER | …
+   */
+  entityType      String
+  entityId        String
+  /**
+   * BARCODE | QR | SKU_ALIAS
+   */
+  codeType        String
+  codeValue       String
+  isPrimary       Boolean  @default(false)
+  createdByUserId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([businessId, scanCodeId])
+  @@unique([businessId, codeValue])
+  @@index([businessId, entityType, entityId])
+  @@index([businessId, codeType])
+}
+
+model ProductStock {
+  businessId String  @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  productId  String  @id
+  product    Product @relation(fields: [businessId, productId], references: [businessId, productId], onDelete: Cascade)
+
+  quantityOnHand  Int       @default(0)
+  reorderPoint    Int       @default(0)
+  averageUnitCost Int       @default(0)
+  lastMovementAt  DateTime?
+  version         Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  movements InventoryMovement[]
+
+  @@unique([businessId, productId])
+  @@index([businessId])
+}
+
+model InventoryMovement {
+  businessId String @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  movementId String @id @default(uuid())
+
+  productId    String
+  productStock ProductStock @relation(fields: [businessId, productId], references: [businessId, productId])
+
+  movementType  InventoryMovementType
+  quantityDelta Int
+  stockBefore   Int
+  stockAfter    Int
+
+  referenceType  InventoryReferenceType @default(NONE)
+  referenceId    String?
+  referenceLabel String?
+
+  reason String?
+  notes  String?
+
+  createdByUserId String
+  user            User   @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+
+  createdAt DateTime @default(now())
+
+  @@unique([businessId, movementId])
+  @@index([businessId, productId, createdAt(sort: Desc)])
+  @@index([businessId, movementType, createdAt(sort: Desc)])
+  @@index([businessId, referenceType, referenceId])
+  @@index([businessId, createdAt(sort: Desc)])
+}
+
+model Service {
+  businessId         String            @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  serviceId          String            @id @default(uuid())
+  serviceName        String
+  serviceDescription String?
+  serviceSKU         String
+  servicePrice       Int
+  servicePriceFixed  Boolean?
+  serviceStatus      ProductStatus
+  serviceUnit        ServiceUnit
+  categoryId         String
+  category           Category          @relation(fields: [businessId, categoryId], references: [businessId, categoryId])
+  createdByUserId    String
+  user               User              @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  SaleDetail         SaleDetail[]
+  PurchaseDetail     PurchaseDetail[]
+  QuotationDetail    QuotationDetail[]
+
+  @@unique([businessId, serviceId])
+  @@unique([businessId, serviceSKU])
+  @@index([businessId])
+}
+
+model Category {
+  businessId      String              @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  categoryId      String              @id @default(uuid())
+  categoryName    String
+  /**
+   * Código estable de sistema (FRAMES, LENSES, …). Null en categorías custom.
+   */
+  categoryCode    String?
+  /**
+   * Categorías seed óptica: no eliminables
+   */
+  isSystem        Boolean             @default(false)
+  createdByUserId String
+  allowedFor      UsageContext
+  products        Product[]
+  services        Service[]
+  attributes      CategoryAttribute[]
+  user            User                @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@unique([businessId, categoryId])
+  @@unique([businessId, categoryCode])
+  @@index([businessId])
+}
+
+/**
+ * Definición de atributo dinámico por categoría (EAV).
+ */
+model CategoryAttribute {
+  businessId          String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  categoryAttributeId String   @id @default(uuid())
+  categoryId          String
+  category            Category @relation(fields: [businessId, categoryId], references: [businessId, categoryId], onDelete: Cascade)
+
+  attributeKey   String
+  attributeLabel String
+  /**
+   * TEXT | NUMBER | BOOLEAN | SELECT
+   */
+  dataType       String  @default("TEXT")
+  /**
+   * JSON array de opciones para SELECT
+   */
+  optionsJson    String?
+  isSystem       Boolean @default(false)
+  isRequired     Boolean @default(false)
+  isVisible      Boolean @default(true)
+  sortOrder      Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  values ProductAttributeValue[]
+
+  @@unique([businessId, categoryId, attributeKey])
+  @@unique([businessId, categoryAttributeId])
+  @@index([businessId, categoryId, sortOrder])
+}
+
+/**
+ * Valor de atributo de un producto (EAV).
+ */
+model ProductAttributeValue {
+  businessId              String  @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  productAttributeValueId String  @id @default(uuid())
+  productId               String
+  product                 Product @relation(fields: [businessId, productId], references: [businessId, productId], onDelete: Cascade)
+
+  categoryAttributeId String
+  categoryAttribute   CategoryAttribute @relation(fields: [businessId, categoryAttributeId], references: [businessId, categoryAttributeId], onDelete: Cascade)
+
+  /**
+   * Valor serializado a texto; la UI interpreta según dataType
+   */
+  value String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([businessId, productId, categoryAttributeId])
+  @@unique([businessId, productAttributeValueId])
+  @@index([businessId, categoryAttributeId])
+}
+
+model Sale {
+  businessId            String                @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  saleId                String                @id
+  saleCustomerId        String
+  saleTotal             Int
+  saleTotalPayments     Int
+  salePendingAmount     Int
+  createdByUserId       String
+  saleComment           String?
+  /**
+   * Comprobante / respaldo visual — URL Cloudinary (opcional)
+   */
+  saleImageUrl          String?
+  saleNumber            String?
+  user                  User                  @relation("SaleCreatedBy", fields: [businessId, createdByUserId], references: [businessId, userId])
+  customer              Customer              @relation(fields: [businessId, saleCustomerId], references: [businessId, customerId])
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  SaleDetail            SaleDetail[]
+  Payment               Payment[]
+  taxDocuments          TaxDocument[]
+  WorkOrder             WorkOrder[]
+  PurchaseCertificate   PurchaseCertificate[]
+  /**
+   * Tipo de comprobante solicitado al registrar la venta
+   */
+  documentType          DocumentType          @default(RECEIPT)
+  /**
+   * Control de entrega de productos (independiente del pago)
+   */
+  saleDeliveryStatus    SaleDeliveryStatus?
+  saleDeliveredAt       DateTime?
+  saleDeliveredByUserId String?
+  deliveredBy           User?                 @relation("SaleDeliveredBy", fields: [businessId, saleDeliveredByUserId], references: [businessId, userId])
+
+  @@unique([businessId, saleId])
+  @@index([businessId])
+}
+
+model SaleDetail {
+  businessId          String      @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  saleDetailId        String      @id
+  saleId              String
+  saleDetailProductId String?
+  saleDetailServiceId String?
+  saleDetailQuantity  Int
+  saleDetailPrice     Int
+  saleDetailTotal     Int
+  saleDetailType      String
+  createdByUserId     String
+  saleCustomerId      String
+  customer            Customer    @relation(fields: [businessId, saleCustomerId], references: [businessId, customerId])
+  user                User        @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  sale                Sale        @relation(fields: [businessId, saleId], references: [businessId, saleId])
+  product             Product?    @relation(fields: [businessId, saleDetailProductId], references: [businessId, productId])
+  service             Service?    @relation(fields: [businessId, saleDetailServiceId], references: [businessId, serviceId])
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  WorkOrder           WorkOrder[]
+
+  @@unique([businessId, saleDetailId])
+  @@index([businessId])
+}
+
+model Payment {
+  businessId      String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  paymentId       String   @id
+  saleId          String
+  paymentAmount   Int
+  paymentMethod   String
+  createdByUserId String
+  user            User     @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  Sale            Sale     @relation(fields: [businessId, saleId], references: [businessId, saleId])
+
+  @@unique([businessId, paymentId])
+  @@index([businessId])
+}
+
+model CashExpense {
+  businessId             String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  cashExpenseId          String   @id @default(uuid())
+  cashExpenseAmount      Int
+  cashExpenseDescription String?
+  cashExpenseLinkImage   String?
+  createdByUserId        String
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  user                   User     @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+
+  @@unique([businessId, cashExpenseId])
+  @@index([businessId])
+}
+
+model DailySales {
+  businessId              String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  dailySalesId            String   @id
+  dailySalesDay           String
+  dailySalesTotalSales    Int?
+  dailySalesNumberOfSales Int?
+  dailySalesTotalIncome   Int?
+  dailySalesDetailIncome  Json?
+  createdByUserId         String
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  user                    User     @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+
+  @@unique([businessId, dailySalesId])
+  @@unique([businessId, dailySalesDay])
+  @@index([businessId])
+}
+
+model Transactions {
+  businessId             String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  transactionId          String   @id @default(uuid())
+  transactionType        String?
+  transactionMethod      String?
+  transactionTable       String?
+  transactionRecordId    String?
+  transactionOldValue    Json?
+  transactionNewValue    Json?
+  transactionDescription String?
+  createdByUserId        String
+  createdAt              DateTime @default(now())
+  user                   User     @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+
+  @@unique([businessId, transactionId])
+  @@index([businessId])
+}
+
+model AsmrCampaign {
+  businessId          String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  campaignId          String   @id @default(uuid())
+  campaignName        String
+  campaignType        String
+  auditMonth          Int
+  auditYear           Int
+  sourceMonth         Int
+  sourceYear          Int
+  discountPercent     Int      @default(20)
+  messageSent         String?
+  contactsSuccess     Int      @default(0)
+  universeTotal       Int      @default(0)
+  excludedRepurchase  Int      @default(0)
+  eligibleBeforeDedup Int      @default(0)
+  eligibleFinal       Int      @default(0)
+  phonesDeduplicated  Int      @default(0)
+  campaignStatus      String   @default("SENT")
+  createdByUserId     String
+  user                User     @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  executedAt          DateTime @default(now())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([businessId, campaignId])
+  @@index([businessId, createdAt(sort: Desc)])
+  @@index([businessId, auditYear, auditMonth])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Expense {
+  businessId           String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  expenseId            String   @id
+  expenseDescription   String?
+  expensePaymentMethod String?
+  expenseImageUrl      String?
+  expenseAmount        Int?
+  createdByUserId      String
+  createdAt            DateTime @default(now())
+  user                 User     @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+
+  @@unique([businessId, expenseId])
+  @@index([businessId])
+}
+
+model Provider {
+  businessId              String     @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  providerId              String     @id @default(uuid())
+  providerName            String
+  providerDocumentType    String?
+  providerDocumentNumber  String?
+  providerAddress         String?
+  providerCodePhoneNumber String?
+  providerPhoneNumber     String?
+  providerEmail           String?
+  providerComment         String?
+  createdByUserId         String
+  user                    User       @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt               DateTime   @default(now())
+  updatedAt               DateTime   @updatedAt
+  Purchase                Purchase[]
+
+  @@unique([businessId, providerId])
+  @@index([businessId])
+}
+
+model Purchase {
+  businessId         String  @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  purchaseId         String  @id
+  purchaseNumber     String?
+  purchaseRealNumber String? // Invoice number
+
+  purchaseProviderId String
+  provider           Provider @relation(fields: [businessId, purchaseProviderId], references: [businessId, providerId])
+
+  purchaseTotal   Int
+  purchaseStatus  String?
+  purchaseComment String?
+
+  createdByUserId String
+  user            User   @relation("PurchaseCreatedBy", fields: [businessId, createdByUserId], references: [businessId, userId])
+
+  cancelledByUserId String?
+  cancelledBy       User?     @relation("PurchaseCancelledBy", fields: [businessId, cancelledByUserId], references: [businessId, userId])
+  cancelledAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  PurchaseDetail PurchaseDetail[]
+
+  @@unique([businessId, purchaseId])
+  @@index([businessId])
+}
+
+model PurchaseDetail {
+  businessId       String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  purchaseDetailId String   @id
+  purchaseId       String
+  purchase         Purchase @relation(fields: [businessId, purchaseId], references: [businessId, purchaseId])
+
+  purchaseDetailProductId String?
+  product                 Product? @relation(fields: [businessId, purchaseDetailProductId], references: [businessId, productId])
+
+  purchaseDetailServiceId String?
+  service                 Service? @relation(fields: [businessId, purchaseDetailServiceId], references: [businessId, serviceId])
+
+  purchaseDetailQuantity Int
+  purchaseDetailPrice    Int
+  purchaseDetailTotal    Int
+  purchaseDetailType     String // PRODUCT or SERVICE
+
+  createdByUserId String
+  user            User   @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([businessId, purchaseDetailId])
+  @@index([businessId])
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  DELETED
+}
+
+enum ProductUnit {
+  UNIT
+  KILOGRAM
+  GRAM
+  LITER
+  MILLILITER
+  METER
+  CENTIMETER
+}
+
+enum ServiceUnit {
+  UNIT
+  MONTH
+  DAY
+  HOUR
+  MINUTE
+}
+
+enum UsageContext {
+  PRODUCTS
+  SERVICES
+  BOTH
+}
+
+enum InventoryMovementType {
+  VENTA
+  COMPRA
+  AJUSTE_MANUAL
+  MERMA
+  DEVOLUCION
+  ANULACION_VENTA
+  ANULACION_COMPRA
+}
+
+enum InventoryReferenceType {
+  SALE
+  SALE_DETAIL
+  PURCHASE
+  PURCHASE_DETAIL
+  MANUAL
+  NONE
+}
+
+enum DocumentType {
+  RECEIPT
+  BOLETA
+  FACTURA
+}
+
+enum SaleDeliveryStatus {
+  PENDING
+  DELIVERED
+}
+
+enum TaxDocumentStatus {
+  PENDING
+  SENT
+  ACCEPTED
+  REJECTED
+  ERROR
+}
+
+enum TaxProviderType {
+  AUTH_CL
+  INTERNAL
+}
+
+model TaxDocument {
+  businessId       String                @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  taxDocumentId    String                @id @default(uuid())
+  saleId           String
+  sale             Sale                  @relation(fields: [businessId, saleId], references: [businessId, saleId], onDelete: Cascade)
+  documentType     DocumentType
+  provider         TaxProviderType       @default(AUTH_CL)
+  folio            Int?
+  trackId          String?
+  status           TaxDocumentStatus     @default(PENDING)
+  siiStatus        String?
+  pdfUrl           String?
+  xmlUrl           String?
+  providerResponse Json?
+  netAmount        Int?
+  taxAmount        Int?
+  totalAmount      Int?
+  receiverRut      String?
+  receiverName     String?
+  receiverEmail    String?
+  retryCount       Int                   @default(0)
+  lastError        String?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  auditLogs        TaxDocumentAuditLog[]
+
+  @@unique([businessId, taxDocumentId])
+  @@index([businessId, saleId])
+  @@index([businessId, documentType])
+  @@index([businessId, status])
+  @@index([businessId, folio])
+  @@index([businessId, trackId])
+  @@index([businessId, receiverRut])
+  @@index([businessId, createdAt(sort: Desc)])
+}
+
+model TaxDocumentAuditLog {
+  businessId     String             @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  auditLogId     String             @id @default(uuid())
+  taxDocumentId  String
+  taxDocument    TaxDocument        @relation(fields: [businessId, taxDocumentId], references: [businessId, taxDocumentId], onDelete: Cascade)
+  action         String
+  previousStatus TaxDocumentStatus?
+  newStatus      TaxDocumentStatus?
+  payload        Json?
+  createdAt      DateTime           @default(now())
+
+  @@unique([businessId, auditLogId])
+  @@index([businessId, taxDocumentId])
+  @@index([businessId, createdAt(sort: Desc)])
+}
+
+enum QuotationStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  EXPIRED
+}
+
+enum QuotationEmailDeliveryStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+  BOUNCED
+}
+
+model Quotation {
+  businessId                      String                        @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  quotationId                     String                        @id
+  quotationNumber                 String?
+  quotationCustomerId             String
+  quotationTotal                  Int
+  quotationStatus                 QuotationStatus               @default(DRAFT)
+  quotationComment                String?
+  quotationExpiresAt              DateTime?
+  /**
+   * Receta óptica vinculada (opcional) — mismo patrón que WorkOrder
+   */
+  prescriptionId                  String?
+  prescription                    Prescription?                 @relation(fields: [businessId, prescriptionId], references: [businessId, prescriptionId])
+  quotationEmailDeliveryStatus    QuotationEmailDeliveryStatus?
+  quotationEmailProviderMessageId String?
+  quotationEmailSentTo            String?
+  quotationEmailSentAt            DateTime?
+  quotationEmailDeliveredAt       DateTime?
+  quotationEmailOpenedAt          DateTime?
+  quotationEmailErrorMessage      String?
+  createdByUserId                 String
+  user                            User                          @relation("QuotationCreatedBy", fields: [businessId, createdByUserId], references: [businessId, userId])
+  customer                        Customer                      @relation(fields: [businessId, quotationCustomerId], references: [businessId, customerId])
+  createdAt                       DateTime                      @default(now())
+  updatedAt                       DateTime                      @updatedAt
+  QuotationDetail                 QuotationDetail[]
+
+  @@unique([businessId, quotationId])
+  @@index([businessId, prescriptionId])
+}
+
+model QuotationDetail {
+  businessId               String    @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  quotationDetailId        String    @id
+  quotationId              String
+  quotationDetailProductId String?
+  quotationDetailServiceId String?
+  quotationDetailQuantity  Int
+  quotationDetailPrice     Int
+  quotationDetailTotal     Int
+  quotationDetailType      String
+  createdByUserId          String
+  quotationCustomerId      String
+  customer                 Customer  @relation(fields: [businessId, quotationCustomerId], references: [businessId, customerId])
+  user                     User      @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  quotation                Quotation @relation(fields: [businessId, quotationId], references: [businessId, quotationId], onDelete: Cascade)
+  product                  Product?  @relation(fields: [businessId, quotationDetailProductId], references: [businessId, productId])
+  service                  Service?  @relation(fields: [businessId, quotationDetailServiceId], references: [businessId, serviceId])
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  @@unique([businessId, quotationDetailId])
+  @@index([businessId])
+}
+
+/**
+ * Receta óptica asociada a un cliente.
+ * Historial: un cliente puede tener muchas recetas.
+ * entryMode: PHOTO | MANUAL | MIXED
+ */
+model Prescription {
+  businessId     String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  prescriptionId String   @id @default(uuid())
+  customerId     String
+  customer       Customer @relation(fields: [businessId, customerId], references: [businessId, customerId])
+
+  prescriptionDate      DateTime?
+  prescriptionExpiresAt DateTime?
+  prescribedBy          String?
+  /**
+   * lejos | cerca | multifocal | progresivo | otro
+   */
+  prescriptionType      String?
+
+  odSphere   String?
+  odCylinder String?
+  odAxis     String?
+  odAddition String?
+  odPrism    String?
+  odBase     String?
+
+  oiSphere   String?
+  oiCylinder String?
+  oiAxis     String?
+  oiAddition String?
+  oiPrism    String?
+  oiBase     String?
+
+  pdBinocular String?
+  pdOd        String?
+  pdOi        String?
+  pdNear      String?
+
+  prescriptionNotes    String?
+  /**
+   * Foto/archivo de la receta — URL Cloudinary (opcional)
+   */
+  prescriptionImageUrl String?
+  /**
+   * PHOTO | MANUAL | MIXED
+   */
+  entryMode            String  @default("MANUAL")
+
+  createdByUserId String
+  createdBy       User        @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  WorkOrder       WorkOrder[]
+  Quotation       Quotation[]
+
+  @@unique([businessId, prescriptionId])
+  @@index([businessId, customerId, createdAt(sort: Desc)])
+}
+
+enum WorkOrderStatus {
+  CREATED
+  PENDING_SHIPMENT
+  SENT_TO_LAB
+  RECEIVED
+  QUALITY_CONTROL
+  READY_FOR_DELIVERY
+  DELIVERED
+}
+
+enum LabDispatchStatus {
+  SENT
+  PARTIAL_RECEIVED
+  RECEIVED
+  CANCELLED
+}
+
+/**
+ * Laboratorio óptico (tallado / montaje)
+ */
+model Laboratory {
+  businessId                String        @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  laboratoryId              String        @id @default(uuid())
+  laboratoryName            String
+  laboratoryDocumentType    String?
+  laboratoryDocumentNumber  String?
+  laboratoryAddress         String?
+  laboratoryCodePhoneNumber String?
+  laboratoryPhoneNumber     String?
+  laboratoryEmail           String?
+  laboratoryComment         String?
+  laboratoryActive          Boolean       @default(true)
+  createdByUserId           String
+  createdBy                 User          @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt                 DateTime      @default(now())
+  updatedAt                 DateTime      @updatedAt
+  WorkOrder                 WorkOrder[]
+  LabDispatch               LabDispatch[]
+
+  @@unique([businessId, laboratoryId])
+  @@index([businessId])
+}
+
+/**
+ * Orden de Trabajo (OT) — flujo óptico asociado a una venta.
+ * Una venta puede tener varias OT (p. ej. un producto óptico por OT).
+ */
+model WorkOrder {
+  businessId         String          @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  workOrderId        String          @id @default(uuid())
+  workOrderNumber    String?
+  saleId             String
+  sale               Sale            @relation(fields: [businessId, saleId], references: [businessId, saleId])
+  saleDetailId       String?
+  saleDetail         SaleDetail?     @relation(fields: [businessId, saleDetailId], references: [businessId, saleDetailId])
+  customerId         String
+  customer           Customer        @relation(fields: [businessId, customerId], references: [businessId, customerId])
+  prescriptionId     String?
+  prescription       Prescription?   @relation(fields: [businessId, prescriptionId], references: [businessId, prescriptionId])
+  laboratoryId       String?
+  laboratory         Laboratory?     @relation(fields: [businessId, laboratoryId], references: [businessId, laboratoryId])
+  labDispatchId      String?
+  labDispatch        LabDispatch?    @relation(fields: [businessId, labDispatchId], references: [businessId, labDispatchId])
+  workOrderStatus    WorkOrderStatus @default(CREATED)
+  workOrderNotes     String?
+  workOrderLabNotes  String?
+  quantity           Int             @default(1)
+  receivedAt         DateTime?
+  readyForDeliveryAt DateTime?
+  deliveredAt        DateTime?
+  createdByUserId    String
+  createdBy          User            @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  @@unique([businessId, workOrderId])
+  @@index([businessId, saleId])
+  @@index([businessId, customerId, createdAt(sort: Desc)])
+  @@index([businessId, laboratoryId, workOrderStatus])
+  @@index([businessId, labDispatchId])
+  @@index([businessId, workOrderStatus, createdAt(sort: Desc)])
+}
+
+/**
+ * Despacho a laboratorio: agrupa varias OT del mismo laboratorio en un envío.
+ * La recepción de OT puede ser parcial (por OT).
+ */
+model LabDispatch {
+  businessId        String            @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  labDispatchId     String            @id @default(uuid())
+  labDispatchNumber String?
+  laboratoryId      String
+  laboratory        Laboratory        @relation(fields: [businessId, laboratoryId], references: [businessId, laboratoryId])
+  labDispatchStatus LabDispatchStatus @default(SENT)
+  sentAt            DateTime?
+  sentByUserId      String?
+  sentBy            User?             @relation("LabDispatchSentBy", fields: [businessId, sentByUserId], references: [businessId, userId])
+  labDispatchNotes  String?
+  createdByUserId   String
+  createdBy         User              @relation("LabDispatchCreatedBy", fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  WorkOrder         WorkOrder[]
+
+  @@unique([businessId, labDispatchId])
+  @@index([businessId, laboratoryId, createdAt(sort: Desc)])
+  @@index([businessId, labDispatchStatus, createdAt(sort: Desc)])
+}
+
+enum PurchaseCertificateStatus {
+  DRAFT
+  ISSUED
+  VOID
+}
+
+/**
+ * Certificado de compra (óptica) — documento independiente para reembolsos
+ * (ISAPRE, FONASA, seguros, convenios). No modifica la venta original.
+ * Las líneas son un snapshot editable al emitir.
+ */
+model PurchaseCertificate {
+  businessId            String                    @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  purchaseCertificateId String                    @id @default(uuid())
+  saleId                String
+  sale                  Sale                      @relation(fields: [businessId, saleId], references: [businessId, saleId])
+  certificateNumber     String?
+  certificateStatus     PurchaseCertificateStatus @default(DRAFT)
+
+  /**
+   * Fecha impresa en el certificado (editable)
+   */
+  certificateIssuedDate      DateTime?
+  certificateComment         String?
+  /**
+   * Nombre que aparece en firma del responsable
+   */
+  certificateResponsibleName String?
+
+  customerNameSnapshot     String?
+  customerDocumentSnapshot String?
+  businessNameSnapshot     String?
+  businessDocumentSnapshot String?
+  businessAddressSnapshot  String?
+  businessLogoSnapshot     String?
+
+  certificateTotal Int @default(0)
+
+  issuedAt        DateTime?
+  issuedByUserId  String?
+  issuedBy        User?     @relation("PurchaseCertificateIssuedBy", fields: [businessId, issuedByUserId], references: [businessId, userId])
+  createdByUserId String
+  createdBy       User      @relation("PurchaseCertificateCreatedBy", fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  details PurchaseCertificateDetail[]
+
+  @@unique([businessId, purchaseCertificateId])
+  @@index([businessId, saleId, createdAt(sort: Desc)])
+  @@index([businessId, certificateStatus, createdAt(sort: Desc)])
+}
+
+model PurchaseCertificateDetail {
+  businessId                  String              @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  purchaseCertificateDetailId String              @id @default(uuid())
+  purchaseCertificateId       String
+  purchaseCertificate         PurchaseCertificate @relation(fields: [businessId, purchaseCertificateId], references: [businessId, purchaseCertificateId], onDelete: Cascade)
+
+  /**
+   * Referencia blanda a la línea de venta (sin FK; solo auditoría)
+   */
+  sourceSaleDetailId String?
+  lineType           String?
+  lineSku            String?
+  lineDescription    String
+  lineQuantity       Int     @default(1)
+  lineUnitPrice      Int     @default(0)
+  lineTotal          Int     @default(0)
+  sortOrder          Int     @default(0)
+  /**
+   * Si false, no se imprime en el PDF (permite omitir líneas sin borrar)
+   */
+  lineIncluded       Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([businessId, purchaseCertificateDetailId])
+  @@index([businessId, purchaseCertificateId, sortOrder])
+}
+
+/**
+ * Configuración de agendamiento público (1 fila por tenant).
+ * dayOfWeek en AppointmentWeeklyAvailability: 0 = domingo … 6 = sábado.
+ */
+model AppointmentSettings {
+  businessId          String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  settingsId          String   @default("default")
+  appointmentsEnabled Boolean  @default(false)
+  slotDurationMinutes Int      @default(30)
+  maxDaysAhead        Int      @default(30)
+  visitorMessage      String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  weeklyAvailability AppointmentWeeklyAvailability[]
+
+  @@id([businessId, settingsId])
+  @@index([businessId])
+}
+
+model AppointmentWeeklyAvailability {
+  businessId     String              @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  availabilityId String              @id @default(uuid())
+  settingsId     String              @default("default")
+  settings       AppointmentSettings @relation(fields: [businessId, settingsId], references: [businessId, settingsId], onDelete: Cascade)
+  /**
+   * 0 = domingo … 6 = sábado
+   */
+  dayOfWeek      Int
+  /**
+   * HH:mm en timezone del negocio
+   */
+  startTime      String
+  /**
+   * HH:mm en timezone del negocio
+   */
+  endTime        String
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@unique([businessId, availabilityId])
+  @@index([businessId, settingsId, dayOfWeek])
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  RESCHEDULED
+}
+
+model Appointment {
+  businessId     String            @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  appointmentId  String            @id @default(uuid())
+  firstName      String
+  lastName       String
+  phoneCode      String            @default("+56")
+  phoneNumber    String
+  contactConsent Boolean
+  startsAt       DateTime
+  endsAt         DateTime
+  status         AppointmentStatus @default(PENDING)
+  notes          String?
+  staffNotes     String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@unique([businessId, appointmentId])
+  @@index([businessId, startsAt, endsAt])
+  @@index([businessId, status, startsAt])
+}

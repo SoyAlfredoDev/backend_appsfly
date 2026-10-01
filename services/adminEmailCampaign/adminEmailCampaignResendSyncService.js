@@ -1,8 +1,8 @@
 import { Resend } from "resend";
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import { syncRunMetricsFromRecipients } from "./adminEmailCampaignMetricsService.js";
 
-const general = new PrismaGeneral();
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const SYNC_BATCH_SIZE = 100;

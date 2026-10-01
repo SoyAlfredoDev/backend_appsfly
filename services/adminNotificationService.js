@@ -1,10 +1,10 @@
-import { PrismaClient as PrismaGeneral } from "../src/generated/general/index.js";
+import { generalPrisma as general } from "../dbGeneral.js";
 import {
     enrichNotificationWithManualAction,
     buildCampaignManualRequiredNotification,
 } from "./adminEmailCampaign/adminEmailCampaignNotificationHelpers.js";
 
-const general = new PrismaGeneral();
+
 
 export async function createAdminNotification({
     notificationType,

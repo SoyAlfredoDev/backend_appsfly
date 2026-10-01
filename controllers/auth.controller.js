@@ -6,6 +6,7 @@ import { createAccessToken } from "../libs/jwt.js";
 import validateRut from "../libs/validateRut.js";
 import { sendConfirmEmail } from "../emails/dispatchers/confirmEmail.dispatcher.js";
 import { markProspectConvertedByEmail } from "../services/emailProspect/emailProspectConversionService.js";
+import { invalidCredentialsBody, passwordPolicyError } from "../services/auth/passwordPolicy.ts";
 
 import dotenv from "dotenv";
 
@@ -53,6 +54,11 @@ export const register = async (req, res) => {
 
     if (userPassword !== userPasswordConfirmation) {
       return res.status(400).json({ error: 2, message: "Passwords do not match" });
+    }
+
+    const passwordError = passwordPolicyError(userPassword);
+    if (passwordError) {
+      return res.status(400).json({ message: passwordError, code: "PASSWORD_TOO_SHORT" });
     }
 
     let rutFormatted;
@@ -122,18 +128,16 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { userEmail, userPassword } = req.body;
+    const { userEmail, userPassword } = req.body ?? {};
+    if (typeof userEmail !== "string" || typeof userPassword !== "string") {
+      return res.status(400).json(invalidCredentialsBody());
+    }
     const userEmailFormatted = userEmail.trim().toLowerCase();
     const user = await getUserByEmail(userEmailFormatted);
-    if (!user)
-      return res.status(400).json({
-        message: "user not found",
-      });
-    const isMatch = await bcrypt.compare(userPassword, user.userPassword);
-    if (!isMatch)
-      return res.status(400).json({
-        message: "Incorrect username or password",
-      });
+    const isMatch = user ? await bcrypt.compare(userPassword, user.userPassword) : false;
+    if (!user || !isMatch) {
+      return res.status(400).json(invalidCredentialsBody());
+    }
     const token = await createAccessToken({ id: user.userId });
 
     res.status(201).json({
@@ -221,7 +225,6 @@ export const forgotPassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
-    console.log(token, newPassword);
 
     if (!token || !newPassword) {
       return res

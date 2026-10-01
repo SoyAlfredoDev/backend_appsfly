@@ -1,4 +1,10 @@
 node_modules
+coverage
+dist
 .env
-.gitignore
 .vercel
+.env.*
+!.env.example
+*.tmp*
+src/generated/**/*.node
+src/generated/**/*.wasm

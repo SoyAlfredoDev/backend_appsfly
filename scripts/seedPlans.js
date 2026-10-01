@@ -14,89 +14,88 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 
-const BASE_FEATURES = [
-    "5 usuarios",
-    "Compras y Ventas",
-    "Inventario",
-    "Reportes",
-    "Soporte 24/7",
-];
+const BASE_FEATURES = ["5 usuarios", "Compras y Ventas", "Inventario", "Reportes", "Soporte 24/7"];
 
 const PRO_FEATURES = [
-    ...BASE_FEATURES,
-    "Boletas electrónicas",
-    "Facturas electrónicas",
-    "Asistente con IA",
-    "Envío de correos a clientes",
+  ...BASE_FEATURES,
+  "Boletas electrónicas",
+  "Facturas electrónicas",
+  "Asistente con IA",
+  "Envío de correos a clientes",
 ];
 
 /** Planes requeridos por el flujo de suscripción en frontend/backend */
 const PLANS = [
-    {
-        planId: "P001",
-        planName: "Plan Básico",
-        planDescription:
-            "Plan Básico — valor neto $9.990/mes (+ IVA). Promoción de lanzamiento: 2 meses gratis para negocios sin historial de suscripción.",
-        planPrice: 0,
-        planDuration: 2,
-        planCurrency: "CLP",
-        planFeatures: BASE_FEATURES,
-        planActive: true,
-    },
-    {
-        planId: "P002",
-        planName: "Plan Comercial",
-        planDescription: "Suscripción mensual recurrente vía Mercado Pago Chile. Precio neto + IVA (19%).",
-        planPrice: 9990,
-        planDuration: 1,
-        planCurrency: "CLP",
-        planFeatures: BASE_FEATURES,
-        planActive: true,
-    },
-    {
-        planId: "P003",
-        planName: "Plan Profesional",
-        planDescription:
-            "Facturación electrónica, asistente con IA y comunicación por correo con tus clientes. Precio neto + IVA (19%).",
-        planPrice: 39990,
-        planDuration: 1,
-        planCurrency: "CLP",
-        planFeatures: PRO_FEATURES,
-        planActive: true,
-    },
+  {
+    planId: "P001",
+    planName: "Plan Básico",
+    planDescription:
+      "Plan Básico — valor neto $9.990/mes (+ IVA). Promoción de lanzamiento: 2 meses gratis para negocios sin historial de suscripción.",
+    planPrice: 0,
+    planDuration: 2,
+    planCurrency: "CLP",
+    planFeatures: BASE_FEATURES,
+    planActive: true,
+    planDatabaseMode: "SHARED",
+  },
+  {
+    planId: "P002",
+    planName: "Plan Comercial",
+    planDescription:
+      "Suscripción mensual recurrente vía Mercado Pago Chile. Precio neto + IVA (19%).",
+    planPrice: 9990,
+    planDuration: 1,
+    planCurrency: "CLP",
+    planFeatures: BASE_FEATURES,
+    planActive: true,
+    planDatabaseMode: "SHARED",
+  },
+  {
+    planId: "P003",
+    planName: "Plan Profesional",
+    planDescription:
+      "Facturación electrónica, asistente con IA y comunicación por correo con tus clientes. Precio neto + IVA (19%).",
+    planPrice: 39990,
+    planDuration: 1,
+    planCurrency: "CLP",
+    planFeatures: PRO_FEATURES,
+    planActive: true,
+    planDatabaseMode: "SHARED",
+  },
 ];
 
 async function main() {
-    console.log("Sembrando planes AppsFly…\n");
+  console.log("Sembrando planes AppsFly…\n");
 
-    for (const plan of PLANS) {
-        const result = await prisma.plan.upsert({
-            where: { planId: plan.planId },
-            create: plan,
-            update: {
-                planName: plan.planName,
-                planDescription: plan.planDescription,
-                planPrice: plan.planPrice,
-                planDuration: plan.planDuration,
-                planCurrency: plan.planCurrency,
-                planFeatures: plan.planFeatures,
-                planActive: plan.planActive,
-            },
-        });
+  for (const plan of PLANS) {
+    const result = await prisma.plan.upsert({
+      where: { planId: plan.planId },
+      create: plan,
+      update: {
+        planName: plan.planName,
+        planDescription: plan.planDescription,
+        planPrice: plan.planPrice,
+        planDuration: plan.planDuration,
+        planCurrency: plan.planCurrency,
+        planFeatures: plan.planFeatures,
+        planActive: plan.planActive,
+        planDatabaseMode: plan.planDatabaseMode,
+      },
+    });
 
-        console.log(
-            `✓ ${result.planId} — ${result.planName} ($${result.planPrice.toLocaleString("es-CL")} / ${result.planDuration} mes(es))`,
-        );
-    }
+    console.log(
+      `✓ ${result.planId} — ${result.planName} ($${result.planPrice.toLocaleString("es-CL")} / ${result.planDuration} mes(es))`,
+    );
+  }
 
-    console.log("\nListo. P001 habilita el trial; P002 el plan comercial; P003 el plan profesional.");
+  console.log("\nListo. P001 habilita el trial; P002 el plan comercial; P003 el plan profesional.");
 }
 
 main()
-    .catch((err) => {
-        console.error("Error en seedPlans:", err);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+  .catch((err) => {
+    console.error("Error en seedPlans:", err);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

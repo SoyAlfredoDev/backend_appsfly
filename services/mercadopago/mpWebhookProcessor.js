@@ -1,4 +1,4 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import {
     getMercadoPagoPayment,
     getMercadoPagoPreapproval,
@@ -16,7 +16,7 @@ import {
 } from "./mpSubscriptionBillingService.js";
 import { sendDualSubscriptionPaymentEmails } from "../../emails/dispatchers/subscriptionPayment.dispatcher.js";
 
-const general = new PrismaGeneral();
+
 
 /** Días que se extiende la suscripción en cada cobro recurrente aprobado vía webhook */
 export const SUBSCRIPTION_RENEWAL_EXTENSION_DAYS = 30;

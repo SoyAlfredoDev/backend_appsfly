@@ -16,6 +16,6 @@ export const sendEmailController = async (req, res) => {
         });
     } catch (error) {
         console.error('Email controller error:', error);
-        res.status(500).json({ message: 'Failed to send email', error: error.message });
+        res.status(500).json({ message: 'Failed to send email', code: 'EMAIL_SEND_FAILED' });
     }
 };

@@ -1,8 +1,8 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import { buildProspectRegisterLandingUrl } from "./emailProspectService.js";
 import { syncRunMetricsFromRecipients } from "../adminEmailCampaign/adminEmailCampaignMetricsService.js";
 
-const general = new PrismaGeneral();
+
 
 const UUID_RE =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

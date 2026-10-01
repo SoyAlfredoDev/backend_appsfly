@@ -1,7 +1,7 @@
 import crypto from "crypto";
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 
-const general = new PrismaGeneral();
+
 
 const MAX_IMPORT_ROWS = 2000;
 const MAX_ERROR_SAMPLES = 100;

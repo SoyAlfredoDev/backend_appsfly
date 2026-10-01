@@ -40,7 +40,7 @@ model User {
 }
 
 model Business {
-  businessId                     String         @id
+  businessId                     String               @id
   businessName                   String
   businessType                   String
   businessDocumentType           String
@@ -51,16 +51,22 @@ model Business {
   businessCountry                String
   businessCodeWhatsappNumber     String?
   businessWhatsappNumber         String?
+  /// Legado: URL directa usada únicamente por tenants DEDICATED. No exponer por API.
   businessConnectionDB           String?
+  businessDatabaseMode           TenantDatabaseMode   @default(DEDICATED)
+  businessDatabaseStatus         TenantDatabaseStatus @default(UNASSIGNED)
+  /// Referencia al secreto administrado; nunca contiene la contraseña en respuestas API.
+  businessDatabaseSecretRef      String?
+  businessSchemaVersion          String?
   businessEntity                 BusinessEntity
   businessStatus                 BusinessStatus
   businessProcess                Json?
-  businessAllowCreditSales       Boolean        @default(false)
-  businessDeliveryControlEnabled Boolean        @default(false)
+  businessAllowCreditSales       Boolean              @default(false)
+  businessDeliveryControlEnabled Boolean              @default(false)
   /**
    * IANA timezone del negocio (día operativo, reportes, cierres). Default Chile.
    */
-  businessTimezone               String         @default("America/Santiago")
+  businessTimezone               String               @default("America/Santiago")
   businessReceiptLogoUrl         String?
   businessReceiptAddress         String?
   businessReceiptPhone           String?
@@ -68,9 +74,9 @@ model Business {
   businessReceiptSocial          String?
   businessReceiptFooterNote      String?
   createdByUserId                String?
-  createdBy                      User?          @relation(fields: [createdByUserId], references: [userId])
-  createdAt                      DateTime       @default(now())
-  updatedAt                      DateTime       @updatedAt
+  createdBy                      User?                @relation(fields: [createdByUserId], references: [userId])
+  createdAt                      DateTime             @default(now())
+  updatedAt                      DateTime             @updatedAt
 
   // Relaciones
   UserGuest                 UserGuest[]
@@ -79,6 +85,8 @@ model Business {
   subscriptionPayments      SubscriptionPayment[]
   subscriptionCancellations SubscriptionCancellation[]
   taxProviderAccount        TaxProviderAccount?
+
+  @@index([businessDatabaseMode, businessDatabaseStatus])
 }
 
 /// Cuenta Auth.cl por empresa (multi-tenant). companyId = businessId del tenant.
@@ -141,16 +149,17 @@ model UserGuest {
 }
 
 model Plan {
-  planId          String   @id
-  planName        String
-  planDescription String?
-  planFeatures    Json
-  planPrice       Float
-  planDuration    Int // Duración del plan en meses
-  planCurrency    String   @default("CLP")
-  planActive      Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  planId           String             @id
+  planName         String
+  planDescription  String?
+  planFeatures     Json
+  planPrice        Float
+  planDuration     Int // Duración del plan en meses
+  planCurrency     String             @default("CLP")
+  planActive       Boolean            @default(true)
+  planDatabaseMode TenantDatabaseMode @default(SHARED)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
   // Relations
   subscriptions        Subscription[]
@@ -585,6 +594,19 @@ enum BusinessStatus {
   INACTIVE
   SUSPENDED
   PENDING
+}
+
+enum TenantDatabaseMode {
+  SHARED
+  DEDICATED
+}
+
+enum TenantDatabaseStatus {
+  UNASSIGNED
+  PROVISIONING
+  ACTIVE
+  MIGRATING
+  FAILED
 }
 
 enum BusinessEntity {

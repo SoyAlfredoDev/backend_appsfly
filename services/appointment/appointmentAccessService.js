@@ -1,9 +1,9 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import { getPrismaForBusinessId } from "../../db.js";
 import { resolveBusinessTimezone } from "../../libs/businessTimezone.js";
 import { getFrontendBaseUrl } from "../../emails/shared/layout.js";
 
-const general = new PrismaGeneral();
+
 
 function isSubscriptionCurrentlyActive(sub) {
     if (!sub) return false;

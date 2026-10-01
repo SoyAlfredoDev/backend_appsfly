@@ -1,12 +1,12 @@
 import { Resend } from "resend";
-import { PrismaClient as PrismaGeneral } from "../src/generated/general/index.js";
+import { generalPrisma as general } from "../dbGeneral.js";
 import { getPrismaForBusinessId } from "../db.js";
 import {
     mapLastEventToDeliveryStatus,
     parseResendBounceMessage,
 } from "./emailDelivery/resendDeliveryMapping.js";
 
-const general = new PrismaGeneral();
+
 const resend = process.env.RESEND_API_KEY?.trim()
     ? new Resend(process.env.RESEND_API_KEY)
     : null;

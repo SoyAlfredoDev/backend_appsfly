@@ -1,7 +1,7 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import { syncRunMetricsFromRecipients } from "./adminEmailCampaignMetricsService.js";
 
-const general = new PrismaGeneral();
+
 
 function parseBounceMessage(data) {
     const bounce = data?.bounce;

@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import { sendEmail } from "../../emails/core/sendEmail.js";
 import {
     MONTHLY_CAMPAIGN_MIN_DAYS,
@@ -28,7 +28,7 @@ import { evaluateCampaignDue } from "./adminEmailCampaignSchedulerDue.js";
 import { getProspectOutreachVariantStats } from "./adminEmailCampaignProspectVariantStats.js";
 import { syncCampaignDeliveryFromResend } from "./adminEmailCampaignResendSyncService.js";
 
-const general = new PrismaGeneral();
+
 
 const SEND_DELAY_MS = 120;
 

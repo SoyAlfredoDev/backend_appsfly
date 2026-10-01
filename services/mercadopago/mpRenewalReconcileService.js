@@ -1,8 +1,8 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import { searchMercadoPagoAuthorizedPaymentsByPreapproval } from "./mpApiClient.js";
 import { processMercadoPagoWebhookNotification } from "./mpWebhookProcessor.js";
 
-const general = new PrismaGeneral();
+
 
 const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
 

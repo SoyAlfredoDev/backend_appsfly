@@ -1,8 +1,8 @@
-import { PrismaClient as PrismaGeneral } from "../src/generated/general/index.js";
+import { generalPrisma as general } from "../dbGeneral.js";
 import userSuperAdmin from "../superAdmin.js";
 import { getPlatformOwnerEmail } from "../platformOwner.js";
 
-const general = new PrismaGeneral();
+
 
 export async function isUserPlatformOwner(userId) {
     if (!userId || !userSuperAdmin.includes(userId)) {

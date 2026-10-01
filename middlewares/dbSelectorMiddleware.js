@@ -30,6 +30,15 @@ export async function dbSelectorMiddleware(req, res, next) {
     const membership = resolved.membership;
     req.tenantBusinessId = membership.userBusinessBusinessId;
     req.tenantRole = membership.userBusinessRole;
+
+    if (membership.Business?.businessStatus !== "ACTIVE") {
+      return res.status(503).json({
+        error: "El negocio todavía no está listo para operar.",
+        message: "La configuración del espacio de trabajo está pendiente. Intenta nuevamente o contacta a soporte.",
+        code: "TENANT_PROVISIONING_INCOMPLETE",
+      });
+    }
+
     req.businessTimezone = await getBusinessTimezoneById(req.tenantBusinessId);
 
     const prisma = await getPrismaForBusinessId(req.tenantBusinessId);

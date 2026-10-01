@@ -1,7 +1,7 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import { validateAgentTaskSafety } from "./agentTaskSafety.js";
 
-const general = new PrismaGeneral();
+
 
 const VALID_PRIORITIES = new Set(["LOW", "NORMAL", "HIGH"]);
 const VALID_STATUSES = new Set(["PENDING", "IN_PROGRESS", "COMPLETED", "CANCELLED", "BLOCKED"]);

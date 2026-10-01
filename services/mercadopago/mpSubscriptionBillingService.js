@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import {
     updateMercadoPagoPreapproval,
 } from "./mpApiClient.js";
@@ -9,7 +9,7 @@ import {
     SUBSCRIPTION_CANCEL_CONFIRMATION_PHRASE,
 } from "../../config/subscriptionCancel.js";
 
-const general = new PrismaGeneral();
+
 
 function isSubscriptionCurrentlyActive(sub) {
     if (!sub) return false;

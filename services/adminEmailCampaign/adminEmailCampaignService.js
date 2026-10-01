@@ -1,4 +1,4 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import {
     PLATFORM_EMAIL_AUDIENCE_TYPES,
     PLATFORM_EMAIL_CAMPAIGN_STATUSES,
@@ -8,7 +8,7 @@ import { countAudienceByType } from "./adminEmailCampaignAudienceService.js";
 import { getSenderMetadata } from "./adminEmailCampaignSenderService.js";
 import { syncStaleCampaignDeliveriesFromResend } from "./adminEmailCampaignResendSyncService.js";
 
-const general = new PrismaGeneral();
+
 
 const campaignInclude = {
     createdBy: {

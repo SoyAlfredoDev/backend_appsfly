@@ -1,9 +1,9 @@
 import crypto from "crypto";
-import { PrismaClient as PrismaGeneral } from "../src/generated/general/index.js";
+import { generalPrisma as general } from "../dbGeneral.js";
 import { getFrontendBaseUrl } from "../emails/shared/layout.js";
 import { getPrismaForBusinessId } from "../db.js";
 
-const general = new PrismaGeneral();
+
 
 const DEFAULT_EXPIRY_DAYS = 365;
 

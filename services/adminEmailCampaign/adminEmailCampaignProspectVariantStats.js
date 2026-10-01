@@ -1,8 +1,8 @@
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import { SYSTEM_CAMPAIGN_WEEKLY_PROSPECTS } from "./adminEmailCampaignConstants.js";
 import { PROSPECT_OUTREACH_VARIANTS } from "./adminEmailCampaignProspectTemplate.js";
 
-const general = new PrismaGeneral();
+
 
 async function getProspectCampaignId() {
     const campaign = await general.platformEmailCampaign.findUnique({

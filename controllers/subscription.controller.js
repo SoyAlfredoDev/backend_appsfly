@@ -14,9 +14,9 @@ import {
 } from "../services/mercadopago/mpSubscriptionBillingService.js";
 import { createSubscriptionService } from "../services/subscriptionService.js";
 import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
-import { PrismaClient as PrismaGeneral } from "../src/generated/general/index.js";
+import { generalPrisma as general } from "../dbGeneral.js";
 
-const general = new PrismaGeneral();
+
 
 export const checkActiveSubscription = async (req, res) => {
     const businessId = req.params.businessId;
@@ -79,6 +79,17 @@ export const createSubscriptionController = async (req, res) => {
             return res.status(403).json({
                 message: "No puedes activar una suscripción para otro negocio.",
                 code: "TENANT_FORBIDDEN",
+            });
+        }
+
+        const businessReady = await general.business.findUnique({
+            where: { businessId: subscriptionBusinessId },
+            select: { businessStatus: true },
+        });
+        if (!businessReady || businessReady.businessStatus !== "ACTIVE") {
+            return res.status(409).json({
+                message: "El negocio aún no termina de configurarse. Activa el plan cuando el espacio de trabajo esté listo.",
+                code: "TENANT_PROVISIONING_INCOMPLETE",
             });
         }
 

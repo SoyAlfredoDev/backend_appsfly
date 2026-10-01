@@ -3,7 +3,7 @@ import {
     ensureSystemEmailCampaigns,
 } from "./adminEmailCampaignSendService.js";
 import { createCampaignManualRequiredNotification, hasRecentManualRequiredNotification } from "../adminNotificationService.js";
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import userSuperAdmin from "../../superAdmin.js";
 import {
     CHILE_TZ,
@@ -18,7 +18,7 @@ import {
 } from "./adminEmailCampaignSchedulerDue.js";
 import { syncStaleCampaignDeliveriesFromResend } from "./adminEmailCampaignResendSyncService.js";
 
-const general = new PrismaGeneral();
+
 const CHECK_INTERVAL_MS = 15 * 60 * 1000;
 
 function isSchedulerEnabled() {

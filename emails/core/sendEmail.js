@@ -6,7 +6,24 @@ dotenv.config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+/**
+ * En producción el correo siempre se entrega. En desarrollo y test requiere
+ * activación explícita para evitar envíos reales desde datos de prueba.
+ * @param {NodeJS.ProcessEnv} env
+ */
+export const shouldDeliverExternalEmail = (env = process.env) => {
+    const appEnv = env.APP_ENV || env.NODE_ENV || "development";
+    return appEnv === "production" || env.EMAIL_DELIVERY_ENABLED === "true";
+};
+
 export const sendEmail = async ({ to, subject, html, text, from, replyTo, attachments, tags }) => {
+    if (!shouldDeliverExternalEmail()) {
+        console.info(
+            "[email] Entrega externa omitida fuera de producción. Define EMAIL_DELIVERY_ENABLED=true para habilitarla.",
+        );
+        return { id: null, skipped: true, reason: "EMAIL_DELIVERY_DISABLED" };
+    }
+
     try {
         const payload = {
             from: from?.trim() || getDefaultSenderFrom(),

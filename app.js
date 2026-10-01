@@ -56,17 +56,24 @@ dotenv.config();
 const appEnv = process.env.APP_ENV || process.env.NODE_ENV || "development";
 /** En Vercel, NODE_ENV suele ser production aunque APP_ENV no esté definido. */
 const isProduction =
-  appEnv === "production" ||
-  process.env.NODE_ENV === "production" ||
-  process.env.VERCEL === "1";
+  appEnv === "production" || process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
 
 const app = express();
+app.set("trust proxy", 1);
+
+// Endpoint liviano para comprobar disponibilidad del proceso en cPanel.
+app.get("/health", (_req, res) => {
+  res.status(200).json({ ok: true, service: "appsfly-api", environment: appEnv });
+});
+app.get("/api/health", (_req, res) => {
+  res.status(200).json({ ok: true, service: "appsfly-api", environment: appEnv });
+});
 
 app.use(cookieParser());
 app.post(
-    "/api/webhooks/resend",
-    express.raw({ type: "application/json" }),
-    resendWebhookController,
+  "/api/webhooks/resend",
+  express.raw({ type: "application/json" }),
+  resendWebhookController,
 );
 app.use(express.json());
 console.log(">>>>> ENVIRONMENT:", isProduction ? "Production" : "Development", {
@@ -75,25 +82,26 @@ console.log(">>>>> ENVIRONMENT:", isProduction ? "Production" : "Development", {
   vercel: process.env.VERCEL,
 });
 
+const configuredProductionOrigin = process.env.FRONTEND_URL_PRODUCTION?.replace(/\/$/, "");
+
 const productionOrigins = [
+  configuredProductionOrigin,
+  "https://appsfly.cl",
+  "https://www.appsfly.cl",
   "https://appsfly.app",
   "https://optica.appsfly.app",
   "https://frontend-appsfly.vercel.app",
   "https://www.appsfly.app",
   "https://appsfly.netlify.app",
-  "https://api.appsfly.app",
-];
+].filter(Boolean);
 
 const isVercelPreviewOrigin = (origin) =>
   /^https:\/\/frontend-appsfly(-[a-z0-9-]+)?\.vercel\.app$/i.test(origin);
 
 const isAllowedProductionOrigin = (origin) =>
-  !origin ||
-  productionOrigins.includes(origin) ||
-  isVercelPreviewOrigin(origin);
+  !origin || productionOrigins.includes(origin) || isVercelPreviewOrigin(origin);
 
-const isLocalDevOrigin = (origin) =>
-  /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+const isLocalDevOrigin = (origin) => /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
 
 app.use(
   cors({
@@ -114,12 +122,7 @@ app.use(
         },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Accept",
-      "X-AppsFly-Business-Id",
-    ],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-AppsFly-Business-Id"],
     optionsSuccessStatus: 204,
   }),
 );

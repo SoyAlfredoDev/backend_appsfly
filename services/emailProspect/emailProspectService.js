@@ -1,9 +1,9 @@
 import crypto from "crypto";
-import { PrismaClient as PrismaGeneral } from "../../src/generated/general/index.js";
+import { generalPrisma as general } from "../../dbGeneral.js";
 import { getFrontendBaseUrl, getBackendBaseUrl } from "../../emails/shared/layout.js";
 import { getProspectConversionStats } from "./emailProspectConversionService.js";
 
-const general = new PrismaGeneral();
+
 
 function normalizeEmail(email) {
     return String(email ?? "").trim().toLowerCase();

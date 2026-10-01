@@ -21,11 +21,11 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.19.2
+ * Prisma Client JS version: 6.19.3
  * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
  */
 Prisma.prismaVersion = {
-  client: "6.19.2",
+  client: "6.19.3",
   engine: "c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
 }
 
@@ -150,6 +150,10 @@ exports.Prisma.BusinessScalarFieldEnum = {
   businessCodeWhatsappNumber: 'businessCodeWhatsappNumber',
   businessWhatsappNumber: 'businessWhatsappNumber',
   businessConnectionDB: 'businessConnectionDB',
+  businessDatabaseMode: 'businessDatabaseMode',
+  businessDatabaseStatus: 'businessDatabaseStatus',
+  businessDatabaseSecretRef: 'businessDatabaseSecretRef',
+  businessSchemaVersion: 'businessSchemaVersion',
   businessEntity: 'businessEntity',
   businessStatus: 'businessStatus',
   businessProcess: 'businessProcess',
@@ -214,6 +218,7 @@ exports.Prisma.PlanScalarFieldEnum = {
   planDuration: 'planDuration',
   planCurrency: 'planCurrency',
   planActive: 'planActive',
+  planDatabaseMode: 'planDatabaseMode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -472,6 +477,19 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
+exports.TenantDatabaseMode = exports.$Enums.TenantDatabaseMode = {
+  SHARED: 'SHARED',
+  DEDICATED: 'DEDICATED'
+};
+
+exports.TenantDatabaseStatus = exports.$Enums.TenantDatabaseStatus = {
+  UNASSIGNED: 'UNASSIGNED',
+  PROVISIONING: 'PROVISIONING',
+  ACTIVE: 'ACTIVE',
+  MIGRATING: 'MIGRATING',
+  FAILED: 'FAILED'
+};
+
 exports.BusinessEntity = exports.$Enums.BusinessEntity = {
   INDIVIDUAL: 'INDIVIDUAL',
   COMPANY: 'COMPANY'

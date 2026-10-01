@@ -36,11 +36,11 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.19.2
+ * Prisma Client JS version: 6.19.3
  * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
  */
 Prisma.prismaVersion = {
-  client: "6.19.2",
+  client: "6.19.3",
   engine: "c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
 }
 
@@ -808,7 +808,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/alfredohurtado/Desktop/Mys Apps/appsfly-app/backend/src/generated/business",
+      "value": "C:\\Users\\Alfredo\\Desktop\\appsfly\\backend\\src\\generated\\business",
       "fromEnvVar": null
     },
     "config": {
@@ -817,7 +817,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       },
       {
@@ -830,7 +830,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/alfredohurtado/Desktop/Mys Apps/appsfly-app/backend/prisma/businessDB/schema.prisma",
+    "sourceFilePath": "C:\\Users\\Alfredo\\Desktop\\appsfly\\backend\\prisma\\businessDB\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -838,7 +838,7 @@ const config = {
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma/businessDB",
-  "clientVersion": "6.19.2",
+  "clientVersion": "6.19.3",
   "engineVersion": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
   "datasourceNames": [
     "db"
