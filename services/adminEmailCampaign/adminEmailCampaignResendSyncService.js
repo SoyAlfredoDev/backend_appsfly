@@ -3,7 +3,11 @@ import { generalPrisma as general } from "../../dbGeneral.js";
 import { syncRunMetricsFromRecipients } from "./adminEmailCampaignMetricsService.js";
 
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+    const apiKey = process.env.RESEND_API_KEY?.trim();
+    if (!apiKey) return null;
+    return new Resend(apiKey);
+}
 
 const SYNC_BATCH_SIZE = 100;
 const SYNC_CONCURRENCY = 8;
@@ -86,6 +90,8 @@ async function applyResendEmailStatus(recipient, emailData) {
 }
 
 async function fetchAndApplyRecipientStatus(recipient) {
+    const resend = getResend();
+    if (!resend) return false;
     const { data, error } = await resend.emails.get(recipient.providerMessageId);
     if (error || !data) {
         return false;

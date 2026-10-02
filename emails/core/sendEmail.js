@@ -4,7 +4,11 @@ import { getDefaultSenderFrom } from "./emailFrom.js";
 
 dotenv.config();
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+    const apiKey = process.env.RESEND_API_KEY?.trim();
+    if (!apiKey) return null;
+    return new Resend(apiKey);
+}
 
 /**
  * En producción el correo siempre se entrega. En desarrollo y test requiere
@@ -51,6 +55,11 @@ export const sendEmail = async ({ to, subject, html, text, from, replyTo, attach
                 name,
                 value: String(value),
             }));
+        }
+
+        const resend = getResend();
+        if (!resend) {
+            throw new Error("RESEND_API_KEY is not configured.");
         }
 
         const { data, error } = await resend.emails.send(payload);
