@@ -4,12 +4,26 @@ import app from "../app.js";
 import {
   createExpenseCategoryService,
   deleteExpenseCategoryService,
+  listExpenseCategoriesService,
 } from "../services/expensesService.js";
 import { SYSTEM_EXPENSE_CATEGORIES } from "../services/expenses/expenseCategories.js";
 
 const systemRows = SYSTEM_EXPENSE_CATEGORIES.map(({ code }) => ({ expenseCategoryCode: code }));
 
 describe("expense category mutations", () => {
+  it("includes usage counts in the category list for the management screen", async () => {
+    const findMany = vi.fn().mockResolvedValueOnce(systemRows).mockResolvedValueOnce([]);
+    await listExpenseCategoriesService(
+      { expenseCategory: { findMany, createMany: vi.fn() } },
+      "user-1",
+    );
+    expect(findMany).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        select: expect.objectContaining({ _count: { select: { expenses: true } } }),
+      }),
+    );
+  });
+
   it("requires authentication before creating or deleting categories", async () => {
     expect(
       (

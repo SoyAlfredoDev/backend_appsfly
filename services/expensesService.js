@@ -57,7 +57,7 @@ export const listExpenseCategoriesService = async (prisma, userId) => {
   await ensureSystemExpenseCategories(prisma, userId);
   return prisma.expenseCategory.findMany({
     orderBy: { expenseCategoryName: "asc" },
-    select: expenseCategorySelect,
+    select: { ...expenseCategorySelect, _count: { select: { expenses: true } } },
   });
 };
 
