@@ -7,6 +7,8 @@ import {
   sumExpensesByPaymentMethod,
   sumExpenseByMonthService,
   listExpenseCategoriesService,
+  createExpenseCategoryService,
+  deleteExpenseCategoryService,
 } from "../services/expensesService.js";
 import { ExpenseInputError, parseExpenseCreateBody } from "../services/expenses/expenseInput.js";
 import {
@@ -34,6 +36,28 @@ export const listExpenseCategoriesController = async (req, res) => {
     return res.status(200).json({ categories });
   } catch (error) {
     return sendExpenseError(res, error, "EXPENSE_CATEGORIES_FAILED");
+  }
+};
+
+export const createExpenseCategoryController = async (req, res) => {
+  try {
+    const category = await createExpenseCategoryService(
+      req.prisma,
+      req.user.payload.id,
+      req.body?.expenseCategoryName,
+    );
+    return res.status(201).json(category);
+  } catch (error) {
+    return sendExpenseError(res, error, "EXPENSE_CATEGORY_CREATE_FAILED");
+  }
+};
+
+export const deleteExpenseCategoryController = async (req, res) => {
+  try {
+    await deleteExpenseCategoryService(req.prisma, req.params.id);
+    return res.status(204).send();
+  } catch (error) {
+    return sendExpenseError(res, error, "EXPENSE_CATEGORY_DELETE_FAILED");
   }
 };
 
