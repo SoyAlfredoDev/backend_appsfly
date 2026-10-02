@@ -10,7 +10,8 @@ import {
     getMercadoPagoPreapproval,
 } from "./mercadopago/index.js";
 import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
-import { getPlanPricing } from "../libs/planPricing.js";
+import { quotePlanPrice } from "./subscription/priceQuote.js";
+import { isTrialPlan, planMatchesBusinessType } from "./subscription/planPolicy.js";
 
 
 
@@ -39,6 +40,7 @@ async function createSubscriptionRecord({
     mpPreapprovalId = null,
     mpPreapprovalStatus = null,
     autoRenewEnabled = true,
+    subscriptionPriceUf = null,
 }) {
     const { subscriptionStartDate, subscriptionEndDate } = buildSubscriptionDates(
         planSelected.planDuration,
@@ -54,6 +56,8 @@ async function createSubscriptionRecord({
         subscriptionStatus: "ACTIVE",
         subscriptionAmount,
         subscriptionPlanFeatures: planSelected.planFeatures,
+        subscriptionCapabilities: planSelected.planCapabilities,
+        subscriptionPriceUf,
         subscriptionPaymentMethod,
         createdByUserId,
         mpPreapprovalId,
@@ -68,8 +72,9 @@ export async function recordPromoFreeTrialPayment({
     subscriptionBusinessId,
     subscriptionPlanId,
     createdByUserId,
+    client = general,
 }) {
-    return general.subscriptionPayment.create({
+    return client.subscriptionPayment.create({
         data: {
             subscriptionPaymentId,
             subscriptionId,
@@ -81,7 +86,7 @@ export async function recordPromoFreeTrialPayment({
             status: "APPROVED",
             externalReference: subscriptionPaymentId,
             metadata: {
-                source: "P001_FREE_TRIAL",
+                source: `${subscriptionPlanId}_FREE_TRIAL`,
                 recordedAt: new Date().toISOString(),
             },
             createdByUserId,
@@ -95,7 +100,6 @@ export async function createMercadoPagoCheckout({
     subscriptionBusinessId,
     subscriptionPlanId,
     createdByUserId,
-    payerEmail,
 }) {
     if (!isMercadoPagoConfigured()) {
         throw new Error("Mercado Pago no está configurado en el servidor.");
@@ -108,20 +112,48 @@ export async function createMercadoPagoCheckout({
     if (planSelected.planActive === false) {
         throw new Error("Este plan no está disponible para nuevas contrataciones.");
     }
-    if (Number(planSelected.planPrice) <= 0) {
+    if (isTrialPlan(planSelected)) {
         throw new Error("Este plan no requiere checkout de Mercado Pago.");
+    }
+
+    const business = await general.business.findUnique({
+        where: { businessId: subscriptionBusinessId },
+        select: { businessType: true, businessStatus: true },
+    });
+    if (!business || business.businessStatus !== "ACTIVE") {
+        throw new Error("El negocio aún no está listo para contratar.");
+    }
+    if (!planMatchesBusinessType(planSelected, business.businessType)) {
+        throw new Error("Este plan no corresponde al tipo de negocio.");
+    }
+    if (planSelected.planCurrency === "UF" && process.env.UF_REPRICE_ENABLED !== "true") {
+        throw Object.assign(new Error("Los cobros UF aún no están habilitados."), {
+            statusCode: 503,
+            code: "UF_BILLING_NOT_READY",
+        });
     }
 
     const existingSubscriptions = await getSubscriptionsByBusinessIdService(subscriptionBusinessId);
     const hasActive = Array.isArray(existingSubscriptions)
         && existingSubscriptions.some(
-            (sub) => sub.subscriptionStatus === "ACTIVE" && new Date(sub.subscriptionEndDate) > new Date(),
+            (sub) => ["ACTIVE", "CANCELLED"].includes(sub.subscriptionStatus) && new Date(sub.subscriptionEndDate) > new Date(),
         );
     if (hasActive) {
         throw new Error("El negocio ya tiene una suscripción activa.");
     }
 
-    const pricing = getPlanPricing(planSelected.planPrice);
+    let pricing;
+    try {
+        pricing = await quotePlanPrice(planSelected);
+    } catch (error) {
+        if (String(error?.message).startsWith("UF_RATE_")) {
+            throw Object.assign(new Error("No se pudo obtener la UF oficial para cotizar."), {
+                statusCode: 503,
+                code: "UF_RATE_UNAVAILABLE",
+            });
+        }
+        throw error;
+    }
 
     const paymentRecord = await general.subscriptionPayment.create({
         data: {
@@ -130,7 +162,7 @@ export async function createMercadoPagoCheckout({
             subscriptionBusinessId,
             subscriptionPlanId,
             amount: pricing.total,
-            currency: planSelected.planCurrency || "CLP",
+            currency: pricing.currency,
             paymentMethod: "MERCADO_PAGO",
             status: "PENDING",
             externalReference: subscriptionPaymentId,
@@ -141,6 +173,8 @@ export async function createMercadoPagoCheckout({
                 netAmount: pricing.net,
                 ivaAmount: pricing.iva,
                 ivaRate: pricing.ivaRate,
+                contractedPriceUf: pricing.priceUf,
+                ufRate: pricing.ufRate,
             },
             createdByUserId,
         },
@@ -152,7 +186,9 @@ export async function createMercadoPagoCheckout({
         netAmount: pricing.net,
         ivaAmount: pricing.iva,
         ivaRate: pricing.ivaRate,
-        currency: planSelected.planCurrency || "CLP",
+        currency: pricing.currency,
+        contractedPriceUf: pricing.priceUf,
+        ufRate: pricing.ufRate,
         planName: planSelected.planName,
         billingType: "MONTHLY_RECURRING",
         billingLabel: "Suscripción mensual recurrente (neto + IVA)",
@@ -318,6 +354,7 @@ export async function finalizeMercadoPagoPreapproval({
             subscriptionAmount: paymentRecord.amount,
             subscriptionPaymentMethod: "MercadoPago",
             createdByUserId: paymentRecord.createdByUserId,
+            subscriptionPriceUf: paymentRecord.metadata?.contractedPriceUf ?? null,
             mpPreapprovalId: String(mpPreapprovalId),
             mpPreapprovalStatus: preapproval.status,
             autoRenewEnabled: true,
@@ -477,6 +514,7 @@ export async function finalizeMercadoPagoPayment({ subscriptionPaymentId, mpPaym
             subscriptionAmount: paymentRecord.amount,
             subscriptionPaymentMethod: "MercadoPago",
             createdByUserId: paymentRecord.createdByUserId,
+            subscriptionPriceUf: paymentRecord.metadata?.contractedPriceUf ?? null,
         });
     }
 

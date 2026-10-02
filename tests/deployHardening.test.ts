@@ -120,13 +120,13 @@ describe("Vercel build migrations", () => {
   });
 
   it("pins the migration hostname to IPv4 without storing the database password", async () => {
-    const files = { "/etc/hosts": "127.0.0.1 localhost\n" };
+    const files: Record<string, string> = { "/etc/hosts": "127.0.0.1 localhost\n" };
     const pinned = await preferIpv4DatabaseHost(
       "postgresql://user:secret@ep-dawn-voice-adasrur5.c-2.us-east-1.aws.neon.tech/db",
       {
         resolve4: async () => ["44.198.216.75"],
-        readFile: async (filePath) => files[filePath],
-        writeFile: async (filePath, contents) => {
+        readFile: async (filePath: string) => files[filePath],
+        writeFile: async (filePath: string, contents: string) => {
           files[filePath] = contents;
         },
         hostsPath: "/etc/hosts",

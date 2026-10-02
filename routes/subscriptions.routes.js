@@ -21,7 +21,7 @@ router.post('/subscriptions/process-payment', ...admin, processSubscriptionPayme
 router.post('/subscriptions/payments/:paymentId/confirm', ...admin, confirmSubscriptionPaymentController);
 router.post('/subscriptions/billing/:businessId/cancel', ...admin, cancelBusinessSubscriptionController);
 
-router.get('/subscriptions/payments/:paymentId', authRequired, getSubscriptionPaymentStatusController);
+router.get('/subscriptions/payments/:paymentId', authRequired, ensureTenantRole, getSubscriptionPaymentStatusController);
 router.get('/subscriptions/billing/:businessId', authRequired, ensureTenantRole, getBusinessBillingController);
 router.get('/subscriptions/:businessId', authRequired, checkActiveSubscription);
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requirePlanCapability } from "../middlewares/planCapability.middleware.js";
 import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 import {
     getTaxBillingDashboardController,
@@ -14,7 +15,7 @@ import {
 } from "../controllers/taxDocuments.controller.js";
 
 const router = Router();
-const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin];
+const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin, requirePlanCapability("tax_billing")];
 
 router.get("/tax-documents/dashboard", ...admin, getTaxBillingDashboardController);
 router.get("/tax-documents/config", ...admin, getTaxConfigController);

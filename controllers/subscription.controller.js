@@ -6,21 +6,24 @@ import {
     finalizeMercadoPagoPayment,
     recordPromoFreeTrialPayment,
     processPaymentBrickSubmission,
-    FREE_TRIAL_PLAN_ID,
 } from "../services/subscriptionPaymentService.js";
 import {
     getBusinessBillingStatus,
     cancelBusinessSubscriptionRenewal,
 } from "../services/mercadopago/mpSubscriptionBillingService.js";
-import { createSubscriptionService } from "../services/subscriptionService.js";
 import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
 import { generalPrisma as general } from "../dbGeneral.js";
-
+import { assertUserBelongsToBusiness } from "../services/userBusinessService.js";
+import { isTrialPlan, planMatchesBusinessType } from "../services/subscription/planPolicy.js";
 
 
 export const checkActiveSubscription = async (req, res) => {
     const businessId = req.params.businessId;
     try {
+        const membership = await assertUserBelongsToBusiness(req.user.payload.id, businessId);
+        if (!membership) {
+            return res.status(403).json({ message: "No tienes acceso a este negocio.", code: "TENANT_FORBIDDEN" });
+        }
         const subscription = await getSubscriptionsByBusinessIdService(businessId);
         if (!subscription) {
             return res.status(404).json({ message: "No subscription found for this business." });
@@ -55,6 +58,7 @@ function buildSubscriptionPayload({
         subscriptionStatus: "ACTIVE",
         subscriptionAmount,
         subscriptionPlanFeatures: planSelected.planFeatures,
+        subscriptionCapabilities: planSelected.planCapabilities,
         subscriptionPaymentMethod,
         createdByUserId: userId,
     };
@@ -84,7 +88,7 @@ export const createSubscriptionController = async (req, res) => {
 
         const businessReady = await general.business.findUnique({
             where: { businessId: subscriptionBusinessId },
-            select: { businessStatus: true },
+            select: { businessStatus: true, businessType: true },
         });
         if (!businessReady || businessReady.businessStatus !== "ACTIVE") {
             return res.status(409).json({
@@ -104,16 +108,20 @@ export const createSubscriptionController = async (req, res) => {
             });
         }
 
+        if (!planMatchesBusinessType(planSelected, businessReady.businessType)) {
+            return res.status(400).json({ message: "El plan no corresponde al tipo de negocio.", code: "PLAN_BUSINESS_TYPE_MISMATCH" });
+        }
+
         const existingSubscriptions = await getSubscriptionsByBusinessIdService(subscriptionBusinessId);
         const hasHistory = Array.isArray(existingSubscriptions) && existingSubscriptions.length > 0;
 
-        if (subscriptionPlanId === FREE_TRIAL_PLAN_ID && hasHistory) {
+        if (isTrialPlan(planSelected) && hasHistory) {
             return res.status(403).json({
                 message: "La promoción de prueba gratuita no está disponible para negocios con historial de suscripción.",
             });
         }
 
-        if (subscriptionPlanId !== FREE_TRIAL_PLAN_ID) {
+        if (!isTrialPlan(planSelected)) {
             return res.status(400).json({
                 message: "Los planes de pago deben procesarse mediante Mercado Pago.",
                 code: "REQUIRES_MERCADO_PAGO_CHECKOUT",
@@ -131,14 +139,20 @@ export const createSubscriptionController = async (req, res) => {
             userId,
         });
 
-        const subscription = await createSubscriptionService(data);
-
-        await recordPromoFreeTrialPayment({
-            subscriptionPaymentId,
-            subscriptionId: subscription.subscriptionId,
-            subscriptionBusinessId,
-            subscriptionPlanId,
-            createdByUserId: userId,
+        const subscription = await general.$transaction(async (client) => {
+            const created = await client.subscription.create({ data });
+            await client.businessTrialGrant.create({
+                data: { businessId: subscriptionBusinessId, subscriptionId: created.subscriptionId },
+            });
+            await recordPromoFreeTrialPayment({
+                subscriptionPaymentId,
+                subscriptionId: created.subscriptionId,
+                subscriptionBusinessId,
+                subscriptionPlanId,
+                createdByUserId: userId,
+                client,
+            });
+            return created;
         });
 
         const [business, plan, user] = await Promise.all([
@@ -174,6 +188,9 @@ export const createSubscriptionController = async (req, res) => {
             },
         });
     } catch (error) {
+        if (error?.code === "P2002") {
+            return res.status(409).json({ message: "La prueba gratuita ya fue utilizada por este negocio.", code: "TRIAL_ALREADY_CLAIMED" });
+        }
         console.error("Error creating subscription:", error);
         return res.status(500).json({ message: error.message || "Server error creating subscription" });
     }
@@ -193,16 +210,16 @@ export const createSubscriptionCheckoutController = async (req, res) => {
             return res.status(400).json({ message: "Faltan datos para iniciar el checkout." });
         }
 
-        if (subscriptionPlanId === FREE_TRIAL_PLAN_ID) {
+        if (subscriptionBusinessId !== req.tenantBusinessId) {
+            return res.status(403).json({ message: "No puedes contratar para otro negocio.", code: "TENANT_FORBIDDEN" });
+        }
+
+        const selectedPlan = await getPlanById(subscriptionPlanId);
+        if (selectedPlan && isTrialPlan(selectedPlan)) {
             return res.status(400).json({
                 message: "El plan promocional gratuito no usa checkout de Mercado Pago.",
             });
         }
-
-        const user = await general.user.findUnique({
-            where: { userId },
-            select: { userEmail: true },
-        });
 
         const checkout = await createMercadoPagoCheckout({
             subscriptionPaymentId,
@@ -210,13 +227,15 @@ export const createSubscriptionCheckoutController = async (req, res) => {
             subscriptionBusinessId,
             subscriptionPlanId,
             createdByUserId: userId,
-            payerEmail: user?.userEmail,
         });
 
         return res.status(201).json(checkout);
     } catch (error) {
         console.error("Error creating subscription checkout:", error);
-        return res.status(500).json({ message: error.message || "Error al iniciar checkout." });
+        return res.status(error.statusCode || 500).json({
+            message: error.message || "Error al iniciar checkout.",
+            ...(error.code ? { code: error.code } : {}),
+        });
     }
 };
 
@@ -226,6 +245,15 @@ export const processSubscriptionPaymentBrickController = async (req, res) => {
 
         if (!subscriptionPaymentId || !formData) {
             return res.status(400).json({ message: "Faltan datos del Payment Brick." });
+        }
+
+        const payment = await general.subscriptionPayment.findUnique({
+            where: { subscriptionPaymentId },
+            select: { subscriptionBusinessId: true },
+        });
+        if (!payment) return res.status(404).json({ message: "Pago no encontrado." });
+        if (payment.subscriptionBusinessId !== req.tenantBusinessId) {
+            return res.status(403).json({ message: "No tienes acceso a este pago.", code: "TENANT_FORBIDDEN" });
         }
 
         const result = await processPaymentBrickSubmission({
@@ -248,6 +276,15 @@ export const confirmSubscriptionPaymentController = async (req, res) => {
 
         if (!mpPaymentId) {
             return res.status(400).json({ message: "Falta mpPaymentId para confirmar el pago." });
+        }
+
+        const payment = await general.subscriptionPayment.findUnique({
+            where: { subscriptionPaymentId: paymentId },
+            select: { subscriptionBusinessId: true },
+        });
+        if (!payment) return res.status(404).json({ message: "Pago no encontrado." });
+        if (payment.subscriptionBusinessId !== req.tenantBusinessId) {
+            return res.status(403).json({ message: "No tienes acceso a este pago.", code: "TENANT_FORBIDDEN" });
         }
 
         const result = await finalizeMercadoPagoPayment({
@@ -276,6 +313,11 @@ export const getSubscriptionPaymentStatusController = async (req, res) => {
 
         if (!payment) {
             return res.status(404).json({ message: "Pago no encontrado." });
+        }
+
+        const membership = await assertUserBelongsToBusiness(req.user.payload.id, payment.subscriptionBusinessId);
+        if (!membership) {
+            return res.status(403).json({ message: "No tienes acceso a este pago.", code: "TENANT_FORBIDDEN" });
         }
 
         return res.status(200).json(payment);
@@ -308,6 +350,9 @@ export const getBusinessBillingController = async (req, res) => {
 export const cancelBusinessSubscriptionController = async (req, res) => {
     try {
         const { businessId } = req.params;
+        if (businessId !== req.tenantBusinessId) {
+            return res.status(403).json({ message: "No puedes cancelar otro negocio.", code: "TENANT_FORBIDDEN" });
+        }
         const userId = req.user.payload.id;
         const { confirmationPhrase, cancelReason } = req.body ?? {};
 

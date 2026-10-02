@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requirePlanCapability } from "../middlewares/planCapability.middleware.js";
 import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 
 import {
@@ -13,7 +14,7 @@ import {
 } from "../controllers/transactions.controller.js";
 
 const router = Router();
-const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin];
+const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin, requirePlanCapability("transactions")];
 
 router.get("/transactions/summary", ...admin, getTransactionsSummaryController);
 router.get("/transactions/cash-detail", ...admin, getCashAvailableDetailController);

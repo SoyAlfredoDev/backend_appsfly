@@ -16,6 +16,7 @@ import { getPrismaForBusinessId } from "../db.js";
 import { seedOpticsCatalog } from "../libs/opticsCatalogSeed.js";
 import { cacheInvalidate } from "../libs/tenantCache.js";
 import { getPlanById } from "../services/planService.js";
+import { planMatchesBusinessType } from "../services/subscription/planPolicy.js";
 import { resolveInitialDatabaseMode } from "../services/database/tenantDatabasePolicy.js";
 
 export const createBusinessController = async (req, res) => {
@@ -35,6 +36,9 @@ export const createBusinessController = async (req, res) => {
       error: "El plan seleccionado no existe.",
       code: "INVALID_PLAN",
     });
+  }
+  if (selectedPlan && (selectedPlan.planActive === false || !planMatchesBusinessType(selectedPlan, businessData.businessType))) {
+    return res.status(400).json({ error: "El plan no está disponible para este tipo de negocio.", code: "PLAN_NOT_AVAILABLE" });
   }
 
   const databaseMode = resolveInitialDatabaseMode(selectedPlan);

@@ -11,10 +11,11 @@ import {
 
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requirePlanCapability } from "../middlewares/planCapability.middleware.js";
 import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 
 const router = Router();
-const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin];
+const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin, requirePlanCapability("expenses")];
 
 router.get("/expense-categories", ...admin, listExpenseCategoriesController);
 router.post("/expenses", ...admin, createExpenseController);

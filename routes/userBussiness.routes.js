@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-    createUserBusinessController,
     getUserBusinessByIdController,
     getBusinessMembersController,
 } from "../controllers/userBusiness.controller.js";
@@ -9,7 +8,6 @@ import { ensureTenantRole, requireTenantAdmin } from "../middlewares/tenantRole.
 
 const router = Router();
 
-router.post("/userBusiness", authRequired, createUserBusinessController);
 router.get("/userBusiness", authRequired, getUserBusinessByIdController);
 router.get(
     "/userBusiness/:businessId/members",

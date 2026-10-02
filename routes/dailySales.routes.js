@@ -2,11 +2,12 @@ import { Router } from 'express';
 
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requirePlanCapability } from "../middlewares/planCapability.middleware.js";
 import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 import { createDailySaleController, getDailySalesController, getDailySaleByIdController, getClosureStatusController, closeAllPendingClosuresController, getDailySaleDetailController } from '../controllers/dailySalesRoutes.controller.js';
 
 const router = Router();
-const auth = [authRequired, dbSelectorMiddleware];
+const auth = [authRequired, dbSelectorMiddleware, requirePlanCapability("daily_closures")];
 const admin = [...auth, requireTenantAdmin];
 
 router.post('/dailySales', ...admin, createDailySaleController);

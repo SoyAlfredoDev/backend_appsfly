@@ -3,6 +3,7 @@ import { getPrismaForBusinessId } from "../db.js";
 import { resolveTenantMembership } from "../libs/resolveTenantMembership.js";
 import { getBusinessTimezoneById } from "../libs/getBusinessTimezone.js";
 import { getUserBusinessById } from "../services/userBusinessService.js";
+import { getActiveSubscriptionForBusiness } from "../services/subscriptionService.js";
 
 export async function dbSelectorMiddleware(req, res, next) {
   try {
@@ -38,6 +39,12 @@ export async function dbSelectorMiddleware(req, res, next) {
         code: "TENANT_PROVISIONING_INCOMPLETE",
       });
     }
+
+    const activeSubscription = await getActiveSubscriptionForBusiness(req.tenantBusinessId);
+    if (!activeSubscription) {
+      return res.status(402).json({ error: "El negocio requiere una suscripción vigente para operar.", code: "SUBSCRIPTION_REQUIRED" });
+    }
+    req.tenantSubscription = activeSubscription;
 
     req.businessTimezone = await getBusinessTimezoneById(req.tenantBusinessId);
 

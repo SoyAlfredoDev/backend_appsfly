@@ -16,10 +16,11 @@ import {
 
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requirePlanCapability } from "../middlewares/planCapability.middleware.js";
 import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 
 const router = Router();
-const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin];
+const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin, requirePlanCapability("purchases")];
 
 router.get("/purchases/monthNow", ...admin, getMonthlyPurchasesNowController);
 router.get("/purchases/provider/:providerId", ...admin, getPurchasesByProviderIdController);

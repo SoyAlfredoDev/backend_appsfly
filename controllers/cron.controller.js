@@ -1,5 +1,6 @@
 import { runAllDueEmailCampaigns } from "../services/adminEmailCampaign/adminEmailCampaignScheduler.js";
 import { reconcileMercadoPagoSubscriptionRenewals } from "../services/mercadopago/mpRenewalReconcileService.js";
+import { repriceUpcomingUfRenewals } from "../services/subscription/ufRenewalService.js";
 
 function getCronSecret(req) {
     const header = req.headers.authorization;
@@ -42,7 +43,7 @@ export async function cronEmailCampaignsController(req, res) {
         console.error("(cron.emailCampaigns):", error);
         return res.status(500).json({
             message: "Error al ejecutar campañas programadas.",
-            code: "CRON_EMAIL_CAMPAIGNS_FAILED",
+            error: error.message,
         });
     }
 }
@@ -61,7 +62,19 @@ export async function cronMpSubscriptionRenewalsController(req, res) {
         console.error("(cron.mpSubscriptionRenewals):", error);
         return res.status(500).json({
             message: "Error al reconciliar renovaciones Mercado Pago.",
-            code: "CRON_MP_RENEWALS_FAILED",
+            error: error.message,
         });
+    }
+}
+
+/** Recalcula en CLP las renovaciones UF próximas usando la tarifa UF contratada. */
+export async function cronUfSubscriptionRepricingController(req, res) {
+    try {
+        if (!assertCronAuthorized(req, res)) return;
+        const result = await repriceUpcomingUfRenewals();
+        return res.status(result.failed > 0 ? 502 : 200).json(result);
+    } catch (error) {
+        console.error("(cron.ufSubscriptionRepricing):", error);
+        return res.status(500).json({ message: "Error al actualizar los cobros UF." });
     }
 }

@@ -65,3 +65,16 @@ export const getAdminSubscriptionsService = async () => {
         throw error;
     }
 };
+
+export const getActiveSubscriptionForBusiness = async (businessId, now = new Date()) => {
+    if (!businessId) return null;
+    return general.subscription.findFirst({
+        where: {
+            subscriptionBusinessId: businessId,
+            subscriptionStatus: { in: ["ACTIVE", "CANCELLED"] },
+            subscriptionStartDate: { lte: now },
+            subscriptionEndDate: { gt: now },
+        },
+        orderBy: { subscriptionEndDate: "desc" },
+    });
+};

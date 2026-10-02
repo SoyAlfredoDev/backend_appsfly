@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requirePlanCapability } from "../middlewares/planCapability.middleware.js";
 import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 import {
     assistantChatController,
@@ -14,6 +15,7 @@ router.get(
     authRequired,
     dbSelectorMiddleware,
     requireTenantAdmin,
+    requirePlanCapability("assistant"),
     assistantStatusController,
 );
 
@@ -22,6 +24,7 @@ router.post(
     authRequired,
     dbSelectorMiddleware,
     requireTenantAdmin,
+    requirePlanCapability("assistant"),
     assistantChatController,
 );
 

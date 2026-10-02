@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requirePlanCapability } from "../middlewares/planCapability.middleware.js";
 import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 import {
     segmentAsmrCampaignController,
@@ -10,7 +11,7 @@ import {
 } from "../controllers/asmrCampaign.controller.js";
 
 const router = Router();
-const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin];
+const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin, requirePlanCapability("campaigns")];
 
 router.get("/asmr-campaigns/summary", ...admin, getAsmrCampaignSummaryController);
 router.get("/asmr-campaigns", ...admin, listAsmrCampaignsController);

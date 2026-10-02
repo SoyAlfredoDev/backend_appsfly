@@ -275,7 +275,7 @@ export async function createMercadoPagoPreapproval({
 }
 
 /** Cancela o pausa una suscripción recurrente en Mercado Pago. */
-export async function updateMercadoPagoPreapproval(preapprovalId, { status }) {
+export async function updateMercadoPagoPreapproval(preapprovalId, { status, amount, currency = "CLP" }) {
     const token = getMercadoPagoAccessToken();
     if (!token) {
         throw new Error("Mercado Pago no está configurado.");
@@ -287,7 +287,10 @@ export async function updateMercadoPagoPreapproval(preapprovalId, { status }) {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({
+            ...(status ? { status } : {}),
+            ...(amount != null ? { auto_recurring: { transaction_amount: Number(amount), currency_id: currency } } : {}),
+        }),
     });
 
     const data = await response.json();

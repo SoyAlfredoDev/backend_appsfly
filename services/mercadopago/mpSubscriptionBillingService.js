@@ -4,6 +4,7 @@ import {
     updateMercadoPagoPreapproval,
 } from "./mpApiClient.js";
 import { FREE_TRIAL_PLAN_ID } from "../subscriptionPaymentService.js";
+import { isTrialPlan } from "../subscription/planPolicy.js";
 import {
     isValidCancellationConfirmation,
     SUBSCRIPTION_CANCEL_CONFIRMATION_PHRASE,
@@ -71,7 +72,7 @@ export async function getBusinessBillingStatus(businessId) {
         };
     }
 
-    const isPromoFreeTrial = current.subscriptionPlanId === FREE_TRIAL_PLAN_ID;
+    const isPromoFreeTrial = isTrialPlan(current.plan);
     const isPaidCommercial = isCommercialPaidPlan(current);
     const isPaidRecurring = isPaidCommercial && Boolean(current.mpPreapprovalId);
     const accessStillValid = hasPaidPeriodRemaining(current);
@@ -86,6 +87,7 @@ export async function getBusinessBillingStatus(businessId) {
             subscriptionStartDate: current.subscriptionStartDate,
             subscriptionEndDate: current.subscriptionEndDate,
             subscriptionAmount: current.subscriptionAmount,
+            subscriptionPriceUf: current.subscriptionPriceUf,
             subscriptionCancelledAt: current.subscriptionCancelledAt,
             mpPreapprovalId: current.mpPreapprovalId,
             mpPreapprovalStatus: current.mpPreapprovalStatus,

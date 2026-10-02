@@ -199,7 +199,6 @@ async function main() {
   const bundled = await bundleApi();
   if (process.env.VERCEL === "1") {
     await copyFile(bundled, serverPath);
-    await deployControlPlaneMigrations();
   }
 }
 

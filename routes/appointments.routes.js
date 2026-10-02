@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requirePlanCapability } from "../middlewares/planCapability.middleware.js";
 import {
     getAppointmentPublicLinkController,
     getAppointmentSettingsController,
@@ -11,7 +12,7 @@ import {
 } from "../controllers/appointment.controller.js";
 
 const router = Router();
-const auth = [authRequired, dbSelectorMiddleware];
+const auth = [authRequired, dbSelectorMiddleware, requirePlanCapability("appointments")];
 
 router.get("/appointments/settings", ...auth, getAppointmentSettingsController);
 router.put("/appointments/settings", ...auth, updateAppointmentSettingsController);

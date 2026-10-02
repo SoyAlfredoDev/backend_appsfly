@@ -15,6 +15,22 @@ import { createUserBusinessService } from "../services/userBusinessService.js";
 import { getUserById } from "../services/usersService.js";
 import { sendUserInvitationEmail } from "../emails/dispatchers/invitation.dispatcher.js";
 import { getFrontendBaseUrl } from "../emails/shared/layout.js";
+import { generalPrisma as general } from "../dbGeneral.js";
+import { getActiveSubscriptionForBusiness } from "../services/subscriptionService.js";
+import { readPlanCapabilities } from "../services/subscription/planPolicy.js";
+
+async function hasAvailableSeat(businessId, { includePendingInvites = false } = {}) {
+    const subscription = await getActiveSubscriptionForBusiness(businessId);
+    if (!subscription) return false;
+    if (subscription.subscriptionCapabilities == null) return true;
+    const policy = readPlanCapabilities(subscription.subscriptionCapabilities);
+    if (!policy) return false;
+    const members = await general.userBusiness.count({ where: { userBusinessBusinessId: businessId } });
+    const pending = includePendingInvites
+        ? await general.userGuest.count({ where: { userGuestBusinessId: businessId, userGuestStatus: "PENDIENT" } })
+        : 0;
+    return members + pending < policy.maxUsers;
+}
 
 export function buildInvitationRegisterUrl(userGuestId, email) {
     const params = new URLSearchParams({
@@ -80,6 +96,9 @@ export const createUserGuestController = async (req, res) => {
         if (!userGuestBusinessId) {
             return res.status(400).json({ message: "Negocio no especificado." });
         }
+        if (userGuestBusinessId !== req.tenantBusinessId) {
+            return res.status(403).json({ message: "No puedes invitar usuarios a otro negocio.", code: "TENANT_FORBIDDEN" });
+        }
         if (!["ADMIN", "USER"].includes(userGuestRole)) {
             return res.status(400).json({ message: "Rol inválido." });
         }
@@ -107,6 +126,10 @@ export const createUserGuestController = async (req, res) => {
                     message: "Este usuario ya pertenece al negocio.",
                 });
             }
+        }
+
+        if (!await hasAvailableSeat(userGuestBusinessId, { includePendingInvites: true })) {
+            return res.status(409).json({ message: "El plan alcanzó su límite de usuarios.", code: "PLAN_USER_LIMIT_REACHED" });
         }
 
         const inviterCtx = await loadInviterContext(userId);
@@ -194,7 +217,7 @@ async function ensureGeneralUserBusinessLink(userId, businessId, role) {
 
 export const userGuestResponseController = async (req, res) => {
     try {
-        const { userGuestId, response, userGuestRole } = req.body;
+        const { userGuestId, response } = req.body;
         const userId = req.user.payload.id;
 
         if (!userGuestId || !["ACCEPTED", "REJECTED"].includes(response)) {
@@ -222,11 +245,15 @@ export const userGuestResponseController = async (req, res) => {
             });
         }
 
-        const role = userGuestRole || invite.userGuestRole;
+        const role = invite.userGuestRole;
 
         if (response === "REJECTED") {
             const updated = await userGuestResponseService(userGuestId, "REJECTED");
             return res.status(200).json(updated);
+        }
+
+        if (!await hasAvailableSeat(invite.userGuestBusinessId)) {
+            return res.status(409).json({ message: "El plan alcanzó su límite de usuarios o la suscripción no está vigente.", code: "PLAN_USER_LIMIT_REACHED" });
         }
 
         const updated = await userGuestResponseService(userGuestId, "ACCEPTED");
@@ -326,10 +353,8 @@ export const resendUserGuestController = async (req, res) => {
             updated = await userGuestResponseService(userGuestId, "PENDIENT");
         }
 
-        let emailSent = false;
         try {
             await dispatchInvitationEmail(invite, inviterCtx.inviterName);
-            emailSent = true;
         } catch (emailError) {
             console.error("[userGuest] Error reenviando correo:", emailError.message);
             return res.status(502).json({

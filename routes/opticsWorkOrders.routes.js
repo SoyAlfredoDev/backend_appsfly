@@ -24,16 +24,17 @@ import {
 } from "../controllers/labDispatch.controller.js";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
+import { requirePlanCapability } from "../middlewares/planCapability.middleware.js";
 
 const router = Router();
 const auth = [authRequired, dbSelectorMiddleware];
 
 /** Laboratorios */
-router.get("/laboratories", ...auth, getLaboratoriesController);
-router.post("/laboratories", ...auth, createLaboratoryController);
-router.get("/laboratories/:id", ...auth, getLaboratoryByIdController);
-router.put("/laboratories/:id", ...auth, updateLaboratoryController);
-router.delete("/laboratories/:id", ...auth, deleteLaboratoryController);
+router.get("/laboratories", ...auth, requirePlanCapability("laboratories"), getLaboratoriesController);
+router.post("/laboratories", ...auth, requirePlanCapability("laboratories"), createLaboratoryController);
+router.get("/laboratories/:id", ...auth, requirePlanCapability("laboratories"), getLaboratoryByIdController);
+router.put("/laboratories/:id", ...auth, requirePlanCapability("laboratories"), updateLaboratoryController);
+router.delete("/laboratories/:id", ...auth, requirePlanCapability("laboratories"), deleteLaboratoryController);
 
 /** Órdenes de Trabajo */
 router.get("/work-orders", ...auth, listWorkOrdersController);
@@ -46,9 +47,9 @@ router.delete("/work-orders/:id", ...auth, deleteWorkOrderController);
 router.get("/sales/:saleId/work-orders", ...auth, listWorkOrdersBySaleController);
 
 /** Despachos a laboratorio */
-router.get("/lab-dispatches", ...auth, listLabDispatchesController);
-router.post("/lab-dispatches", ...auth, createLabDispatchController);
-router.get("/lab-dispatches/:id", ...auth, getLabDispatchByIdController);
-router.patch("/lab-dispatches/:id/receive", ...auth, receiveLabDispatchController);
+router.get("/lab-dispatches", ...auth, requirePlanCapability("lab_dispatches"), listLabDispatchesController);
+router.post("/lab-dispatches", ...auth, requirePlanCapability("lab_dispatches"), createLabDispatchController);
+router.get("/lab-dispatches/:id", ...auth, requirePlanCapability("lab_dispatches"), getLabDispatchByIdController);
+router.patch("/lab-dispatches/:id/receive", ...auth, requirePlanCapability("lab_dispatches"), receiveLabDispatchController);
 
 export default router;

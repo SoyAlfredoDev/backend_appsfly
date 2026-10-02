@@ -81,6 +81,7 @@ model Business {
     UserGuest     UserGuest[]
     UserBusiness  UserBusiness[]
     subscriptions Subscription[]
+    trialGrant BusinessTrialGrant?
     subscriptionPayments SubscriptionPayment[]
     subscriptionCancellations SubscriptionCancellation[]
     taxProviderAccount          TaxProviderAccount?
@@ -156,6 +157,12 @@ model Plan {
     planDuration    Int // Duración del plan en meses
     planCurrency    String   @default("CLP")
     planActive      Boolean  @default(true)
+    planBusinessType String?
+    planTier         String?
+    planCapabilities Json?
+    planListPriceUf  Decimal? @db.Decimal(8, 3)
+    planOfferPriceUf Decimal? @db.Decimal(8, 3)
+    planOfferEndsAt  DateTime?
     planDatabaseMode TenantDatabaseMode @default(SHARED)
     createdAt       DateTime @default(now())
     updatedAt       DateTime @updatedAt
@@ -176,6 +183,8 @@ model Subscription {
     subscriptionAmount        Float
     subscriptionPaymentMethod String
     subscriptionPlanFeatures  Json
+    subscriptionCapabilities  Json?
+    subscriptionPriceUf       Decimal? @db.Decimal(8, 3)
     createdByUserId           String
     /** Suscripción recurrente Mercado Pago (preapproval) */
     mpPreapprovalId           String?            @unique
@@ -190,6 +199,33 @@ model Subscription {
     business                  Business           @relation(fields: [subscriptionBusinessId], references: [businessId])
     payments                  SubscriptionPayment[]
     cancellations             SubscriptionCancellation[]
+    trialGrant                BusinessTrialGrant?
+    ufReprices                SubscriptionUfReprice[]
+}
+
+model BusinessTrialGrant {
+    businessId      String       @id
+    subscriptionId  String       @unique
+    grantedAt       DateTime     @default(now())
+    business        Business     @relation(fields: [businessId], references: [businessId])
+    subscription    Subscription @relation(fields: [subscriptionId], references: [subscriptionId])
+}
+
+model SubscriptionUfReprice {
+    id                     String       @id @default(uuid())
+    subscriptionId         String
+    billingDate            String
+    priceUf                Decimal      @db.Decimal(8, 3)
+    ufValueClp             Decimal      @db.Decimal(12, 2)
+    netAmountClp           Int
+    totalAmountClp         Int
+    previousAmountClp      Int
+    mpPreapprovalId        String
+    mpNextPaymentDate      DateTime
+    appliedAt              DateTime     @default(now())
+    subscription           Subscription @relation(fields: [subscriptionId], references: [subscriptionId])
+
+    @@unique([subscriptionId, billingDate])
 }
 
 /** Registro inmutable de bajas — auditoría y resolución de reclamos (estilo cancel_at_period_end). */
