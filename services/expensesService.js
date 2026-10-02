@@ -61,6 +61,72 @@ export const listExpenseCategoriesService = async (prisma, userId) => {
   });
 };
 
+const categoryError = (status, code, message) =>
+  new ExpenseInputError(status, code, message);
+
+const normalizedCategoryName = (value) =>
+  value.normalize("NFKC").trim().replace(/\s+/gu, " ");
+
+const categoryComparisonKey = (value) =>
+  normalizedCategoryName(value).toLocaleLowerCase("es-CL");
+
+export const createExpenseCategoryService = async (prisma, userId, value) => {
+  if (typeof value !== "string") {
+    throw categoryError(400, "EXPENSE_CATEGORY_NAME_INVALID", "El nombre de la categoría no es válido");
+  }
+  const expenseCategoryName = normalizedCategoryName(value);
+  if (!expenseCategoryName || expenseCategoryName.length > 60) {
+    throw categoryError(400, "EXPENSE_CATEGORY_NAME_INVALID", "El nombre debe tener entre 1 y 60 caracteres");
+  }
+  await ensureSystemExpenseCategories(prisma, userId);
+  const existing = await prisma.expenseCategory.findMany({
+    select: { expenseCategoryName: true },
+  });
+  if (existing.some((category) => categoryComparisonKey(category.expenseCategoryName) === categoryComparisonKey(expenseCategoryName))) {
+    throw categoryError(409, "EXPENSE_CATEGORY_DUPLICATE", "Ya existe una categoría con ese nombre");
+  }
+  try {
+    return await prisma.expenseCategory.create({
+      data: {
+        expenseCategoryId: randomUUID(),
+        expenseCategoryName,
+        isSystem: false,
+        createdByUserId: userId,
+      },
+      select: expenseCategorySelect,
+    });
+  } catch (error) {
+    if (error?.code === "P2002") {
+      throw categoryError(409, "EXPENSE_CATEGORY_DUPLICATE", "Ya existe una categoría con ese nombre");
+    }
+    throw error;
+  }
+};
+
+export const deleteExpenseCategoryService = async (prisma, id) => {
+  const category = await prisma.expenseCategory.findUnique({
+    where: { expenseCategoryId: id },
+    select: { isSystem: true, _count: { select: { expenses: true } } },
+  });
+  if (!category) {
+    throw categoryError(404, "EXPENSE_CATEGORY_NOT_FOUND", "No se encontró la categoría");
+  }
+  if (category.isSystem) {
+    throw categoryError(409, "EXPENSE_CATEGORY_SYSTEM_PROTECTED", "La categoría del sistema no se puede eliminar");
+  }
+  if (category._count.expenses > 0) {
+    throw categoryError(409, "EXPENSE_CATEGORY_IN_USE", "No puedes eliminar una categoría con gastos asociados");
+  }
+  try {
+    await prisma.expenseCategory.delete({ where: { expenseCategoryId: id } });
+  } catch (error) {
+    if (error?.code === "P2003") {
+      throw categoryError(409, "EXPENSE_CATEGORY_IN_USE", "No puedes eliminar una categoría con gastos asociados");
+    }
+    throw error;
+  }
+};
+
 const ensureSystemExpenseCategories = async (prisma, userId) => {
   const codes = SYSTEM_EXPENSE_CATEGORIES.map((category) => category.code);
   const existing = await prisma.expenseCategory.findMany({

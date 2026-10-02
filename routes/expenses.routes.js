@@ -7,6 +7,8 @@ import {
   deleteExpenseController,
   sumExpenseByMonthController,
   listExpenseCategoriesController,
+  createExpenseCategoryController,
+  deleteExpenseCategoryController,
 } from "../controllers/expenses.controller.js";
 
 import { authRequired } from "../middlewares/auth.middleware.js";
@@ -18,6 +20,8 @@ const router = Router();
 const admin = [authRequired, dbSelectorMiddleware, requireTenantAdmin, requirePlanCapability("expenses")];
 
 router.get("/expense-categories", ...admin, listExpenseCategoriesController);
+router.post("/expense-categories", ...admin, createExpenseCategoryController);
+router.delete("/expense-categories/:id", ...admin, deleteExpenseCategoryController);
 router.post("/expenses", ...admin, createExpenseController);
 router.get("/expenses", ...admin, getExpensesController);
 router.get("/expenses/sum/:month/:year", ...admin, sumExpenseByMonthController);
