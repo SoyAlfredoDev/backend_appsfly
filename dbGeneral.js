@@ -1,5 +1,5 @@
 import { PrismaClient as PrismaGeneral } from "./src/generated/general/index.js";
-import { serverlessDatabaseUrl } from "./services/database/serverlessDatabaseUrl.ts";
+import { serverlessDatabaseUrl } from "./services/database/serverlessDatabaseUrl.js";
 
 const globalForPrisma = globalThis;
 const datasourceUrl = serverlessDatabaseUrl(process.env.DATABASE_GENERAL_URL);

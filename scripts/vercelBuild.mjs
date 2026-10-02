@@ -7,7 +7,7 @@ import * as esbuild from "esbuild";
 
 const backendDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const bundlePath = path.join(backendDir, "dist", "index.js");
-const functionPath = path.join(backendDir, "api", "index.js");
+const serverPath = path.join(backendDir, "api", "server.js");
 
 const MIGRATION_ATTEMPTS = 3;
 const MIGRATION_RETRY_DELAY_MS = 5_000;
@@ -141,7 +141,7 @@ function runPrismaMigrate(schema, env = process.env) {
 export async function bundleApi() {
   await mkdir(path.dirname(bundlePath), { recursive: true });
   await esbuild.build({
-    entryPoints: [path.join(backendDir, "api", "index.js")],
+    entryPoints: [path.join(backendDir, "app.js")],
     outfile: bundlePath,
     bundle: true,
     platform: "node",
@@ -162,6 +162,12 @@ export async function bundleApi() {
       },
     ],
   });
+
+  const bundledSource = await readFile(bundlePath, "utf8");
+  if (/from\s+["'][^"']+\.ts["']/.test(bundledSource)) {
+    throw new Error("The API bundle still imports TypeScript source files.");
+  }
+
   return bundlePath;
 }
 
@@ -192,7 +198,7 @@ export async function deployControlPlaneMigrations(env = process.env) {
 async function main() {
   const bundled = await bundleApi();
   if (process.env.VERCEL === "1") {
-    await copyFile(bundled, functionPath);
+    await copyFile(bundled, serverPath);
     await deployControlPlaneMigrations();
   }
 }

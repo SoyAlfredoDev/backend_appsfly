@@ -6,7 +6,7 @@ import { createAccessToken } from "../libs/jwt.js";
 import validateRut from "../libs/validateRut.js";
 import { sendConfirmEmail } from "../emails/dispatchers/confirmEmail.dispatcher.js";
 import { markProspectConvertedByEmail } from "../services/emailProspect/emailProspectConversionService.js";
-import { invalidCredentialsBody, passwordPolicyError } from "../services/auth/passwordPolicy.ts";
+import { invalidCredentialsBody, passwordPolicyError } from "../services/auth/passwordPolicy.js";
 
 import dotenv from "dotenv";
 

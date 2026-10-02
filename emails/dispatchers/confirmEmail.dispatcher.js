@@ -5,7 +5,7 @@ import {
   confirmEmailTemplate,
   confirmEmailText,
 } from "../users/auth/confirmEmail.template.js";
-import { createEmailConfirmationToken } from "../../services/auth/emailConfirmationToken.ts";
+import { createEmailConfirmationToken } from "../../services/auth/emailConfirmationToken.js";
 
 export async function sendConfirmEmail({ to, userId, firstName, lastName }) {
   if (!to?.trim() || !userId) {

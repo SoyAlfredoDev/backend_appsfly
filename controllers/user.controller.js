@@ -8,8 +8,8 @@ import userSuperAdmin from "../superAdmin.js";
 import { isUserPlatformOwner } from "../middlewares/platformOwnerMiddleware.js";
 import { sendConfirmEmail } from "../emails/dispatchers/confirmEmail.dispatcher.js";
 import { canUserViewUser } from "../services/userBusinessService.js";
-import { verifyEmailConfirmationToken } from "../services/auth/emailConfirmationToken.ts";
-import { toPublicUser, toPublicUsers } from "../services/auth/publicUser.ts";
+import { verifyEmailConfirmationToken } from "../services/auth/emailConfirmationToken.js";
+import { toPublicUser, toPublicUsers } from "../services/auth/publicUser.js";
 export const getUsersController = async (req, res) => {
   try {
     const users = await getUsers();

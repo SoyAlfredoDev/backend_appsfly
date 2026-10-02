@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { register, login, logout, verifyAuthController, forgotPassword, resetPassword } from "../controllers/auth.controller.js";
-import { authRateLimit } from "../services/auth/rateLimit.ts";
+import { authRateLimit } from "../services/auth/rateLimit.js";
 
 const router = Router();
 

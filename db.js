@@ -1,6 +1,6 @@
 import { PrismaClient as PrismaBusiness } from "./src/generated/business/index.js";
-import { getSharedTenantClient } from "./services/database/sharedTenantClient.ts";
-import { serverlessDatabaseUrl } from "./services/database/serverlessDatabaseUrl.ts";
+import { getSharedTenantClient } from "./services/database/sharedTenantClient.js";
+import { serverlessDatabaseUrl } from "./services/database/serverlessDatabaseUrl.js";
 import { getBusinessDatabasePlacement } from "./services/businessService.js";
 import { getUserBusinessById } from "./services/userBusinessService.js";
 

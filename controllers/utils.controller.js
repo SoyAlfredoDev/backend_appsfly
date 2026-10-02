@@ -8,7 +8,7 @@ import {
     assertUtilityModel,
     toPublicRecord,
     UtilityAccessError,
-} from "../services/database/tenantUtilityAccess.ts";
+} from "../services/database/tenantUtilityAccess.js";
 
 function utilityErrorResponse(res, error) {
     if (error instanceof UtilityAccessError) {

@@ -9,7 +9,7 @@ import {
 import {
   isTenantDatabaseMode,
   requiresTenantDataMigration,
-} from "../services/database/tenantDatabasePolicy.ts";
+} from "../services/database/tenantDatabasePolicy.js";
 
 export const getAdminPlans = async (req, res) => {
   try {

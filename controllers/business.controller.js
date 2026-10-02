@@ -16,7 +16,7 @@ import { getPrismaForBusinessId } from "../db.js";
 import { seedOpticsCatalog } from "../libs/opticsCatalogSeed.js";
 import { cacheInvalidate } from "../libs/tenantCache.js";
 import { getPlanById } from "../services/planService.js";
-import { resolveInitialDatabaseMode } from "../services/database/tenantDatabasePolicy.ts";
+import { resolveInitialDatabaseMode } from "../services/database/tenantDatabasePolicy.js";
 
 export const createBusinessController = async (req, res) => {
   const userId = req.user.payload.id;
