@@ -52,7 +52,7 @@ function getBackendBaseUrl() {
         process.env.VERCEL === "1";
 
     if (isProduction) {
-        return process.env.BACKEND_URL_PRODUCTION || "https://api.appsfly.app";
+        return process.env.BACKEND_URL_PRODUCTION || "https://api.appsfly.cl";
     }
     return process.env.BACKEND_URL || "http://localhost:3000";
 }
@@ -62,7 +62,7 @@ function getWebhookBaseUrl() {
     const configured = normalizeBaseUrl(getBackendBaseUrl());
     if (isLocalhostUrl(configured)) {
         return normalizeBaseUrl(
-            process.env.BACKEND_URL_PRODUCTION || "https://api.appsfly.app",
+            process.env.BACKEND_URL_PRODUCTION || "https://api.appsfly.cl",
         );
     }
     return configured;

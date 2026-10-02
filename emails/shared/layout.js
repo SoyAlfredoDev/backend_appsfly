@@ -18,7 +18,7 @@ export function getBackendBaseUrl() {
         || process.env.VERCEL === "1";
 
     const base = isProduction
-        ? (process.env.BACKEND_URL_PRODUCTION || "https://api.appsfly.app")
+        ? (process.env.BACKEND_URL_PRODUCTION || "https://api.appsfly.cl")
         : (process.env.BACKEND_URL || "http://localhost:3000");
 
     return String(base).replace(/\/+$/, "");
