@@ -1,5 +1,6 @@
 // expensesService.js
 
+import { randomUUID } from "node:crypto";
 import {
     recordFinancialTransaction,
     TRANSACTION_TYPES,
@@ -9,6 +10,8 @@ import {
     businessMonthBoundsUtc,
     DEFAULT_BUSINESS_TIMEZONE,
 } from "../libs/businessTimezone.js";
+import { SYSTEM_EXPENSE_CATEGORIES } from "./expenses/expenseCategories.js";
+import { ExpenseInputError } from "./expenses/expenseInput.js";
 
 const parseMonthYear = (month, year) => {
   const m = parseInt(month, 10);
@@ -34,13 +37,72 @@ const expenseInclude = {
       userLastName: true,
     },
   },
+  category: {
+    select: {
+      expenseCategoryId: true,
+      expenseCategoryName: true,
+      expenseCategoryCode: true,
+    },
+  },
+};
+
+const expenseCategorySelect = {
+  expenseCategoryId: true,
+  expenseCategoryName: true,
+  expenseCategoryCode: true,
+  isSystem: true,
+};
+
+export const listExpenseCategoriesService = async (prisma, userId) => {
+  await ensureSystemExpenseCategories(prisma, userId);
+  return prisma.expenseCategory.findMany({
+    orderBy: { expenseCategoryName: "asc" },
+    select: expenseCategorySelect,
+  });
+};
+
+const ensureSystemExpenseCategories = async (prisma, userId) => {
+  const codes = SYSTEM_EXPENSE_CATEGORIES.map((category) => category.code);
+  const existing = await prisma.expenseCategory.findMany({
+    where: { expenseCategoryCode: { in: codes } },
+    select: { expenseCategoryCode: true },
+  });
+  const present = new Set(existing.map((category) => category.expenseCategoryCode));
+  const missing = SYSTEM_EXPENSE_CATEGORIES.filter((category) => !present.has(category.code));
+  if (missing.length === 0) return;
+
+  await prisma.expenseCategory.createMany({
+    data: missing.map((category) => ({
+      expenseCategoryId: randomUUID(),
+      expenseCategoryName: category.name,
+      expenseCategoryCode: category.code,
+      isSystem: true,
+      createdByUserId: userId,
+    })),
+    skipDuplicates: true,
+  });
 };
 
 // 1. CREATE Expense
 export const createExpenseService = async (data, prisma) => {
   try {
+    const category = await prisma.expenseCategory.findUnique({
+      where: { expenseCategoryId: data.expenseCategoryId },
+      select: { expenseCategoryId: true },
+    });
+    if (!category) {
+      throw new ExpenseInputError(
+        404,
+        "EXPENSE_CATEGORY_NOT_FOUND",
+        "La categoría del gasto no existe",
+      );
+    }
+
     return prisma.$transaction(async (tx) => {
-      const res = await tx.expense.create({ data });
+      const res = await tx.expense.create({
+        data,
+        include: expenseInclude,
+      });
 
       await recordFinancialTransaction(tx, {
         transactionType: TRANSACTION_TYPES.EXPENSE,
@@ -56,6 +118,7 @@ export const createExpenseService = async (data, prisma) => {
       return res;
     });
   } catch (error) {
+    if (error instanceof ExpenseInputError) throw error;
     console.error("(expensesService.js): Error creating expense:", error);
     throw error;
   }
@@ -131,6 +194,7 @@ export const getExpenseByIdService = async (id, prisma) => {
   try {
     const res = await prisma.expense.findUnique({
       where: { expenseId: id },
+      include: expenseInclude,
     });
     return res;
   } catch (error) {

@@ -20,7 +20,7 @@ function getFrontendBaseUrl() {
         process.env.VERCEL === "1";
 
     if (isProduction) {
-        return normalizeBaseUrl(process.env.FRONTEND_URL_PRODUCTION || "https://appsfly.app");
+        return normalizeBaseUrl(process.env.FRONTEND_URL_PRODUCTION || "https://appsfly.cl");
     }
     return normalizeBaseUrl(process.env.FRONTEND_URL || "http://localhost:5173");
 }
@@ -30,7 +30,7 @@ function getPreferenceFrontendBaseUrl() {
     const configured = getFrontendBaseUrl();
     if (isLocalhostUrl(configured)) {
         return normalizeBaseUrl(
-            process.env.FRONTEND_URL_PRODUCTION || "https://appsfly.app",
+            process.env.FRONTEND_URL_PRODUCTION || "https://appsfly.cl",
         );
     }
     return configured;

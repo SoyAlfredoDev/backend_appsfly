@@ -6,7 +6,9 @@ import {
   deleteExpenseService,
   sumExpensesByPaymentMethod,
   sumExpenseByMonthService,
+  listExpenseCategoriesService,
 } from "../services/expensesService.js";
+import { ExpenseInputError, parseExpenseCreateBody } from "../services/expenses/expenseInput.js";
 import {
   deleteCloudinaryImageByUrl,
   deleteCloudinaryImageIfReplaced,
@@ -15,28 +17,33 @@ import { DEFAULT_BUSINESS_TIMEZONE } from "../libs/businessTimezone.js";
 
 const tzOf = (req) => req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE;
 
+const sendExpenseError = (res, error, fallbackCode) => {
+  if (error instanceof ExpenseInputError) {
+    return res.status(error.status).json({ error: error.message, code: error.code });
+  }
+  console.error(error);
+  return res.status(500).json({
+    error: "No se pudo completar la operación del gasto",
+    code: fallbackCode,
+  });
+};
+
+export const listExpenseCategoriesController = async (req, res) => {
+  try {
+    const categories = await listExpenseCategoriesService(req.prisma, req.user.payload.id);
+    return res.status(200).json({ categories });
+  } catch (error) {
+    return sendExpenseError(res, error, "EXPENSE_CATEGORIES_FAILED");
+  }
+};
+
 export const createExpenseController = async (req, res) => {
   try {
-    const {
-      expenseId,
-      expenseAmount,
-      expenseDescription,
-      expensePaymentMethod,
-      expenseImageUrl,
-    } = req.body;
-
-    const data = {
-      expenseId,
-      expenseDescription,
-      expensePaymentMethod: expensePaymentMethod.toString(),
-      expenseImageUrl,
-      expenseAmount,
-      createdByUserId: req.user.payload.id,
-    };
+    const data = parseExpenseCreateBody(req.body, req.user?.payload?.id);
     const expense = await createExpenseService(data, req.prisma);
     return res.status(201).json(expense);
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return sendExpenseError(res, error, "EXPENSE_CREATE_FAILED");
   }
 };
 

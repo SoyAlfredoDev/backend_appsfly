@@ -1,12 +1,12 @@
 /**
  * Logo blanco de AppsFly — frontend/public/logo-appsfly-white.png
- * Debe ser accesible públicamente en el host del frontend (Vercel / appsfly.app).
+ * Debe ser accesible públicamente en el host del frontend (Vercel / appsfly.cl).
  */
 export function getFrontendBaseUrl() {
     const base = (
         process.env.FRONTEND_URL_PRODUCTION ||
         process.env.FRONTEND_URL ||
-        "https://appsfly.app"
+        "https://appsfly.cl"
     ).replace(/\/+$/, "");
     return base;
 }
@@ -28,7 +28,7 @@ export function getAppsFlyEmailLogoUrl() {
     if (process.env.APPSFLY_EMAIL_LOGO_URL?.trim()) {
         return process.env.APPSFLY_EMAIL_LOGO_URL.trim();
     }
-    const base = (process.env.FRONTEND_URL_PRODUCTION || "https://appsfly.app").replace(/\/+$/, "");
+    const base = (process.env.FRONTEND_URL_PRODUCTION || "https://appsfly.cl").replace(/\/+$/, "");
     return `${base}/logo-appsfly-white.png`;
 }
 
@@ -75,7 +75,7 @@ function renderAppsFlyDiscreetFooter() {
             Documento generado con
             <a href="${escapeHtml(platformUrl)}" target="_blank" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:none;font-weight:600;">AppsFly</a>
             ·
-            <a href="${escapeHtml(platformUrl)}" target="_blank" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:underline;">appsfly.app</a>
+            <a href="${escapeHtml(platformUrl)}" target="_blank" rel="noopener noreferrer" style="color:#94a3b8;text-decoration:underline;">appsfly.cl</a>
             ·
             <a href="mailto:${escapeHtml(supportEmail)}" style="color:#94a3b8;text-decoration:underline;">soporte</a>
           </p>

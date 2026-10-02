@@ -5,7 +5,7 @@
 generator client {
   provider      = "prisma-client-js"
   output        = "../../src/generated/shared"
-  binaryTargets = ["native", "windows", "debian-openssl-3.0.x"]
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -46,6 +46,7 @@ model User {
   DailySales                 DailySales[]
   Transactions               Transactions[]
   Expense                    Expense[]
+  ExpenseCategory            ExpenseCategory[]
   InventoryMovement          InventoryMovement[]
   AsmrCampaign               AsmrCampaign[]
   Quotation                  Quotation[]           @relation("QuotationCreatedBy")
@@ -489,16 +490,38 @@ enum Role {
   USER
 }
 
+model ExpenseCategory {
+  businessId          String    @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  expenseCategoryId   String    @id @default(uuid())
+  expenseCategoryName String
+  /**
+   * Código estable de sistema (RENT, SUPPLIES, OTHER, …). Null en categorías custom.
+   */
+  expenseCategoryCode String?
+  isSystem            Boolean   @default(false)
+  createdByUserId     String
+  user                User      @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  expenses            Expense[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@unique([businessId, expenseCategoryId])
+  @@unique([businessId, expenseCategoryCode])
+  @@index([businessId])
+}
+
 model Expense {
-  businessId           String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
-  expenseId            String   @id
+  businessId           String          @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  expenseId            String          @id
   expenseDescription   String?
   expensePaymentMethod String?
   expenseImageUrl      String?
   expenseAmount        Int?
+  expenseCategoryId    String
+  category             ExpenseCategory @relation(fields: [businessId, expenseCategoryId], references: [businessId, expenseCategoryId])
   createdByUserId      String
-  createdAt            DateTime @default(now())
-  user                 User     @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  createdAt            DateTime        @default(now())
+  user                 User            @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
 
   @@unique([businessId, expenseId])
   @@index([businessId])

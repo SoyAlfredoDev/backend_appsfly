@@ -39,10 +39,11 @@ model User {
     purchasesCancelled    Purchase[] @relation("PurchaseCancelledBy")
     PurchaseDetail        PurchaseDetail[]
     Provider       Provider[]
-    CashExpense    CashExpense[]
-    DailySales     DailySales[]
-    Transactions   Transactions[]
-    Expense            Expense[]
+    CashExpense     CashExpense[]
+    DailySales      DailySales[]
+    Transactions    Transactions[]
+    Expense         Expense[]
+    ExpenseCategory ExpenseCategory[]
     InventoryMovement  InventoryMovement[]
     AsmrCampaign       AsmrCampaign[]
     Quotation          Quotation[]    @relation("QuotationCreatedBy")
@@ -387,15 +388,30 @@ enum Role {
     USER
 }
 
+model ExpenseCategory {
+    expenseCategoryId   String    @id @default(uuid())
+    expenseCategoryName String
+    /** Código estable de sistema (RENT, SUPPLIES, OTHER, …). Null en categorías custom. */
+    expenseCategoryCode String?   @unique
+    isSystem            Boolean   @default(false)
+    createdByUserId     String
+    user                User      @relation(fields: [createdByUserId], references: [userId])
+    expenses            Expense[]
+    createdAt           DateTime  @default(now())
+    updatedAt           DateTime  @updatedAt
+}
+
 model Expense {
-    expenseId            String   @id
+    expenseId            String          @id
     expenseDescription   String?
     expensePaymentMethod String?
     expenseImageUrl      String?
     expenseAmount        Int?
+    expenseCategoryId    String
+    category             ExpenseCategory @relation(fields: [expenseCategoryId], references: [expenseCategoryId])
     createdByUserId      String
-    createdAt            DateTime @default(now())
-    user                 User     @relation(fields: [createdByUserId], references: [userId])
+    createdAt            DateTime        @default(now())
+    user                 User            @relation(fields: [createdByUserId], references: [userId])
 }
 
 model Provider {

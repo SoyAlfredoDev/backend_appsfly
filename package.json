@@ -27,9 +27,9 @@
     "validate": "npm run format:check && npm run lint && npm run typecheck && npm run test",
     "lint:legacy": "eslint .",
     "check:shared-security": "node scripts/checkSharedDatabaseSecurity.mjs",
-    "lint": "eslint eslint.config.js vitest.config.ts tests types services/database/**/*.ts services/auth/**/*.ts scripts/generateSharedTenantSchema.mjs scripts/appendSharedRlsPolicies.mjs scripts/checkSharedDatabaseSecurity.mjs scripts/vercelBuild.mjs",
-    "format": "prettier --write eslint.config.js vitest.config.ts tests types services/database/**/*.ts services/auth/**/*.ts scripts/generateSharedTenantSchema.mjs scripts/appendSharedRlsPolicies.mjs scripts/checkSharedDatabaseSecurity.mjs scripts/vercelBuild.mjs .github/**/*.yml package.json tsconfig.json vercel.json",
-    "format:check": "prettier --check eslint.config.js vitest.config.ts tests types services/database/**/*.ts services/auth/**/*.ts scripts/generateSharedTenantSchema.mjs scripts/appendSharedRlsPolicies.mjs scripts/checkSharedDatabaseSecurity.mjs scripts/vercelBuild.mjs .github/**/*.yml package.json tsconfig.json vercel.json"
+    "lint": "eslint eslint.config.js vitest.config.ts tests types services/database/**/*.ts services/auth/**/*.ts services/expenses/**/*.ts scripts/generateSharedTenantSchema.mjs scripts/appendSharedRlsPolicies.mjs scripts/checkSharedDatabaseSecurity.mjs scripts/vercelBuild.mjs",
+    "format": "prettier --write eslint.config.js vitest.config.ts tests types services/database/**/*.ts services/auth/**/*.ts services/expenses/**/*.ts scripts/generateSharedTenantSchema.mjs scripts/appendSharedRlsPolicies.mjs scripts/checkSharedDatabaseSecurity.mjs scripts/vercelBuild.mjs .github/**/*.yml package.json tsconfig.json vercel.json",
+    "format:check": "prettier --check eslint.config.js vitest.config.ts tests types services/database/**/*.ts services/auth/**/*.ts services/expenses/**/*.ts scripts/generateSharedTenantSchema.mjs scripts/appendSharedRlsPolicies.mjs scripts/checkSharedDatabaseSecurity.mjs scripts/vercelBuild.mjs .github/**/*.yml package.json tsconfig.json vercel.json"
   },
   "type": "module",
   "engines": {

@@ -2,6 +2,7 @@ import {
     escapeHtml,
     formatCurrency,
     formatDateLong,
+    getFrontendBaseUrl,
     primaryButton,
     receiptRow,
     wrapEmailLayout,
@@ -23,7 +24,7 @@ export function subscriptionPaymentCustomerTemplate({
     const amountLabel = Number(amount) <= 0
         ? "Gratis — promoción de bienvenida"
         : escapeHtml(formatCurrency(amount, currency));
-    const dashboardUrl = "https://appsfly.app/dashboard";
+    const dashboardUrl = `${getFrontendBaseUrl()}/dashboard`;
 
     const bodyHtml = `
       <p class="email-body-text" style="margin:0 0 16px;font-size:16px;line-height:1.65;color:#374151;font-family:Arial,Helvetica,sans-serif;">${greeting}</p>
@@ -95,7 +96,7 @@ Medio de pago: ${paymentGatewayLabel}
 Vigente hasta: ${formatDateLong(subscriptionEndDate)}
 ID transacción: ${transactionId}
 
-Ingresa a tu panel: https://appsfly.app/dashboard
+Ingresa a tu panel: ${getFrontendBaseUrl()}/dashboard
 
 — AppsFly`;
 }

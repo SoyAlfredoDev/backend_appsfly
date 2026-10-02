@@ -361,12 +361,23 @@ exports.Prisma.AsmrCampaignScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ExpenseCategoryScalarFieldEnum = {
+  expenseCategoryId: 'expenseCategoryId',
+  expenseCategoryName: 'expenseCategoryName',
+  expenseCategoryCode: 'expenseCategoryCode',
+  isSystem: 'isSystem',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ExpenseScalarFieldEnum = {
   expenseId: 'expenseId',
   expenseDescription: 'expenseDescription',
   expensePaymentMethod: 'expensePaymentMethod',
   expenseImageUrl: 'expenseImageUrl',
   expenseAmount: 'expenseAmount',
+  expenseCategoryId: 'expenseCategoryId',
   createdByUserId: 'createdByUserId',
   createdAt: 'createdAt'
 };
@@ -807,6 +818,7 @@ exports.Prisma.ModelName = {
   DailySales: 'DailySales',
   Transactions: 'Transactions',
   AsmrCampaign: 'AsmrCampaign',
+  ExpenseCategory: 'ExpenseCategory',
   Expense: 'Expense',
   Provider: 'Provider',
   Purchase: 'Purchase',

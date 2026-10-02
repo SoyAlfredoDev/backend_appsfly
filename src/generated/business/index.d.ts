@@ -99,6 +99,11 @@ export type Transactions = $Result.DefaultSelection<Prisma.$TransactionsPayload>
  */
 export type AsmrCampaign = $Result.DefaultSelection<Prisma.$AsmrCampaignPayload>
 /**
+ * Model ExpenseCategory
+ * 
+ */
+export type ExpenseCategory = $Result.DefaultSelection<Prisma.$ExpenseCategoryPayload>
+/**
  * Model Expense
  * 
  */
@@ -733,6 +738,16 @@ export class PrismaClient<
   get asmrCampaign(): Prisma.AsmrCampaignDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.expenseCategory`: Exposes CRUD operations for the **ExpenseCategory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ExpenseCategories
+    * const expenseCategories = await prisma.expenseCategory.findMany()
+    * ```
+    */
+  get expenseCategory(): Prisma.ExpenseCategoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.expense`: Exposes CRUD operations for the **Expense** model.
     * Example usage:
     * ```ts
@@ -1359,6 +1374,7 @@ export namespace Prisma {
     DailySales: 'DailySales',
     Transactions: 'Transactions',
     AsmrCampaign: 'AsmrCampaign',
+    ExpenseCategory: 'ExpenseCategory',
     Expense: 'Expense',
     Provider: 'Provider',
     Purchase: 'Purchase',
@@ -1394,7 +1410,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "customer" | "product" | "scanCode" | "productStock" | "inventoryMovement" | "service" | "category" | "categoryAttribute" | "productAttributeValue" | "sale" | "saleDetail" | "payment" | "cashExpense" | "dailySales" | "transactions" | "asmrCampaign" | "expense" | "provider" | "purchase" | "purchaseDetail" | "taxDocument" | "taxDocumentAuditLog" | "quotation" | "quotationDetail" | "prescription" | "laboratory" | "workOrder" | "labDispatch" | "purchaseCertificate" | "purchaseCertificateDetail" | "appointmentSettings" | "appointmentWeeklyAvailability" | "appointment"
+      modelProps: "user" | "customer" | "product" | "scanCode" | "productStock" | "inventoryMovement" | "service" | "category" | "categoryAttribute" | "productAttributeValue" | "sale" | "saleDetail" | "payment" | "cashExpense" | "dailySales" | "transactions" | "asmrCampaign" | "expenseCategory" | "expense" | "provider" | "purchase" | "purchaseDetail" | "taxDocument" | "taxDocumentAuditLog" | "quotation" | "quotationDetail" | "prescription" | "laboratory" | "workOrder" | "labDispatch" | "purchaseCertificate" | "purchaseCertificateDetail" | "appointmentSettings" | "appointmentWeeklyAvailability" | "appointment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2653,6 +2669,80 @@ export namespace Prisma {
           count: {
             args: Prisma.AsmrCampaignCountArgs<ExtArgs>
             result: $Utils.Optional<AsmrCampaignCountAggregateOutputType> | number
+          }
+        }
+      }
+      ExpenseCategory: {
+        payload: Prisma.$ExpenseCategoryPayload<ExtArgs>
+        fields: Prisma.ExpenseCategoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ExpenseCategoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ExpenseCategoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload>
+          }
+          findFirst: {
+            args: Prisma.ExpenseCategoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ExpenseCategoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload>
+          }
+          findMany: {
+            args: Prisma.ExpenseCategoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload>[]
+          }
+          create: {
+            args: Prisma.ExpenseCategoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload>
+          }
+          createMany: {
+            args: Prisma.ExpenseCategoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ExpenseCategoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload>[]
+          }
+          delete: {
+            args: Prisma.ExpenseCategoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload>
+          }
+          update: {
+            args: Prisma.ExpenseCategoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.ExpenseCategoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ExpenseCategoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ExpenseCategoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.ExpenseCategoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExpenseCategoryPayload>
+          }
+          aggregate: {
+            args: Prisma.ExpenseCategoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateExpenseCategory>
+          }
+          groupBy: {
+            args: Prisma.ExpenseCategoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ExpenseCategoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ExpenseCategoryCountArgs<ExtArgs>
+            result: $Utils.Optional<ExpenseCategoryCountAggregateOutputType> | number
           }
         }
       }
@@ -4027,6 +4117,7 @@ export namespace Prisma {
     dailySales?: DailySalesOmit
     transactions?: TransactionsOmit
     asmrCampaign?: AsmrCampaignOmit
+    expenseCategory?: ExpenseCategoryOmit
     expense?: ExpenseOmit
     provider?: ProviderOmit
     purchase?: PurchaseOmit
@@ -4140,6 +4231,7 @@ export namespace Prisma {
     DailySales: number
     Transactions: number
     Expense: number
+    ExpenseCategory: number
     InventoryMovement: number
     AsmrCampaign: number
     Quotation: number
@@ -4170,6 +4262,7 @@ export namespace Prisma {
     DailySales?: boolean | UserCountOutputTypeCountDailySalesArgs
     Transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
     Expense?: boolean | UserCountOutputTypeCountExpenseArgs
+    ExpenseCategory?: boolean | UserCountOutputTypeCountExpenseCategoryArgs
     InventoryMovement?: boolean | UserCountOutputTypeCountInventoryMovementArgs
     AsmrCampaign?: boolean | UserCountOutputTypeCountAsmrCampaignArgs
     Quotation?: boolean | UserCountOutputTypeCountQuotationArgs
@@ -4304,6 +4397,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountExpenseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ExpenseWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountExpenseCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseCategoryWhereInput
   }
 
   /**
@@ -4773,6 +4873,37 @@ export namespace Prisma {
    */
   export type SaleDetailCountOutputTypeCountWorkOrderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WorkOrderWhereInput
+  }
+
+
+  /**
+   * Count Type ExpenseCategoryCountOutputType
+   */
+
+  export type ExpenseCategoryCountOutputType = {
+    expenses: number
+  }
+
+  export type ExpenseCategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    expenses?: boolean | ExpenseCategoryCountOutputTypeCountExpensesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ExpenseCategoryCountOutputType without action
+   */
+  export type ExpenseCategoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategoryCountOutputType
+     */
+    select?: ExpenseCategoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ExpenseCategoryCountOutputType without action
+   */
+  export type ExpenseCategoryCountOutputTypeCountExpensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseWhereInput
   }
 
 
@@ -5313,6 +5444,7 @@ export namespace Prisma {
     DailySales?: boolean | User$DailySalesArgs<ExtArgs>
     Transactions?: boolean | User$TransactionsArgs<ExtArgs>
     Expense?: boolean | User$ExpenseArgs<ExtArgs>
+    ExpenseCategory?: boolean | User$ExpenseCategoryArgs<ExtArgs>
     InventoryMovement?: boolean | User$InventoryMovementArgs<ExtArgs>
     AsmrCampaign?: boolean | User$AsmrCampaignArgs<ExtArgs>
     Quotation?: boolean | User$QuotationArgs<ExtArgs>
@@ -5390,6 +5522,7 @@ export namespace Prisma {
     DailySales?: boolean | User$DailySalesArgs<ExtArgs>
     Transactions?: boolean | User$TransactionsArgs<ExtArgs>
     Expense?: boolean | User$ExpenseArgs<ExtArgs>
+    ExpenseCategory?: boolean | User$ExpenseCategoryArgs<ExtArgs>
     InventoryMovement?: boolean | User$InventoryMovementArgs<ExtArgs>
     AsmrCampaign?: boolean | User$AsmrCampaignArgs<ExtArgs>
     Quotation?: boolean | User$QuotationArgs<ExtArgs>
@@ -5425,6 +5558,7 @@ export namespace Prisma {
       DailySales: Prisma.$DailySalesPayload<ExtArgs>[]
       Transactions: Prisma.$TransactionsPayload<ExtArgs>[]
       Expense: Prisma.$ExpensePayload<ExtArgs>[]
+      ExpenseCategory: Prisma.$ExpenseCategoryPayload<ExtArgs>[]
       InventoryMovement: Prisma.$InventoryMovementPayload<ExtArgs>[]
       AsmrCampaign: Prisma.$AsmrCampaignPayload<ExtArgs>[]
       Quotation: Prisma.$QuotationPayload<ExtArgs>[]
@@ -5860,6 +5994,7 @@ export namespace Prisma {
     DailySales<T extends User$DailySalesArgs<ExtArgs> = {}>(args?: Subset<T, User$DailySalesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DailySalesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Transactions<T extends User$TransactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$TransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Expense<T extends User$ExpenseArgs<ExtArgs> = {}>(args?: Subset<T, User$ExpenseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ExpenseCategory<T extends User$ExpenseCategoryArgs<ExtArgs> = {}>(args?: Subset<T, User$ExpenseCategoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     InventoryMovement<T extends User$InventoryMovementArgs<ExtArgs> = {}>(args?: Subset<T, User$InventoryMovementArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InventoryMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     AsmrCampaign<T extends User$AsmrCampaignArgs<ExtArgs> = {}>(args?: Subset<T, User$AsmrCampaignArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AsmrCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Quotation<T extends User$QuotationArgs<ExtArgs> = {}>(args?: Subset<T, User$QuotationArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuotationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6681,6 +6816,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ExpenseScalarFieldEnum | ExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * User.ExpenseCategory
+   */
+  export type User$ExpenseCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    where?: ExpenseCategoryWhereInput
+    orderBy?: ExpenseCategoryOrderByWithRelationInput | ExpenseCategoryOrderByWithRelationInput[]
+    cursor?: ExpenseCategoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExpenseCategoryScalarFieldEnum | ExpenseCategoryScalarFieldEnum[]
   }
 
   /**
@@ -26459,6 +26618,1123 @@ export namespace Prisma {
 
 
   /**
+   * Model ExpenseCategory
+   */
+
+  export type AggregateExpenseCategory = {
+    _count: ExpenseCategoryCountAggregateOutputType | null
+    _min: ExpenseCategoryMinAggregateOutputType | null
+    _max: ExpenseCategoryMaxAggregateOutputType | null
+  }
+
+  export type ExpenseCategoryMinAggregateOutputType = {
+    expenseCategoryId: string | null
+    expenseCategoryName: string | null
+    expenseCategoryCode: string | null
+    isSystem: boolean | null
+    createdByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ExpenseCategoryMaxAggregateOutputType = {
+    expenseCategoryId: string | null
+    expenseCategoryName: string | null
+    expenseCategoryCode: string | null
+    isSystem: boolean | null
+    createdByUserId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ExpenseCategoryCountAggregateOutputType = {
+    expenseCategoryId: number
+    expenseCategoryName: number
+    expenseCategoryCode: number
+    isSystem: number
+    createdByUserId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ExpenseCategoryMinAggregateInputType = {
+    expenseCategoryId?: true
+    expenseCategoryName?: true
+    expenseCategoryCode?: true
+    isSystem?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ExpenseCategoryMaxAggregateInputType = {
+    expenseCategoryId?: true
+    expenseCategoryName?: true
+    expenseCategoryCode?: true
+    isSystem?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ExpenseCategoryCountAggregateInputType = {
+    expenseCategoryId?: true
+    expenseCategoryName?: true
+    expenseCategoryCode?: true
+    isSystem?: true
+    createdByUserId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ExpenseCategoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ExpenseCategory to aggregate.
+     */
+    where?: ExpenseCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExpenseCategories to fetch.
+     */
+    orderBy?: ExpenseCategoryOrderByWithRelationInput | ExpenseCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ExpenseCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExpenseCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExpenseCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ExpenseCategories
+    **/
+    _count?: true | ExpenseCategoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ExpenseCategoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ExpenseCategoryMaxAggregateInputType
+  }
+
+  export type GetExpenseCategoryAggregateType<T extends ExpenseCategoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateExpenseCategory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateExpenseCategory[P]>
+      : GetScalarType<T[P], AggregateExpenseCategory[P]>
+  }
+
+
+
+
+  export type ExpenseCategoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExpenseCategoryWhereInput
+    orderBy?: ExpenseCategoryOrderByWithAggregationInput | ExpenseCategoryOrderByWithAggregationInput[]
+    by: ExpenseCategoryScalarFieldEnum[] | ExpenseCategoryScalarFieldEnum
+    having?: ExpenseCategoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ExpenseCategoryCountAggregateInputType | true
+    _min?: ExpenseCategoryMinAggregateInputType
+    _max?: ExpenseCategoryMaxAggregateInputType
+  }
+
+  export type ExpenseCategoryGroupByOutputType = {
+    expenseCategoryId: string
+    expenseCategoryName: string
+    expenseCategoryCode: string | null
+    isSystem: boolean
+    createdByUserId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ExpenseCategoryCountAggregateOutputType | null
+    _min: ExpenseCategoryMinAggregateOutputType | null
+    _max: ExpenseCategoryMaxAggregateOutputType | null
+  }
+
+  type GetExpenseCategoryGroupByPayload<T extends ExpenseCategoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ExpenseCategoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ExpenseCategoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ExpenseCategoryGroupByOutputType[P]>
+            : GetScalarType<T[P], ExpenseCategoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ExpenseCategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    expenseCategoryId?: boolean
+    expenseCategoryName?: boolean
+    expenseCategoryCode?: boolean
+    isSystem?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    expenses?: boolean | ExpenseCategory$expensesArgs<ExtArgs>
+    _count?: boolean | ExpenseCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expenseCategory"]>
+
+  export type ExpenseCategorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    expenseCategoryId?: boolean
+    expenseCategoryName?: boolean
+    expenseCategoryCode?: boolean
+    isSystem?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expenseCategory"]>
+
+  export type ExpenseCategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    expenseCategoryId?: boolean
+    expenseCategoryName?: boolean
+    expenseCategoryCode?: boolean
+    isSystem?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["expenseCategory"]>
+
+  export type ExpenseCategorySelectScalar = {
+    expenseCategoryId?: boolean
+    expenseCategoryName?: boolean
+    expenseCategoryCode?: boolean
+    isSystem?: boolean
+    createdByUserId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ExpenseCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"expenseCategoryId" | "expenseCategoryName" | "expenseCategoryCode" | "isSystem" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["expenseCategory"]>
+  export type ExpenseCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    expenses?: boolean | ExpenseCategory$expensesArgs<ExtArgs>
+    _count?: boolean | ExpenseCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ExpenseCategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ExpenseCategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ExpenseCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ExpenseCategory"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      expenses: Prisma.$ExpensePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      expenseCategoryId: string
+      expenseCategoryName: string
+      /**
+       * * Código estable de sistema (RENT, SUPPLIES, OTHER, …). Null en categorías custom.
+       */
+      expenseCategoryCode: string | null
+      isSystem: boolean
+      createdByUserId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["expenseCategory"]>
+    composites: {}
+  }
+
+  type ExpenseCategoryGetPayload<S extends boolean | null | undefined | ExpenseCategoryDefaultArgs> = $Result.GetResult<Prisma.$ExpenseCategoryPayload, S>
+
+  type ExpenseCategoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ExpenseCategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ExpenseCategoryCountAggregateInputType | true
+    }
+
+  export interface ExpenseCategoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ExpenseCategory'], meta: { name: 'ExpenseCategory' } }
+    /**
+     * Find zero or one ExpenseCategory that matches the filter.
+     * @param {ExpenseCategoryFindUniqueArgs} args - Arguments to find a ExpenseCategory
+     * @example
+     * // Get one ExpenseCategory
+     * const expenseCategory = await prisma.expenseCategory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ExpenseCategoryFindUniqueArgs>(args: SelectSubset<T, ExpenseCategoryFindUniqueArgs<ExtArgs>>): Prisma__ExpenseCategoryClient<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ExpenseCategory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ExpenseCategoryFindUniqueOrThrowArgs} args - Arguments to find a ExpenseCategory
+     * @example
+     * // Get one ExpenseCategory
+     * const expenseCategory = await prisma.expenseCategory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ExpenseCategoryFindUniqueOrThrowArgs>(args: SelectSubset<T, ExpenseCategoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ExpenseCategoryClient<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ExpenseCategory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseCategoryFindFirstArgs} args - Arguments to find a ExpenseCategory
+     * @example
+     * // Get one ExpenseCategory
+     * const expenseCategory = await prisma.expenseCategory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ExpenseCategoryFindFirstArgs>(args?: SelectSubset<T, ExpenseCategoryFindFirstArgs<ExtArgs>>): Prisma__ExpenseCategoryClient<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ExpenseCategory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseCategoryFindFirstOrThrowArgs} args - Arguments to find a ExpenseCategory
+     * @example
+     * // Get one ExpenseCategory
+     * const expenseCategory = await prisma.expenseCategory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ExpenseCategoryFindFirstOrThrowArgs>(args?: SelectSubset<T, ExpenseCategoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__ExpenseCategoryClient<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ExpenseCategories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseCategoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ExpenseCategories
+     * const expenseCategories = await prisma.expenseCategory.findMany()
+     * 
+     * // Get first 10 ExpenseCategories
+     * const expenseCategories = await prisma.expenseCategory.findMany({ take: 10 })
+     * 
+     * // Only select the `expenseCategoryId`
+     * const expenseCategoryWithExpenseCategoryIdOnly = await prisma.expenseCategory.findMany({ select: { expenseCategoryId: true } })
+     * 
+     */
+    findMany<T extends ExpenseCategoryFindManyArgs>(args?: SelectSubset<T, ExpenseCategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ExpenseCategory.
+     * @param {ExpenseCategoryCreateArgs} args - Arguments to create a ExpenseCategory.
+     * @example
+     * // Create one ExpenseCategory
+     * const ExpenseCategory = await prisma.expenseCategory.create({
+     *   data: {
+     *     // ... data to create a ExpenseCategory
+     *   }
+     * })
+     * 
+     */
+    create<T extends ExpenseCategoryCreateArgs>(args: SelectSubset<T, ExpenseCategoryCreateArgs<ExtArgs>>): Prisma__ExpenseCategoryClient<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ExpenseCategories.
+     * @param {ExpenseCategoryCreateManyArgs} args - Arguments to create many ExpenseCategories.
+     * @example
+     * // Create many ExpenseCategories
+     * const expenseCategory = await prisma.expenseCategory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ExpenseCategoryCreateManyArgs>(args?: SelectSubset<T, ExpenseCategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ExpenseCategories and returns the data saved in the database.
+     * @param {ExpenseCategoryCreateManyAndReturnArgs} args - Arguments to create many ExpenseCategories.
+     * @example
+     * // Create many ExpenseCategories
+     * const expenseCategory = await prisma.expenseCategory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ExpenseCategories and only return the `expenseCategoryId`
+     * const expenseCategoryWithExpenseCategoryIdOnly = await prisma.expenseCategory.createManyAndReturn({
+     *   select: { expenseCategoryId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ExpenseCategoryCreateManyAndReturnArgs>(args?: SelectSubset<T, ExpenseCategoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ExpenseCategory.
+     * @param {ExpenseCategoryDeleteArgs} args - Arguments to delete one ExpenseCategory.
+     * @example
+     * // Delete one ExpenseCategory
+     * const ExpenseCategory = await prisma.expenseCategory.delete({
+     *   where: {
+     *     // ... filter to delete one ExpenseCategory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ExpenseCategoryDeleteArgs>(args: SelectSubset<T, ExpenseCategoryDeleteArgs<ExtArgs>>): Prisma__ExpenseCategoryClient<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ExpenseCategory.
+     * @param {ExpenseCategoryUpdateArgs} args - Arguments to update one ExpenseCategory.
+     * @example
+     * // Update one ExpenseCategory
+     * const expenseCategory = await prisma.expenseCategory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ExpenseCategoryUpdateArgs>(args: SelectSubset<T, ExpenseCategoryUpdateArgs<ExtArgs>>): Prisma__ExpenseCategoryClient<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ExpenseCategories.
+     * @param {ExpenseCategoryDeleteManyArgs} args - Arguments to filter ExpenseCategories to delete.
+     * @example
+     * // Delete a few ExpenseCategories
+     * const { count } = await prisma.expenseCategory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ExpenseCategoryDeleteManyArgs>(args?: SelectSubset<T, ExpenseCategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ExpenseCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseCategoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ExpenseCategories
+     * const expenseCategory = await prisma.expenseCategory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ExpenseCategoryUpdateManyArgs>(args: SelectSubset<T, ExpenseCategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ExpenseCategories and returns the data updated in the database.
+     * @param {ExpenseCategoryUpdateManyAndReturnArgs} args - Arguments to update many ExpenseCategories.
+     * @example
+     * // Update many ExpenseCategories
+     * const expenseCategory = await prisma.expenseCategory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ExpenseCategories and only return the `expenseCategoryId`
+     * const expenseCategoryWithExpenseCategoryIdOnly = await prisma.expenseCategory.updateManyAndReturn({
+     *   select: { expenseCategoryId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ExpenseCategoryUpdateManyAndReturnArgs>(args: SelectSubset<T, ExpenseCategoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ExpenseCategory.
+     * @param {ExpenseCategoryUpsertArgs} args - Arguments to update or create a ExpenseCategory.
+     * @example
+     * // Update or create a ExpenseCategory
+     * const expenseCategory = await prisma.expenseCategory.upsert({
+     *   create: {
+     *     // ... data to create a ExpenseCategory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ExpenseCategory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ExpenseCategoryUpsertArgs>(args: SelectSubset<T, ExpenseCategoryUpsertArgs<ExtArgs>>): Prisma__ExpenseCategoryClient<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ExpenseCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseCategoryCountArgs} args - Arguments to filter ExpenseCategories to count.
+     * @example
+     * // Count the number of ExpenseCategories
+     * const count = await prisma.expenseCategory.count({
+     *   where: {
+     *     // ... the filter for the ExpenseCategories we want to count
+     *   }
+     * })
+    **/
+    count<T extends ExpenseCategoryCountArgs>(
+      args?: Subset<T, ExpenseCategoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ExpenseCategoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ExpenseCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseCategoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ExpenseCategoryAggregateArgs>(args: Subset<T, ExpenseCategoryAggregateArgs>): Prisma.PrismaPromise<GetExpenseCategoryAggregateType<T>>
+
+    /**
+     * Group by ExpenseCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExpenseCategoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ExpenseCategoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ExpenseCategoryGroupByArgs['orderBy'] }
+        : { orderBy?: ExpenseCategoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ExpenseCategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetExpenseCategoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ExpenseCategory model
+   */
+  readonly fields: ExpenseCategoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ExpenseCategory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ExpenseCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    expenses<T extends ExpenseCategory$expensesArgs<ExtArgs> = {}>(args?: Subset<T, ExpenseCategory$expensesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExpensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ExpenseCategory model
+   */
+  interface ExpenseCategoryFieldRefs {
+    readonly expenseCategoryId: FieldRef<"ExpenseCategory", 'String'>
+    readonly expenseCategoryName: FieldRef<"ExpenseCategory", 'String'>
+    readonly expenseCategoryCode: FieldRef<"ExpenseCategory", 'String'>
+    readonly isSystem: FieldRef<"ExpenseCategory", 'Boolean'>
+    readonly createdByUserId: FieldRef<"ExpenseCategory", 'String'>
+    readonly createdAt: FieldRef<"ExpenseCategory", 'DateTime'>
+    readonly updatedAt: FieldRef<"ExpenseCategory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ExpenseCategory findUnique
+   */
+  export type ExpenseCategoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseCategory to fetch.
+     */
+    where: ExpenseCategoryWhereUniqueInput
+  }
+
+  /**
+   * ExpenseCategory findUniqueOrThrow
+   */
+  export type ExpenseCategoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseCategory to fetch.
+     */
+    where: ExpenseCategoryWhereUniqueInput
+  }
+
+  /**
+   * ExpenseCategory findFirst
+   */
+  export type ExpenseCategoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseCategory to fetch.
+     */
+    where?: ExpenseCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExpenseCategories to fetch.
+     */
+    orderBy?: ExpenseCategoryOrderByWithRelationInput | ExpenseCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ExpenseCategories.
+     */
+    cursor?: ExpenseCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExpenseCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExpenseCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExpenseCategories.
+     */
+    distinct?: ExpenseCategoryScalarFieldEnum | ExpenseCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * ExpenseCategory findFirstOrThrow
+   */
+  export type ExpenseCategoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseCategory to fetch.
+     */
+    where?: ExpenseCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExpenseCategories to fetch.
+     */
+    orderBy?: ExpenseCategoryOrderByWithRelationInput | ExpenseCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ExpenseCategories.
+     */
+    cursor?: ExpenseCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExpenseCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExpenseCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExpenseCategories.
+     */
+    distinct?: ExpenseCategoryScalarFieldEnum | ExpenseCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * ExpenseCategory findMany
+   */
+  export type ExpenseCategoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ExpenseCategories to fetch.
+     */
+    where?: ExpenseCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExpenseCategories to fetch.
+     */
+    orderBy?: ExpenseCategoryOrderByWithRelationInput | ExpenseCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ExpenseCategories.
+     */
+    cursor?: ExpenseCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExpenseCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExpenseCategories.
+     */
+    skip?: number
+    distinct?: ExpenseCategoryScalarFieldEnum | ExpenseCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * ExpenseCategory create
+   */
+  export type ExpenseCategoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ExpenseCategory.
+     */
+    data: XOR<ExpenseCategoryCreateInput, ExpenseCategoryUncheckedCreateInput>
+  }
+
+  /**
+   * ExpenseCategory createMany
+   */
+  export type ExpenseCategoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ExpenseCategories.
+     */
+    data: ExpenseCategoryCreateManyInput | ExpenseCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ExpenseCategory createManyAndReturn
+   */
+  export type ExpenseCategoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many ExpenseCategories.
+     */
+    data: ExpenseCategoryCreateManyInput | ExpenseCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ExpenseCategory update
+   */
+  export type ExpenseCategoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ExpenseCategory.
+     */
+    data: XOR<ExpenseCategoryUpdateInput, ExpenseCategoryUncheckedUpdateInput>
+    /**
+     * Choose, which ExpenseCategory to update.
+     */
+    where: ExpenseCategoryWhereUniqueInput
+  }
+
+  /**
+   * ExpenseCategory updateMany
+   */
+  export type ExpenseCategoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ExpenseCategories.
+     */
+    data: XOR<ExpenseCategoryUpdateManyMutationInput, ExpenseCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which ExpenseCategories to update
+     */
+    where?: ExpenseCategoryWhereInput
+    /**
+     * Limit how many ExpenseCategories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ExpenseCategory updateManyAndReturn
+   */
+  export type ExpenseCategoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to update ExpenseCategories.
+     */
+    data: XOR<ExpenseCategoryUpdateManyMutationInput, ExpenseCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which ExpenseCategories to update
+     */
+    where?: ExpenseCategoryWhereInput
+    /**
+     * Limit how many ExpenseCategories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ExpenseCategory upsert
+   */
+  export type ExpenseCategoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ExpenseCategory to update in case it exists.
+     */
+    where: ExpenseCategoryWhereUniqueInput
+    /**
+     * In case the ExpenseCategory found by the `where` argument doesn't exist, create a new ExpenseCategory with this data.
+     */
+    create: XOR<ExpenseCategoryCreateInput, ExpenseCategoryUncheckedCreateInput>
+    /**
+     * In case the ExpenseCategory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ExpenseCategoryUpdateInput, ExpenseCategoryUncheckedUpdateInput>
+  }
+
+  /**
+   * ExpenseCategory delete
+   */
+  export type ExpenseCategoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+    /**
+     * Filter which ExpenseCategory to delete.
+     */
+    where: ExpenseCategoryWhereUniqueInput
+  }
+
+  /**
+   * ExpenseCategory deleteMany
+   */
+  export type ExpenseCategoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ExpenseCategories to delete
+     */
+    where?: ExpenseCategoryWhereInput
+    /**
+     * Limit how many ExpenseCategories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ExpenseCategory.expenses
+   */
+  export type ExpenseCategory$expensesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Expense
+     */
+    select?: ExpenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Expense
+     */
+    omit?: ExpenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseInclude<ExtArgs> | null
+    where?: ExpenseWhereInput
+    orderBy?: ExpenseOrderByWithRelationInput | ExpenseOrderByWithRelationInput[]
+    cursor?: ExpenseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExpenseScalarFieldEnum | ExpenseScalarFieldEnum[]
+  }
+
+  /**
+   * ExpenseCategory without action
+   */
+  export type ExpenseCategoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExpenseCategory
+     */
+    select?: ExpenseCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExpenseCategory
+     */
+    omit?: ExpenseCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ExpenseCategoryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Expense
    */
 
@@ -26484,6 +27760,7 @@ export namespace Prisma {
     expensePaymentMethod: string | null
     expenseImageUrl: string | null
     expenseAmount: number | null
+    expenseCategoryId: string | null
     createdByUserId: string | null
     createdAt: Date | null
   }
@@ -26494,6 +27771,7 @@ export namespace Prisma {
     expensePaymentMethod: string | null
     expenseImageUrl: string | null
     expenseAmount: number | null
+    expenseCategoryId: string | null
     createdByUserId: string | null
     createdAt: Date | null
   }
@@ -26504,6 +27782,7 @@ export namespace Prisma {
     expensePaymentMethod: number
     expenseImageUrl: number
     expenseAmount: number
+    expenseCategoryId: number
     createdByUserId: number
     createdAt: number
     _all: number
@@ -26524,6 +27803,7 @@ export namespace Prisma {
     expensePaymentMethod?: true
     expenseImageUrl?: true
     expenseAmount?: true
+    expenseCategoryId?: true
     createdByUserId?: true
     createdAt?: true
   }
@@ -26534,6 +27814,7 @@ export namespace Prisma {
     expensePaymentMethod?: true
     expenseImageUrl?: true
     expenseAmount?: true
+    expenseCategoryId?: true
     createdByUserId?: true
     createdAt?: true
   }
@@ -26544,6 +27825,7 @@ export namespace Prisma {
     expensePaymentMethod?: true
     expenseImageUrl?: true
     expenseAmount?: true
+    expenseCategoryId?: true
     createdByUserId?: true
     createdAt?: true
     _all?: true
@@ -26641,6 +27923,7 @@ export namespace Prisma {
     expensePaymentMethod: string | null
     expenseImageUrl: string | null
     expenseAmount: number | null
+    expenseCategoryId: string
     createdByUserId: string
     createdAt: Date
     _count: ExpenseCountAggregateOutputType | null
@@ -26670,8 +27953,10 @@ export namespace Prisma {
     expensePaymentMethod?: boolean
     expenseImageUrl?: boolean
     expenseAmount?: boolean
+    expenseCategoryId?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
+    category?: boolean | ExpenseCategoryDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["expense"]>
 
@@ -26681,8 +27966,10 @@ export namespace Prisma {
     expensePaymentMethod?: boolean
     expenseImageUrl?: boolean
     expenseAmount?: boolean
+    expenseCategoryId?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
+    category?: boolean | ExpenseCategoryDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["expense"]>
 
@@ -26692,8 +27979,10 @@ export namespace Prisma {
     expensePaymentMethod?: boolean
     expenseImageUrl?: boolean
     expenseAmount?: boolean
+    expenseCategoryId?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
+    category?: boolean | ExpenseCategoryDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["expense"]>
 
@@ -26703,24 +27992,29 @@ export namespace Prisma {
     expensePaymentMethod?: boolean
     expenseImageUrl?: boolean
     expenseAmount?: boolean
+    expenseCategoryId?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
   }
 
-  export type ExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"expenseId" | "expenseDescription" | "expensePaymentMethod" | "expenseImageUrl" | "expenseAmount" | "createdByUserId" | "createdAt", ExtArgs["result"]["expense"]>
+  export type ExpenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"expenseId" | "expenseDescription" | "expensePaymentMethod" | "expenseImageUrl" | "expenseAmount" | "expenseCategoryId" | "createdByUserId" | "createdAt", ExtArgs["result"]["expense"]>
   export type ExpenseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | ExpenseCategoryDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type ExpenseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | ExpenseCategoryDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type ExpenseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    category?: boolean | ExpenseCategoryDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $ExpensePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Expense"
     objects: {
+      category: Prisma.$ExpenseCategoryPayload<ExtArgs>
       user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -26729,6 +28023,7 @@ export namespace Prisma {
       expensePaymentMethod: string | null
       expenseImageUrl: string | null
       expenseAmount: number | null
+      expenseCategoryId: string
       createdByUserId: string
       createdAt: Date
     }, ExtArgs["result"]["expense"]>
@@ -27125,6 +28420,7 @@ export namespace Prisma {
    */
   export interface Prisma__ExpenseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    category<T extends ExpenseCategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ExpenseCategoryDefaultArgs<ExtArgs>>): Prisma__ExpenseCategoryClient<$Result.GetResult<Prisma.$ExpenseCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -27160,6 +28456,7 @@ export namespace Prisma {
     readonly expensePaymentMethod: FieldRef<"Expense", 'String'>
     readonly expenseImageUrl: FieldRef<"Expense", 'String'>
     readonly expenseAmount: FieldRef<"Expense", 'Int'>
+    readonly expenseCategoryId: FieldRef<"Expense", 'String'>
     readonly createdByUserId: FieldRef<"Expense", 'String'>
     readonly createdAt: FieldRef<"Expense", 'DateTime'>
   }
@@ -47704,12 +49001,26 @@ export namespace Prisma {
   export type AsmrCampaignScalarFieldEnum = (typeof AsmrCampaignScalarFieldEnum)[keyof typeof AsmrCampaignScalarFieldEnum]
 
 
+  export const ExpenseCategoryScalarFieldEnum: {
+    expenseCategoryId: 'expenseCategoryId',
+    expenseCategoryName: 'expenseCategoryName',
+    expenseCategoryCode: 'expenseCategoryCode',
+    isSystem: 'isSystem',
+    createdByUserId: 'createdByUserId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ExpenseCategoryScalarFieldEnum = (typeof ExpenseCategoryScalarFieldEnum)[keyof typeof ExpenseCategoryScalarFieldEnum]
+
+
   export const ExpenseScalarFieldEnum: {
     expenseId: 'expenseId',
     expenseDescription: 'expenseDescription',
     expensePaymentMethod: 'expensePaymentMethod',
     expenseImageUrl: 'expenseImageUrl',
     expenseAmount: 'expenseAmount',
+    expenseCategoryId: 'expenseCategoryId',
     createdByUserId: 'createdByUserId',
     createdAt: 'createdAt'
   };
@@ -48430,6 +49741,7 @@ export namespace Prisma {
     DailySales?: DailySalesListRelationFilter
     Transactions?: TransactionsListRelationFilter
     Expense?: ExpenseListRelationFilter
+    ExpenseCategory?: ExpenseCategoryListRelationFilter
     InventoryMovement?: InventoryMovementListRelationFilter
     AsmrCampaign?: AsmrCampaignListRelationFilter
     Quotation?: QuotationListRelationFilter
@@ -48472,6 +49784,7 @@ export namespace Prisma {
     DailySales?: DailySalesOrderByRelationAggregateInput
     Transactions?: TransactionsOrderByRelationAggregateInput
     Expense?: ExpenseOrderByRelationAggregateInput
+    ExpenseCategory?: ExpenseCategoryOrderByRelationAggregateInput
     InventoryMovement?: InventoryMovementOrderByRelationAggregateInput
     AsmrCampaign?: AsmrCampaignOrderByRelationAggregateInput
     Quotation?: QuotationOrderByRelationAggregateInput
@@ -48517,6 +49830,7 @@ export namespace Prisma {
     DailySales?: DailySalesListRelationFilter
     Transactions?: TransactionsListRelationFilter
     Expense?: ExpenseListRelationFilter
+    ExpenseCategory?: ExpenseCategoryListRelationFilter
     InventoryMovement?: InventoryMovementListRelationFilter
     AsmrCampaign?: AsmrCampaignListRelationFilter
     Quotation?: QuotationListRelationFilter
@@ -50060,6 +51374,74 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"AsmrCampaign"> | Date | string
   }
 
+  export type ExpenseCategoryWhereInput = {
+    AND?: ExpenseCategoryWhereInput | ExpenseCategoryWhereInput[]
+    OR?: ExpenseCategoryWhereInput[]
+    NOT?: ExpenseCategoryWhereInput | ExpenseCategoryWhereInput[]
+    expenseCategoryId?: StringFilter<"ExpenseCategory"> | string
+    expenseCategoryName?: StringFilter<"ExpenseCategory"> | string
+    expenseCategoryCode?: StringNullableFilter<"ExpenseCategory"> | string | null
+    isSystem?: BoolFilter<"ExpenseCategory"> | boolean
+    createdByUserId?: StringFilter<"ExpenseCategory"> | string
+    createdAt?: DateTimeFilter<"ExpenseCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"ExpenseCategory"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    expenses?: ExpenseListRelationFilter
+  }
+
+  export type ExpenseCategoryOrderByWithRelationInput = {
+    expenseCategoryId?: SortOrder
+    expenseCategoryName?: SortOrder
+    expenseCategoryCode?: SortOrderInput | SortOrder
+    isSystem?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    expenses?: ExpenseOrderByRelationAggregateInput
+  }
+
+  export type ExpenseCategoryWhereUniqueInput = Prisma.AtLeast<{
+    expenseCategoryId?: string
+    expenseCategoryCode?: string
+    AND?: ExpenseCategoryWhereInput | ExpenseCategoryWhereInput[]
+    OR?: ExpenseCategoryWhereInput[]
+    NOT?: ExpenseCategoryWhereInput | ExpenseCategoryWhereInput[]
+    expenseCategoryName?: StringFilter<"ExpenseCategory"> | string
+    isSystem?: BoolFilter<"ExpenseCategory"> | boolean
+    createdByUserId?: StringFilter<"ExpenseCategory"> | string
+    createdAt?: DateTimeFilter<"ExpenseCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"ExpenseCategory"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    expenses?: ExpenseListRelationFilter
+  }, "expenseCategoryId" | "expenseCategoryCode">
+
+  export type ExpenseCategoryOrderByWithAggregationInput = {
+    expenseCategoryId?: SortOrder
+    expenseCategoryName?: SortOrder
+    expenseCategoryCode?: SortOrderInput | SortOrder
+    isSystem?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ExpenseCategoryCountOrderByAggregateInput
+    _max?: ExpenseCategoryMaxOrderByAggregateInput
+    _min?: ExpenseCategoryMinOrderByAggregateInput
+  }
+
+  export type ExpenseCategoryScalarWhereWithAggregatesInput = {
+    AND?: ExpenseCategoryScalarWhereWithAggregatesInput | ExpenseCategoryScalarWhereWithAggregatesInput[]
+    OR?: ExpenseCategoryScalarWhereWithAggregatesInput[]
+    NOT?: ExpenseCategoryScalarWhereWithAggregatesInput | ExpenseCategoryScalarWhereWithAggregatesInput[]
+    expenseCategoryId?: StringWithAggregatesFilter<"ExpenseCategory"> | string
+    expenseCategoryName?: StringWithAggregatesFilter<"ExpenseCategory"> | string
+    expenseCategoryCode?: StringNullableWithAggregatesFilter<"ExpenseCategory"> | string | null
+    isSystem?: BoolWithAggregatesFilter<"ExpenseCategory"> | boolean
+    createdByUserId?: StringWithAggregatesFilter<"ExpenseCategory"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ExpenseCategory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ExpenseCategory"> | Date | string
+  }
+
   export type ExpenseWhereInput = {
     AND?: ExpenseWhereInput | ExpenseWhereInput[]
     OR?: ExpenseWhereInput[]
@@ -50069,8 +51451,10 @@ export namespace Prisma {
     expensePaymentMethod?: StringNullableFilter<"Expense"> | string | null
     expenseImageUrl?: StringNullableFilter<"Expense"> | string | null
     expenseAmount?: IntNullableFilter<"Expense"> | number | null
+    expenseCategoryId?: StringFilter<"Expense"> | string
     createdByUserId?: StringFilter<"Expense"> | string
     createdAt?: DateTimeFilter<"Expense"> | Date | string
+    category?: XOR<ExpenseCategoryScalarRelationFilter, ExpenseCategoryWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
@@ -50080,8 +51464,10 @@ export namespace Prisma {
     expensePaymentMethod?: SortOrderInput | SortOrder
     expenseImageUrl?: SortOrderInput | SortOrder
     expenseAmount?: SortOrderInput | SortOrder
+    expenseCategoryId?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
+    category?: ExpenseCategoryOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
 
@@ -50094,8 +51480,10 @@ export namespace Prisma {
     expensePaymentMethod?: StringNullableFilter<"Expense"> | string | null
     expenseImageUrl?: StringNullableFilter<"Expense"> | string | null
     expenseAmount?: IntNullableFilter<"Expense"> | number | null
+    expenseCategoryId?: StringFilter<"Expense"> | string
     createdByUserId?: StringFilter<"Expense"> | string
     createdAt?: DateTimeFilter<"Expense"> | Date | string
+    category?: XOR<ExpenseCategoryScalarRelationFilter, ExpenseCategoryWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "expenseId">
 
@@ -50105,6 +51493,7 @@ export namespace Prisma {
     expensePaymentMethod?: SortOrderInput | SortOrder
     expenseImageUrl?: SortOrderInput | SortOrder
     expenseAmount?: SortOrderInput | SortOrder
+    expenseCategoryId?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     _count?: ExpenseCountOrderByAggregateInput
@@ -50123,6 +51512,7 @@ export namespace Prisma {
     expensePaymentMethod?: StringNullableWithAggregatesFilter<"Expense"> | string | null
     expenseImageUrl?: StringNullableWithAggregatesFilter<"Expense"> | string | null
     expenseAmount?: IntNullableWithAggregatesFilter<"Expense"> | number | null
+    expenseCategoryId?: StringWithAggregatesFilter<"Expense"> | string
     createdByUserId?: StringWithAggregatesFilter<"Expense"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Expense"> | Date | string
   }
@@ -51854,6 +53244,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -51896,6 +53287,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -51938,6 +53330,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -51980,6 +53373,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -53687,6 +55081,79 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ExpenseCategoryCreateInput = {
+    expenseCategoryId?: string
+    expenseCategoryName: string
+    expenseCategoryCode?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutExpenseCategoryInput
+    expenses?: ExpenseCreateNestedManyWithoutCategoryInput
+  }
+
+  export type ExpenseCategoryUncheckedCreateInput = {
+    expenseCategoryId?: string
+    expenseCategoryName: string
+    expenseCategoryCode?: string | null
+    isSystem?: boolean
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type ExpenseCategoryUpdateInput = {
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
+    expenseCategoryName?: StringFieldUpdateOperationsInput | string
+    expenseCategoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutExpenseCategoryNestedInput
+    expenses?: ExpenseUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type ExpenseCategoryUncheckedUpdateInput = {
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
+    expenseCategoryName?: StringFieldUpdateOperationsInput | string
+    expenseCategoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expenses?: ExpenseUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type ExpenseCategoryCreateManyInput = {
+    expenseCategoryId?: string
+    expenseCategoryName: string
+    expenseCategoryCode?: string | null
+    isSystem?: boolean
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExpenseCategoryUpdateManyMutationInput = {
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
+    expenseCategoryName?: StringFieldUpdateOperationsInput | string
+    expenseCategoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseCategoryUncheckedUpdateManyInput = {
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
+    expenseCategoryName?: StringFieldUpdateOperationsInput | string
+    expenseCategoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ExpenseCreateInput = {
     expenseId: string
     expenseDescription?: string | null
@@ -53694,6 +55161,7 @@ export namespace Prisma {
     expenseImageUrl?: string | null
     expenseAmount?: number | null
     createdAt?: Date | string
+    category: ExpenseCategoryCreateNestedOneWithoutExpensesInput
     user: UserCreateNestedOneWithoutExpenseInput
   }
 
@@ -53703,6 +55171,7 @@ export namespace Prisma {
     expensePaymentMethod?: string | null
     expenseImageUrl?: string | null
     expenseAmount?: number | null
+    expenseCategoryId: string
     createdByUserId: string
     createdAt?: Date | string
   }
@@ -53714,6 +55183,7 @@ export namespace Prisma {
     expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: ExpenseCategoryUpdateOneRequiredWithoutExpensesNestedInput
     user?: UserUpdateOneRequiredWithoutExpenseNestedInput
   }
 
@@ -53723,6 +55193,7 @@ export namespace Prisma {
     expensePaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -53733,6 +55204,7 @@ export namespace Prisma {
     expensePaymentMethod?: string | null
     expenseImageUrl?: string | null
     expenseAmount?: number | null
+    expenseCategoryId: string
     createdByUserId: string
     createdAt?: Date | string
   }
@@ -53752,6 +55224,7 @@ export namespace Prisma {
     expensePaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55790,6 +57263,12 @@ export namespace Prisma {
     none?: ExpenseWhereInput
   }
 
+  export type ExpenseCategoryListRelationFilter = {
+    every?: ExpenseCategoryWhereInput
+    some?: ExpenseCategoryWhereInput
+    none?: ExpenseCategoryWhereInput
+  }
+
   export type InventoryMovementListRelationFilter = {
     every?: InventoryMovementWhereInput
     some?: InventoryMovementWhereInput
@@ -55902,6 +57381,10 @@ export namespace Prisma {
   }
 
   export type ExpenseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ExpenseCategoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -57219,12 +58702,48 @@ export namespace Prisma {
     phonesDeduplicated?: SortOrder
   }
 
+  export type ExpenseCategoryCountOrderByAggregateInput = {
+    expenseCategoryId?: SortOrder
+    expenseCategoryName?: SortOrder
+    expenseCategoryCode?: SortOrder
+    isSystem?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ExpenseCategoryMaxOrderByAggregateInput = {
+    expenseCategoryId?: SortOrder
+    expenseCategoryName?: SortOrder
+    expenseCategoryCode?: SortOrder
+    isSystem?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ExpenseCategoryMinOrderByAggregateInput = {
+    expenseCategoryId?: SortOrder
+    expenseCategoryName?: SortOrder
+    expenseCategoryCode?: SortOrder
+    isSystem?: SortOrder
+    createdByUserId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ExpenseCategoryScalarRelationFilter = {
+    is?: ExpenseCategoryWhereInput
+    isNot?: ExpenseCategoryWhereInput
+  }
+
   export type ExpenseCountOrderByAggregateInput = {
     expenseId?: SortOrder
     expenseDescription?: SortOrder
     expensePaymentMethod?: SortOrder
     expenseImageUrl?: SortOrder
     expenseAmount?: SortOrder
+    expenseCategoryId?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
   }
@@ -57239,6 +58758,7 @@ export namespace Prisma {
     expensePaymentMethod?: SortOrder
     expenseImageUrl?: SortOrder
     expenseAmount?: SortOrder
+    expenseCategoryId?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
   }
@@ -57249,6 +58769,7 @@ export namespace Prisma {
     expensePaymentMethod?: SortOrder
     expenseImageUrl?: SortOrder
     expenseAmount?: SortOrder
+    expenseCategoryId?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
   }
@@ -58514,6 +60035,13 @@ export namespace Prisma {
     connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
   }
 
+  export type ExpenseCategoryCreateNestedManyWithoutUserInput = {
+    create?: XOR<ExpenseCategoryCreateWithoutUserInput, ExpenseCategoryUncheckedCreateWithoutUserInput> | ExpenseCategoryCreateWithoutUserInput[] | ExpenseCategoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCategoryCreateOrConnectWithoutUserInput | ExpenseCategoryCreateOrConnectWithoutUserInput[]
+    createMany?: ExpenseCategoryCreateManyUserInputEnvelope
+    connect?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
+  }
+
   export type InventoryMovementCreateNestedManyWithoutUserInput = {
     create?: XOR<InventoryMovementCreateWithoutUserInput, InventoryMovementUncheckedCreateWithoutUserInput> | InventoryMovementCreateWithoutUserInput[] | InventoryMovementUncheckedCreateWithoutUserInput[]
     connectOrCreate?: InventoryMovementCreateOrConnectWithoutUserInput | InventoryMovementCreateOrConnectWithoutUserInput[]
@@ -58701,6 +60229,13 @@ export namespace Prisma {
     connectOrCreate?: ExpenseCreateOrConnectWithoutUserInput | ExpenseCreateOrConnectWithoutUserInput[]
     createMany?: ExpenseCreateManyUserInputEnvelope
     connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
+  export type ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ExpenseCategoryCreateWithoutUserInput, ExpenseCategoryUncheckedCreateWithoutUserInput> | ExpenseCategoryCreateWithoutUserInput[] | ExpenseCategoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCategoryCreateOrConnectWithoutUserInput | ExpenseCategoryCreateOrConnectWithoutUserInput[]
+    createMany?: ExpenseCategoryCreateManyUserInputEnvelope
+    connect?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
   }
 
   export type InventoryMovementUncheckedCreateNestedManyWithoutUserInput = {
@@ -59022,6 +60557,20 @@ export namespace Prisma {
     update?: ExpenseUpdateWithWhereUniqueWithoutUserInput | ExpenseUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ExpenseUpdateManyWithWhereWithoutUserInput | ExpenseUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
+  export type ExpenseCategoryUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ExpenseCategoryCreateWithoutUserInput, ExpenseCategoryUncheckedCreateWithoutUserInput> | ExpenseCategoryCreateWithoutUserInput[] | ExpenseCategoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCategoryCreateOrConnectWithoutUserInput | ExpenseCategoryCreateOrConnectWithoutUserInput[]
+    upsert?: ExpenseCategoryUpsertWithWhereUniqueWithoutUserInput | ExpenseCategoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ExpenseCategoryCreateManyUserInputEnvelope
+    set?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
+    disconnect?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
+    delete?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
+    connect?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
+    update?: ExpenseCategoryUpdateWithWhereUniqueWithoutUserInput | ExpenseCategoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ExpenseCategoryUpdateManyWithWhereWithoutUserInput | ExpenseCategoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ExpenseCategoryScalarWhereInput | ExpenseCategoryScalarWhereInput[]
   }
 
   export type InventoryMovementUpdateManyWithoutUserNestedInput = {
@@ -59400,6 +60949,20 @@ export namespace Prisma {
     update?: ExpenseUpdateWithWhereUniqueWithoutUserInput | ExpenseUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ExpenseUpdateManyWithWhereWithoutUserInput | ExpenseUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
+  export type ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ExpenseCategoryCreateWithoutUserInput, ExpenseCategoryUncheckedCreateWithoutUserInput> | ExpenseCategoryCreateWithoutUserInput[] | ExpenseCategoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ExpenseCategoryCreateOrConnectWithoutUserInput | ExpenseCategoryCreateOrConnectWithoutUserInput[]
+    upsert?: ExpenseCategoryUpsertWithWhereUniqueWithoutUserInput | ExpenseCategoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ExpenseCategoryCreateManyUserInputEnvelope
+    set?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
+    disconnect?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
+    delete?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
+    connect?: ExpenseCategoryWhereUniqueInput | ExpenseCategoryWhereUniqueInput[]
+    update?: ExpenseCategoryUpdateWithWhereUniqueWithoutUserInput | ExpenseCategoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ExpenseCategoryUpdateManyWithWhereWithoutUserInput | ExpenseCategoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ExpenseCategoryScalarWhereInput | ExpenseCategoryScalarWhereInput[]
   }
 
   export type InventoryMovementUncheckedUpdateManyWithoutUserNestedInput = {
@@ -61024,10 +62587,80 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAsmrCampaignInput, UserUpdateWithoutAsmrCampaignInput>, UserUncheckedUpdateWithoutAsmrCampaignInput>
   }
 
+  export type UserCreateNestedOneWithoutExpenseCategoryInput = {
+    create?: XOR<UserCreateWithoutExpenseCategoryInput, UserUncheckedCreateWithoutExpenseCategoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExpenseCategoryInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ExpenseCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<ExpenseCreateWithoutCategoryInput, ExpenseUncheckedCreateWithoutCategoryInput> | ExpenseCreateWithoutCategoryInput[] | ExpenseUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutCategoryInput | ExpenseCreateOrConnectWithoutCategoryInput[]
+    createMany?: ExpenseCreateManyCategoryInputEnvelope
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
+  export type ExpenseUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<ExpenseCreateWithoutCategoryInput, ExpenseUncheckedCreateWithoutCategoryInput> | ExpenseCreateWithoutCategoryInput[] | ExpenseUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutCategoryInput | ExpenseCreateOrConnectWithoutCategoryInput[]
+    createMany?: ExpenseCreateManyCategoryInputEnvelope
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutExpenseCategoryNestedInput = {
+    create?: XOR<UserCreateWithoutExpenseCategoryInput, UserUncheckedCreateWithoutExpenseCategoryInput>
+    connectOrCreate?: UserCreateOrConnectWithoutExpenseCategoryInput
+    upsert?: UserUpsertWithoutExpenseCategoryInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutExpenseCategoryInput, UserUpdateWithoutExpenseCategoryInput>, UserUncheckedUpdateWithoutExpenseCategoryInput>
+  }
+
+  export type ExpenseUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<ExpenseCreateWithoutCategoryInput, ExpenseUncheckedCreateWithoutCategoryInput> | ExpenseCreateWithoutCategoryInput[] | ExpenseUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutCategoryInput | ExpenseCreateOrConnectWithoutCategoryInput[]
+    upsert?: ExpenseUpsertWithWhereUniqueWithoutCategoryInput | ExpenseUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: ExpenseCreateManyCategoryInputEnvelope
+    set?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    disconnect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    delete?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    update?: ExpenseUpdateWithWhereUniqueWithoutCategoryInput | ExpenseUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: ExpenseUpdateManyWithWhereWithoutCategoryInput | ExpenseUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
+  export type ExpenseUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<ExpenseCreateWithoutCategoryInput, ExpenseUncheckedCreateWithoutCategoryInput> | ExpenseCreateWithoutCategoryInput[] | ExpenseUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: ExpenseCreateOrConnectWithoutCategoryInput | ExpenseCreateOrConnectWithoutCategoryInput[]
+    upsert?: ExpenseUpsertWithWhereUniqueWithoutCategoryInput | ExpenseUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: ExpenseCreateManyCategoryInputEnvelope
+    set?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    disconnect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    delete?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    connect?: ExpenseWhereUniqueInput | ExpenseWhereUniqueInput[]
+    update?: ExpenseUpdateWithWhereUniqueWithoutCategoryInput | ExpenseUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: ExpenseUpdateManyWithWhereWithoutCategoryInput | ExpenseUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: ExpenseScalarWhereInput | ExpenseScalarWhereInput[]
+  }
+
+  export type ExpenseCategoryCreateNestedOneWithoutExpensesInput = {
+    create?: XOR<ExpenseCategoryCreateWithoutExpensesInput, ExpenseCategoryUncheckedCreateWithoutExpensesInput>
+    connectOrCreate?: ExpenseCategoryCreateOrConnectWithoutExpensesInput
+    connect?: ExpenseCategoryWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutExpenseInput = {
     create?: XOR<UserCreateWithoutExpenseInput, UserUncheckedCreateWithoutExpenseInput>
     connectOrCreate?: UserCreateOrConnectWithoutExpenseInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type ExpenseCategoryUpdateOneRequiredWithoutExpensesNestedInput = {
+    create?: XOR<ExpenseCategoryCreateWithoutExpensesInput, ExpenseCategoryUncheckedCreateWithoutExpensesInput>
+    connectOrCreate?: ExpenseCategoryCreateOrConnectWithoutExpensesInput
+    upsert?: ExpenseCategoryUpsertWithoutExpensesInput
+    connect?: ExpenseCategoryWhereUniqueInput
+    update?: XOR<XOR<ExpenseCategoryUpdateToOneWithWhereWithoutExpensesInput, ExpenseCategoryUpdateWithoutExpensesInput>, ExpenseCategoryUncheckedUpdateWithoutExpensesInput>
   }
 
   export type UserUpdateOneRequiredWithoutExpenseNestedInput = {
@@ -63228,6 +64861,7 @@ export namespace Prisma {
     expenseImageUrl?: string | null
     expenseAmount?: number | null
     createdAt?: Date | string
+    category: ExpenseCategoryCreateNestedOneWithoutExpensesInput
   }
 
   export type ExpenseUncheckedCreateWithoutUserInput = {
@@ -63236,6 +64870,7 @@ export namespace Prisma {
     expensePaymentMethod?: string | null
     expenseImageUrl?: string | null
     expenseAmount?: number | null
+    expenseCategoryId: string
     createdAt?: Date | string
   }
 
@@ -63246,6 +64881,36 @@ export namespace Prisma {
 
   export type ExpenseCreateManyUserInputEnvelope = {
     data: ExpenseCreateManyUserInput | ExpenseCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ExpenseCategoryCreateWithoutUserInput = {
+    expenseCategoryId?: string
+    expenseCategoryName: string
+    expenseCategoryCode?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expenses?: ExpenseCreateNestedManyWithoutCategoryInput
+  }
+
+  export type ExpenseCategoryUncheckedCreateWithoutUserInput = {
+    expenseCategoryId?: string
+    expenseCategoryName: string
+    expenseCategoryCode?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    expenses?: ExpenseUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type ExpenseCategoryCreateOrConnectWithoutUserInput = {
+    where: ExpenseCategoryWhereUniqueInput
+    create: XOR<ExpenseCategoryCreateWithoutUserInput, ExpenseCategoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type ExpenseCategoryCreateManyUserInputEnvelope = {
+    data: ExpenseCategoryCreateManyUserInput | ExpenseCategoryCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -64268,8 +65933,38 @@ export namespace Prisma {
     expensePaymentMethod?: StringNullableFilter<"Expense"> | string | null
     expenseImageUrl?: StringNullableFilter<"Expense"> | string | null
     expenseAmount?: IntNullableFilter<"Expense"> | number | null
+    expenseCategoryId?: StringFilter<"Expense"> | string
     createdByUserId?: StringFilter<"Expense"> | string
     createdAt?: DateTimeFilter<"Expense"> | Date | string
+  }
+
+  export type ExpenseCategoryUpsertWithWhereUniqueWithoutUserInput = {
+    where: ExpenseCategoryWhereUniqueInput
+    update: XOR<ExpenseCategoryUpdateWithoutUserInput, ExpenseCategoryUncheckedUpdateWithoutUserInput>
+    create: XOR<ExpenseCategoryCreateWithoutUserInput, ExpenseCategoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type ExpenseCategoryUpdateWithWhereUniqueWithoutUserInput = {
+    where: ExpenseCategoryWhereUniqueInput
+    data: XOR<ExpenseCategoryUpdateWithoutUserInput, ExpenseCategoryUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ExpenseCategoryUpdateManyWithWhereWithoutUserInput = {
+    where: ExpenseCategoryScalarWhereInput
+    data: XOR<ExpenseCategoryUpdateManyMutationInput, ExpenseCategoryUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ExpenseCategoryScalarWhereInput = {
+    AND?: ExpenseCategoryScalarWhereInput | ExpenseCategoryScalarWhereInput[]
+    OR?: ExpenseCategoryScalarWhereInput[]
+    NOT?: ExpenseCategoryScalarWhereInput | ExpenseCategoryScalarWhereInput[]
+    expenseCategoryId?: StringFilter<"ExpenseCategory"> | string
+    expenseCategoryName?: StringFilter<"ExpenseCategory"> | string
+    expenseCategoryCode?: StringNullableFilter<"ExpenseCategory"> | string | null
+    isSystem?: BoolFilter<"ExpenseCategory"> | boolean
+    createdByUserId?: StringFilter<"ExpenseCategory"> | string
+    createdAt?: DateTimeFilter<"ExpenseCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"ExpenseCategory"> | Date | string
   }
 
   export type InventoryMovementUpsertWithWhereUniqueWithoutUserInput = {
@@ -64681,6 +66376,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -64722,6 +66418,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -65087,6 +66784,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -65128,6 +66826,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -65296,6 +66995,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -65337,6 +67037,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -65598,6 +67299,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -65639,6 +67341,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -65973,6 +67676,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
     QuotationDetail?: QuotationDetailCreateNestedManyWithoutUserInput
@@ -66014,6 +67718,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
     QuotationDetail?: QuotationDetailUncheckedCreateNestedManyWithoutUserInput
@@ -66104,6 +67809,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
     QuotationDetail?: QuotationDetailUpdateManyWithoutUserNestedInput
@@ -66145,6 +67851,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
     QuotationDetail?: QuotationDetailUncheckedUpdateManyWithoutUserNestedInput
@@ -66216,6 +67923,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -66257,6 +67965,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -66465,6 +68174,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -66506,6 +68216,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -66731,6 +68442,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -66772,6 +68484,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -66895,6 +68608,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -66936,6 +68650,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -67263,6 +68978,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -67304,6 +69020,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -67631,6 +69348,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -67672,6 +69390,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -67729,6 +69448,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -67770,6 +69490,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -67986,6 +69707,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -68027,6 +69749,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -68119,6 +69842,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -68160,6 +69884,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -68459,6 +70184,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -68500,6 +70226,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -68710,6 +70437,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -68751,6 +70479,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -68857,6 +70586,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -68898,6 +70628,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -68994,6 +70725,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -69035,6 +70767,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -69092,6 +70825,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -69133,6 +70867,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -69174,6 +70909,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -69215,6 +70951,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -69272,6 +71009,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -69313,6 +71051,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -69354,6 +71093,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -69395,6 +71135,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -69452,6 +71193,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -69493,6 +71235,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -69535,6 +71278,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
     QuotationDetail?: QuotationDetailCreateNestedManyWithoutUserInput
@@ -69576,6 +71320,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
     QuotationDetail?: QuotationDetailUncheckedCreateNestedManyWithoutUserInput
@@ -69633,6 +71378,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
     QuotationDetail?: QuotationDetailUpdateManyWithoutUserNestedInput
@@ -69674,6 +71420,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
     QuotationDetail?: QuotationDetailUncheckedUpdateManyWithoutUserNestedInput
@@ -69684,6 +71431,261 @@ export namespace Prisma {
     LabDispatchSent?: LabDispatchUncheckedUpdateManyWithoutSentByNestedInput
     PurchaseCertificateCreated?: PurchaseCertificateUncheckedUpdateManyWithoutCreatedByNestedInput
     PurchaseCertificateIssued?: PurchaseCertificateUncheckedUpdateManyWithoutIssuedByNestedInput
+  }
+
+  export type UserCreateWithoutExpenseCategoryInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerCreateNestedManyWithoutCreatedByInput
+    Product?: ProductCreateNestedManyWithoutUserInput
+    Service?: ServiceCreateNestedManyWithoutUserInput
+    Category?: CategoryCreateNestedManyWithoutUserInput
+    Sale?: SaleCreateNestedManyWithoutUserInput
+    salesDelivered?: SaleCreateNestedManyWithoutDeliveredByInput
+    Payment?: PaymentCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailCreateNestedManyWithoutUserInput
+    Purchase?: PurchaseCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseCreateNestedManyWithoutCancelledByInput
+    PurchaseDetail?: PurchaseDetailCreateNestedManyWithoutUserInput
+    Provider?: ProviderCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesCreateNestedManyWithoutUserInput
+    Transactions?: TransactionsCreateNestedManyWithoutUserInput
+    Expense?: ExpenseCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
+    Quotation?: QuotationCreateNestedManyWithoutUserInput
+    QuotationDetail?: QuotationDetailCreateNestedManyWithoutUserInput
+    Prescription?: PrescriptionCreateNestedManyWithoutCreatedByInput
+    Laboratory?: LaboratoryCreateNestedManyWithoutCreatedByInput
+    WorkOrder?: WorkOrderCreateNestedManyWithoutCreatedByInput
+    LabDispatchCreated?: LabDispatchCreateNestedManyWithoutCreatedByInput
+    LabDispatchSent?: LabDispatchCreateNestedManyWithoutSentByInput
+    PurchaseCertificateCreated?: PurchaseCertificateCreateNestedManyWithoutCreatedByInput
+    PurchaseCertificateIssued?: PurchaseCertificateCreateNestedManyWithoutIssuedByInput
+  }
+
+  export type UserUncheckedCreateWithoutExpenseCategoryInput = {
+    userId: string
+    userFirstName: string
+    userLastName: string
+    userEmail: string
+    userLastConnection?: Date | string | null
+    userCodePhoneNumber?: string | null
+    userPhoneNumber?: string | null
+    userDocumentType?: string | null
+    userDocumentNumber?: string | null
+    userRole: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerUncheckedCreateNestedManyWithoutCreatedByInput
+    Product?: ProductUncheckedCreateNestedManyWithoutUserInput
+    Service?: ServiceUncheckedCreateNestedManyWithoutUserInput
+    Category?: CategoryUncheckedCreateNestedManyWithoutUserInput
+    Sale?: SaleUncheckedCreateNestedManyWithoutUserInput
+    salesDelivered?: SaleUncheckedCreateNestedManyWithoutDeliveredByInput
+    Payment?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    SaleDetail?: SaleDetailUncheckedCreateNestedManyWithoutUserInput
+    Purchase?: PurchaseUncheckedCreateNestedManyWithoutUserInput
+    purchasesCancelled?: PurchaseUncheckedCreateNestedManyWithoutCancelledByInput
+    PurchaseDetail?: PurchaseDetailUncheckedCreateNestedManyWithoutUserInput
+    Provider?: ProviderUncheckedCreateNestedManyWithoutUserInput
+    CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
+    DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
+    Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
+    Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
+    AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
+    Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
+    QuotationDetail?: QuotationDetailUncheckedCreateNestedManyWithoutUserInput
+    Prescription?: PrescriptionUncheckedCreateNestedManyWithoutCreatedByInput
+    Laboratory?: LaboratoryUncheckedCreateNestedManyWithoutCreatedByInput
+    WorkOrder?: WorkOrderUncheckedCreateNestedManyWithoutCreatedByInput
+    LabDispatchCreated?: LabDispatchUncheckedCreateNestedManyWithoutCreatedByInput
+    LabDispatchSent?: LabDispatchUncheckedCreateNestedManyWithoutSentByInput
+    PurchaseCertificateCreated?: PurchaseCertificateUncheckedCreateNestedManyWithoutCreatedByInput
+    PurchaseCertificateIssued?: PurchaseCertificateUncheckedCreateNestedManyWithoutIssuedByInput
+  }
+
+  export type UserCreateOrConnectWithoutExpenseCategoryInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutExpenseCategoryInput, UserUncheckedCreateWithoutExpenseCategoryInput>
+  }
+
+  export type ExpenseCreateWithoutCategoryInput = {
+    expenseId: string
+    expenseDescription?: string | null
+    expensePaymentMethod?: string | null
+    expenseImageUrl?: string | null
+    expenseAmount?: number | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutExpenseInput
+  }
+
+  export type ExpenseUncheckedCreateWithoutCategoryInput = {
+    expenseId: string
+    expenseDescription?: string | null
+    expensePaymentMethod?: string | null
+    expenseImageUrl?: string | null
+    expenseAmount?: number | null
+    createdByUserId: string
+    createdAt?: Date | string
+  }
+
+  export type ExpenseCreateOrConnectWithoutCategoryInput = {
+    where: ExpenseWhereUniqueInput
+    create: XOR<ExpenseCreateWithoutCategoryInput, ExpenseUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type ExpenseCreateManyCategoryInputEnvelope = {
+    data: ExpenseCreateManyCategoryInput | ExpenseCreateManyCategoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutExpenseCategoryInput = {
+    update: XOR<UserUpdateWithoutExpenseCategoryInput, UserUncheckedUpdateWithoutExpenseCategoryInput>
+    create: XOR<UserCreateWithoutExpenseCategoryInput, UserUncheckedCreateWithoutExpenseCategoryInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutExpenseCategoryInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutExpenseCategoryInput, UserUncheckedUpdateWithoutExpenseCategoryInput>
+  }
+
+  export type UserUpdateWithoutExpenseCategoryInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUpdateManyWithoutUserNestedInput
+    Service?: ServiceUpdateManyWithoutUserNestedInput
+    Category?: CategoryUpdateManyWithoutUserNestedInput
+    Sale?: SaleUpdateManyWithoutUserNestedInput
+    salesDelivered?: SaleUpdateManyWithoutDeliveredByNestedInput
+    Payment?: PaymentUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUpdateManyWithoutUserNestedInput
+    Purchase?: PurchaseUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUpdateManyWithoutCancelledByNestedInput
+    PurchaseDetail?: PurchaseDetailUpdateManyWithoutUserNestedInput
+    Provider?: ProviderUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUpdateManyWithoutUserNestedInput
+    Transactions?: TransactionsUpdateManyWithoutUserNestedInput
+    Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
+    Quotation?: QuotationUpdateManyWithoutUserNestedInput
+    QuotationDetail?: QuotationDetailUpdateManyWithoutUserNestedInput
+    Prescription?: PrescriptionUpdateManyWithoutCreatedByNestedInput
+    Laboratory?: LaboratoryUpdateManyWithoutCreatedByNestedInput
+    WorkOrder?: WorkOrderUpdateManyWithoutCreatedByNestedInput
+    LabDispatchCreated?: LabDispatchUpdateManyWithoutCreatedByNestedInput
+    LabDispatchSent?: LabDispatchUpdateManyWithoutSentByNestedInput
+    PurchaseCertificateCreated?: PurchaseCertificateUpdateManyWithoutCreatedByNestedInput
+    PurchaseCertificateIssued?: PurchaseCertificateUpdateManyWithoutIssuedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutExpenseCategoryInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    userFirstName?: StringFieldUpdateOperationsInput | string
+    userLastName?: StringFieldUpdateOperationsInput | string
+    userEmail?: StringFieldUpdateOperationsInput | string
+    userLastConnection?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userCodePhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentType?: NullableStringFieldUpdateOperationsInput | string | null
+    userDocumentNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    userRole?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUncheckedUpdateManyWithoutCreatedByNestedInput
+    Product?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    Service?: ServiceUncheckedUpdateManyWithoutUserNestedInput
+    Category?: CategoryUncheckedUpdateManyWithoutUserNestedInput
+    Sale?: SaleUncheckedUpdateManyWithoutUserNestedInput
+    salesDelivered?: SaleUncheckedUpdateManyWithoutDeliveredByNestedInput
+    Payment?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    SaleDetail?: SaleDetailUncheckedUpdateManyWithoutUserNestedInput
+    Purchase?: PurchaseUncheckedUpdateManyWithoutUserNestedInput
+    purchasesCancelled?: PurchaseUncheckedUpdateManyWithoutCancelledByNestedInput
+    PurchaseDetail?: PurchaseDetailUncheckedUpdateManyWithoutUserNestedInput
+    Provider?: ProviderUncheckedUpdateManyWithoutUserNestedInput
+    CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
+    DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
+    Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
+    Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
+    AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
+    Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
+    QuotationDetail?: QuotationDetailUncheckedUpdateManyWithoutUserNestedInput
+    Prescription?: PrescriptionUncheckedUpdateManyWithoutCreatedByNestedInput
+    Laboratory?: LaboratoryUncheckedUpdateManyWithoutCreatedByNestedInput
+    WorkOrder?: WorkOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+    LabDispatchCreated?: LabDispatchUncheckedUpdateManyWithoutCreatedByNestedInput
+    LabDispatchSent?: LabDispatchUncheckedUpdateManyWithoutSentByNestedInput
+    PurchaseCertificateCreated?: PurchaseCertificateUncheckedUpdateManyWithoutCreatedByNestedInput
+    PurchaseCertificateIssued?: PurchaseCertificateUncheckedUpdateManyWithoutIssuedByNestedInput
+  }
+
+  export type ExpenseUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: ExpenseWhereUniqueInput
+    update: XOR<ExpenseUpdateWithoutCategoryInput, ExpenseUncheckedUpdateWithoutCategoryInput>
+    create: XOR<ExpenseCreateWithoutCategoryInput, ExpenseUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type ExpenseUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: ExpenseWhereUniqueInput
+    data: XOR<ExpenseUpdateWithoutCategoryInput, ExpenseUncheckedUpdateWithoutCategoryInput>
+  }
+
+  export type ExpenseUpdateManyWithWhereWithoutCategoryInput = {
+    where: ExpenseScalarWhereInput
+    data: XOR<ExpenseUpdateManyMutationInput, ExpenseUncheckedUpdateManyWithoutCategoryInput>
+  }
+
+  export type ExpenseCategoryCreateWithoutExpensesInput = {
+    expenseCategoryId?: string
+    expenseCategoryName: string
+    expenseCategoryCode?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutExpenseCategoryInput
+  }
+
+  export type ExpenseCategoryUncheckedCreateWithoutExpensesInput = {
+    expenseCategoryId?: string
+    expenseCategoryName: string
+    expenseCategoryCode?: string | null
+    isSystem?: boolean
+    createdByUserId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ExpenseCategoryCreateOrConnectWithoutExpensesInput = {
+    where: ExpenseCategoryWhereUniqueInput
+    create: XOR<ExpenseCategoryCreateWithoutExpensesInput, ExpenseCategoryUncheckedCreateWithoutExpensesInput>
   }
 
   export type UserCreateWithoutExpenseInput = {
@@ -69714,6 +71716,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseCreateNestedManyWithoutUserInput
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -69755,6 +71758,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseUncheckedCreateNestedManyWithoutUserInput
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -69771,6 +71775,37 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutExpenseInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutExpenseInput, UserUncheckedCreateWithoutExpenseInput>
+  }
+
+  export type ExpenseCategoryUpsertWithoutExpensesInput = {
+    update: XOR<ExpenseCategoryUpdateWithoutExpensesInput, ExpenseCategoryUncheckedUpdateWithoutExpensesInput>
+    create: XOR<ExpenseCategoryCreateWithoutExpensesInput, ExpenseCategoryUncheckedCreateWithoutExpensesInput>
+    where?: ExpenseCategoryWhereInput
+  }
+
+  export type ExpenseCategoryUpdateToOneWithWhereWithoutExpensesInput = {
+    where?: ExpenseCategoryWhereInput
+    data: XOR<ExpenseCategoryUpdateWithoutExpensesInput, ExpenseCategoryUncheckedUpdateWithoutExpensesInput>
+  }
+
+  export type ExpenseCategoryUpdateWithoutExpensesInput = {
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
+    expenseCategoryName?: StringFieldUpdateOperationsInput | string
+    expenseCategoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutExpenseCategoryNestedInput
+  }
+
+  export type ExpenseCategoryUncheckedUpdateWithoutExpensesInput = {
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
+    expenseCategoryName?: StringFieldUpdateOperationsInput | string
+    expenseCategoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUpsertWithoutExpenseInput = {
@@ -69812,6 +71847,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -69853,6 +71889,7 @@ export namespace Prisma {
     CashExpense?: CashExpenseUncheckedUpdateManyWithoutUserNestedInput
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -69894,6 +71931,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -69935,6 +71973,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -70032,6 +72071,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -70073,6 +72113,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -70165,6 +72206,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -70206,6 +72248,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -70252,6 +72295,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -70293,6 +72337,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -70427,6 +72472,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -70468,6 +72514,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -70520,6 +72567,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -70561,6 +72609,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -70739,6 +72788,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -70780,6 +72830,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -70976,6 +73027,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -71017,6 +73069,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -71401,6 +73454,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     QuotationDetail?: QuotationDetailCreateNestedManyWithoutUserInput
@@ -71442,6 +73496,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     QuotationDetail?: QuotationDetailUncheckedCreateNestedManyWithoutUserInput
@@ -71663,6 +73718,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     QuotationDetail?: QuotationDetailUpdateManyWithoutUserNestedInput
@@ -71704,6 +73760,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     QuotationDetail?: QuotationDetailUncheckedUpdateManyWithoutUserNestedInput
@@ -71869,6 +73926,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -71910,6 +73968,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -72157,6 +74216,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -72198,6 +74258,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -72441,6 +74502,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -72482,6 +74544,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -72698,6 +74761,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -72739,6 +74803,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -72812,6 +74877,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -72853,6 +74919,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -72996,6 +75063,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -73037,6 +75105,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -73384,6 +75453,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -73425,6 +75495,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -73792,6 +75863,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -73833,6 +75905,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -73913,6 +75986,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -73954,6 +76028,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -74000,6 +76075,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -74041,6 +76117,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -74193,6 +76270,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -74234,6 +76312,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -74286,6 +76365,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -74327,6 +76407,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -74433,6 +76514,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -74474,6 +76556,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -74520,6 +76603,7 @@ export namespace Prisma {
     DailySales?: DailySalesCreateNestedManyWithoutUserInput
     Transactions?: TransactionsCreateNestedManyWithoutUserInput
     Expense?: ExpenseCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignCreateNestedManyWithoutUserInput
     Quotation?: QuotationCreateNestedManyWithoutUserInput
@@ -74561,6 +76645,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedCreateNestedManyWithoutUserInput
     Transactions?: TransactionsUncheckedCreateNestedManyWithoutUserInput
     Expense?: ExpenseUncheckedCreateNestedManyWithoutUserInput
+    ExpenseCategory?: ExpenseCategoryUncheckedCreateNestedManyWithoutUserInput
     InventoryMovement?: InventoryMovementUncheckedCreateNestedManyWithoutUserInput
     AsmrCampaign?: AsmrCampaignUncheckedCreateNestedManyWithoutUserInput
     Quotation?: QuotationUncheckedCreateNestedManyWithoutUserInput
@@ -74713,6 +76798,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -74754,6 +76840,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -74806,6 +76893,7 @@ export namespace Prisma {
     DailySales?: DailySalesUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUpdateManyWithoutUserNestedInput
@@ -74847,6 +76935,7 @@ export namespace Prisma {
     DailySales?: DailySalesUncheckedUpdateManyWithoutUserNestedInput
     Transactions?: TransactionsUncheckedUpdateManyWithoutUserNestedInput
     Expense?: ExpenseUncheckedUpdateManyWithoutUserNestedInput
+    ExpenseCategory?: ExpenseCategoryUncheckedUpdateManyWithoutUserNestedInput
     InventoryMovement?: InventoryMovementUncheckedUpdateManyWithoutUserNestedInput
     AsmrCampaign?: AsmrCampaignUncheckedUpdateManyWithoutUserNestedInput
     Quotation?: QuotationUncheckedUpdateManyWithoutUserNestedInput
@@ -75318,7 +77407,17 @@ export namespace Prisma {
     expensePaymentMethod?: string | null
     expenseImageUrl?: string | null
     expenseAmount?: number | null
+    expenseCategoryId: string
     createdAt?: Date | string
+  }
+
+  export type ExpenseCategoryCreateManyUserInput = {
+    expenseCategoryId?: string
+    expenseCategoryName: string
+    expenseCategoryCode?: string | null
+    isSystem?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type InventoryMovementCreateManyUserInput = {
@@ -76195,6 +78294,7 @@ export namespace Prisma {
     expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: ExpenseCategoryUpdateOneRequiredWithoutExpensesNestedInput
   }
 
   export type ExpenseUncheckedUpdateWithoutUserInput = {
@@ -76203,6 +78303,7 @@ export namespace Prisma {
     expensePaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -76212,7 +78313,37 @@ export namespace Prisma {
     expensePaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseCategoryUpdateWithoutUserInput = {
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
+    expenseCategoryName?: StringFieldUpdateOperationsInput | string
+    expenseCategoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expenses?: ExpenseUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type ExpenseCategoryUncheckedUpdateWithoutUserInput = {
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
+    expenseCategoryName?: StringFieldUpdateOperationsInput | string
+    expenseCategoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expenses?: ExpenseUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type ExpenseCategoryUncheckedUpdateManyWithoutUserInput = {
+    expenseCategoryId?: StringFieldUpdateOperationsInput | string
+    expenseCategoryName?: StringFieldUpdateOperationsInput | string
+    expenseCategoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InventoryMovementUpdateWithoutUserInput = {
@@ -78399,6 +80530,46 @@ export namespace Prisma {
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseCreateManyCategoryInput = {
+    expenseId: string
+    expenseDescription?: string | null
+    expensePaymentMethod?: string | null
+    expenseImageUrl?: string | null
+    expenseAmount?: number | null
+    createdByUserId: string
+    createdAt?: Date | string
+  }
+
+  export type ExpenseUpdateWithoutCategoryInput = {
+    expenseId?: StringFieldUpdateOperationsInput | string
+    expenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    expensePaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutExpenseNestedInput
+  }
+
+  export type ExpenseUncheckedUpdateWithoutCategoryInput = {
+    expenseId?: StringFieldUpdateOperationsInput | string
+    expenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    expensePaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExpenseUncheckedUpdateManyWithoutCategoryInput = {
+    expenseId?: StringFieldUpdateOperationsInput | string
+    expenseDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    expensePaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    expenseImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    expenseAmount?: NullableIntFieldUpdateOperationsInput | number | null
+    createdByUserId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PurchaseCreateManyProviderInput = {

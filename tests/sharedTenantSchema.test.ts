@@ -1,17 +1,20 @@
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 const backendDir = path.resolve(import.meta.dirname, "..");
 const schemaPath = path.join(backendDir, "prisma", "sharedDB", "schema.prisma");
-const migrationPath = path.join(
-  backendDir,
-  "prisma",
-  "sharedDB",
-  "migrations",
-  "20260928233000_init_shared_tenant",
-  "migration.sql",
-);
+const migrationsDir = path.join(backendDir, "prisma", "sharedDB", "migrations");
+
+async function readSharedMigrations() {
+  const entries = await readdir(migrationsDir, { withFileTypes: true });
+  const sqlPaths = entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(migrationsDir, entry.name, "migration.sql"))
+    .sort();
+  const contents = await Promise.all(sqlPaths.map((sqlPath) => readFile(sqlPath, "utf8")));
+  return contents.join("\n");
+}
 
 describe("shared tenant database schema", () => {
   it("adds businessId to every operational model", async () => {
@@ -27,7 +30,7 @@ describe("shared tenant database schema", () => {
 
   it("enables and forces RLS for every model", async () => {
     const schema = await readFile(schemaPath, "utf8");
-    const migration = await readFile(migrationPath, "utf8");
+    const migration = await readSharedMigrations();
     const modelNames = [...schema.matchAll(/^model\s+(\w+)\s*\{/gmu)].map((match) => match[1]);
 
     for (const modelName of modelNames) {
@@ -35,6 +38,15 @@ describe("shared tenant database schema", () => {
       expect(migration).toContain(`ALTER TABLE "${modelName}" FORCE ROW LEVEL SECURITY;`);
       expect(migration).toContain(`CREATE POLICY "tenant_isolation_${modelName}"`);
     }
+  });
+
+  it("requires every expense to reference an expense category", async () => {
+    const schema = await readFile(schemaPath, "utf8");
+    const expense = schema.match(/^model Expense \{[\s\S]*?^\}/mu)?.[0] ?? "";
+
+    expect(schema).toContain("model ExpenseCategory");
+    expect(expense).toMatch(/expenseCategoryId\s+String\s*$/m);
+    expect(expense).toContain("ExpenseCategory");
   });
 
   it("uses composite tenant keys for user identity and appointment settings", async () => {
