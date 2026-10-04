@@ -11,6 +11,7 @@ import {
 } from "./mercadopago/index.js";
 import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
 import { getPlanPricing } from "../libs/planPricing.js";
+import { assertApprovedCheckoutPrice, findOpticsPlan } from "./billing/opticsPlanCatalog.ts";
 
 
 
@@ -110,6 +111,10 @@ export async function createMercadoPagoCheckout({
     }
     if (Number(planSelected.planPrice) <= 0) {
         throw new Error("Este plan no requiere checkout de Mercado Pago.");
+    }
+    const catalogPlan = findOpticsPlan(subscriptionPlanId);
+    if (catalogPlan) {
+        assertApprovedCheckoutPrice(catalogPlan);
     }
 
     const existingSubscriptions = await getSubscriptionsByBusinessIdService(subscriptionBusinessId);

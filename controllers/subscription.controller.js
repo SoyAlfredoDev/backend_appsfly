@@ -15,6 +15,7 @@ import {
 import { createSubscriptionService } from "../services/subscriptionService.js";
 import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
 import { generalPrisma as general } from "../dbGeneral.js";
+import { canClaimOpticsTrial } from "../services/billing/opticsPlanCatalog.ts";
 
 
 
@@ -105,11 +106,12 @@ export const createSubscriptionController = async (req, res) => {
         }
 
         const existingSubscriptions = await getSubscriptionsByBusinessIdService(subscriptionBusinessId);
-        const hasHistory = Array.isArray(existingSubscriptions) && existingSubscriptions.length > 0;
+        const priorSubscriptionCount = Array.isArray(existingSubscriptions) ? existingSubscriptions.length : 0;
 
-        if (subscriptionPlanId === FREE_TRIAL_PLAN_ID && hasHistory) {
+        if (subscriptionPlanId === FREE_TRIAL_PLAN_ID && !canClaimOpticsTrial(priorSubscriptionCount)) {
             return res.status(403).json({
                 message: "La promoción de prueba gratuita no está disponible para negocios con historial de suscripción.",
+                code: "TRIAL_ALREADY_USED",
             });
         }
 

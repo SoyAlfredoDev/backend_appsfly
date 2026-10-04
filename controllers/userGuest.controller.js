@@ -10,6 +10,7 @@ import {
     findUserBusinessMembership,
     findUserByEmail,
 } from "../services/userGuestService.js";
+import { assertCanInviteUser } from "../services/billing/planAccessService.js";
 import { registerUserBusinessAtBusinessDB } from "../controllers/businessDB/user.controller.js";
 import { createUserBusinessService } from "../services/userBusinessService.js";
 import { getUserById } from "../services/usersService.js";
@@ -87,6 +88,18 @@ export const createUserGuestController = async (req, res) => {
         const membership = await assertUserBusinessMembership(userId, userGuestBusinessId);
         if (!membership) {
             return res.status(403).json({ message: "No tienes permiso para invitar a este negocio." });
+        }
+
+        try {
+            await assertCanInviteUser(userGuestBusinessId);
+        } catch (seatError) {
+            if (seatError?.code === "SEAT_LIMIT_REACHED") {
+                return res.status(403).json({
+                    message: seatError.message,
+                    code: "SEAT_LIMIT_REACHED",
+                });
+            }
+            throw seatError;
         }
 
         const existingPending = await findPendingInvite(email, userGuestBusinessId);

@@ -14,6 +14,7 @@ import {
     syncTaxDocumentStatusUseCase,
 } from "../services/billing/useCases/syncTaxDocumentStatusUseCase.js";
 import { TaxBillingError } from "../services/billing/errors.js";
+import { businessHasCapability } from "../services/billing/planAccessService.js";
 import { createTaxProviderAccountRepository } from "../services/billing/repositories/taxProviderAccountRepository.js";
 import { mapTaxProviderAccount } from "../services/billing/domain/company.js";
 
@@ -48,6 +49,13 @@ function handleError(res, error, scope) {
 
 export const issueTaxDocumentController = async (req, res) => {
     try {
+        const allowed = await businessHasCapability(req.tenantBusinessId, "tax_documents");
+        if (!allowed) {
+            return res.status(403).json({
+                message: "La boleta y la factura electrónica están incluidas en la prueba, Pro y Élite.",
+                code: "PLAN_CAPABILITY_REQUIRED",
+            });
+        }
         const input = parseIssueTaxDocumentInput(req.body);
         const document = await issueTaxDocumentUseCase({
             prisma: req.prisma,

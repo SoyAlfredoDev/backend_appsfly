@@ -1,6 +1,7 @@
 import { processAssistantChat, getAssistantStatus } from "../services/assistant/assistantService.js";
 import { AssistantSecurityError } from "../services/assistant/assistantSecurity.js";
 import { getBusinessByIdService } from "../services/businessService.js";
+import { businessHasCapability } from "../services/billing/planAccessService.js";
 
 function mapAssistantError(error) {
     const message = error.message ?? "";
@@ -84,10 +85,25 @@ export const assistantChatController = async (req, res) => {
         const { messages } = req.body ?? {};
         const userId = req.user?.payload?.id;
 
+        if (!userId) {
+            return res.status(401).json({
+                error: "No autenticado",
+                code: "UNAUTHENTICATED",
+            });
+        }
+
         if (!req.prisma || !req.tenantBusinessId) {
             return res.status(403).json({
                 error: "No se pudo resolver el negocio activo.",
                 code: "TENANT_FORBIDDEN",
+            });
+        }
+
+        const assistantAllowed = await businessHasCapability(req.tenantBusinessId, "assistant");
+        if (!assistantAllowed) {
+            return res.status(403).json({
+                error: "El asistente está incluido en la prueba, Pro y Élite.",
+                code: "PLAN_CAPABILITY_REQUIRED",
             });
         }
 
