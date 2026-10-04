@@ -16,12 +16,12 @@ Documento interno. Describe el historial, el catálogo vigente y la forma de ope
 
 Hasta el 4 de octubre de 2026 el catálogo publicado era este:
 
-| ID | Nombre | Neto mensual | Estado entonces |
-| --- | --- | --- | --- |
-| P001 | Plan Básico | $0 por 2 meses | Prueba. No incluía citas ni las funciones de Pro. |
-| P002 | Plan Comercial | $9.990 | Cobro recurrente. Total con IVA: $11.888. |
-| P003 | Plan Profesional | $39.990 | Publicado. Sin suscripciones activas. |
-| P004 | Plan Óptica | $19.990 | Activo en la API y oculto en la interfaz. Sin suscriptores. |
+| ID   | Nombre           | Neto mensual   | Estado entonces                                             |
+| ---- | ---------------- | -------------- | ----------------------------------------------------------- |
+| P001 | Plan Básico      | $0 por 2 meses | Prueba. No incluía citas ni las funciones de Pro.           |
+| P002 | Plan Comercial   | $9.990         | Cobro recurrente. Total con IVA: $11.888.                   |
+| P003 | Plan Profesional | $39.990        | Publicado. Sin suscripciones activas.                       |
+| P004 | Plan Óptica      | $19.990        | Activo en la API y oculto en la interfaz. Sin suscriptores. |
 
 Había propuestas en UF (Start 0,6 o 0,7, Pro cerca de 1, Élite cerca de 1,5) que no se confirmaron y no se cobraron.
 
@@ -31,12 +31,12 @@ En producción hay un preapproval autorizado de «AppsFly — Plan Comercial» p
 
 Confirmado el 4 de octubre de 2026. Precios netos, más IVA. Solo ópticas.
 
-| ID | Plan | Usuarios | Neto mensual | Duración | Funciones |
-| --- | --- | --- | --- | --- | --- |
-| P001 | Prueba Pro | 5 | $0 | 2 meses, una vez por negocio | Las de Pro. No inicia cobro al terminar. |
-| P005 | Start | 1 | $24.990 | 1 mes | Operación de óptica: clientes, recetas, ventas, cotizaciones, órdenes, laboratorios, inventario, certificados, cierres y reportes. |
-| P006 | Pro | 5 | $39.990 | 1 mes | Start, más citas, boleta y factura electrónica, y asistente. |
-| P007 | Élite | 10 | $49.990 | 1 mes | Las de Pro, con el cupo de 10 usuarios. |
+| ID   | Plan       | Usuarios | Neto mensual | Duración                     | Funciones                                                                                                                          |
+| ---- | ---------- | -------- | ------------ | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| P001 | Prueba Pro | 5        | $0           | 2 meses, una vez por negocio | Las de Pro. No inicia cobro al terminar.                                                                                           |
+| P005 | Start      | 1        | $24.990      | 1 mes                        | Operación de óptica: clientes, recetas, ventas, cotizaciones, órdenes, laboratorios, inventario, certificados, cierres y reportes. |
+| P006 | Pro        | 5        | $39.990      | 1 mes                        | Start, más citas, boleta y factura electrónica, y asistente.                                                                       |
+| P007 | Élite      | 10       | $49.990      | 1 mes                        | Las de Pro, con el cupo de 10 usuarios.                                                                                            |
 
 P002, P003 y P004 quedan inactivos para nuevas contrataciones. Se conservan el identificador, el nombre y el precio.
 
