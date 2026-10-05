@@ -11,7 +11,11 @@ import {
 } from "./mercadopago/index.js";
 import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
 import { getPlanPricing } from "../libs/planPricing.js";
-import { assertApprovedCheckoutPrice, findOpticsPlan } from "./billing/opticsPlanCatalog.ts";
+import {
+    assertApprovedCheckoutPrice,
+    checkoutUrlForPlan,
+    findOpticsPlan,
+} from "./billing/opticsPlanCatalog.ts";
 
 
 
@@ -98,6 +102,26 @@ export async function createMercadoPagoCheckout({
     createdByUserId,
     payerEmail,
 }) {
+    const paymentLink = checkoutUrlForPlan(subscriptionPlanId);
+    if (paymentLink) {
+        const catalogPlan = findOpticsPlan(subscriptionPlanId);
+        return {
+            mode: "PAYMENT_LINK",
+            checkoutUrl: paymentLink,
+            planId: subscriptionPlanId,
+            planName: catalogPlan?.displayName ?? null,
+            billingType: "MERCADO_PAGO_LINK",
+        };
+    }
+
+    const catalogPlan = findOpticsPlan(subscriptionPlanId);
+    if (catalogPlan && !catalogPlan.forSale) {
+        const error = new Error("Este plan no está disponible para nuevas contrataciones.");
+        error.code = "PLAN_NOT_FOR_SALE";
+        error.statusCode = 403;
+        throw error;
+    }
+
     if (!isMercadoPagoConfigured()) {
         const error = new Error("Mercado Pago no está configurado en el servidor.");
         error.code = "MERCADO_PAGO_NOT_CONFIGURED";
@@ -115,7 +139,6 @@ export async function createMercadoPagoCheckout({
     if (Number(planSelected.planPrice) <= 0) {
         throw new Error("Este plan no requiere checkout de Mercado Pago.");
     }
-    const catalogPlan = findOpticsPlan(subscriptionPlanId);
     if (catalogPlan) {
         assertApprovedCheckoutPrice(catalogPlan);
     }

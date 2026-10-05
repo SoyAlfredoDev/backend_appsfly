@@ -51,7 +51,7 @@ async function main() {
       planPrice: price,
       planDuration: plan.durationMonths,
       planCurrency: "CLP",
-      planActive: true,
+      planActive: plan.forSale || plan.tier === "trial",
       planDatabaseMode: plan.databaseMode,
     };
 

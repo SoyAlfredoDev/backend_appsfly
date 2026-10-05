@@ -36,9 +36,18 @@ Confirmado el 4 de octubre de 2026. Precios netos, más IVA. Solo ópticas.
 | P001 | Prueba Pro | 5        | $0           | 2 meses, una vez por negocio | Las de Pro. No inicia cobro al terminar.                                                                                           |
 | P005 | Start      | 1        | $24.990      | 1 mes                        | Operación de óptica: clientes, recetas, ventas, cotizaciones, órdenes, laboratorios, inventario, certificados, cierres y reportes. |
 | P006 | Pro        | 5        | $39.990      | 1 mes                        | Start, más citas, boleta y factura electrónica, y asistente.                                                                       |
-| P007 | Élite      | 10       | $49.990      | 1 mes                        | Las de Pro, con el cupo de 10 usuarios.                                                                                            |
+| P007 | Élite      | 10       | $49.990      | 1 mes                        | Las de Pro, con el cupo de 10 usuarios. No se ofrece ni se cobra por ahora.                                                        |
 
 P002, P003 y P004 quedan inactivos para nuevas contrataciones. Se conservan el identificador, el nombre y el precio.
+
+El cobro de Start y Pro no usa el checkout de la API. Cada plan abre su link de Mercado Pago:
+
+| Plan  | Link                       |
+| ----- | -------------------------- |
+| Start | `https://mpago.la/1AFYzNQ` |
+| Pro   | `https://mpago.la/2Zet5b1` |
+
+Élite no tiene link. `planActive` queda en falso hasta que exista uno. El precio de $49.990 se conserva.
 
 Sucursales no están disponibles. El adicional de 0,5 UF desde la tercera sucursal no se cobra: no existe la entidad y la regla de la cuarta sucursal sigue sin una lectura única.
 

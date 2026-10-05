@@ -7,6 +7,7 @@ import {
   canClaimOpticsTrial,
   isSeatAvailable,
   planIncludesCapability,
+  checkoutUrlForPlan,
   publicFeatureLabels,
 } from "../services/billing/opticsPlanCatalog.ts";
 
@@ -30,6 +31,13 @@ describe("optics plan catalog", () => {
       expect(() => assertApprovedCheckoutPrice(plan)).not.toThrow();
     }
     expect(() => assertApprovedCheckoutPrice(byTier.trial!)).toThrow(/tarifa aprobada/);
+    expect(() => assertApprovedCheckoutPrice(byTier.elite!)).toThrow(/tarifa aprobada/);
+    expect(checkoutUrlForPlan("P005")).toBe("https://mpago.la/1AFYzNQ");
+    expect(checkoutUrlForPlan("P006")).toBe("https://mpago.la/2Zet5b1");
+    expect(checkoutUrlForPlan("P007")).toBeNull();
+    expect(byTier.elite?.forSale).toBe(false);
+    expect(byTier.start?.forSale).toBe(true);
+    expect(byTier.pro?.forSale).toBe(true);
   });
 
   it("gives the trial the same capabilities as Pro and withholds branches", () => {

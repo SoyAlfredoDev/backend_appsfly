@@ -59,6 +59,10 @@ export type OpticsPlanDefinition = {
   capabilities: CatalogCapability[];
   price: CatalogPrice | null;
   billable: boolean;
+  /** Se puede contratar ahora. Élite conserva el precio, pero no se ofrece. */
+  forSale: boolean;
+  /** Link de cobro creado en Mercado Pago. El checkout de la API no lo reemplaza. */
+  checkoutUrl: string | null;
   databaseMode: "SHARED";
 };
 
@@ -205,6 +209,8 @@ export const OPTICS_PLANS: readonly OpticsPlanDefinition[] = [
     capabilities: [...CORE_OPTICS, SEAT_LIMIT],
     price: approvedPrice(24990),
     billable: true,
+    forSale: true,
+    checkoutUrl: "https://mpago.la/1AFYzNQ",
     databaseMode: "SHARED",
   },
   {
@@ -218,6 +224,8 @@ export const OPTICS_PLANS: readonly OpticsPlanDefinition[] = [
     capabilities: PRO_CAPABILITIES,
     price: approvedPrice(39990),
     billable: true,
+    forSale: true,
+    checkoutUrl: "https://mpago.la/2Zet5b1",
     databaseMode: "SHARED",
   },
   {
@@ -230,7 +238,9 @@ export const OPTICS_PLANS: readonly OpticsPlanDefinition[] = [
     allowsAdditionalBranches: false,
     capabilities: [...PRO_CAPABILITIES, BRANCHES],
     price: approvedPrice(49990),
-    billable: true,
+    billable: false,
+    forSale: false,
+    checkoutUrl: null,
     databaseMode: "SHARED",
   },
   {
@@ -244,6 +254,8 @@ export const OPTICS_PLANS: readonly OpticsPlanDefinition[] = [
     capabilities: PRO_CAPABILITIES,
     price: null,
     billable: false,
+    forSale: false,
+    checkoutUrl: null,
     databaseMode: "SHARED",
   },
 ];
@@ -301,6 +313,13 @@ export function canClaimOpticsTrial(existingSubscriptionCount: number): boolean 
 
 export function isOpticsPlanBillable(plan: OpticsPlanDefinition): boolean {
   return plan.billable && plan.price?.approval === "APPROVED" && plan.price.netAmount > 0;
+}
+
+/** Link de Mercado Pago del plan, solo si hoy se puede contratar. */
+export function checkoutUrlForPlan(planId: string | null | undefined): string | null {
+  const plan = findOpticsPlan(planId);
+  if (!plan?.forSale || !plan.checkoutUrl) return null;
+  return plan.checkoutUrl;
 }
 
 export function assertApprovedCheckoutPrice(plan: OpticsPlanDefinition): void {
