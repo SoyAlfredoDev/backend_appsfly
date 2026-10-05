@@ -172,6 +172,32 @@ export async function ensureAppointmentSettings(prisma) {
     });
 }
 
+export function serializeAppointmentLocation(settings, branding) {
+    const address =
+        settings?.locationAddress?.trim()
+        || branding?.address
+        || null;
+    const latitude = settings?.locationLatitude ?? null;
+    const longitude = settings?.locationLongitude ?? null;
+
+    return {
+        address,
+        latitude,
+        longitude,
+        mapsUrl: buildMapsUrl({ address, latitude, longitude }),
+    };
+}
+
+export function buildMapsUrl({ address, latitude, longitude }) {
+    if (latitude != null && longitude != null) {
+        return `https://www.google.com/maps?q=${latitude},${longitude}`;
+    }
+    if (address) {
+        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    }
+    return null;
+}
+
 export function serializeSettings(settings) {
     return {
         appointmentsEnabled: settings.appointmentsEnabled,
@@ -180,6 +206,10 @@ export function serializeSettings(settings) {
         maxDaysAhead: settings.maxDaysAhead,
         customerNotificationsEnabled: Boolean(settings.customerNotificationsEnabled),
         visitorMessage: settings.visitorMessage,
+        galleryImageUrls: (settings.galleryImageUrls || []).filter(Boolean),
+        locationAddress: settings.locationAddress,
+        locationLatitude: settings.locationLatitude,
+        locationLongitude: settings.locationLongitude,
         weeklyAvailability: (settings.weeklyAvailability || []).map((row) => ({
             availabilityId: row.availabilityId,
             dayOfWeek: row.dayOfWeek,

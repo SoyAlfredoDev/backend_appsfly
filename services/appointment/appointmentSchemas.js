@@ -34,6 +34,15 @@ const optionalEmailSchema = z
         message: "Ingresa un correo válido.",
     });
 
+const galleryImageUrlSchema = z
+    .string()
+    .trim()
+    .url("Ingresa una URL de imagen válida.")
+    .max(500);
+
+const optionalLatitudeSchema = z.number().min(-90).max(90).nullable().optional();
+const optionalLongitudeSchema = z.number().min(-180).max(180).nullable().optional();
+
 export const updateAppointmentSettingsSchema = z.object({
     appointmentsEnabled: z.boolean(),
     slotDurationMinutes: z.number().int().min(10).max(240),
@@ -41,6 +50,10 @@ export const updateAppointmentSettingsSchema = z.object({
     maxDaysAhead: z.number().int().min(1).max(90),
     customerNotificationsEnabled: z.boolean(),
     visitorMessage: z.string().trim().max(500).nullable().optional(),
+    galleryImageUrls: z.array(galleryImageUrlSchema).max(3).optional().default([]),
+    locationAddress: z.string().trim().max(300).nullable().optional(),
+    locationLatitude: optionalLatitudeSchema,
+    locationLongitude: optionalLongitudeSchema,
     weeklyAvailability: z.array(weeklyAvailabilityItemSchema).max(40),
 }).refine((data) => !data.appointmentsEnabled || data.weeklyAvailability.length > 0, {
     message: "Agrega al menos una franja horaria para habilitar citas.",

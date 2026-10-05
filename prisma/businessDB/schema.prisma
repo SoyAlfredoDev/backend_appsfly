@@ -906,6 +906,12 @@ model AppointmentSettings {
     /** Si es true, el visitante deja un correo y recibe avisos de la cita. */
     customerNotificationsEnabled Boolean  @default(false)
     visitorMessage               String?
+    /** Fotos del local en la página pública de agendamiento (máx. 3). */
+    galleryImageUrls             String[] @default([])
+    /** Dirección mostrada al agendar. Si es null, se usa la del negocio. */
+    locationAddress              String?
+    locationLatitude             Float?
+    locationLongitude            Float?
     createdAt             DateTime @default(now())
     updatedAt             DateTime @updatedAt
 

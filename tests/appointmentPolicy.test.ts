@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import { createPublicAppointmentSchema } from "../services/appointment/appointmentSchemas.js";
+import {
+  buildMapsUrl,
+  serializeAppointmentLocation,
+} from "../services/appointment/appointmentAccessService.js";
 import { buildAppointmentEmail } from "../emails/users/appointments/appointmentEmail.template.js";
 import { withAppointmentWriteLock } from "../services/appointment/appointmentService.js";
 import {
@@ -136,6 +140,38 @@ describe("appointment email", () => {
     });
     expect(business.text).toContain("https://appsfly.cl/appointments");
     expect(business.subject).toContain("Nueva solicitud");
+  });
+});
+
+describe("appointment location", () => {
+  it("prefers the appointment address and falls back to business branding", () => {
+    expect(
+      serializeAppointmentLocation(
+        { locationAddress: "Calle Falsa 123", locationLatitude: null, locationLongitude: null },
+        { address: "Dirección general" },
+      ),
+    ).toMatchObject({
+      address: "Calle Falsa 123",
+      mapsUrl: expect.stringContaining("Calle%20Falsa%20123"),
+    });
+
+    expect(
+      serializeAppointmentLocation(
+        { locationAddress: null, locationLatitude: -33.4, locationLongitude: -70.6 },
+        { address: "Dirección general" },
+      ),
+    ).toMatchObject({
+      address: "Dirección general",
+      latitude: -33.4,
+      longitude: -70.6,
+      mapsUrl: "https://www.google.com/maps?q=-33.4,-70.6",
+    });
+  });
+
+  it("builds a coordinate-based maps url when available", () => {
+    expect(buildMapsUrl({ address: null, latitude: 1, longitude: 2 })).toBe(
+      "https://www.google.com/maps?q=1,2",
+    );
   });
 });
 

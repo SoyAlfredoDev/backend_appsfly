@@ -9,6 +9,7 @@ import {
     ensureAppointmentSettings,
     mapBusinessBranding,
     resolveAppointmentBusinessContext,
+    serializeAppointmentLocation,
     serializeSettings,
 } from "./appointmentAccessService.js";
 import { assertSlotIsBookable, listAvailableSlots } from "./appointmentSlotService.js";
@@ -49,6 +50,8 @@ export async function getPublicAppointmentPage(businessId) {
             customerNotificationsEnabled: Boolean(ctx.settings.customerNotificationsEnabled),
             slotDurationMinutes: ctx.settings.slotDurationMinutes,
             maxDaysAhead: ctx.settings.maxDaysAhead,
+            galleryImageUrls: (ctx.settings.galleryImageUrls || []).filter(Boolean),
+            location: serializeAppointmentLocation(ctx.settings, ctx.branding),
         };
     } catch (error) {
         if (error.code === "BUSINESS_NOT_FOUND") throw error;
@@ -182,6 +185,19 @@ export async function updateTenantAppointmentSettings(prisma, businessId, payloa
                     payload.visitorMessage === undefined
                         ? undefined
                         : (payload.visitorMessage?.trim() || null),
+                galleryImageUrls: (payload.galleryImageUrls || []).filter(Boolean),
+                locationAddress:
+                    payload.locationAddress === undefined
+                        ? undefined
+                        : (payload.locationAddress?.trim() || null),
+                locationLatitude:
+                    payload.locationLatitude === undefined
+                        ? undefined
+                        : payload.locationLatitude,
+                locationLongitude:
+                    payload.locationLongitude === undefined
+                        ? undefined
+                        : payload.locationLongitude,
                 weeklyAvailability: {
                     create: (payload.weeklyAvailability || []).map((row) => ({
                         dayOfWeek: row.dayOfWeek,

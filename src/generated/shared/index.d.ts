@@ -45842,12 +45842,16 @@ export namespace Prisma {
     slotDurationMinutes: number | null
     maxConcurrentPerSlot: number | null
     maxDaysAhead: number | null
+    locationLatitude: number | null
+    locationLongitude: number | null
   }
 
   export type AppointmentSettingsSumAggregateOutputType = {
     slotDurationMinutes: number | null
     maxConcurrentPerSlot: number | null
     maxDaysAhead: number | null
+    locationLatitude: number | null
+    locationLongitude: number | null
   }
 
   export type AppointmentSettingsMinAggregateOutputType = {
@@ -45859,6 +45863,9 @@ export namespace Prisma {
     maxDaysAhead: number | null
     customerNotificationsEnabled: boolean | null
     visitorMessage: string | null
+    locationAddress: string | null
+    locationLatitude: number | null
+    locationLongitude: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -45872,6 +45879,9 @@ export namespace Prisma {
     maxDaysAhead: number | null
     customerNotificationsEnabled: boolean | null
     visitorMessage: string | null
+    locationAddress: string | null
+    locationLatitude: number | null
+    locationLongitude: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -45885,6 +45895,10 @@ export namespace Prisma {
     maxDaysAhead: number
     customerNotificationsEnabled: number
     visitorMessage: number
+    galleryImageUrls: number
+    locationAddress: number
+    locationLatitude: number
+    locationLongitude: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -45895,12 +45909,16 @@ export namespace Prisma {
     slotDurationMinutes?: true
     maxConcurrentPerSlot?: true
     maxDaysAhead?: true
+    locationLatitude?: true
+    locationLongitude?: true
   }
 
   export type AppointmentSettingsSumAggregateInputType = {
     slotDurationMinutes?: true
     maxConcurrentPerSlot?: true
     maxDaysAhead?: true
+    locationLatitude?: true
+    locationLongitude?: true
   }
 
   export type AppointmentSettingsMinAggregateInputType = {
@@ -45912,6 +45930,9 @@ export namespace Prisma {
     maxDaysAhead?: true
     customerNotificationsEnabled?: true
     visitorMessage?: true
+    locationAddress?: true
+    locationLatitude?: true
+    locationLongitude?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -45925,6 +45946,9 @@ export namespace Prisma {
     maxDaysAhead?: true
     customerNotificationsEnabled?: true
     visitorMessage?: true
+    locationAddress?: true
+    locationLatitude?: true
+    locationLongitude?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -45938,6 +45962,10 @@ export namespace Prisma {
     maxDaysAhead?: true
     customerNotificationsEnabled?: true
     visitorMessage?: true
+    galleryImageUrls?: true
+    locationAddress?: true
+    locationLatitude?: true
+    locationLongitude?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -46038,6 +46066,10 @@ export namespace Prisma {
     maxDaysAhead: number
     customerNotificationsEnabled: boolean
     visitorMessage: string | null
+    galleryImageUrls: string[]
+    locationAddress: string | null
+    locationLatitude: number | null
+    locationLongitude: number | null
     createdAt: Date
     updatedAt: Date
     _count: AppointmentSettingsCountAggregateOutputType | null
@@ -46070,6 +46102,10 @@ export namespace Prisma {
     maxDaysAhead?: boolean
     customerNotificationsEnabled?: boolean
     visitorMessage?: boolean
+    galleryImageUrls?: boolean
+    locationAddress?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     weeklyAvailability?: boolean | AppointmentSettings$weeklyAvailabilityArgs<ExtArgs>
@@ -46085,6 +46121,10 @@ export namespace Prisma {
     maxDaysAhead?: boolean
     customerNotificationsEnabled?: boolean
     visitorMessage?: boolean
+    galleryImageUrls?: boolean
+    locationAddress?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["appointmentSettings"]>
@@ -46098,6 +46138,10 @@ export namespace Prisma {
     maxDaysAhead?: boolean
     customerNotificationsEnabled?: boolean
     visitorMessage?: boolean
+    galleryImageUrls?: boolean
+    locationAddress?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["appointmentSettings"]>
@@ -46111,11 +46155,15 @@ export namespace Prisma {
     maxDaysAhead?: boolean
     customerNotificationsEnabled?: boolean
     visitorMessage?: boolean
+    galleryImageUrls?: boolean
+    locationAddress?: boolean
+    locationLatitude?: boolean
+    locationLongitude?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AppointmentSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "settingsId" | "appointmentsEnabled" | "slotDurationMinutes" | "maxConcurrentPerSlot" | "maxDaysAhead" | "customerNotificationsEnabled" | "visitorMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["appointmentSettings"]>
+  export type AppointmentSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "settingsId" | "appointmentsEnabled" | "slotDurationMinutes" | "maxConcurrentPerSlot" | "maxDaysAhead" | "customerNotificationsEnabled" | "visitorMessage" | "galleryImageUrls" | "locationAddress" | "locationLatitude" | "locationLongitude" | "createdAt" | "updatedAt", ExtArgs["result"]["appointmentSettings"]>
   export type AppointmentSettingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     weeklyAvailability?: boolean | AppointmentSettings$weeklyAvailabilityArgs<ExtArgs>
     _count?: boolean | AppointmentSettingsCountOutputTypeDefaultArgs<ExtArgs>
@@ -46145,6 +46193,18 @@ export namespace Prisma {
        */
       customerNotificationsEnabled: boolean
       visitorMessage: string | null
+      /**
+       * *
+       *    * Fotos del local en la página pública de agendamiento (máx. 3).
+       */
+      galleryImageUrls: string[]
+      /**
+       * *
+       *    * Dirección mostrada al agendar. Si es null, se usa la del negocio.
+       */
+      locationAddress: string | null
+      locationLatitude: number | null
+      locationLongitude: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["appointmentSettings"]>
@@ -46579,6 +46639,10 @@ export namespace Prisma {
     readonly maxDaysAhead: FieldRef<"AppointmentSettings", 'Int'>
     readonly customerNotificationsEnabled: FieldRef<"AppointmentSettings", 'Boolean'>
     readonly visitorMessage: FieldRef<"AppointmentSettings", 'String'>
+    readonly galleryImageUrls: FieldRef<"AppointmentSettings", 'String[]'>
+    readonly locationAddress: FieldRef<"AppointmentSettings", 'String'>
+    readonly locationLatitude: FieldRef<"AppointmentSettings", 'Float'>
+    readonly locationLongitude: FieldRef<"AppointmentSettings", 'Float'>
     readonly createdAt: FieldRef<"AppointmentSettings", 'DateTime'>
     readonly updatedAt: FieldRef<"AppointmentSettings", 'DateTime'>
   }
@@ -49930,6 +49994,10 @@ export namespace Prisma {
     maxDaysAhead: 'maxDaysAhead',
     customerNotificationsEnabled: 'customerNotificationsEnabled',
     visitorMessage: 'visitorMessage',
+    galleryImageUrls: 'galleryImageUrls',
+    locationAddress: 'locationAddress',
+    locationLatitude: 'locationLatitude',
+    locationLongitude: 'locationLongitude',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -50320,20 +50388,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'AppointmentStatus'
-   */
-  export type EnumAppointmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AppointmentStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'AppointmentStatus[]'
-   */
-  export type ListEnumAppointmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AppointmentStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -50344,6 +50398,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AppointmentStatus'
+   */
+  export type EnumAppointmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AppointmentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AppointmentStatus[]'
+   */
+  export type ListEnumAppointmentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AppointmentStatus[]'>
     
   /**
    * Deep Input Types
@@ -53851,6 +53919,10 @@ export namespace Prisma {
     maxDaysAhead?: IntFilter<"AppointmentSettings"> | number
     customerNotificationsEnabled?: BoolFilter<"AppointmentSettings"> | boolean
     visitorMessage?: StringNullableFilter<"AppointmentSettings"> | string | null
+    galleryImageUrls?: StringNullableListFilter<"AppointmentSettings">
+    locationAddress?: StringNullableFilter<"AppointmentSettings"> | string | null
+    locationLatitude?: FloatNullableFilter<"AppointmentSettings"> | number | null
+    locationLongitude?: FloatNullableFilter<"AppointmentSettings"> | number | null
     createdAt?: DateTimeFilter<"AppointmentSettings"> | Date | string
     updatedAt?: DateTimeFilter<"AppointmentSettings"> | Date | string
     weeklyAvailability?: AppointmentWeeklyAvailabilityListRelationFilter
@@ -53865,6 +53937,10 @@ export namespace Prisma {
     maxDaysAhead?: SortOrder
     customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrderInput | SortOrder
+    galleryImageUrls?: SortOrder
+    locationAddress?: SortOrderInput | SortOrder
+    locationLatitude?: SortOrderInput | SortOrder
+    locationLongitude?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     weeklyAvailability?: AppointmentWeeklyAvailabilityOrderByRelationAggregateInput
@@ -53883,6 +53959,10 @@ export namespace Prisma {
     maxDaysAhead?: IntFilter<"AppointmentSettings"> | number
     customerNotificationsEnabled?: BoolFilter<"AppointmentSettings"> | boolean
     visitorMessage?: StringNullableFilter<"AppointmentSettings"> | string | null
+    galleryImageUrls?: StringNullableListFilter<"AppointmentSettings">
+    locationAddress?: StringNullableFilter<"AppointmentSettings"> | string | null
+    locationLatitude?: FloatNullableFilter<"AppointmentSettings"> | number | null
+    locationLongitude?: FloatNullableFilter<"AppointmentSettings"> | number | null
     createdAt?: DateTimeFilter<"AppointmentSettings"> | Date | string
     updatedAt?: DateTimeFilter<"AppointmentSettings"> | Date | string
     weeklyAvailability?: AppointmentWeeklyAvailabilityListRelationFilter
@@ -53897,6 +53977,10 @@ export namespace Prisma {
     maxDaysAhead?: SortOrder
     customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrderInput | SortOrder
+    galleryImageUrls?: SortOrder
+    locationAddress?: SortOrderInput | SortOrder
+    locationLatitude?: SortOrderInput | SortOrder
+    locationLongitude?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AppointmentSettingsCountOrderByAggregateInput
@@ -53918,6 +54002,10 @@ export namespace Prisma {
     maxDaysAhead?: IntWithAggregatesFilter<"AppointmentSettings"> | number
     customerNotificationsEnabled?: BoolWithAggregatesFilter<"AppointmentSettings"> | boolean
     visitorMessage?: StringNullableWithAggregatesFilter<"AppointmentSettings"> | string | null
+    galleryImageUrls?: StringNullableListFilter<"AppointmentSettings">
+    locationAddress?: StringNullableWithAggregatesFilter<"AppointmentSettings"> | string | null
+    locationLatitude?: FloatNullableWithAggregatesFilter<"AppointmentSettings"> | number | null
+    locationLongitude?: FloatNullableWithAggregatesFilter<"AppointmentSettings"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"AppointmentSettings"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AppointmentSettings"> | Date | string
   }
@@ -57905,6 +57993,10 @@ export namespace Prisma {
     maxDaysAhead?: number
     customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
+    galleryImageUrls?: AppointmentSettingsCreategalleryImageUrlsInput | string[]
+    locationAddress?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     weeklyAvailability?: AppointmentWeeklyAvailabilityCreateNestedManyWithoutSettingsInput
@@ -57919,6 +58011,10 @@ export namespace Prisma {
     maxDaysAhead?: number
     customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
+    galleryImageUrls?: AppointmentSettingsCreategalleryImageUrlsInput | string[]
+    locationAddress?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     weeklyAvailability?: AppointmentWeeklyAvailabilityUncheckedCreateNestedManyWithoutSettingsInput
@@ -57933,6 +58029,10 @@ export namespace Prisma {
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
     customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryImageUrls?: AppointmentSettingsUpdategalleryImageUrlsInput | string[]
+    locationAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     weeklyAvailability?: AppointmentWeeklyAvailabilityUpdateManyWithoutSettingsNestedInput
@@ -57947,6 +58047,10 @@ export namespace Prisma {
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
     customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryImageUrls?: AppointmentSettingsUpdategalleryImageUrlsInput | string[]
+    locationAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     weeklyAvailability?: AppointmentWeeklyAvailabilityUncheckedUpdateManyWithoutSettingsNestedInput
@@ -57961,6 +58065,10 @@ export namespace Prisma {
     maxDaysAhead?: number
     customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
+    galleryImageUrls?: AppointmentSettingsCreategalleryImageUrlsInput | string[]
+    locationAddress?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -57974,6 +58082,10 @@ export namespace Prisma {
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
     customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryImageUrls?: AppointmentSettingsUpdategalleryImageUrlsInput | string[]
+    locationAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -57987,6 +58099,10 @@ export namespace Prisma {
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
     customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryImageUrls?: AppointmentSettingsUpdategalleryImageUrlsInput | string[]
+    locationAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -61151,6 +61267,25 @@ export namespace Prisma {
     sortOrder?: SortOrder
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type AppointmentWeeklyAvailabilityListRelationFilter = {
     every?: AppointmentWeeklyAvailabilityWhereInput
     some?: AppointmentWeeklyAvailabilityWhereInput
@@ -61175,6 +61310,10 @@ export namespace Prisma {
     maxDaysAhead?: SortOrder
     customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrder
+    galleryImageUrls?: SortOrder
+    locationAddress?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -61183,6 +61322,8 @@ export namespace Prisma {
     slotDurationMinutes?: SortOrder
     maxConcurrentPerSlot?: SortOrder
     maxDaysAhead?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
   }
 
   export type AppointmentSettingsMaxOrderByAggregateInput = {
@@ -61194,6 +61335,9 @@ export namespace Prisma {
     maxDaysAhead?: SortOrder
     customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrder
+    locationAddress?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -61207,6 +61351,9 @@ export namespace Prisma {
     maxDaysAhead?: SortOrder
     customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrder
+    locationAddress?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -61215,6 +61362,24 @@ export namespace Prisma {
     slotDurationMinutes?: SortOrder
     maxConcurrentPerSlot?: SortOrder
     maxDaysAhead?: SortOrder
+    locationLatitude?: SortOrder
+    locationLongitude?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type AppointmentSettingsScalarRelationFilter = {
@@ -65062,6 +65227,10 @@ export namespace Prisma {
     update?: XOR<XOR<PurchaseCertificateUpdateToOneWithWhereWithoutDetailsInput, PurchaseCertificateUpdateWithoutDetailsInput>, PurchaseCertificateUncheckedUpdateWithoutDetailsInput>
   }
 
+  export type AppointmentSettingsCreategalleryImageUrlsInput = {
+    set: string[]
+  }
+
   export type AppointmentWeeklyAvailabilityCreateNestedManyWithoutSettingsInput = {
     create?: XOR<AppointmentWeeklyAvailabilityCreateWithoutSettingsInput, AppointmentWeeklyAvailabilityUncheckedCreateWithoutSettingsInput> | AppointmentWeeklyAvailabilityCreateWithoutSettingsInput[] | AppointmentWeeklyAvailabilityUncheckedCreateWithoutSettingsInput[]
     connectOrCreate?: AppointmentWeeklyAvailabilityCreateOrConnectWithoutSettingsInput | AppointmentWeeklyAvailabilityCreateOrConnectWithoutSettingsInput[]
@@ -65074,6 +65243,19 @@ export namespace Prisma {
     connectOrCreate?: AppointmentWeeklyAvailabilityCreateOrConnectWithoutSettingsInput | AppointmentWeeklyAvailabilityCreateOrConnectWithoutSettingsInput[]
     createMany?: AppointmentWeeklyAvailabilityCreateManySettingsInputEnvelope
     connect?: AppointmentWeeklyAvailabilityWhereUniqueInput | AppointmentWeeklyAvailabilityWhereUniqueInput[]
+  }
+
+  export type AppointmentSettingsUpdategalleryImageUrlsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type AppointmentWeeklyAvailabilityUpdateManyWithoutSettingsNestedInput = {
@@ -65663,6 +65845,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPurchaseCertificateStatusFilter<$PrismaModel>
     _max?: NestedEnumPurchaseCertificateStatusFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumAppointmentStatusFilter<$PrismaModel = never> = {
@@ -78863,6 +79061,10 @@ export namespace Prisma {
     maxDaysAhead?: number
     customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
+    galleryImageUrls?: AppointmentSettingsCreategalleryImageUrlsInput | string[]
+    locationAddress?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -78876,6 +79078,10 @@ export namespace Prisma {
     maxDaysAhead?: number
     customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
+    galleryImageUrls?: AppointmentSettingsCreategalleryImageUrlsInput | string[]
+    locationAddress?: string | null
+    locationLatitude?: number | null
+    locationLongitude?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -78905,6 +79111,10 @@ export namespace Prisma {
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
     customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryImageUrls?: AppointmentSettingsUpdategalleryImageUrlsInput | string[]
+    locationAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -78918,6 +79128,10 @@ export namespace Prisma {
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
     customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    galleryImageUrls?: AppointmentSettingsUpdategalleryImageUrlsInput | string[]
+    locationAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    locationLatitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    locationLongitude?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

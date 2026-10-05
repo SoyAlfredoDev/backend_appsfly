@@ -658,6 +658,10 @@ exports.Prisma.AppointmentSettingsScalarFieldEnum = {
   maxDaysAhead: 'maxDaysAhead',
   customerNotificationsEnabled: 'customerNotificationsEnabled',
   visitorMessage: 'visitorMessage',
+  galleryImageUrls: 'galleryImageUrls',
+  locationAddress: 'locationAddress',
+  locationLatitude: 'locationLatitude',
+  locationLongitude: 'locationLongitude',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
