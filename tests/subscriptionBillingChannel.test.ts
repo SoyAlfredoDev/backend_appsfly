@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   canAdminAssignPlan,
   describeSubscriptionBilling,
-} from "../services/billing/subscriptionBillingChannel.ts";
+} from "../services/billing/subscriptionBillingChannel.js";
 
 const future = "2026-12-05T00:00:00.000Z";
 const past = "2026-01-01T00:00:00.000Z";

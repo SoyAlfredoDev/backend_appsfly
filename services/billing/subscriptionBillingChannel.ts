@@ -1,4 +1,4 @@
-import { checkoutUrlForPlan, findOpticsPlan, PLAN_IDS } from "./opticsPlanCatalog.ts";
+import { checkoutUrlForPlan, findOpticsPlan, PLAN_IDS } from "./opticsPlanCatalog.js";
 
 export type BillingChannel = "NONE" | "TRIAL" | "PAYMENT_LINK" | "PREAPPROVAL";
 
