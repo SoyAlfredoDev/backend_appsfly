@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { resolve4 } from "node:dns/promises";
+import { readdirSync } from "node:fs";
 import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -118,6 +119,68 @@ export function isRetryableDatabaseError(output) {
   );
 }
 
+export function isSchemaNotEmptyError(output) {
+  return /P3005|schema is not empty|db_schema_not_empty/i.test(output);
+}
+
+export function sharedMigrationFolders() {
+  const migrationsDir = path.join(backendDir, "prisma", "sharedDB", "migrations");
+  return readdirSync(migrationsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+}
+
+function runPrismaCli(args, env) {
+  return execFileSync("npx", ["prisma", ...args], {
+    cwd: backendDir,
+    encoding: "utf8",
+    env,
+    shell: process.platform === "win32",
+  });
+}
+
+export function baselineSharedMigrations(schema, env = process.env) {
+  const migrateEnv = migrationEnvForSchema(schema, env);
+  const migrationUrl = migrateEnv.DATABASE_SHARED_MIGRATION_URL;
+  if (!migrationUrl) {
+    throw new Error("DATABASE_SHARED_MIGRATION_URL is required to baseline the shared database.");
+  }
+
+  for (const folder of sharedMigrationFolders()) {
+    const sqlPath = path.join(
+      backendDir,
+      "prisma",
+      "sharedDB",
+      "migrations",
+      folder,
+      "migration.sql",
+    );
+    console.log(`Applying shared migration SQL: ${folder}`);
+    runPrismaCli(["db", "execute", "--url", migrationUrl, "--file", sqlPath], migrateEnv);
+    try {
+      runPrismaCli(["migrate", "resolve", "--applied", folder, "--schema", schema], migrateEnv);
+    } catch (error) {
+      const output = `${error.stdout ?? ""}\n${error.stderr ?? ""}`;
+      if (!/already|applied|P3008/i.test(output)) throw error;
+      console.warn(`Shared migration ${folder} was already marked as applied.`);
+    }
+  }
+}
+
+function runSharedMigrations(schema, env) {
+  try {
+    runPrismaMigrate(schema, env);
+  } catch (error) {
+    const output = `${error.stdout ?? ""}\n${error.stderr ?? ""}\n${error.message ?? ""}`;
+    if (!isSchemaNotEmptyError(output)) throw error;
+    console.warn(
+      "Shared database is not baselined. Running idempotent SQL and marking migrations.",
+    );
+    baselineSharedMigrations(schema, env);
+  }
+}
+
 function sleepSync(ms) {
   Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
@@ -201,7 +264,7 @@ export async function deployControlPlaneMigrations(env = process.env) {
   }
   const sharedSchema = path.join(backendDir, "prisma", "sharedDB", "schema.prisma");
   await prepareMigrationHost(sharedSchema, migrationEnv);
-  runPrismaMigrate(sharedSchema, migrationEnv);
+  runSharedMigrations(sharedSchema, migrationEnv);
 }
 
 async function main() {

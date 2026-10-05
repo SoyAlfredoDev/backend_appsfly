@@ -13,7 +13,9 @@ import {
 } from "../services/database/tenantUtilityAccess.js";
 import {
   ensureSharedMigrationEnv,
+  isSchemaNotEmptyError,
   isRetryableDatabaseError,
+  sharedMigrationFolders,
   migrationDatabaseUrl,
   migrationEnvForSchema,
   pinHostnameInHosts,
@@ -128,6 +130,19 @@ describe("Vercel build migrations", () => {
     expect(new URL(general.DATABASE_GENERAL_URL).hostname).toBe("ep-general.example");
     expect(shared.DATABASE_SHARED_URL).toBe(env.DATABASE_SHARED_URL);
     expect(new URL(shared.DATABASE_SHARED_MIGRATION_URL).hostname).toBe("ep-shared.example");
+  });
+
+  it("detects shared databases that still need a Prisma baseline", () => {
+    expect(isSchemaNotEmptyError("Error: P3005: The database schema is not empty.")).toBe(true);
+    expect(isSchemaNotEmptyError("db_schema_not_empty")).toBe(true);
+    expect(isSchemaNotEmptyError("Error: P3018: A migration failed to apply")).toBe(false);
+  });
+
+  it("lists shared migration folders in order", () => {
+    const folders = sharedMigrationFolders();
+    expect(folders.length).toBeGreaterThan(0);
+    expect(folders).toEqual([...folders].sort());
+    expect(folders.at(-1)).toContain("quick_sale");
   });
 
   it("retries only when the database server cannot be reached", () => {
