@@ -166,6 +166,8 @@ exports.Prisma.BusinessScalarFieldEnum = {
   businessReceiptEmail: 'businessReceiptEmail',
   businessReceiptSocial: 'businessReceiptSocial',
   businessReceiptFooterNote: 'businessReceiptFooterNote',
+  businessQuickSalePaymentMethod: 'businessQuickSalePaymentMethod',
+  businessQuickSaleDocumentType: 'businessQuickSaleDocumentType',
   createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

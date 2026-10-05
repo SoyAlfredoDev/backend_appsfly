@@ -40,6 +40,18 @@ describe("shared tenant database schema", () => {
     }
   });
 
+  it("keeps quick sale on the shared sale and a hidden walk-in customer", async () => {
+    const schema = await readFile(schemaPath, "utf8");
+    const migration = await readSharedMigrations();
+
+    expect(schema).toContain("enum SaleChannel");
+    expect(schema).toMatch(/saleChannel\s+SaleChannel\s+@default\(STANDARD\)/);
+    expect(schema).toMatch(/isWalkIn\s+Boolean\s+@default\(false\)/);
+    expect(migration).toContain('ADD COLUMN "isWalkIn"');
+    expect(migration).toContain('ADD COLUMN "saleChannel"');
+    expect(migration).toContain("Customer_businessId_one_walk_in_key");
+  });
+
   it("requires every expense to reference an expense category", async () => {
     const schema = await readFile(schemaPath, "utf8");
     const expense = schema.match(/^model Expense \{[\s\S]*?^\}/mu)?.[0] ?? "";

@@ -151,6 +151,7 @@ exports.Prisma.CustomerScalarFieldEnum = {
   customerImageUrl: 'customerImageUrl',
   customerBirthDate: 'customerBirthDate',
   customerAddress: 'customerAddress',
+  isWalkIn: 'isWalkIn',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdByUserId: 'createdByUserId'
@@ -279,6 +280,7 @@ exports.Prisma.SaleScalarFieldEnum = {
   salePendingAmount: 'salePendingAmount',
   createdByUserId: 'createdByUserId',
   saleComment: 'saleComment',
+  saleChannel: 'saleChannel',
   saleImageUrl: 'saleImageUrl',
   saleNumber: 'saleNumber',
   createdAt: 'createdAt',
@@ -652,7 +654,9 @@ exports.Prisma.AppointmentSettingsScalarFieldEnum = {
   settingsId: 'settingsId',
   appointmentsEnabled: 'appointmentsEnabled',
   slotDurationMinutes: 'slotDurationMinutes',
+  maxConcurrentPerSlot: 'maxConcurrentPerSlot',
   maxDaysAhead: 'maxDaysAhead',
+  customerNotificationsEnabled: 'customerNotificationsEnabled',
   visitorMessage: 'visitorMessage',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -676,6 +680,7 @@ exports.Prisma.AppointmentScalarFieldEnum = {
   lastName: 'lastName',
   phoneCode: 'phoneCode',
   phoneNumber: 'phoneNumber',
+  customerEmail: 'customerEmail',
   contactConsent: 'contactConsent',
   startsAt: 'startsAt',
   endsAt: 'endsAt',
@@ -763,6 +768,11 @@ exports.UsageContext = exports.$Enums.UsageContext = {
   PRODUCTS: 'PRODUCTS',
   SERVICES: 'SERVICES',
   BOTH: 'BOTH'
+};
+
+exports.SaleChannel = exports.$Enums.SaleChannel = {
+  STANDARD: 'STANDARD',
+  QUICK: 'QUICK'
 };
 
 exports.DocumentType = exports.$Enums.DocumentType = {

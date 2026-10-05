@@ -74,6 +74,11 @@ function withBusinessId(data, businessId) {
     return { businessId, ...data };
 }
 
+/**
+ * @param {import('@prisma/client').PrismaClient} prisma
+ * @param {string} createdByUserId
+ * @param {string | null} [businessId]
+ */
 export async function seedOpticsCatalog(prisma, createdByUserId, businessId = null) {
     if (!prisma || !createdByUserId) {
         throw new Error("seedOpticsCatalog requiere prisma y createdByUserId");

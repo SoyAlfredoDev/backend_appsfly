@@ -9,7 +9,7 @@ import {
   planIncludesCapability,
   checkoutUrlForPlan,
   publicFeatureLabels,
-} from "../services/billing/opticsPlanCatalog.ts";
+} from "../services/billing/opticsPlanCatalog.js";
 
 describe("optics plan catalog", () => {
   it("keeps restaurants empty", () => {

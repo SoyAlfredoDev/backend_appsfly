@@ -4744,6 +4744,8 @@ export namespace Prisma {
     businessReceiptEmail: string | null
     businessReceiptSocial: string | null
     businessReceiptFooterNote: string | null
+    businessQuickSalePaymentMethod: string | null
+    businessQuickSaleDocumentType: string | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4777,6 +4779,8 @@ export namespace Prisma {
     businessReceiptEmail: string | null
     businessReceiptSocial: string | null
     businessReceiptFooterNote: string | null
+    businessQuickSalePaymentMethod: string | null
+    businessQuickSaleDocumentType: string | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4811,6 +4815,8 @@ export namespace Prisma {
     businessReceiptEmail: number
     businessReceiptSocial: number
     businessReceiptFooterNote: number
+    businessQuickSalePaymentMethod: number
+    businessQuickSaleDocumentType: number
     createdByUserId: number
     createdAt: number
     updatedAt: number
@@ -4846,6 +4852,8 @@ export namespace Prisma {
     businessReceiptEmail?: true
     businessReceiptSocial?: true
     businessReceiptFooterNote?: true
+    businessQuickSalePaymentMethod?: true
+    businessQuickSaleDocumentType?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -4879,6 +4887,8 @@ export namespace Prisma {
     businessReceiptEmail?: true
     businessReceiptSocial?: true
     businessReceiptFooterNote?: true
+    businessQuickSalePaymentMethod?: true
+    businessQuickSaleDocumentType?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -4913,6 +4923,8 @@ export namespace Prisma {
     businessReceiptEmail?: true
     businessReceiptSocial?: true
     businessReceiptFooterNote?: true
+    businessQuickSalePaymentMethod?: true
+    businessQuickSaleDocumentType?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -5020,6 +5032,8 @@ export namespace Prisma {
     businessReceiptEmail: string | null
     businessReceiptSocial: string | null
     businessReceiptFooterNote: string | null
+    businessQuickSalePaymentMethod: string
+    businessQuickSaleDocumentType: string
     createdByUserId: string | null
     createdAt: Date
     updatedAt: Date
@@ -5071,6 +5085,8 @@ export namespace Prisma {
     businessReceiptEmail?: boolean
     businessReceiptSocial?: boolean
     businessReceiptFooterNote?: boolean
+    businessQuickSalePaymentMethod?: boolean
+    businessQuickSaleDocumentType?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5113,6 +5129,8 @@ export namespace Prisma {
     businessReceiptEmail?: boolean
     businessReceiptSocial?: boolean
     businessReceiptFooterNote?: boolean
+    businessQuickSalePaymentMethod?: boolean
+    businessQuickSaleDocumentType?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5148,6 +5166,8 @@ export namespace Prisma {
     businessReceiptEmail?: boolean
     businessReceiptSocial?: boolean
     businessReceiptFooterNote?: boolean
+    businessQuickSalePaymentMethod?: boolean
+    businessQuickSaleDocumentType?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -5183,12 +5203,14 @@ export namespace Prisma {
     businessReceiptEmail?: boolean
     businessReceiptSocial?: boolean
     businessReceiptFooterNote?: boolean
+    businessQuickSalePaymentMethod?: boolean
+    businessQuickSaleDocumentType?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BusinessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "businessName" | "businessType" | "businessDocumentType" | "businessDocumentNumber" | "businessEmail" | "businessPhoneNumber" | "businessCodePhoneNumber" | "businessCountry" | "businessCodeWhatsappNumber" | "businessWhatsappNumber" | "businessConnectionDB" | "businessDatabaseMode" | "businessDatabaseStatus" | "businessDatabaseSecretRef" | "businessSchemaVersion" | "businessEntity" | "businessStatus" | "businessProcess" | "businessAllowCreditSales" | "businessDeliveryControlEnabled" | "businessTimezone" | "businessReceiptLogoUrl" | "businessReceiptAddress" | "businessReceiptPhone" | "businessReceiptEmail" | "businessReceiptSocial" | "businessReceiptFooterNote" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
+  export type BusinessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "businessName" | "businessType" | "businessDocumentType" | "businessDocumentNumber" | "businessEmail" | "businessPhoneNumber" | "businessCodePhoneNumber" | "businessCountry" | "businessCodeWhatsappNumber" | "businessWhatsappNumber" | "businessConnectionDB" | "businessDatabaseMode" | "businessDatabaseStatus" | "businessDatabaseSecretRef" | "businessSchemaVersion" | "businessEntity" | "businessStatus" | "businessProcess" | "businessAllowCreditSales" | "businessDeliveryControlEnabled" | "businessTimezone" | "businessReceiptLogoUrl" | "businessReceiptAddress" | "businessReceiptPhone" | "businessReceiptEmail" | "businessReceiptSocial" | "businessReceiptFooterNote" | "businessQuickSalePaymentMethod" | "businessQuickSaleDocumentType" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["business"]>
   export type BusinessInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | Business$createdByArgs<ExtArgs>
     UserGuest?: boolean | Business$UserGuestArgs<ExtArgs>
@@ -5255,6 +5277,14 @@ export namespace Prisma {
       businessReceiptEmail: string | null
       businessReceiptSocial: string | null
       businessReceiptFooterNote: string | null
+      /**
+       * * Medio de pago preseleccionado en la caja rápida: 0 débito, 1 crédito, 2 efectivo, 3 transferencia.
+       */
+      businessQuickSalePaymentMethod: string
+      /**
+       * * Comprobante de la caja rápida: RECEIPT o BOLETA.
+       */
+      businessQuickSaleDocumentType: string
       createdByUserId: string | null
       createdAt: Date
       updatedAt: Date
@@ -5716,6 +5746,8 @@ export namespace Prisma {
     readonly businessReceiptEmail: FieldRef<"Business", 'String'>
     readonly businessReceiptSocial: FieldRef<"Business", 'String'>
     readonly businessReceiptFooterNote: FieldRef<"Business", 'String'>
+    readonly businessQuickSalePaymentMethod: FieldRef<"Business", 'String'>
+    readonly businessQuickSaleDocumentType: FieldRef<"Business", 'String'>
     readonly createdByUserId: FieldRef<"Business", 'String'>
     readonly createdAt: FieldRef<"Business", 'DateTime'>
     readonly updatedAt: FieldRef<"Business", 'DateTime'>
@@ -27449,6 +27481,8 @@ export namespace Prisma {
     businessReceiptEmail: 'businessReceiptEmail',
     businessReceiptSocial: 'businessReceiptSocial',
     businessReceiptFooterNote: 'businessReceiptFooterNote',
+    businessQuickSalePaymentMethod: 'businessQuickSalePaymentMethod',
+    businessQuickSaleDocumentType: 'businessQuickSaleDocumentType',
     createdByUserId: 'createdByUserId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -28411,6 +28445,8 @@ export namespace Prisma {
     businessReceiptEmail?: StringNullableFilter<"Business"> | string | null
     businessReceiptSocial?: StringNullableFilter<"Business"> | string | null
     businessReceiptFooterNote?: StringNullableFilter<"Business"> | string | null
+    businessQuickSalePaymentMethod?: StringFilter<"Business"> | string
+    businessQuickSaleDocumentType?: StringFilter<"Business"> | string
     createdByUserId?: StringNullableFilter<"Business"> | string | null
     createdAt?: DateTimeFilter<"Business"> | Date | string
     updatedAt?: DateTimeFilter<"Business"> | Date | string
@@ -28452,6 +28488,8 @@ export namespace Prisma {
     businessReceiptEmail?: SortOrderInput | SortOrder
     businessReceiptSocial?: SortOrderInput | SortOrder
     businessReceiptFooterNote?: SortOrderInput | SortOrder
+    businessQuickSalePaymentMethod?: SortOrder
+    businessQuickSaleDocumentType?: SortOrder
     createdByUserId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -28496,6 +28534,8 @@ export namespace Prisma {
     businessReceiptEmail?: StringNullableFilter<"Business"> | string | null
     businessReceiptSocial?: StringNullableFilter<"Business"> | string | null
     businessReceiptFooterNote?: StringNullableFilter<"Business"> | string | null
+    businessQuickSalePaymentMethod?: StringFilter<"Business"> | string
+    businessQuickSaleDocumentType?: StringFilter<"Business"> | string
     createdByUserId?: StringNullableFilter<"Business"> | string | null
     createdAt?: DateTimeFilter<"Business"> | Date | string
     updatedAt?: DateTimeFilter<"Business"> | Date | string
@@ -28537,6 +28577,8 @@ export namespace Prisma {
     businessReceiptEmail?: SortOrderInput | SortOrder
     businessReceiptSocial?: SortOrderInput | SortOrder
     businessReceiptFooterNote?: SortOrderInput | SortOrder
+    businessQuickSalePaymentMethod?: SortOrder
+    businessQuickSaleDocumentType?: SortOrder
     createdByUserId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -28577,6 +28619,8 @@ export namespace Prisma {
     businessReceiptEmail?: StringNullableWithAggregatesFilter<"Business"> | string | null
     businessReceiptSocial?: StringNullableWithAggregatesFilter<"Business"> | string | null
     businessReceiptFooterNote?: StringNullableWithAggregatesFilter<"Business"> | string | null
+    businessQuickSalePaymentMethod?: StringWithAggregatesFilter<"Business"> | string
+    businessQuickSaleDocumentType?: StringWithAggregatesFilter<"Business"> | string
     createdByUserId?: StringNullableWithAggregatesFilter<"Business"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Business"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Business"> | Date | string
@@ -30471,6 +30515,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -30511,6 +30557,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30551,6 +30599,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -30591,6 +30641,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30631,6 +30683,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30665,6 +30719,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30698,6 +30754,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33002,6 +33060,8 @@ export namespace Prisma {
     businessReceiptEmail?: SortOrder
     businessReceiptSocial?: SortOrder
     businessReceiptFooterNote?: SortOrder
+    businessQuickSalePaymentMethod?: SortOrder
+    businessQuickSaleDocumentType?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -33035,6 +33095,8 @@ export namespace Prisma {
     businessReceiptEmail?: SortOrder
     businessReceiptSocial?: SortOrder
     businessReceiptFooterNote?: SortOrder
+    businessQuickSalePaymentMethod?: SortOrder
+    businessQuickSaleDocumentType?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -33068,6 +33130,8 @@ export namespace Prisma {
     businessReceiptEmail?: SortOrder
     businessReceiptSocial?: SortOrder
     businessReceiptFooterNote?: SortOrder
+    businessQuickSalePaymentMethod?: SortOrder
+    businessQuickSaleDocumentType?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -36761,6 +36825,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     UserGuest?: UserGuestCreateNestedManyWithoutBusinessInput
@@ -36800,6 +36866,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     UserGuest?: UserGuestUncheckedCreateNestedManyWithoutBusinessInput
@@ -37245,6 +37313,8 @@ export namespace Prisma {
     businessReceiptEmail?: StringNullableFilter<"Business"> | string | null
     businessReceiptSocial?: StringNullableFilter<"Business"> | string | null
     businessReceiptFooterNote?: StringNullableFilter<"Business"> | string | null
+    businessQuickSalePaymentMethod?: StringFilter<"Business"> | string
+    businessQuickSaleDocumentType?: StringFilter<"Business"> | string
     createdByUserId?: StringNullableFilter<"Business"> | string | null
     createdAt?: DateTimeFilter<"Business"> | Date | string
     updatedAt?: DateTimeFilter<"Business"> | Date | string
@@ -38022,6 +38092,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -38061,6 +38133,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38116,6 +38190,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -38155,6 +38231,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38249,6 +38327,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -38288,6 +38368,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38404,6 +38486,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -38443,6 +38527,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38537,6 +38623,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -38576,6 +38664,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38692,6 +38782,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -38731,6 +38823,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38988,6 +39082,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -39027,6 +39123,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -39276,6 +39374,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -39315,6 +39415,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39433,6 +39535,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -39472,6 +39576,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -39635,6 +39741,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -39674,6 +39782,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39821,6 +39931,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutBusinessesInput
@@ -39860,6 +39972,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdByUserId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -40058,6 +40172,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutBusinessesNestedInput
@@ -40097,6 +40213,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41226,6 +41344,8 @@ export namespace Prisma {
     businessReceiptEmail?: string | null
     businessReceiptSocial?: string | null
     businessReceiptFooterNote?: string | null
+    businessQuickSalePaymentMethod?: string
+    businessQuickSaleDocumentType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -41431,6 +41551,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserGuest?: UserGuestUpdateManyWithoutBusinessNestedInput
@@ -41470,6 +41592,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserGuest?: UserGuestUncheckedUpdateManyWithoutBusinessNestedInput
@@ -41509,6 +41633,8 @@ export namespace Prisma {
     businessReceiptEmail?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptSocial?: NullableStringFieldUpdateOperationsInput | string | null
     businessReceiptFooterNote?: NullableStringFieldUpdateOperationsInput | string | null
+    businessQuickSalePaymentMethod?: StringFieldUpdateOperationsInput | string
+    businessQuickSaleDocumentType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

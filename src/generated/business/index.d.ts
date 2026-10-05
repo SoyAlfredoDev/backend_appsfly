@@ -280,6 +280,14 @@ export const InventoryReferenceType: {
 export type InventoryReferenceType = (typeof InventoryReferenceType)[keyof typeof InventoryReferenceType]
 
 
+export const SaleChannel: {
+  STANDARD: 'STANDARD',
+  QUICK: 'QUICK'
+};
+
+export type SaleChannel = (typeof SaleChannel)[keyof typeof SaleChannel]
+
+
 export const DocumentType: {
   RECEIPT: 'RECEIPT',
   BOLETA: 'BOLETA',
@@ -408,6 +416,10 @@ export const InventoryMovementType: typeof $Enums.InventoryMovementType
 export type InventoryReferenceType = $Enums.InventoryReferenceType
 
 export const InventoryReferenceType: typeof $Enums.InventoryReferenceType
+
+export type SaleChannel = $Enums.SaleChannel
+
+export const SaleChannel: typeof $Enums.SaleChannel
 
 export type DocumentType = $Enums.DocumentType
 
@@ -7148,6 +7160,7 @@ export namespace Prisma {
     customerImageUrl: string | null
     customerBirthDate: Date | null
     customerAddress: string | null
+    isWalkIn: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     createdByUserId: string | null
@@ -7166,6 +7179,7 @@ export namespace Prisma {
     customerImageUrl: string | null
     customerBirthDate: Date | null
     customerAddress: string | null
+    isWalkIn: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     createdByUserId: string | null
@@ -7184,6 +7198,7 @@ export namespace Prisma {
     customerImageUrl: number
     customerBirthDate: number
     customerAddress: number
+    isWalkIn: number
     createdAt: number
     updatedAt: number
     createdByUserId: number
@@ -7204,6 +7219,7 @@ export namespace Prisma {
     customerImageUrl?: true
     customerBirthDate?: true
     customerAddress?: true
+    isWalkIn?: true
     createdAt?: true
     updatedAt?: true
     createdByUserId?: true
@@ -7222,6 +7238,7 @@ export namespace Prisma {
     customerImageUrl?: true
     customerBirthDate?: true
     customerAddress?: true
+    isWalkIn?: true
     createdAt?: true
     updatedAt?: true
     createdByUserId?: true
@@ -7240,6 +7257,7 @@ export namespace Prisma {
     customerImageUrl?: true
     customerBirthDate?: true
     customerAddress?: true
+    isWalkIn?: true
     createdAt?: true
     updatedAt?: true
     createdByUserId?: true
@@ -7331,6 +7349,7 @@ export namespace Prisma {
     customerImageUrl: string | null
     customerBirthDate: Date | null
     customerAddress: string | null
+    isWalkIn: boolean
     createdAt: Date
     updatedAt: Date
     createdByUserId: string
@@ -7366,6 +7385,7 @@ export namespace Prisma {
     customerImageUrl?: boolean
     customerBirthDate?: boolean
     customerAddress?: boolean
+    isWalkIn?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
@@ -7392,6 +7412,7 @@ export namespace Prisma {
     customerImageUrl?: boolean
     customerBirthDate?: boolean
     customerAddress?: boolean
+    isWalkIn?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
@@ -7411,6 +7432,7 @@ export namespace Prisma {
     customerImageUrl?: boolean
     customerBirthDate?: boolean
     customerAddress?: boolean
+    isWalkIn?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
@@ -7430,12 +7452,13 @@ export namespace Prisma {
     customerImageUrl?: boolean
     customerBirthDate?: boolean
     customerAddress?: boolean
+    isWalkIn?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
   }
 
-  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"customerId" | "customerFirstName" | "customerLastName" | "customerEmail" | "customerCodePhoneNumber" | "customerPhoneNumber" | "customerDocumentType" | "customerDocumentNumber" | "customerComment" | "customerImageUrl" | "customerBirthDate" | "customerAddress" | "createdAt" | "updatedAt" | "createdByUserId", ExtArgs["result"]["customer"]>
+  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"customerId" | "customerFirstName" | "customerLastName" | "customerEmail" | "customerCodePhoneNumber" | "customerPhoneNumber" | "customerDocumentType" | "customerDocumentNumber" | "customerComment" | "customerImageUrl" | "customerBirthDate" | "customerAddress" | "isWalkIn" | "createdAt" | "updatedAt" | "createdByUserId", ExtArgs["result"]["customer"]>
   export type CustomerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | Customer$createdByArgs<ExtArgs>
     Sale?: boolean | Customer$SaleArgs<ExtArgs>
@@ -7486,6 +7509,10 @@ export namespace Prisma {
        * * Dirección (útil en óptica; opcional)
        */
       customerAddress: string | null
+      /**
+       * * Cliente de sistema para la caja rápida. No aparece en el listado de clientes.
+       */
+      isWalkIn: boolean
       createdAt: Date
       updatedAt: Date
       createdByUserId: string
@@ -7931,6 +7958,7 @@ export namespace Prisma {
     readonly customerImageUrl: FieldRef<"Customer", 'String'>
     readonly customerBirthDate: FieldRef<"Customer", 'DateTime'>
     readonly customerAddress: FieldRef<"Customer", 'String'>
+    readonly isWalkIn: FieldRef<"Customer", 'Boolean'>
     readonly createdAt: FieldRef<"Customer", 'DateTime'>
     readonly updatedAt: FieldRef<"Customer", 'DateTime'>
     readonly createdByUserId: FieldRef<"Customer", 'String'>
@@ -18108,6 +18136,7 @@ export namespace Prisma {
     salePendingAmount: number | null
     createdByUserId: string | null
     saleComment: string | null
+    saleChannel: $Enums.SaleChannel | null
     saleImageUrl: string | null
     saleNumber: string | null
     createdAt: Date | null
@@ -18126,6 +18155,7 @@ export namespace Prisma {
     salePendingAmount: number | null
     createdByUserId: string | null
     saleComment: string | null
+    saleChannel: $Enums.SaleChannel | null
     saleImageUrl: string | null
     saleNumber: string | null
     createdAt: Date | null
@@ -18144,6 +18174,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: number
     saleComment: number
+    saleChannel: number
     saleImageUrl: number
     saleNumber: number
     createdAt: number
@@ -18176,6 +18207,7 @@ export namespace Prisma {
     salePendingAmount?: true
     createdByUserId?: true
     saleComment?: true
+    saleChannel?: true
     saleImageUrl?: true
     saleNumber?: true
     createdAt?: true
@@ -18194,6 +18226,7 @@ export namespace Prisma {
     salePendingAmount?: true
     createdByUserId?: true
     saleComment?: true
+    saleChannel?: true
     saleImageUrl?: true
     saleNumber?: true
     createdAt?: true
@@ -18212,6 +18245,7 @@ export namespace Prisma {
     salePendingAmount?: true
     createdByUserId?: true
     saleComment?: true
+    saleChannel?: true
     saleImageUrl?: true
     saleNumber?: true
     createdAt?: true
@@ -18317,6 +18351,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment: string | null
+    saleChannel: $Enums.SaleChannel
     saleImageUrl: string | null
     saleNumber: string | null
     createdAt: Date
@@ -18354,6 +18389,7 @@ export namespace Prisma {
     salePendingAmount?: boolean
     createdByUserId?: boolean
     saleComment?: boolean
+    saleChannel?: boolean
     saleImageUrl?: boolean
     saleNumber?: boolean
     createdAt?: boolean
@@ -18381,6 +18417,7 @@ export namespace Prisma {
     salePendingAmount?: boolean
     createdByUserId?: boolean
     saleComment?: boolean
+    saleChannel?: boolean
     saleImageUrl?: boolean
     saleNumber?: boolean
     createdAt?: boolean
@@ -18402,6 +18439,7 @@ export namespace Prisma {
     salePendingAmount?: boolean
     createdByUserId?: boolean
     saleComment?: boolean
+    saleChannel?: boolean
     saleImageUrl?: boolean
     saleNumber?: boolean
     createdAt?: boolean
@@ -18423,6 +18461,7 @@ export namespace Prisma {
     salePendingAmount?: boolean
     createdByUserId?: boolean
     saleComment?: boolean
+    saleChannel?: boolean
     saleImageUrl?: boolean
     saleNumber?: boolean
     createdAt?: boolean
@@ -18433,7 +18472,7 @@ export namespace Prisma {
     saleDeliveredByUserId?: boolean
   }
 
-  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"saleId" | "saleCustomerId" | "saleTotal" | "saleTotalPayments" | "salePendingAmount" | "createdByUserId" | "saleComment" | "saleImageUrl" | "saleNumber" | "createdAt" | "updatedAt" | "documentType" | "saleDeliveryStatus" | "saleDeliveredAt" | "saleDeliveredByUserId", ExtArgs["result"]["sale"]>
+  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"saleId" | "saleCustomerId" | "saleTotal" | "saleTotalPayments" | "salePendingAmount" | "createdByUserId" | "saleComment" | "saleChannel" | "saleImageUrl" | "saleNumber" | "createdAt" | "updatedAt" | "documentType" | "saleDeliveryStatus" | "saleDeliveredAt" | "saleDeliveredByUserId", ExtArgs["result"]["sale"]>
   export type SaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
@@ -18476,6 +18515,10 @@ export namespace Prisma {
       salePendingAmount: number
       createdByUserId: string
       saleComment: string | null
+      /**
+       * * STANDARD en el registro completo. QUICK en la caja rápida.
+       */
+      saleChannel: $Enums.SaleChannel
       /**
        * * Comprobante / respaldo visual — URL Cloudinary (opcional)
        */
@@ -18931,6 +18974,7 @@ export namespace Prisma {
     readonly salePendingAmount: FieldRef<"Sale", 'Int'>
     readonly createdByUserId: FieldRef<"Sale", 'String'>
     readonly saleComment: FieldRef<"Sale", 'String'>
+    readonly saleChannel: FieldRef<"Sale", 'SaleChannel'>
     readonly saleImageUrl: FieldRef<"Sale", 'String'>
     readonly saleNumber: FieldRef<"Sale", 'String'>
     readonly createdAt: FieldRef<"Sale", 'DateTime'>
@@ -45350,11 +45394,13 @@ export namespace Prisma {
 
   export type AppointmentSettingsAvgAggregateOutputType = {
     slotDurationMinutes: number | null
+    maxConcurrentPerSlot: number | null
     maxDaysAhead: number | null
   }
 
   export type AppointmentSettingsSumAggregateOutputType = {
     slotDurationMinutes: number | null
+    maxConcurrentPerSlot: number | null
     maxDaysAhead: number | null
   }
 
@@ -45362,7 +45408,9 @@ export namespace Prisma {
     settingsId: string | null
     appointmentsEnabled: boolean | null
     slotDurationMinutes: number | null
+    maxConcurrentPerSlot: number | null
     maxDaysAhead: number | null
+    customerNotificationsEnabled: boolean | null
     visitorMessage: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -45372,7 +45420,9 @@ export namespace Prisma {
     settingsId: string | null
     appointmentsEnabled: boolean | null
     slotDurationMinutes: number | null
+    maxConcurrentPerSlot: number | null
     maxDaysAhead: number | null
+    customerNotificationsEnabled: boolean | null
     visitorMessage: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -45382,7 +45432,9 @@ export namespace Prisma {
     settingsId: number
     appointmentsEnabled: number
     slotDurationMinutes: number
+    maxConcurrentPerSlot: number
     maxDaysAhead: number
+    customerNotificationsEnabled: number
     visitorMessage: number
     createdAt: number
     updatedAt: number
@@ -45392,11 +45444,13 @@ export namespace Prisma {
 
   export type AppointmentSettingsAvgAggregateInputType = {
     slotDurationMinutes?: true
+    maxConcurrentPerSlot?: true
     maxDaysAhead?: true
   }
 
   export type AppointmentSettingsSumAggregateInputType = {
     slotDurationMinutes?: true
+    maxConcurrentPerSlot?: true
     maxDaysAhead?: true
   }
 
@@ -45404,7 +45458,9 @@ export namespace Prisma {
     settingsId?: true
     appointmentsEnabled?: true
     slotDurationMinutes?: true
+    maxConcurrentPerSlot?: true
     maxDaysAhead?: true
+    customerNotificationsEnabled?: true
     visitorMessage?: true
     createdAt?: true
     updatedAt?: true
@@ -45414,7 +45470,9 @@ export namespace Prisma {
     settingsId?: true
     appointmentsEnabled?: true
     slotDurationMinutes?: true
+    maxConcurrentPerSlot?: true
     maxDaysAhead?: true
+    customerNotificationsEnabled?: true
     visitorMessage?: true
     createdAt?: true
     updatedAt?: true
@@ -45424,7 +45482,9 @@ export namespace Prisma {
     settingsId?: true
     appointmentsEnabled?: true
     slotDurationMinutes?: true
+    maxConcurrentPerSlot?: true
     maxDaysAhead?: true
+    customerNotificationsEnabled?: true
     visitorMessage?: true
     createdAt?: true
     updatedAt?: true
@@ -45521,7 +45581,9 @@ export namespace Prisma {
     settingsId: string
     appointmentsEnabled: boolean
     slotDurationMinutes: number
+    maxConcurrentPerSlot: number
     maxDaysAhead: number
+    customerNotificationsEnabled: boolean
     visitorMessage: string | null
     createdAt: Date
     updatedAt: Date
@@ -45550,7 +45612,9 @@ export namespace Prisma {
     settingsId?: boolean
     appointmentsEnabled?: boolean
     slotDurationMinutes?: boolean
+    maxConcurrentPerSlot?: boolean
     maxDaysAhead?: boolean
+    customerNotificationsEnabled?: boolean
     visitorMessage?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -45562,7 +45626,9 @@ export namespace Prisma {
     settingsId?: boolean
     appointmentsEnabled?: boolean
     slotDurationMinutes?: boolean
+    maxConcurrentPerSlot?: boolean
     maxDaysAhead?: boolean
+    customerNotificationsEnabled?: boolean
     visitorMessage?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -45572,7 +45638,9 @@ export namespace Prisma {
     settingsId?: boolean
     appointmentsEnabled?: boolean
     slotDurationMinutes?: boolean
+    maxConcurrentPerSlot?: boolean
     maxDaysAhead?: boolean
+    customerNotificationsEnabled?: boolean
     visitorMessage?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -45582,13 +45650,15 @@ export namespace Prisma {
     settingsId?: boolean
     appointmentsEnabled?: boolean
     slotDurationMinutes?: boolean
+    maxConcurrentPerSlot?: boolean
     maxDaysAhead?: boolean
+    customerNotificationsEnabled?: boolean
     visitorMessage?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type AppointmentSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"settingsId" | "appointmentsEnabled" | "slotDurationMinutes" | "maxDaysAhead" | "visitorMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["appointmentSettings"]>
+  export type AppointmentSettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"settingsId" | "appointmentsEnabled" | "slotDurationMinutes" | "maxConcurrentPerSlot" | "maxDaysAhead" | "customerNotificationsEnabled" | "visitorMessage" | "createdAt" | "updatedAt", ExtArgs["result"]["appointmentSettings"]>
   export type AppointmentSettingsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     weeklyAvailability?: boolean | AppointmentSettings$weeklyAvailabilityArgs<ExtArgs>
     _count?: boolean | AppointmentSettingsCountOutputTypeDefaultArgs<ExtArgs>
@@ -45605,7 +45675,15 @@ export namespace Prisma {
       settingsId: string
       appointmentsEnabled: boolean
       slotDurationMinutes: number
+      /**
+       * * Cuántas citas pueden compartir el mismo inicio. 1 = un cliente por hora.
+       */
+      maxConcurrentPerSlot: number
       maxDaysAhead: number
+      /**
+       * * Si es true, el visitante deja un correo y recibe avisos de la cita.
+       */
+      customerNotificationsEnabled: boolean
       visitorMessage: string | null
       createdAt: Date
       updatedAt: Date
@@ -46036,7 +46114,9 @@ export namespace Prisma {
     readonly settingsId: FieldRef<"AppointmentSettings", 'String'>
     readonly appointmentsEnabled: FieldRef<"AppointmentSettings", 'Boolean'>
     readonly slotDurationMinutes: FieldRef<"AppointmentSettings", 'Int'>
+    readonly maxConcurrentPerSlot: FieldRef<"AppointmentSettings", 'Int'>
     readonly maxDaysAhead: FieldRef<"AppointmentSettings", 'Int'>
+    readonly customerNotificationsEnabled: FieldRef<"AppointmentSettings", 'Boolean'>
     readonly visitorMessage: FieldRef<"AppointmentSettings", 'String'>
     readonly createdAt: FieldRef<"AppointmentSettings", 'DateTime'>
     readonly updatedAt: FieldRef<"AppointmentSettings", 'DateTime'>
@@ -47613,6 +47693,7 @@ export namespace Prisma {
     lastName: string | null
     phoneCode: string | null
     phoneNumber: string | null
+    customerEmail: string | null
     contactConsent: boolean | null
     startsAt: Date | null
     endsAt: Date | null
@@ -47629,6 +47710,7 @@ export namespace Prisma {
     lastName: string | null
     phoneCode: string | null
     phoneNumber: string | null
+    customerEmail: string | null
     contactConsent: boolean | null
     startsAt: Date | null
     endsAt: Date | null
@@ -47645,6 +47727,7 @@ export namespace Prisma {
     lastName: number
     phoneCode: number
     phoneNumber: number
+    customerEmail: number
     contactConsent: number
     startsAt: number
     endsAt: number
@@ -47663,6 +47746,7 @@ export namespace Prisma {
     lastName?: true
     phoneCode?: true
     phoneNumber?: true
+    customerEmail?: true
     contactConsent?: true
     startsAt?: true
     endsAt?: true
@@ -47679,6 +47763,7 @@ export namespace Prisma {
     lastName?: true
     phoneCode?: true
     phoneNumber?: true
+    customerEmail?: true
     contactConsent?: true
     startsAt?: true
     endsAt?: true
@@ -47695,6 +47780,7 @@ export namespace Prisma {
     lastName?: true
     phoneCode?: true
     phoneNumber?: true
+    customerEmail?: true
     contactConsent?: true
     startsAt?: true
     endsAt?: true
@@ -47784,6 +47870,7 @@ export namespace Prisma {
     lastName: string
     phoneCode: string
     phoneNumber: string
+    customerEmail: string | null
     contactConsent: boolean
     startsAt: Date
     endsAt: Date
@@ -47817,6 +47904,7 @@ export namespace Prisma {
     lastName?: boolean
     phoneCode?: boolean
     phoneNumber?: boolean
+    customerEmail?: boolean
     contactConsent?: boolean
     startsAt?: boolean
     endsAt?: boolean
@@ -47833,6 +47921,7 @@ export namespace Prisma {
     lastName?: boolean
     phoneCode?: boolean
     phoneNumber?: boolean
+    customerEmail?: boolean
     contactConsent?: boolean
     startsAt?: boolean
     endsAt?: boolean
@@ -47849,6 +47938,7 @@ export namespace Prisma {
     lastName?: boolean
     phoneCode?: boolean
     phoneNumber?: boolean
+    customerEmail?: boolean
     contactConsent?: boolean
     startsAt?: boolean
     endsAt?: boolean
@@ -47865,6 +47955,7 @@ export namespace Prisma {
     lastName?: boolean
     phoneCode?: boolean
     phoneNumber?: boolean
+    customerEmail?: boolean
     contactConsent?: boolean
     startsAt?: boolean
     endsAt?: boolean
@@ -47875,7 +47966,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"appointmentId" | "firstName" | "lastName" | "phoneCode" | "phoneNumber" | "contactConsent" | "startsAt" | "endsAt" | "status" | "notes" | "staffNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["appointment"]>
+  export type AppointmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"appointmentId" | "firstName" | "lastName" | "phoneCode" | "phoneNumber" | "customerEmail" | "contactConsent" | "startsAt" | "endsAt" | "status" | "notes" | "staffNotes" | "createdAt" | "updatedAt", ExtArgs["result"]["appointment"]>
 
   export type $AppointmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Appointment"
@@ -47886,6 +47977,10 @@ export namespace Prisma {
       lastName: string
       phoneCode: string
       phoneNumber: string
+      /**
+       * * Correo del visitante cuando el negocio tiene avisos activos.
+       */
+      customerEmail: string | null
       contactConsent: boolean
       startsAt: Date
       endsAt: Date
@@ -48322,6 +48417,7 @@ export namespace Prisma {
     readonly lastName: FieldRef<"Appointment", 'String'>
     readonly phoneCode: FieldRef<"Appointment", 'String'>
     readonly phoneNumber: FieldRef<"Appointment", 'String'>
+    readonly customerEmail: FieldRef<"Appointment", 'String'>
     readonly contactConsent: FieldRef<"Appointment", 'Boolean'>
     readonly startsAt: FieldRef<"Appointment", 'DateTime'>
     readonly endsAt: FieldRef<"Appointment", 'DateTime'>
@@ -48741,6 +48837,7 @@ export namespace Prisma {
     customerImageUrl: 'customerImageUrl',
     customerBirthDate: 'customerBirthDate',
     customerAddress: 'customerAddress',
+    isWalkIn: 'isWalkIn',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     createdByUserId: 'createdByUserId'
@@ -48887,6 +48984,7 @@ export namespace Prisma {
     salePendingAmount: 'salePendingAmount',
     createdByUserId: 'createdByUserId',
     saleComment: 'saleComment',
+    saleChannel: 'saleChannel',
     saleImageUrl: 'saleImageUrl',
     saleNumber: 'saleNumber',
     createdAt: 'createdAt',
@@ -49304,7 +49402,9 @@ export namespace Prisma {
     settingsId: 'settingsId',
     appointmentsEnabled: 'appointmentsEnabled',
     slotDurationMinutes: 'slotDurationMinutes',
+    maxConcurrentPerSlot: 'maxConcurrentPerSlot',
     maxDaysAhead: 'maxDaysAhead',
+    customerNotificationsEnabled: 'customerNotificationsEnabled',
     visitorMessage: 'visitorMessage',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -49332,6 +49432,7 @@ export namespace Prisma {
     lastName: 'lastName',
     phoneCode: 'phoneCode',
     phoneNumber: 'phoneNumber',
+    customerEmail: 'customerEmail',
     contactConsent: 'contactConsent',
     startsAt: 'startsAt',
     endsAt: 'endsAt',
@@ -49434,6 +49535,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -49444,13 +49552,6 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -49535,6 +49636,20 @@ export namespace Prisma {
    * Reference to a field of type 'UsageContext[]'
    */
   export type ListEnumUsageContextFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UsageContext[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SaleChannel'
+   */
+  export type EnumSaleChannelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SaleChannel'>
+    
+
+
+  /**
+   * Reference to a field of type 'SaleChannel[]'
+   */
+  export type ListEnumSaleChannelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SaleChannel[]'>
     
 
 
@@ -49896,6 +50011,7 @@ export namespace Prisma {
     customerImageUrl?: StringNullableFilter<"Customer"> | string | null
     customerBirthDate?: DateTimeNullableFilter<"Customer"> | Date | string | null
     customerAddress?: StringNullableFilter<"Customer"> | string | null
+    isWalkIn?: BoolFilter<"Customer"> | boolean
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
     createdByUserId?: StringFilter<"Customer"> | string
@@ -49921,6 +50037,7 @@ export namespace Prisma {
     customerImageUrl?: SortOrderInput | SortOrder
     customerBirthDate?: SortOrderInput | SortOrder
     customerAddress?: SortOrderInput | SortOrder
+    isWalkIn?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrder
@@ -49949,6 +50066,7 @@ export namespace Prisma {
     customerImageUrl?: StringNullableFilter<"Customer"> | string | null
     customerBirthDate?: DateTimeNullableFilter<"Customer"> | Date | string | null
     customerAddress?: StringNullableFilter<"Customer"> | string | null
+    isWalkIn?: BoolFilter<"Customer"> | boolean
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
     createdByUserId?: StringFilter<"Customer"> | string
@@ -49974,6 +50092,7 @@ export namespace Prisma {
     customerImageUrl?: SortOrderInput | SortOrder
     customerBirthDate?: SortOrderInput | SortOrder
     customerAddress?: SortOrderInput | SortOrder
+    isWalkIn?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrder
@@ -49998,6 +50117,7 @@ export namespace Prisma {
     customerImageUrl?: StringNullableWithAggregatesFilter<"Customer"> | string | null
     customerBirthDate?: DateTimeNullableWithAggregatesFilter<"Customer"> | Date | string | null
     customerAddress?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    isWalkIn?: BoolWithAggregatesFilter<"Customer"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
     createdByUserId?: StringWithAggregatesFilter<"Customer"> | string
@@ -50724,6 +50844,7 @@ export namespace Prisma {
     salePendingAmount?: IntFilter<"Sale"> | number
     createdByUserId?: StringFilter<"Sale"> | string
     saleComment?: StringNullableFilter<"Sale"> | string | null
+    saleChannel?: EnumSaleChannelFilter<"Sale"> | $Enums.SaleChannel
     saleImageUrl?: StringNullableFilter<"Sale"> | string | null
     saleNumber?: StringNullableFilter<"Sale"> | string | null
     createdAt?: DateTimeFilter<"Sale"> | Date | string
@@ -50750,6 +50871,7 @@ export namespace Prisma {
     salePendingAmount?: SortOrder
     createdByUserId?: SortOrder
     saleComment?: SortOrderInput | SortOrder
+    saleChannel?: SortOrder
     saleImageUrl?: SortOrderInput | SortOrder
     saleNumber?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -50779,6 +50901,7 @@ export namespace Prisma {
     salePendingAmount?: IntFilter<"Sale"> | number
     createdByUserId?: StringFilter<"Sale"> | string
     saleComment?: StringNullableFilter<"Sale"> | string | null
+    saleChannel?: EnumSaleChannelFilter<"Sale"> | $Enums.SaleChannel
     saleImageUrl?: StringNullableFilter<"Sale"> | string | null
     saleNumber?: StringNullableFilter<"Sale"> | string | null
     createdAt?: DateTimeFilter<"Sale"> | Date | string
@@ -50805,6 +50928,7 @@ export namespace Prisma {
     salePendingAmount?: SortOrder
     createdByUserId?: SortOrder
     saleComment?: SortOrderInput | SortOrder
+    saleChannel?: SortOrder
     saleImageUrl?: SortOrderInput | SortOrder
     saleNumber?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -50831,6 +50955,7 @@ export namespace Prisma {
     salePendingAmount?: IntWithAggregatesFilter<"Sale"> | number
     createdByUserId?: StringWithAggregatesFilter<"Sale"> | string
     saleComment?: StringNullableWithAggregatesFilter<"Sale"> | string | null
+    saleChannel?: EnumSaleChannelWithAggregatesFilter<"Sale"> | $Enums.SaleChannel
     saleImageUrl?: StringNullableWithAggregatesFilter<"Sale"> | string | null
     saleNumber?: StringNullableWithAggregatesFilter<"Sale"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
@@ -52996,7 +53121,9 @@ export namespace Prisma {
     settingsId?: StringFilter<"AppointmentSettings"> | string
     appointmentsEnabled?: BoolFilter<"AppointmentSettings"> | boolean
     slotDurationMinutes?: IntFilter<"AppointmentSettings"> | number
+    maxConcurrentPerSlot?: IntFilter<"AppointmentSettings"> | number
     maxDaysAhead?: IntFilter<"AppointmentSettings"> | number
+    customerNotificationsEnabled?: BoolFilter<"AppointmentSettings"> | boolean
     visitorMessage?: StringNullableFilter<"AppointmentSettings"> | string | null
     createdAt?: DateTimeFilter<"AppointmentSettings"> | Date | string
     updatedAt?: DateTimeFilter<"AppointmentSettings"> | Date | string
@@ -53007,7 +53134,9 @@ export namespace Prisma {
     settingsId?: SortOrder
     appointmentsEnabled?: SortOrder
     slotDurationMinutes?: SortOrder
+    maxConcurrentPerSlot?: SortOrder
     maxDaysAhead?: SortOrder
+    customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -53021,7 +53150,9 @@ export namespace Prisma {
     NOT?: AppointmentSettingsWhereInput | AppointmentSettingsWhereInput[]
     appointmentsEnabled?: BoolFilter<"AppointmentSettings"> | boolean
     slotDurationMinutes?: IntFilter<"AppointmentSettings"> | number
+    maxConcurrentPerSlot?: IntFilter<"AppointmentSettings"> | number
     maxDaysAhead?: IntFilter<"AppointmentSettings"> | number
+    customerNotificationsEnabled?: BoolFilter<"AppointmentSettings"> | boolean
     visitorMessage?: StringNullableFilter<"AppointmentSettings"> | string | null
     createdAt?: DateTimeFilter<"AppointmentSettings"> | Date | string
     updatedAt?: DateTimeFilter<"AppointmentSettings"> | Date | string
@@ -53032,7 +53163,9 @@ export namespace Prisma {
     settingsId?: SortOrder
     appointmentsEnabled?: SortOrder
     slotDurationMinutes?: SortOrder
+    maxConcurrentPerSlot?: SortOrder
     maxDaysAhead?: SortOrder
+    customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -53050,7 +53183,9 @@ export namespace Prisma {
     settingsId?: StringWithAggregatesFilter<"AppointmentSettings"> | string
     appointmentsEnabled?: BoolWithAggregatesFilter<"AppointmentSettings"> | boolean
     slotDurationMinutes?: IntWithAggregatesFilter<"AppointmentSettings"> | number
+    maxConcurrentPerSlot?: IntWithAggregatesFilter<"AppointmentSettings"> | number
     maxDaysAhead?: IntWithAggregatesFilter<"AppointmentSettings"> | number
+    customerNotificationsEnabled?: BoolWithAggregatesFilter<"AppointmentSettings"> | boolean
     visitorMessage?: StringNullableWithAggregatesFilter<"AppointmentSettings"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"AppointmentSettings"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"AppointmentSettings"> | Date | string
@@ -53132,6 +53267,7 @@ export namespace Prisma {
     lastName?: StringFilter<"Appointment"> | string
     phoneCode?: StringFilter<"Appointment"> | string
     phoneNumber?: StringFilter<"Appointment"> | string
+    customerEmail?: StringNullableFilter<"Appointment"> | string | null
     contactConsent?: BoolFilter<"Appointment"> | boolean
     startsAt?: DateTimeFilter<"Appointment"> | Date | string
     endsAt?: DateTimeFilter<"Appointment"> | Date | string
@@ -53148,6 +53284,7 @@ export namespace Prisma {
     lastName?: SortOrder
     phoneCode?: SortOrder
     phoneNumber?: SortOrder
+    customerEmail?: SortOrderInput | SortOrder
     contactConsent?: SortOrder
     startsAt?: SortOrder
     endsAt?: SortOrder
@@ -53167,6 +53304,7 @@ export namespace Prisma {
     lastName?: StringFilter<"Appointment"> | string
     phoneCode?: StringFilter<"Appointment"> | string
     phoneNumber?: StringFilter<"Appointment"> | string
+    customerEmail?: StringNullableFilter<"Appointment"> | string | null
     contactConsent?: BoolFilter<"Appointment"> | boolean
     startsAt?: DateTimeFilter<"Appointment"> | Date | string
     endsAt?: DateTimeFilter<"Appointment"> | Date | string
@@ -53183,6 +53321,7 @@ export namespace Prisma {
     lastName?: SortOrder
     phoneCode?: SortOrder
     phoneNumber?: SortOrder
+    customerEmail?: SortOrderInput | SortOrder
     contactConsent?: SortOrder
     startsAt?: SortOrder
     endsAt?: SortOrder
@@ -53205,6 +53344,7 @@ export namespace Prisma {
     lastName?: StringWithAggregatesFilter<"Appointment"> | string
     phoneCode?: StringWithAggregatesFilter<"Appointment"> | string
     phoneNumber?: StringWithAggregatesFilter<"Appointment"> | string
+    customerEmail?: StringNullableWithAggregatesFilter<"Appointment"> | string | null
     contactConsent?: BoolWithAggregatesFilter<"Appointment"> | boolean
     startsAt?: DateTimeWithAggregatesFilter<"Appointment"> | Date | string
     endsAt?: DateTimeWithAggregatesFilter<"Appointment"> | Date | string
@@ -53445,6 +53585,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCustomersInput
@@ -53469,6 +53610,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId: string
@@ -53493,6 +53635,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCustomersNestedInput
@@ -53517,6 +53660,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
@@ -53541,6 +53685,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId: string
@@ -53559,6 +53704,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -53576,6 +53722,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
@@ -54370,6 +54517,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -54395,6 +54543,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -54416,6 +54565,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54441,6 +54591,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54464,6 +54615,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -54480,6 +54632,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54497,6 +54650,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56869,7 +57023,9 @@ export namespace Prisma {
     settingsId?: string
     appointmentsEnabled?: boolean
     slotDurationMinutes?: number
+    maxConcurrentPerSlot?: number
     maxDaysAhead?: number
+    customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -56880,7 +57036,9 @@ export namespace Prisma {
     settingsId?: string
     appointmentsEnabled?: boolean
     slotDurationMinutes?: number
+    maxConcurrentPerSlot?: number
     maxDaysAhead?: number
+    customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -56891,7 +57049,9 @@ export namespace Prisma {
     settingsId?: StringFieldUpdateOperationsInput | string
     appointmentsEnabled?: BoolFieldUpdateOperationsInput | boolean
     slotDurationMinutes?: IntFieldUpdateOperationsInput | number
+    maxConcurrentPerSlot?: IntFieldUpdateOperationsInput | number
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
+    customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56902,7 +57062,9 @@ export namespace Prisma {
     settingsId?: StringFieldUpdateOperationsInput | string
     appointmentsEnabled?: BoolFieldUpdateOperationsInput | boolean
     slotDurationMinutes?: IntFieldUpdateOperationsInput | number
+    maxConcurrentPerSlot?: IntFieldUpdateOperationsInput | number
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
+    customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56913,7 +57075,9 @@ export namespace Prisma {
     settingsId?: string
     appointmentsEnabled?: boolean
     slotDurationMinutes?: number
+    maxConcurrentPerSlot?: number
     maxDaysAhead?: number
+    customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -56923,7 +57087,9 @@ export namespace Prisma {
     settingsId?: StringFieldUpdateOperationsInput | string
     appointmentsEnabled?: BoolFieldUpdateOperationsInput | boolean
     slotDurationMinutes?: IntFieldUpdateOperationsInput | number
+    maxConcurrentPerSlot?: IntFieldUpdateOperationsInput | number
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
+    customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56933,7 +57099,9 @@ export namespace Prisma {
     settingsId?: StringFieldUpdateOperationsInput | string
     appointmentsEnabled?: BoolFieldUpdateOperationsInput | boolean
     slotDurationMinutes?: IntFieldUpdateOperationsInput | number
+    maxConcurrentPerSlot?: IntFieldUpdateOperationsInput | number
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
+    customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57014,6 +57182,7 @@ export namespace Prisma {
     lastName: string
     phoneCode?: string
     phoneNumber: string
+    customerEmail?: string | null
     contactConsent: boolean
     startsAt: Date | string
     endsAt: Date | string
@@ -57030,6 +57199,7 @@ export namespace Prisma {
     lastName: string
     phoneCode?: string
     phoneNumber: string
+    customerEmail?: string | null
     contactConsent: boolean
     startsAt: Date | string
     endsAt: Date | string
@@ -57046,6 +57216,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     phoneCode?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     contactConsent?: BoolFieldUpdateOperationsInput | boolean
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endsAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57062,6 +57233,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     phoneCode?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     contactConsent?: BoolFieldUpdateOperationsInput | boolean
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endsAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57078,6 +57250,7 @@ export namespace Prisma {
     lastName: string
     phoneCode?: string
     phoneNumber: string
+    customerEmail?: string | null
     contactConsent: boolean
     startsAt: Date | string
     endsAt: Date | string
@@ -57094,6 +57267,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     phoneCode?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     contactConsent?: BoolFieldUpdateOperationsInput | boolean
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endsAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57110,6 +57284,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     phoneCode?: StringFieldUpdateOperationsInput | string
     phoneNumber?: StringFieldUpdateOperationsInput | string
+    customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
     contactConsent?: BoolFieldUpdateOperationsInput | boolean
     startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
     endsAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -57543,6 +57718,11 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
@@ -57561,6 +57741,7 @@ export namespace Prisma {
     customerImageUrl?: SortOrder
     customerBirthDate?: SortOrder
     customerAddress?: SortOrder
+    isWalkIn?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrder
@@ -57579,6 +57760,7 @@ export namespace Prisma {
     customerImageUrl?: SortOrder
     customerBirthDate?: SortOrder
     customerAddress?: SortOrder
+    isWalkIn?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrder
@@ -57597,9 +57779,18 @@ export namespace Prisma {
     customerImageUrl?: SortOrder
     customerBirthDate?: SortOrder
     customerAddress?: SortOrder
+    isWalkIn?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -57630,11 +57821,6 @@ export namespace Prisma {
     in?: $Enums.ProductUnit[] | ListEnumProductUnitFieldRefInput<$PrismaModel>
     notIn?: $Enums.ProductUnit[] | ListEnumProductUnitFieldRefInput<$PrismaModel>
     not?: NestedEnumProductUnitFilter<$PrismaModel> | $Enums.ProductUnit
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type CategoryScalarRelationFilter = {
@@ -57763,14 +57949,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProductUnitFilter<$PrismaModel>
     _max?: NestedEnumProductUnitFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type ScanCodeCountOrderByAggregateInput = {
@@ -58185,6 +58363,13 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumSaleChannelFilter<$PrismaModel = never> = {
+    equals?: $Enums.SaleChannel | EnumSaleChannelFieldRefInput<$PrismaModel>
+    in?: $Enums.SaleChannel[] | ListEnumSaleChannelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SaleChannel[] | ListEnumSaleChannelFieldRefInput<$PrismaModel>
+    not?: NestedEnumSaleChannelFilter<$PrismaModel> | $Enums.SaleChannel
+  }
+
   export type EnumDocumentTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.DocumentType | EnumDocumentTypeFieldRefInput<$PrismaModel>
     in?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
@@ -58222,6 +58407,7 @@ export namespace Prisma {
     salePendingAmount?: SortOrder
     createdByUserId?: SortOrder
     saleComment?: SortOrder
+    saleChannel?: SortOrder
     saleImageUrl?: SortOrder
     saleNumber?: SortOrder
     createdAt?: SortOrder
@@ -58246,6 +58432,7 @@ export namespace Prisma {
     salePendingAmount?: SortOrder
     createdByUserId?: SortOrder
     saleComment?: SortOrder
+    saleChannel?: SortOrder
     saleImageUrl?: SortOrder
     saleNumber?: SortOrder
     createdAt?: SortOrder
@@ -58264,6 +58451,7 @@ export namespace Prisma {
     salePendingAmount?: SortOrder
     createdByUserId?: SortOrder
     saleComment?: SortOrder
+    saleChannel?: SortOrder
     saleImageUrl?: SortOrder
     saleNumber?: SortOrder
     createdAt?: SortOrder
@@ -58278,6 +58466,16 @@ export namespace Prisma {
     saleTotal?: SortOrder
     saleTotalPayments?: SortOrder
     salePendingAmount?: SortOrder
+  }
+
+  export type EnumSaleChannelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SaleChannel | EnumSaleChannelFieldRefInput<$PrismaModel>
+    in?: $Enums.SaleChannel[] | ListEnumSaleChannelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SaleChannel[] | ListEnumSaleChannelFieldRefInput<$PrismaModel>
+    not?: NestedEnumSaleChannelWithAggregatesFilter<$PrismaModel> | $Enums.SaleChannel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSaleChannelFilter<$PrismaModel>
+    _max?: NestedEnumSaleChannelFilter<$PrismaModel>
   }
 
   export type EnumDocumentTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -59779,7 +59977,9 @@ export namespace Prisma {
     settingsId?: SortOrder
     appointmentsEnabled?: SortOrder
     slotDurationMinutes?: SortOrder
+    maxConcurrentPerSlot?: SortOrder
     maxDaysAhead?: SortOrder
+    customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -59787,6 +59987,7 @@ export namespace Prisma {
 
   export type AppointmentSettingsAvgOrderByAggregateInput = {
     slotDurationMinutes?: SortOrder
+    maxConcurrentPerSlot?: SortOrder
     maxDaysAhead?: SortOrder
   }
 
@@ -59794,7 +59995,9 @@ export namespace Prisma {
     settingsId?: SortOrder
     appointmentsEnabled?: SortOrder
     slotDurationMinutes?: SortOrder
+    maxConcurrentPerSlot?: SortOrder
     maxDaysAhead?: SortOrder
+    customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -59804,7 +60007,9 @@ export namespace Prisma {
     settingsId?: SortOrder
     appointmentsEnabled?: SortOrder
     slotDurationMinutes?: SortOrder
+    maxConcurrentPerSlot?: SortOrder
     maxDaysAhead?: SortOrder
+    customerNotificationsEnabled?: SortOrder
     visitorMessage?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -59812,6 +60017,7 @@ export namespace Prisma {
 
   export type AppointmentSettingsSumOrderByAggregateInput = {
     slotDurationMinutes?: SortOrder
+    maxConcurrentPerSlot?: SortOrder
     maxDaysAhead?: SortOrder
   }
 
@@ -59871,6 +60077,7 @@ export namespace Prisma {
     lastName?: SortOrder
     phoneCode?: SortOrder
     phoneNumber?: SortOrder
+    customerEmail?: SortOrder
     contactConsent?: SortOrder
     startsAt?: SortOrder
     endsAt?: SortOrder
@@ -59887,6 +60094,7 @@ export namespace Prisma {
     lastName?: SortOrder
     phoneCode?: SortOrder
     phoneNumber?: SortOrder
+    customerEmail?: SortOrder
     contactConsent?: SortOrder
     startsAt?: SortOrder
     endsAt?: SortOrder
@@ -59903,6 +60111,7 @@ export namespace Prisma {
     lastName?: SortOrder
     phoneCode?: SortOrder
     phoneNumber?: SortOrder
+    customerEmail?: SortOrder
     contactConsent?: SortOrder
     startsAt?: SortOrder
     endsAt?: SortOrder
@@ -61209,6 +61418,10 @@ export namespace Prisma {
     connect?: WorkOrderWhereUniqueInput | WorkOrderWhereUniqueInput[]
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type UserUpdateOneWithoutCustomersNestedInput = {
     create?: XOR<UserCreateWithoutCustomersInput, UserUncheckedCreateWithoutCustomersInput>
     connectOrCreate?: UserCreateOrConnectWithoutCustomersInput
@@ -61485,10 +61698,6 @@ export namespace Prisma {
 
   export type EnumProductUnitFieldUpdateOperationsInput = {
     set?: $Enums.ProductUnit
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type CategoryUpdateOneRequiredWithoutProductsNestedInput = {
@@ -62203,6 +62412,10 @@ export namespace Prisma {
     connectOrCreate?: PurchaseCertificateCreateOrConnectWithoutSaleInput | PurchaseCertificateCreateOrConnectWithoutSaleInput[]
     createMany?: PurchaseCertificateCreateManySaleInputEnvelope
     connect?: PurchaseCertificateWhereUniqueInput | PurchaseCertificateWhereUniqueInput[]
+  }
+
+  export type EnumSaleChannelFieldUpdateOperationsInput = {
+    set?: $Enums.SaleChannel
   }
 
   export type EnumDocumentTypeFieldUpdateOperationsInput = {
@@ -63848,6 +64061,19 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedBoolNullableFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
     not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
@@ -63865,11 +64091,6 @@ export namespace Prisma {
     in?: $Enums.ProductUnit[] | ListEnumProductUnitFieldRefInput<$PrismaModel>
     notIn?: $Enums.ProductUnit[] | ListEnumProductUnitFieldRefInput<$PrismaModel>
     not?: NestedEnumProductUnitFilter<$PrismaModel> | $Enums.ProductUnit
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -63925,14 +64146,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProductUnitFilter<$PrismaModel>
     _max?: NestedEnumProductUnitFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumInventoryMovementTypeFilter<$PrismaModel = never> = {
@@ -64003,6 +64216,13 @@ export namespace Prisma {
     _max?: NestedEnumUsageContextFilter<$PrismaModel>
   }
 
+  export type NestedEnumSaleChannelFilter<$PrismaModel = never> = {
+    equals?: $Enums.SaleChannel | EnumSaleChannelFieldRefInput<$PrismaModel>
+    in?: $Enums.SaleChannel[] | ListEnumSaleChannelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SaleChannel[] | ListEnumSaleChannelFieldRefInput<$PrismaModel>
+    not?: NestedEnumSaleChannelFilter<$PrismaModel> | $Enums.SaleChannel
+  }
+
   export type NestedEnumDocumentTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.DocumentType | EnumDocumentTypeFieldRefInput<$PrismaModel>
     in?: $Enums.DocumentType[] | ListEnumDocumentTypeFieldRefInput<$PrismaModel>
@@ -64015,6 +64235,16 @@ export namespace Prisma {
     in?: $Enums.SaleDeliveryStatus[] | ListEnumSaleDeliveryStatusFieldRefInput<$PrismaModel> | null
     notIn?: $Enums.SaleDeliveryStatus[] | ListEnumSaleDeliveryStatusFieldRefInput<$PrismaModel> | null
     not?: NestedEnumSaleDeliveryStatusNullableFilter<$PrismaModel> | $Enums.SaleDeliveryStatus | null
+  }
+
+  export type NestedEnumSaleChannelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SaleChannel | EnumSaleChannelFieldRefInput<$PrismaModel>
+    in?: $Enums.SaleChannel[] | ListEnumSaleChannelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SaleChannel[] | ListEnumSaleChannelFieldRefInput<$PrismaModel>
+    not?: NestedEnumSaleChannelWithAggregatesFilter<$PrismaModel> | $Enums.SaleChannel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSaleChannelFilter<$PrismaModel>
+    _max?: NestedEnumSaleChannelFilter<$PrismaModel>
   }
 
   export type NestedEnumDocumentTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -64253,6 +64483,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     Sale?: SaleCreateNestedManyWithoutCustomerInput
@@ -64276,6 +64507,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     Sale?: SaleUncheckedCreateNestedManyWithoutCustomerInput
@@ -64434,6 +64666,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -64457,6 +64690,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -64488,6 +64722,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -64512,6 +64747,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -65478,6 +65714,7 @@ export namespace Prisma {
     customerImageUrl?: StringNullableFilter<"Customer"> | string | null
     customerBirthDate?: DateTimeNullableFilter<"Customer"> | Date | string | null
     customerAddress?: StringNullableFilter<"Customer"> | string | null
+    isWalkIn?: BoolFilter<"Customer"> | boolean
     createdAt?: DateTimeFilter<"Customer"> | Date | string
     updatedAt?: DateTimeFilter<"Customer"> | Date | string
     createdByUserId?: StringFilter<"Customer"> | string
@@ -65610,6 +65847,7 @@ export namespace Prisma {
     salePendingAmount?: IntFilter<"Sale"> | number
     createdByUserId?: StringFilter<"Sale"> | string
     saleComment?: StringNullableFilter<"Sale"> | string | null
+    saleChannel?: EnumSaleChannelFilter<"Sale"> | $Enums.SaleChannel
     saleImageUrl?: StringNullableFilter<"Sale"> | string | null
     saleNumber?: StringNullableFilter<"Sale"> | string | null
     createdAt?: DateTimeFilter<"Sale"> | Date | string
@@ -66443,6 +66681,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -66466,6 +66705,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -69052,6 +69292,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCustomersInput
@@ -69075,6 +69316,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId: string
@@ -69528,6 +69770,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCustomersNestedInput
@@ -69551,6 +69794,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
@@ -69776,6 +70020,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCustomersInput
@@ -69799,6 +70044,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId: string
@@ -69909,6 +70155,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -69933,6 +70180,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -70112,6 +70360,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCustomersNestedInput
@@ -70135,6 +70384,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
@@ -70257,6 +70507,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70281,6 +70532,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70504,6 +70756,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -70528,6 +70781,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -70659,6 +70913,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -70683,6 +70938,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73089,6 +73345,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -73113,6 +73370,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -73177,6 +73435,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73201,6 +73460,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -73527,6 +73787,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCustomersInput
@@ -73550,6 +73811,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId: string
@@ -73797,6 +74059,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCustomersNestedInput
@@ -73820,6 +74083,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
@@ -73859,6 +74123,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCustomersInput
@@ -73882,6 +74147,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId: string
@@ -74143,6 +74409,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCustomersNestedInput
@@ -74166,6 +74433,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
@@ -74435,6 +74703,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCustomersInput
@@ -74458,6 +74727,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId: string
@@ -74688,6 +74958,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCustomersNestedInput
@@ -74711,6 +74982,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
@@ -75156,6 +75428,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -75180,6 +75453,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -75247,6 +75521,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCustomersInput
@@ -75270,6 +75545,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId: string
@@ -75530,6 +75806,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75554,6 +75831,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -75633,6 +75911,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCustomersNestedInput
@@ -75656,6 +75935,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: StringFieldUpdateOperationsInput | string
@@ -76442,6 +76722,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -76466,6 +76747,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -76720,6 +77002,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -76744,6 +77027,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77148,7 +77432,9 @@ export namespace Prisma {
     settingsId?: string
     appointmentsEnabled?: boolean
     slotDurationMinutes?: number
+    maxConcurrentPerSlot?: number
     maxDaysAhead?: number
+    customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -77158,7 +77444,9 @@ export namespace Prisma {
     settingsId?: string
     appointmentsEnabled?: boolean
     slotDurationMinutes?: number
+    maxConcurrentPerSlot?: number
     maxDaysAhead?: number
+    customerNotificationsEnabled?: boolean
     visitorMessage?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -77184,7 +77472,9 @@ export namespace Prisma {
     settingsId?: StringFieldUpdateOperationsInput | string
     appointmentsEnabled?: BoolFieldUpdateOperationsInput | boolean
     slotDurationMinutes?: IntFieldUpdateOperationsInput | number
+    maxConcurrentPerSlot?: IntFieldUpdateOperationsInput | number
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
+    customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77194,7 +77484,9 @@ export namespace Prisma {
     settingsId?: StringFieldUpdateOperationsInput | string
     appointmentsEnabled?: BoolFieldUpdateOperationsInput | boolean
     slotDurationMinutes?: IntFieldUpdateOperationsInput | number
+    maxConcurrentPerSlot?: IntFieldUpdateOperationsInput | number
     maxDaysAhead?: IntFieldUpdateOperationsInput | number
+    customerNotificationsEnabled?: BoolFieldUpdateOperationsInput | boolean
     visitorMessage?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77213,6 +77505,7 @@ export namespace Prisma {
     customerImageUrl?: string | null
     customerBirthDate?: Date | string | null
     customerAddress?: string | null
+    isWalkIn?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -77264,6 +77557,7 @@ export namespace Prisma {
     saleTotalPayments: number
     salePendingAmount: number
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -77282,6 +77576,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -77635,6 +77930,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Sale?: SaleUpdateManyWithoutCustomerNestedInput
@@ -77658,6 +77954,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Sale?: SaleUncheckedUpdateManyWithoutCustomerNestedInput
@@ -77681,6 +77978,7 @@ export namespace Prisma {
     customerImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     customerBirthDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     customerAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    isWalkIn?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -77833,6 +78131,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77856,6 +78155,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77878,6 +78178,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77894,6 +78195,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77918,6 +78220,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -77940,6 +78243,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -78977,6 +79281,7 @@ export namespace Prisma {
     salePendingAmount: number
     createdByUserId: string
     saleComment?: string | null
+    saleChannel?: $Enums.SaleChannel
     saleImageUrl?: string | null
     saleNumber?: string | null
     createdAt?: Date | string
@@ -79091,6 +79396,7 @@ export namespace Prisma {
     saleTotalPayments?: IntFieldUpdateOperationsInput | number
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -79114,6 +79420,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -79136,6 +79443,7 @@ export namespace Prisma {
     salePendingAmount?: IntFieldUpdateOperationsInput | number
     createdByUserId?: StringFieldUpdateOperationsInput | string
     saleComment?: NullableStringFieldUpdateOperationsInput | string | null
+    saleChannel?: EnumSaleChannelFieldUpdateOperationsInput | $Enums.SaleChannel
     saleImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     saleNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

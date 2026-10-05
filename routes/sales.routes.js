@@ -27,6 +27,10 @@ import {
     sendQuotationEmailController,
 } from "../controllers/quotation.controller.js";
 import {
+    createQuickSaleController,
+    getQuickSaleBootstrapController,
+} from "../controllers/quickSale.controller.js";
+import {
     createQuotationDetailController,
     getQuotationDetailsByQuotationIdController,
 } from "../controllers/quotationDetail.controller.js";
@@ -53,6 +57,15 @@ router.get("/sales/day/:day/:month/:year", authRequired, dbSelectorMiddleware, g
 
 // 4b. Dashboard KPI drill-down (before /sales/:id)
 router.get("/sales/dashboard/:view", authRequired, dbSelectorMiddleware, getDashboardSalesViewController);
+
+router.get("/sales/quick/bootstrap", authRequired, dbSelectorMiddleware, getQuickSaleBootstrapController);
+router.post(
+    "/sales/quick",
+    authRequired,
+    dbSelectorMiddleware,
+    pendingDailyClosureMiddleware,
+    createQuickSaleController,
+);
 
 // 5. Main list of sales
 router.get("/sales", authRequired, dbSelectorMiddleware, getSalesController);

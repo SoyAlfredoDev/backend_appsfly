@@ -4,6 +4,7 @@ import {
     getInventoryMovementsReport,
 } from "../reportsService.js";
 import {
+    createReadOnlyPrisma,
     createTenantToolContext,
     sanitizeToolArgs,
     truncateToolResponseForModel,
@@ -326,11 +327,11 @@ async function getInventoryMovements({ startDate, endDate }, prisma) {
  */
 export async function executeAssistantTool(toolName, args, tenantCtx) {
     if (!ALLOWED_TOOLS.has(toolName)) {
-        return { error: `Herramienta no permitida: ${toolName}` };
+        return { error: "Herramienta no permitida." };
     }
 
     const ctx = createTenantToolContext(tenantCtx.prisma, tenantCtx.businessId);
-    const prisma = ctx.prisma;
+    const prisma = createReadOnlyPrisma(ctx.prisma);
 
     const sanitized = sanitizeToolArgs(toolName, args);
     if (sanitized?.error) {

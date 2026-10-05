@@ -3,8 +3,9 @@ import {
     executeAssistantTool,
 } from "./assistantTools.js";
 import {
-    assertSafeUserMessage,
+    assertSafeConversation,
     AssistantSecurityError,
+    sanitizeAssistantReply,
 } from "./assistantSecurity.js";
 import {
     appendFunctionResponse,
@@ -43,6 +44,19 @@ function checkRateLimit(userId) {
     return null;
 }
 
+function safeAuditError(message) {
+    const text = String(message ?? "");
+    if (
+        /postgres(?:ql)?:\/\//i.test(text) ||
+        /DATABASE_/i.test(text) ||
+        /GEMINI_API_KEY/i.test(text) ||
+        /businessConnectionDB/i.test(text)
+    ) {
+        return "database_error";
+    }
+    return text.slice(0, 200);
+}
+
 function auditLog({ userId, businessId, toolName, success, error }) {
     console.info(
         JSON.stringify({
@@ -72,7 +86,6 @@ export function getAssistantStatus() {
     return {
         enabled: isGeminiConfigured(),
         provider: "gemini",
-        model: process.env.GEMINI_MODEL || "gemini-flash-latest",
         readOnly: true,
     };
 }
@@ -100,7 +113,7 @@ export async function processAssistantChat({
         };
     }
 
-    if (!prisma || !businessId) {
+    if (!prisma || !businessId || !userId) {
         throw new AssistantSecurityError(
             "TENANT_CONTEXT_INVALID",
             "Contexto de negocio inválido.",
@@ -117,9 +130,9 @@ export async function processAssistantChat({
         throw new Error("INVALID_MESSAGES");
     }
 
-    assertSafeUserMessage(safeMessages.at(-1).content);
+    assertSafeConversation(safeMessages);
 
-    const systemInstruction = buildSystemInstruction(businessName, businessId);
+    const systemInstruction = buildSystemInstruction(businessName);
     const { contents, systemInstruction: systemPayload } = toGeminiContents(
         systemInstruction,
         safeMessages,
@@ -144,9 +157,11 @@ export async function processAssistantChat({
                 success: true,
             });
             return {
-                reply:
+                reply: sanitizeAssistantReply(
                     result.text ||
-                    "No pude generar una respuesta. Intenta reformular tu consulta.",
+                        "No pude generar una respuesta. Intenta reformular tu consulta.",
+                    { businessId },
+                ),
                 toolsUsed,
             };
         }
@@ -177,7 +192,7 @@ export async function processAssistantChat({
                     businessId,
                     toolName: call.name,
                     success: false,
-                    error: toolError.message,
+                    error: safeAuditError(toolError.message),
                 });
             }
             appendFunctionResponse(contents, call.name, toolResult);

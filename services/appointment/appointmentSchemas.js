@@ -20,12 +20,31 @@ export const weeklyAvailabilityItemSchema = z.object({
     path: ["endTime"],
 });
 
+const optionalEmailSchema = z
+    .string()
+    .trim()
+    .max(120)
+    .optional()
+    .nullable()
+    .transform((value) => {
+        if (value == null || value === "") return null;
+        return value;
+    })
+    .refine((value) => value == null || z.string().email().safeParse(value).success, {
+        message: "Ingresa un correo válido.",
+    });
+
 export const updateAppointmentSettingsSchema = z.object({
     appointmentsEnabled: z.boolean(),
     slotDurationMinutes: z.number().int().min(10).max(240),
+    maxConcurrentPerSlot: z.number().int().min(1).max(20),
     maxDaysAhead: z.number().int().min(1).max(90),
+    customerNotificationsEnabled: z.boolean(),
     visitorMessage: z.string().trim().max(500).nullable().optional(),
     weeklyAvailability: z.array(weeklyAvailabilityItemSchema).max(40),
+}).refine((data) => !data.appointmentsEnabled || data.weeklyAvailability.length > 0, {
+    message: "Agrega al menos una franja horaria para habilitar citas.",
+    path: ["weeklyAvailability"],
 });
 
 export const createPublicAppointmentSchema = z.object({
@@ -41,6 +60,7 @@ export const createPublicAppointmentSchema = z.object({
         .refine((value) => value === true, {
             message: "Debes autorizar que te contactemos.",
         }),
+    customerEmail: optionalEmailSchema,
     startsAt: z.string().datetime({ offset: true }).or(z.string().datetime()),
     notes: z.string().trim().max(500).optional().nullable(),
 });

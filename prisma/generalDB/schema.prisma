@@ -72,6 +72,10 @@ model Business {
     businessReceiptEmail       String?
     businessReceiptSocial      String?
     businessReceiptFooterNote  String?
+    /** Medio de pago preseleccionado en la caja rápida: 0 débito, 1 crédito, 2 efectivo, 3 transferencia. */
+    businessQuickSalePaymentMethod String         @default("0")
+    /** Comprobante de la caja rápida: RECEIPT o BOLETA. */
+    businessQuickSaleDocumentType  String         @default("RECEIPT")
     createdByUserId            String?
     createdBy                  User?          @relation(fields: [createdByUserId], references: [userId])
     createdAt                  DateTime       @default(now())

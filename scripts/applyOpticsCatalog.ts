@@ -11,7 +11,7 @@ import {
   LEGACY_PLAN_IDS,
   OPTICS_PLANS,
   publicFeatureLabels,
-} from "../services/billing/opticsPlanCatalog.ts";
+} from "../services/billing/opticsPlanCatalog.js";
 
 dotenv.config();
 

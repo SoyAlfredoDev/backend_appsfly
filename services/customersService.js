@@ -1,4 +1,5 @@
 import { normalizePagination, paginatedResult } from "../libs/pagination.js";
+import { visibleCustomerWhere } from "./customers/customerVisibility.js";
 
 // Create a customer
 export const createCustomer = async (data, prisma) => {
@@ -55,7 +56,7 @@ export const getCustomers = async (prisma, options = {}) => {
             maxLimit,
         });
 
-        const where = buildCustomerSearchWhere(q);
+        const where = visibleCustomerWhere(buildCustomerSearchWhere(q));
 
         const [total, rows] = await Promise.all([
             prisma.customer.count({ where }),

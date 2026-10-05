@@ -6,18 +6,36 @@ import {
   seedOpticsCatalog,
 } from "../libs/opticsCatalogSeed.js";
 
+type CategoryRow = {
+  categoryId: string;
+  categoryCode: string;
+  categoryName?: string;
+  isSystem?: boolean;
+  businessId?: string;
+};
+
+type AttributeRow = {
+  categoryId: string;
+  attributeKey: string;
+  businessId?: string;
+};
+
 function createSharedPrisma() {
-  const categories = [];
-  const attributes = [];
+  const categories: CategoryRow[] = [];
+  const attributes: AttributeRow[] = [];
   return {
     categories,
     attributes,
     category: {
-      async findFirst({ where }) {
+      async findFirst({ where }: { where: { categoryCode: string } }) {
         return categories.find((category) => category.categoryCode === where.categoryCode) ?? null;
       },
-      async create({ data }) {
-        const row = { categoryId: `cat-${categories.length + 1}`, isSystem: false, ...data };
+      async create({ data }: { data: Record<string, unknown> }) {
+        const row = {
+          categoryId: `cat-${categories.length + 1}`,
+          isSystem: false,
+          ...data,
+        } as CategoryRow;
         categories.push(row);
         return row;
       },
@@ -39,7 +57,7 @@ function createSharedPrisma() {
       async findUnique() {
         throw new Error("shared client has no categoryId_attributeKey");
       },
-      async findFirst({ where }) {
+      async findFirst({ where }: { where: { categoryId: string; attributeKey: string } }) {
         return (
           attributes.find(
             (attribute) =>
@@ -48,7 +66,7 @@ function createSharedPrisma() {
           ) ?? null
         );
       },
-      async create({ data }) {
+      async create({ data }: { data: AttributeRow }) {
         attributes.push(data);
         return data;
       },

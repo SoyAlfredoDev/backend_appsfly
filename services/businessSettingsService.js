@@ -5,6 +5,11 @@ import {
     listAllowedBusinessTimezones,
     sanitizeTimezone,
 } from "../libs/businessTimezone.js";
+import {
+    parseQuickSaleSettingsPatch,
+    readQuickSaleDocumentType,
+    readQuickSalePaymentMethod,
+} from "./sales/quickSale.js";
 
 const SETTINGS_SELECT = {
     businessId: true,
@@ -24,6 +29,8 @@ const SETTINGS_SELECT = {
     businessReceiptEmail: true,
     businessReceiptSocial: true,
     businessReceiptFooterNote: true,
+    businessQuickSalePaymentMethod: true,
+    businessQuickSaleDocumentType: true,
 };
 
 function trimOrNull(value) {
@@ -54,6 +61,8 @@ export function serializeBusinessSettings(business) {
         receiptEmail: business.businessReceiptEmail ?? null,
         receiptSocial: business.businessReceiptSocial ?? null,
         receiptFooterNote: business.businessReceiptFooterNote ?? null,
+        quickSalePaymentMethod: readQuickSalePaymentMethod(business.businessQuickSalePaymentMethod),
+        quickSaleDocumentType: readQuickSaleDocumentType(business.businessQuickSaleDocumentType),
     };
 }
 
@@ -127,6 +136,14 @@ export async function updateBusinessSettingsForUser(userId, businessId, payload)
     }
     if (payload.receiptFooterNote !== undefined) {
         data.businessReceiptFooterNote = trimOrNull(payload.receiptFooterNote);
+    }
+
+    const quickSalePatch = parseQuickSaleSettingsPatch(payload);
+    if (quickSalePatch.paymentMethod !== undefined) {
+        data.businessQuickSalePaymentMethod = quickSalePatch.paymentMethod;
+    }
+    if (quickSalePatch.documentType !== undefined) {
+        data.businessQuickSaleDocumentType = quickSalePatch.documentType;
     }
 
     if (payload.businessTimezone !== undefined) {

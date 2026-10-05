@@ -4,6 +4,14 @@ These rules apply to every future change in `frontend`, `backend`, and any Expo 
 
 The production website is `https://appsfly.cl` and the production API is `https://api.appsfly.cl`. Do not configure deployments or new operational links to `appsfly.app`; it redirects to `.cl`. Keep the specialized `optica.appsfly.app` landing and `@appsfly.app` email senders distinct from the main website.
 
+## Deployment
+
+Production runs on Vercel. Do not add another hosting target.
+
+- Backend project: `backend-appsfly` on team `appsflycl-7241`. A push to `main` in `SoyAlfredoDev/backend_appsfly` deploys it. The build command is `npm run vercel-build`. Express runs as the serverless function in `api/index.js`. Public API: `https://api.appsfly.cl`. Project URL: `https://backend-appsfly-mocha.vercel.app`.
+- Scheduled jobs are the Vercel crons in `vercel.json`. The in-process campaign scheduler does not run on Vercel.
+- Keep production secrets in that Vercel project. Never put them in the frontend.
+
 ## Mandatory toolchain
 
 - ESLint is required for static analysis. New warnings must not be introduced.

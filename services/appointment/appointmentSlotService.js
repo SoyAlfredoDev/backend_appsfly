@@ -4,8 +4,11 @@ import {
     toBusinessDateKey,
     zonedDateTimeToUtc,
 } from "../../libs/businessTimezone.js";
-
-const ACTIVE_STATUSES = ["PENDING", "CONFIRMED"];
+import {
+    SLOT_OCCUPYING_STATUSES,
+    isSlotOpen,
+    normalizeConcurrentSlots,
+} from "./appointmentPolicy.ts";
 
 function parseHm(hm) {
     const [h, m] = String(hm).split(":").map(Number);
@@ -50,6 +53,7 @@ export async function listAvailableSlots({
     excludeAppointmentId = null,
 }) {
     const duration = settings.slotDurationMinutes || 30;
+    const capacity = normalizeConcurrentSlots(settings.maxConcurrentPerSlot);
     const availability = settings.weeklyAvailability || [];
     if (!availability.length) return [];
 
@@ -70,7 +74,7 @@ export async function listAvailableSlots({
 
     const occupied = await prisma.appointment.findMany({
         where: {
-            status: { in: ACTIVE_STATUSES },
+            status: { in: [...SLOT_OCCUPYING_STATUSES] },
             startsAt: { lt: rangeEndExclusive },
             endsAt: { gt: rangeStart },
             ...(excludeAppointmentId
@@ -86,6 +90,7 @@ export async function listAvailableSlots({
 
     const now = new Date();
     const slots = [];
+    const seen = new Set();
 
     while (cursor <= endKey) {
         const dayOfWeek = getWeekdayInTimezone(cursor, timezone);
@@ -108,10 +113,14 @@ export async function listAvailableSlots({
 
                 if (startsAt <= now) continue;
 
-                const conflict = occupied.some((appt) =>
+                const overlapCount = occupied.filter((appt) =>
                     rangesOverlap(startsAt, endsAt, appt.startsAt, appt.endsAt),
-                );
-                if (conflict) continue;
+                ).length;
+                if (!isSlotOpen(overlapCount, capacity)) continue;
+
+                const slotKey = startsAt.toISOString();
+                if (seen.has(slotKey)) continue;
+                seen.add(slotKey);
 
                 slots.push({
                     startsAt: startsAt.toISOString(),

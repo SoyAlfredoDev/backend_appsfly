@@ -12,7 +12,7 @@ import {
     patchTenantAppointment,
     updateTenantAppointmentSettings,
 } from "../services/appointment/appointmentService.js";
-import { buildPublicAppointmentUrl } from "../services/appointment/appointmentAccessService.js";
+import { buildPublicAppointmentUrl, assertAppointmentsPlanAccess } from "../services/appointment/appointmentAccessService.js";
 import { resolveBusinessTimezone } from "../libs/businessTimezone.js";
 
 function sendZodError(res, error) {
@@ -21,6 +21,22 @@ function sendZodError(res, error) {
         code: "VALIDATION_ERROR",
         issues: error.issues,
     });
+}
+
+export async function requireAppointmentsPlan(req, res, next) {
+    try {
+        await assertAppointmentsPlanAccess(req.tenantBusinessId);
+        next();
+    } catch (error) {
+        const status = error.statusCode || 500;
+        if (status >= 500) {
+            console.error("(appointment.controller): plan", error);
+        }
+        res.status(status).json({
+            message: error.message || "No se pudo validar el acceso a citas.",
+            code: error.code || "APPOINTMENTS_PLAN_CHECK_FAILED",
+        });
+    }
 }
 
 export async function getAppointmentSettingsController(req, res) {
@@ -47,8 +63,14 @@ export async function updateAppointmentSettingsController(req, res) {
         res.status(200).json({ settings });
     } catch (error) {
         if (error instanceof ZodError) return sendZodError(res, error);
-        console.error("(appointment.controller): update settings", error);
-        res.status(500).json({ message: "No se pudo guardar la configuración de citas." });
+        const status = error.statusCode || 500;
+        if (status >= 500) {
+            console.error("(appointment.controller): update settings", error);
+        }
+        res.status(status).json({
+            message: error.message || "No se pudo guardar la configuración de citas.",
+            code: error.code || "APPOINTMENTS_SETTINGS_FAILED",
+        });
     }
 }
 
@@ -85,6 +107,7 @@ export async function patchAppointmentController(req, res) {
             timezone,
             req.params.appointmentId,
             payload,
+            req.tenantBusinessId,
         );
         res.status(200).json({ appointment });
     } catch (error) {

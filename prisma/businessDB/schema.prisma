@@ -73,6 +73,8 @@ model Customer {
     customerBirthDate       DateTime?
     /** Dirección (útil en óptica; opcional) */
     customerAddress         String?
+    /** Cliente de sistema para la caja rápida. No aparece en el listado de clientes. */
+    isWalkIn                Boolean      @default(false)
     createdAt               DateTime     @default(now())
     updatedAt               DateTime     @updatedAt
     createdByUserId         String
@@ -264,6 +266,8 @@ model Sale {
     salePendingAmount Int
     createdByUserId   String
     saleComment       String?
+    /** STANDARD en el registro completo. QUICK en la caja rápida. */
+    saleChannel       SaleChannel  @default(STANDARD)
     /** Comprobante / respaldo visual — URL Cloudinary (opcional) */
     saleImageUrl      String?
     saleNumber        String?
@@ -526,6 +530,11 @@ enum InventoryReferenceType {
     PURCHASE_DETAIL
     MANUAL
     NONE
+}
+
+enum SaleChannel {
+    STANDARD
+    QUICK
 }
 
 enum DocumentType {
@@ -890,9 +899,13 @@ model PurchaseCertificateDetail {
 model AppointmentSettings {
     settingsId            String   @id @default("default")
     appointmentsEnabled   Boolean  @default(false)
-    slotDurationMinutes   Int      @default(30)
-    maxDaysAhead          Int      @default(30)
-    visitorMessage        String?
+    slotDurationMinutes          Int      @default(30)
+    /** Cuántas citas pueden compartir el mismo inicio. 1 = un cliente por hora. */
+    maxConcurrentPerSlot         Int      @default(1)
+    maxDaysAhead                 Int      @default(30)
+    /** Si es true, el visitante deja un correo y recibe avisos de la cita. */
+    customerNotificationsEnabled Boolean  @default(false)
+    visitorMessage               String?
     createdAt             DateTime @default(now())
     updatedAt             DateTime @updatedAt
 
@@ -929,6 +942,8 @@ model Appointment {
     lastName        String
     phoneCode       String            @default("+56")
     phoneNumber     String
+    /** Correo del visitante cuando el negocio tiene avisos activos. */
+    customerEmail   String?
     contactConsent  Boolean
     startsAt        DateTime
     endsAt          DateTime

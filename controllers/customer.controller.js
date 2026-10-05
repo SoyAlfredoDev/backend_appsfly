@@ -1,4 +1,5 @@
 import { createCustomer, getCustomers, getCustomersByRut, deleteCustomerByIdService, getCustomerByIdService, updateCustomer } from '../services/customersService.js'
+import { assertCustomerMutable, CustomerVisibilityError } from '../services/customers/customerVisibility.js'
 import { getSalesByCustomerIdService } from '../services/salesServices.js'
 import { getSaleDetailByCustomerIdService } from '../services/saleDetailsService.js'
 import { countPrescriptionsByCustomerId } from '../services/prescriptionsService.js'
@@ -131,6 +132,15 @@ export const deleteCustomerByIdController = async (req, res) => {
             return res.status(404).json({ message: "Customer not found" });
         }
 
+        try {
+            assertCustomerMutable(customer);
+        } catch (error) {
+            if (error instanceof CustomerVisibilityError) {
+                return res.status(error.statusCode).json({ message: error.message, code: error.code });
+            }
+            throw error;
+        }
+
         const customerHasSales = await getSalesByCustomerIdService(customerId, req.prisma);
         const customerHasSaleDetails = await getSaleDetailByCustomerIdService(customerId, req.prisma);
         if (customerHasSales.length > 0 || customerHasSaleDetails.length > 0) {
@@ -225,6 +235,15 @@ export const updateCustomerController = async (req, res) => {
         const existingCustomer = await getCustomerByIdService(customerId, req.prisma);
         if (!existingCustomer) {
             return res.status(404).json({ message: "Customer not found" });
+        }
+
+        try {
+            assertCustomerMutable(existingCustomer);
+        } catch (error) {
+            if (error instanceof CustomerVisibilityError) {
+                return res.status(error.statusCode).json({ message: error.message, code: error.code });
+            }
+            throw error;
         }
 
         const updatedCustomer = await updateCustomer(customerId, data, req.prisma);

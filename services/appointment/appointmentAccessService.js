@@ -2,6 +2,7 @@ import { generalPrisma as general } from "../../dbGeneral.js";
 import { getPrismaForBusinessId } from "../../db.js";
 import { resolveBusinessTimezone } from "../../libs/businessTimezone.js";
 import { getFrontendBaseUrl } from "../../emails/shared/layout.js";
+import { hasAppointmentsPlan } from "./appointmentPolicy.ts";
 
 
 
@@ -69,6 +70,7 @@ export async function resolveAppointmentBusinessContext(businessId) {
         orderBy: { subscriptionEndDate: "desc" },
     });
     const hasActiveSubscription = subscriptions.some(isSubscriptionCurrentlyActive);
+    const appointmentsPlanAllowed = hasAppointmentsPlan(subscriptions);
     const prisma = await getPrismaForBusinessId(businessId);
 
     if (!prisma) {
@@ -82,6 +84,7 @@ export async function resolveAppointmentBusinessContext(businessId) {
         business,
         branding: mapBusinessBranding(business),
         hasActiveSubscription,
+        appointmentsPlanAllowed,
         isBusinessActive: business.businessStatus === "ACTIVE",
         prisma,
         timezone: resolveBusinessTimezone(business.businessTimezone),
@@ -94,12 +97,7 @@ export async function resolveAppointmentBusinessContext(businessId) {
 export async function assertPublicAppointmentAccess(businessId) {
     const ctx = await resolveAppointmentBusinessContext(businessId);
 
-    if (!ctx.isBusinessActive || !ctx.hasActiveSubscription) {
-        const err = new Error("El agendamiento no está disponible para este negocio.");
-        err.statusCode = 403;
-        err.code = "APPOINTMENTS_UNAVAILABLE";
-        throw err;
-    }
+    assertAppointmentPlanContext(ctx);
 
     const settings = await ensureAppointmentSettings(ctx.prisma);
     if (!settings.appointmentsEnabled) {
@@ -112,8 +110,48 @@ export async function assertPublicAppointmentAccess(businessId) {
     return { ...ctx, settings };
 }
 
+/**
+ * Panel y API autenticada: plan Comercial o Profesional vigente.
+ * No exige que el link público esté encendido.
+ */
+export async function assertAppointmentsPlanAccess(businessId) {
+    const ctx = await resolveAppointmentBusinessContext(businessId);
+    assertAppointmentPlanContext(ctx);
+    return ctx;
+}
+
+function assertAppointmentPlanContext(ctx) {
+    if (!ctx.isBusinessActive || !ctx.hasActiveSubscription) {
+        const err = new Error("El agendamiento no está disponible para este negocio.");
+        err.statusCode = 403;
+        err.code = "APPOINTMENTS_UNAVAILABLE";
+        throw err;
+    }
+
+    if (!ctx.appointmentsPlanAllowed) {
+        const err = new Error(
+            "Las citas están disponibles en el Plan Comercial y el Plan Profesional.",
+        );
+        err.statusCode = 403;
+        err.code = "APPOINTMENTS_PLAN_REQUIRED";
+        throw err;
+    }
+}
+
+export function appointmentSettingsWhere(row) {
+    if (row?.businessId) {
+        return {
+            businessId_settingsId: {
+                businessId: row.businessId,
+                settingsId: row.settingsId || "default",
+            },
+        };
+    }
+    return { settingsId: row?.settingsId || "default" };
+}
+
 export async function ensureAppointmentSettings(prisma) {
-    const existing = await prisma.appointmentSettings.findUnique({
+    const existing = await prisma.appointmentSettings.findFirst({
         where: { settingsId: "default" },
         include: {
             weeklyAvailability: {
@@ -138,7 +176,9 @@ export function serializeSettings(settings) {
     return {
         appointmentsEnabled: settings.appointmentsEnabled,
         slotDurationMinutes: settings.slotDurationMinutes,
+        maxConcurrentPerSlot: settings.maxConcurrentPerSlot ?? 1,
         maxDaysAhead: settings.maxDaysAhead,
+        customerNotificationsEnabled: Boolean(settings.customerNotificationsEnabled),
         visitorMessage: settings.visitorMessage,
         weeklyAvailability: (settings.weeklyAvailability || []).map((row) => ({
             availabilityId: row.availabilityId,

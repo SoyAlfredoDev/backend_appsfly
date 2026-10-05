@@ -7,11 +7,12 @@ import {
     listAppointmentsController,
     listTenantSlotsController,
     patchAppointmentController,
+    requireAppointmentsPlan,
     updateAppointmentSettingsController,
 } from "../controllers/appointment.controller.js";
 
 const router = Router();
-const auth = [authRequired, dbSelectorMiddleware];
+const auth = [authRequired, dbSelectorMiddleware, requireAppointmentsPlan];
 
 router.get("/appointments/settings", ...auth, getAppointmentSettingsController);
 router.put("/appointments/settings", ...auth, updateAppointmentSettingsController);

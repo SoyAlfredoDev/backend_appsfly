@@ -13,6 +13,7 @@ const SALE_LIST_INCLUDE = {
             customerId: true,
             customerFirstName: true,
             customerLastName: true,
+            isWalkIn: true,
         },
     },
     user: {
@@ -219,6 +220,8 @@ export const getSaleById = async (id, prisma) => {
                         customerEmail: true,
                         customerCodePhoneNumber: true,
                         customerPhoneNumber: true,
+                        customerDocumentNumber: true,
+                        isWalkIn: true,
                     }
                 },
                 user: {
