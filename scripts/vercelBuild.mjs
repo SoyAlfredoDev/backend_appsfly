@@ -140,6 +140,20 @@ function runPrismaCli(args, env) {
   });
 }
 
+function resolveSharedMigrationApplied(schema, migrateEnv, folder) {
+  try {
+    runPrismaCli(["migrate", "resolve", "--applied", folder, "--schema", schema], migrateEnv);
+  } catch (error) {
+    const output = `${error.stdout ?? ""}\n${error.stderr ?? ""}`;
+    if (!/already|applied|P3008/i.test(output)) throw error;
+    console.warn(`Shared migration ${folder} was already marked as applied.`);
+  }
+}
+
+export function sharedDeltaMigrationFolders(folders = sharedMigrationFolders()) {
+  return folders.filter((folder) => folder >= "20261003170000");
+}
+
 export function baselineSharedMigrations(schema, env = process.env) {
   const migrateEnv = migrationEnvForSchema(schema, env);
   const migrationUrl = migrateEnv.DATABASE_SHARED_MIGRATION_URL;
@@ -147,7 +161,16 @@ export function baselineSharedMigrations(schema, env = process.env) {
     throw new Error("DATABASE_SHARED_MIGRATION_URL is required to baseline the shared database.");
   }
 
-  for (const folder of sharedMigrationFolders()) {
+  const folders = sharedMigrationFolders();
+  const deltaFolders = sharedDeltaMigrationFolders(folders);
+
+  for (const folder of folders) {
+    if (deltaFolders.includes(folder)) continue;
+    console.log(`Marking shared migration as applied: ${folder}`);
+    resolveSharedMigrationApplied(schema, migrateEnv, folder);
+  }
+
+  for (const folder of deltaFolders) {
     const sqlPath = path.join(
       backendDir,
       "prisma",
@@ -156,15 +179,9 @@ export function baselineSharedMigrations(schema, env = process.env) {
       folder,
       "migration.sql",
     );
-    console.log(`Applying shared migration SQL: ${folder}`);
+    console.log(`Applying idempotent shared migration SQL: ${folder}`);
     runPrismaCli(["db", "execute", "--url", migrationUrl, "--file", sqlPath], migrateEnv);
-    try {
-      runPrismaCli(["migrate", "resolve", "--applied", folder, "--schema", schema], migrateEnv);
-    } catch (error) {
-      const output = `${error.stdout ?? ""}\n${error.stderr ?? ""}`;
-      if (!/already|applied|P3008/i.test(output)) throw error;
-      console.warn(`Shared migration ${folder} was already marked as applied.`);
-    }
+    resolveSharedMigrationApplied(schema, migrateEnv, folder);
   }
 }
 

@@ -15,6 +15,7 @@ import {
   ensureSharedMigrationEnv,
   isSchemaNotEmptyError,
   isRetryableDatabaseError,
+  sharedDeltaMigrationFolders,
   sharedMigrationFolders,
   migrationDatabaseUrl,
   migrationEnvForSchema,
@@ -142,7 +143,14 @@ describe("Vercel build migrations", () => {
     const folders = sharedMigrationFolders();
     expect(folders.length).toBeGreaterThan(0);
     expect(folders).toEqual([...folders].sort());
-    expect(folders.at(-1)).toContain("quick_sale");
+    expect(folders.some((folder) => folder.includes("quick_sale"))).toBe(true);
+  });
+
+  it("only replays idempotent SQL for the newest shared deltas during baseline", () => {
+    const deltas = sharedDeltaMigrationFolders();
+    expect(deltas).toEqual(sharedMigrationFolders().filter((folder) => folder >= "20261003170000"));
+    expect(deltas).toContain("20261003170000_appointment_capacity_notifications");
+    expect(deltas).toContain("20261003170000_quick_sale");
   });
 
   it("retries only when the database server cannot be reached", () => {
