@@ -47,8 +47,8 @@ describe("shared tenant database schema", () => {
     expect(schema).toContain("enum SaleChannel");
     expect(schema).toMatch(/saleChannel\s+SaleChannel\s+@default\(STANDARD\)/);
     expect(schema).toMatch(/isWalkIn\s+Boolean\s+@default\(false\)/);
-    expect(migration).toContain('ADD COLUMN "isWalkIn"');
-    expect(migration).toContain('ADD COLUMN "saleChannel"');
+    expect(migration).toContain('ADD COLUMN IF NOT EXISTS "isWalkIn"');
+    expect(migration).toContain('ADD COLUMN IF NOT EXISTS "saleChannel"');
     expect(migration).toContain("Customer_businessId_one_walk_in_key");
   });
 
