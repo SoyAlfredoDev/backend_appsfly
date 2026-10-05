@@ -99,7 +99,10 @@ export async function createMercadoPagoCheckout({
     payerEmail,
 }) {
     if (!isMercadoPagoConfigured()) {
-        throw new Error("Mercado Pago no está configurado en el servidor.");
+        const error = new Error("Mercado Pago no está configurado en el servidor.");
+        error.code = "MERCADO_PAGO_NOT_CONFIGURED";
+        error.statusCode = 503;
+        throw error;
     }
 
     const planSelected = await getPlanById(subscriptionPlanId);

@@ -7,6 +7,9 @@ import {
     updateCategoryAttribute,
     deleteCategoryAttribute,
 } from "../services/categoriesService.js";
+import { getBusinessByIdService } from "../services/businessService.js";
+import { cacheInvalidate } from "../libs/tenantCache.js";
+import { ensureOpticsCatalog } from "../libs/opticsCatalogSeed.js";
 
 function capitalizeFirstLetter(text) {
     if (!text) return "";
@@ -39,8 +42,29 @@ export const createCategoryController = async (req, res) => {
     }
 };
 
+async function repairOpticsCatalogIfNeeded(req) {
+    const businessId = req.tenantBusinessId;
+    const userId = req.user?.payload?.id;
+    if (!businessId || !userId || !req.prisma) return;
+
+    const business = await getBusinessByIdService(businessId);
+    if (String(business?.businessType || "").toLowerCase() !== "optics") return;
+
+    const repair = await ensureOpticsCatalog(req.prisma, userId);
+    if (!repair.repaired) return;
+
+    cacheInvalidate(businessId, "categories");
+    cacheInvalidate(businessId, "categories:all-attrs");
+}
+
 export const getCategoriesController = async (req, res) => {
     try {
+        try {
+            await repairOpticsCatalogIfNeeded(req);
+        } catch (seedError) {
+            console.error("(categories.controller.js): optics catalog repair failed:", seedError);
+        }
+
         const includeHidden = req.query.includeHiddenAttrs === "true";
         const categories = await getCategories(req.prisma, req.tenantBusinessId, {
             includeHiddenAttrs: includeHidden,

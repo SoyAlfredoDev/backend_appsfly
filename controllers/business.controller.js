@@ -189,8 +189,9 @@ export const createBusinessController = async (req, res) => {
         : "PENDING";
 
     // --- 6. Guardar estado final del proceso en la DB general ---
+    let savedBusiness = newBusiness;
     if (newBusiness || businessData.businessId) {
-      await updateBusinessByIdService(businessData.businessId, {
+      savedBusiness = await updateBusinessByIdService(businessData.businessId, {
         businessProcess: status,
         businessStatus,
         businessDatabaseStatus: businessStatus === "ACTIVE" ? "ACTIVE" : "FAILED",
@@ -200,13 +201,13 @@ export const createBusinessController = async (req, res) => {
 
     // --- 7. Respuestas ---
     if (businessStatus === "ACTIVE") {
-      return res.status(201).json(newBusiness);
+      return res.status(201).json(savedBusiness);
     }
 
-    if (newBusiness) {
+    if (savedBusiness) {
       return res.status(202).json({
         message: "Business created but one or more setup steps failed. Status is PENDING.",
-        business: newBusiness,
+        business: savedBusiness,
         processStatus: status,
       });
     }

@@ -104,12 +104,10 @@ export async function seedOpticsCatalog(prisma, createdByUserId) {
         }
 
         for (const attr of def.attributes) {
-            const existing = await prisma.categoryAttribute.findUnique({
+            const existing = await prisma.categoryAttribute.findFirst({
                 where: {
-                    categoryId_attributeKey: {
-                        categoryId: category.categoryId,
-                        attributeKey: attr.attributeKey,
-                    },
+                    categoryId: category.categoryId,
+                    attributeKey: attr.attributeKey,
                 },
             });
             if (existing) continue;
@@ -130,5 +128,36 @@ export async function seedOpticsCatalog(prisma, createdByUserId) {
         }
     }
 
-    return { seededCodes: created };
+    return { seededCodes: created, repaired: created.length > 0 };
+}
+
+export function opticsCatalogIsComplete(rows) {
+    const counts = new Map(rows.map((row) => [row.categoryCode, row.attributeCount]));
+    return OPTICS_SYSTEM_CATEGORIES.every(
+        (definition) => (counts.get(definition.categoryCode) ?? 0) >= definition.attributes.length,
+    );
+}
+
+/**
+ * Completa un sembrado que se cortó a medias. No vuelve a crear lo que ya existe.
+ */
+export async function ensureOpticsCatalog(prisma, createdByUserId) {
+    const rows = await prisma.category.findMany({
+        where: {
+            categoryCode: { in: OPTICS_SYSTEM_CATEGORIES.map((definition) => definition.categoryCode) },
+        },
+        select: {
+            categoryCode: true,
+            _count: { select: { attributes: true } },
+        },
+    });
+    const summary = rows.map((row) => ({
+        categoryCode: row.categoryCode,
+        attributeCount: row._count?.attributes ?? 0,
+    }));
+    if (opticsCatalogIsComplete(summary)) {
+        return { seededCodes: [], repaired: false };
+    }
+    const seeded = await seedOpticsCatalog(prisma, createdByUserId);
+    return { ...seeded, repaired: true };
 }

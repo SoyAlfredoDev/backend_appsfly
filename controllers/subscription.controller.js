@@ -218,7 +218,11 @@ export const createSubscriptionCheckoutController = async (req, res) => {
         return res.status(201).json(checkout);
     } catch (error) {
         console.error("Error creating subscription checkout:", error);
-        return res.status(500).json({ message: error.message || "Error al iniciar checkout." });
+        const status = Number.isInteger(error.statusCode) ? error.statusCode : 500;
+        return res.status(status).json({
+            message: error.message || "Error al iniciar checkout.",
+            ...(error.code ? { code: error.code } : {}),
+        });
     }
 };
 
