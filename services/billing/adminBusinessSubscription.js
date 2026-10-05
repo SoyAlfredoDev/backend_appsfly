@@ -2,11 +2,11 @@ import crypto from "crypto";
 import { generalPrisma as general } from "../../dbGeneral.js";
 import { getPlanById } from "../planService.js";
 import { getPlanPricing } from "../../libs/planPricing.js";
-import { publicFeatureLabels, findOpticsPlan, PLAN_IDS } from "./opticsPlanCatalog.ts";
+import { publicFeatureLabels, findOpticsPlan, PLAN_IDS } from "./opticsPlanCatalog.js";
 import {
     canAdminAssignPlan,
     describeSubscriptionBilling,
-} from "./subscriptionBillingChannel.ts";
+} from "./subscriptionBillingChannel.js";
 
 const LINK_PAYMENT_SOURCE = "MERCADO_PAGO_LINK";
 

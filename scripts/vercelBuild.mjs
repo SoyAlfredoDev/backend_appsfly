@@ -9,11 +9,19 @@ const backendDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".
 const bundlePath = path.join(backendDir, "dist", "index.js");
 const serverPath = path.join(backendDir, "api", "server.js");
 
-const MIGRATION_ATTEMPTS = 3;
-const MIGRATION_RETRY_DELAY_MS = 5_000;
+const MIGRATION_ATTEMPTS = 5;
+const MIGRATION_RETRY_DELAY_MS = 10_000;
 
 export function shouldMigrateSharedDatabase(env = process.env) {
-  return Boolean(env.DATABASE_SHARED_MIGRATION_URL?.trim());
+  return Boolean(env.DATABASE_SHARED_MIGRATION_URL?.trim() || env.DATABASE_SHARED_URL?.trim());
+}
+
+export function ensureSharedMigrationEnv(env = process.env) {
+  const next = { ...env };
+  if (!next.DATABASE_SHARED_MIGRATION_URL?.trim() && next.DATABASE_SHARED_URL?.trim()) {
+    next.DATABASE_SHARED_MIGRATION_URL = migrationDatabaseUrl(next.DATABASE_SHARED_URL);
+  }
+  return next;
 }
 
 export function databaseHostname(url) {
@@ -105,7 +113,9 @@ export function migrationEnvForSchema(schema, env) {
 }
 
 export function isRetryableDatabaseError(output) {
-  return /P1001|Can't reach database server|ECONNREFUSED|ETIMEDOUT|timeout expired/i.test(output);
+  return /P1001|P1002|Can't reach database server|ECONNREFUSED|ETIMEDOUT|timed out|timeout expired/i.test(
+    output,
+  );
 }
 
 function sleepSync(ms) {
@@ -181,18 +191,17 @@ async function prepareMigrationHost(schema, env) {
 }
 
 export async function deployControlPlaneMigrations(env = process.env) {
+  const migrationEnv = ensureSharedMigrationEnv(env);
   const generalSchema = path.join(backendDir, "prisma", "generalDB", "schema.prisma");
-  await prepareMigrationHost(generalSchema, env);
-  runPrismaMigrate(generalSchema, env);
-  if (!shouldMigrateSharedDatabase(env)) {
-    console.warn(
-      "DATABASE_SHARED_MIGRATION_URL is not set. Shared data-plane migrations were skipped.",
-    );
+  await prepareMigrationHost(generalSchema, migrationEnv);
+  runPrismaMigrate(generalSchema, migrationEnv);
+  if (!shouldMigrateSharedDatabase(migrationEnv)) {
+    console.warn("DATABASE_SHARED_URL is not set. Shared data-plane migrations were skipped.");
     return;
   }
   const sharedSchema = path.join(backendDir, "prisma", "sharedDB", "schema.prisma");
-  await prepareMigrationHost(sharedSchema, env);
-  runPrismaMigrate(sharedSchema, env);
+  await prepareMigrationHost(sharedSchema, migrationEnv);
+  runPrismaMigrate(sharedSchema, migrationEnv);
 }
 
 async function main() {

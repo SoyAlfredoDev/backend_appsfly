@@ -15,7 +15,7 @@ import {
     assertApprovedCheckoutPrice,
     checkoutUrlForPlan,
     findOpticsPlan,
-} from "./billing/opticsPlanCatalog.ts";
+} from "./billing/opticsPlanCatalog.js";
 
 
 

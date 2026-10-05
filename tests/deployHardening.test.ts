@@ -12,6 +12,7 @@ import {
   UtilityAccessError,
 } from "../services/database/tenantUtilityAccess.js";
 import {
+  ensureSharedMigrationEnv,
   isRetryableDatabaseError,
   migrationDatabaseUrl,
   migrationEnvForSchema,
@@ -79,11 +80,26 @@ describe("serverless database urls", () => {
 });
 
 describe("Vercel build migrations", () => {
-  it("migrates the shared database only when the owner URL is configured", () => {
+  it("migrates the shared database when the owner or runtime URL is configured", () => {
     expect(
       shouldMigrateSharedDatabase({ DATABASE_SHARED_MIGRATION_URL: " postgresql://owner " }),
     ).toBe(true);
+    expect(
+      shouldMigrateSharedDatabase({
+        DATABASE_SHARED_URL: "postgresql://runtime@ep-shared-pooler.example/shared",
+      }),
+    ).toBe(true);
     expect(shouldMigrateSharedDatabase({})).toBe(false);
+  });
+
+  it("derives the shared migration URL from the runtime URL when needed", () => {
+    const env = ensureSharedMigrationEnv({
+      DATABASE_SHARED_URL:
+        "postgresql://runtime:secret@ep-shared-pooler.example/shared?sslmode=require",
+    });
+
+    expect(new URL(env.DATABASE_SHARED_MIGRATION_URL ?? "").hostname).toBe("ep-shared.example");
+    expect(env.DATABASE_SHARED_URL).toContain("ep-shared-pooler.example");
   });
 
   it("uses Neon's direct host and a longer connect timeout for migrations", () => {
@@ -116,6 +132,9 @@ describe("Vercel build migrations", () => {
 
   it("retries only when the database server cannot be reached", () => {
     expect(isRetryableDatabaseError("Error: P1001: Can't reach database server")).toBe(true);
+    expect(
+      isRetryableDatabaseError("Error: P1002: The database server was reached but timed out."),
+    ).toBe(true);
     expect(isRetryableDatabaseError("Error: P3018: A migration failed to apply")).toBe(false);
   });
 

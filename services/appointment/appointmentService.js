@@ -16,7 +16,7 @@ import {
     ACTIVE_INBOX_STATUSES,
     appointmentNoticeKind,
     statusAfterTimeChange,
-} from "./appointmentPolicy.ts";
+} from "./appointmentPolicy.js";
 import { deliverAppointmentNotice } from "./appointmentNotificationService.js";
 import { generalPrisma as general } from "../../dbGeneral.js";
 

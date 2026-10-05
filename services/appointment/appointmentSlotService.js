@@ -8,7 +8,7 @@ import {
     SLOT_OCCUPYING_STATUSES,
     isSlotOpen,
     normalizeConcurrentSlots,
-} from "./appointmentPolicy.ts";
+} from "./appointmentPolicy.js";
 
 function parseHm(hm) {
     const [h, m] = String(hm).split(":").map(Number);

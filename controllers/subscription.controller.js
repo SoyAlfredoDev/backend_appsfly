@@ -15,7 +15,7 @@ import {
 import { createSubscriptionService } from "../services/subscriptionService.js";
 import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
 import { generalPrisma as general } from "../dbGeneral.js";
-import { canClaimOpticsTrial } from "../services/billing/opticsPlanCatalog.ts";
+import { canClaimOpticsTrial } from "../services/billing/opticsPlanCatalog.js";
 
 
 

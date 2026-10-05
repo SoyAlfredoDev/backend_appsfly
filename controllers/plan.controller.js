@@ -1,5 +1,5 @@
 import { getAllPlansService } from '../services/planService.js';
-import { checkoutUrlForPlan } from '../services/billing/opticsPlanCatalog.ts';
+import { checkoutUrlForPlan } from '../services/billing/opticsPlanCatalog.js';
 
 export const getPlans = async (req, res) => {
     try {

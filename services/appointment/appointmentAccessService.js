@@ -2,7 +2,7 @@ import { generalPrisma as general } from "../../dbGeneral.js";
 import { getPrismaForBusinessId } from "../../db.js";
 import { resolveBusinessTimezone } from "../../libs/businessTimezone.js";
 import { getFrontendBaseUrl } from "../../emails/shared/layout.js";
-import { hasAppointmentsPlan } from "./appointmentPolicy.ts";
+import { hasAppointmentsPlan } from "./appointmentPolicy.js";
 
 
 

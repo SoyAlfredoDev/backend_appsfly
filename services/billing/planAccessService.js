@@ -1,6 +1,6 @@
 import { generalPrisma as general } from "../../dbGeneral.js";
 import { getSubscriptionsByBusinessIdService } from "../subscriptionService.js";
-import { isSeatAvailable, maxUsersForPlan, planIncludesCapability } from "./opticsPlanCatalog.ts";
+import { isSeatAvailable, maxUsersForPlan, planIncludesCapability } from "./opticsPlanCatalog.js";
 
 function isCurrent(subscription, now) {
   if (!subscription?.subscriptionStatus) return false;
