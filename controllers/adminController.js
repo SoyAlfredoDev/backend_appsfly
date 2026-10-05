@@ -1,5 +1,9 @@
 import * as adminService from "../services/adminService.js";
 import {
+    assignBusinessPlan,
+    recordBusinessLinkPayment,
+} from "../services/billing/adminBusinessSubscription.js";
+import {
     getAdminSubscriptionCancellations as fetchAdminSubscriptionCancellations,
 } from "../services/mercadopago/mpSubscriptionBillingService.js";
 
@@ -58,6 +62,57 @@ export const getAdminPayments = async (req, res) => {
         res.json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+function adminUserId(req) {
+    return req.user?.payload?.id ?? null;
+}
+
+function sendAdminError(res, error, fallback) {
+    const status = Number.isInteger(error.statusCode) ? error.statusCode : 500;
+    return res.status(status).json({
+        message: error.message || fallback,
+        ...(error.code ? { code: error.code } : {}),
+    });
+}
+
+export const assignAdminBusinessPlan = async (req, res) => {
+    try {
+        const userId = adminUserId(req);
+        const { planId } = req.body ?? {};
+        if (!userId) {
+            return res.status(401).json({ message: "Sesión inválida.", code: "AUTH_REQUIRED" });
+        }
+        if (!planId) {
+            return res.status(400).json({ message: "Falta el plan.", code: "PLAN_ID_REQUIRED" });
+        }
+        const result = await assignBusinessPlan({
+            businessId: req.params.id,
+            planId,
+            adminUserId: userId,
+        });
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error("(adminController.js): Error assigning business plan:", error);
+        return sendAdminError(res, error, "No se pudo cambiar el plan.");
+    }
+};
+
+export const recordAdminBusinessLinkPayment = async (req, res) => {
+    try {
+        const userId = adminUserId(req);
+        if (!userId) {
+            return res.status(401).json({ message: "Sesión inválida.", code: "AUTH_REQUIRED" });
+        }
+        const result = await recordBusinessLinkPayment({
+            businessId: req.params.id,
+            adminUserId: userId,
+        });
+        return res.status(201).json(result);
+    } catch (error) {
+        console.error("(adminController.js): Error recording link payment:", error);
+        return sendAdminError(res, error, "No se pudo registrar el pago del link.");
     }
 };
 

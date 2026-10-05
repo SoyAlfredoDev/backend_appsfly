@@ -10,6 +10,8 @@ router.get('/admin/kpis', authRequired, superAdminRequired, adminController.getD
 router.get('/admin/subscriptions', authRequired, superAdminRequired, adminController.getAdminSubscriptions);
 router.get('/admin/businesses', authRequired, superAdminRequired, adminController.getAdminBusinesses);
 router.get('/admin/businesses/:id', authRequired, superAdminRequired, adminController.getAdminBusinessById);
+router.post('/admin/businesses/:id/subscription', authRequired, superAdminRequired, adminController.assignAdminBusinessPlan);
+router.post('/admin/businesses/:id/subscription/link-payment', authRequired, superAdminRequired, adminController.recordAdminBusinessLinkPayment);
 router.get('/admin/users', authRequired, superAdminRequired, adminController.getAdminUsers);
 router.get('/admin/payments', authRequired, superAdminRequired, adminController.getAdminPayments);
 router.get('/admin/subscription-cancellations', authRequired, superAdminRequired, adminController.getAdminSubscriptionCancellations);

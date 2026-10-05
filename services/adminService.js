@@ -4,6 +4,7 @@ import { getAdminBusinessesService, getAdminBusinessByIdService } from './busine
 import { getPrismaForBusinessId } from '../db.js'
 import userSuperAdmin from '../superAdmin.js'
 import { getAdminSubscriptionPayments as fetchAdminSubscriptionPayments } from './subscriptionPaymentService.js'
+import { getBusinessSubscriptionAdminView } from './billing/adminBusinessSubscription.js'
 
 
 
@@ -286,10 +287,12 @@ export const getBusinessDetail = async (businessId) => {
     if (!business) return null;
 
     const tenant = await getTenantOperationalData(businessId);
+    const subscriptionAdmin = await getBusinessSubscriptionAdminView(businessId);
 
     return {
         business,
         tenant,
+        subscriptionAdmin,
     };
 };
 
