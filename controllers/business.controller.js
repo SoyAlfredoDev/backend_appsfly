@@ -160,7 +160,11 @@ export const createBusinessController = async (req, res) => {
           try {
             const tenantPrisma = await getPrismaForBusinessId(businessData.businessId);
             if (tenantPrisma) {
-              await seedOpticsCatalog(tenantPrisma, userId);
+              await seedOpticsCatalog(
+                tenantPrisma,
+                userId,
+                databaseMode === "SHARED" ? businessData.businessId : null,
+              );
               cacheInvalidate(businessData.businessId, "categories");
               cacheInvalidate(businessData.businessId, "categories:all-attrs");
               status.opticsCatalogSeeded = true;

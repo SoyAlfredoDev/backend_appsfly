@@ -69,7 +69,12 @@ export const OPTICS_SYSTEM_CATEGORIES = [
  * @param {import('@prisma/client').PrismaClient} prisma
  * @param {string} createdByUserId
  */
-export async function seedOpticsCatalog(prisma, createdByUserId) {
+function withBusinessId(data, businessId) {
+    if (!businessId) return data;
+    return { businessId, ...data };
+}
+
+export async function seedOpticsCatalog(prisma, createdByUserId, businessId = null) {
     if (!prisma || !createdByUserId) {
         throw new Error("seedOpticsCatalog requiere prisma y createdByUserId");
     }
@@ -78,18 +83,24 @@ export async function seedOpticsCatalog(prisma, createdByUserId) {
 
     for (const def of OPTICS_SYSTEM_CATEGORIES) {
         let category = await prisma.category.findFirst({
-            where: { categoryCode: def.categoryCode },
+            where: {
+                categoryCode: def.categoryCode,
+                ...(businessId ? { businessId } : {}),
+            },
         });
 
         if (!category) {
             category = await prisma.category.create({
-                data: {
-                    categoryName: def.categoryName,
-                    categoryCode: def.categoryCode,
-                    isSystem: true,
-                    allowedFor: def.allowedFor,
-                    createdByUserId,
-                },
+                data: withBusinessId(
+                    {
+                        categoryName: def.categoryName,
+                        categoryCode: def.categoryCode,
+                        isSystem: true,
+                        allowedFor: def.allowedFor,
+                        createdByUserId,
+                    },
+                    businessId,
+                ),
             });
             created.push(category.categoryCode);
         } else if (!category.isSystem) {
@@ -108,22 +119,26 @@ export async function seedOpticsCatalog(prisma, createdByUserId) {
                 where: {
                     categoryId: category.categoryId,
                     attributeKey: attr.attributeKey,
+                    ...(businessId ? { businessId } : {}),
                 },
             });
             if (existing) continue;
 
             await prisma.categoryAttribute.create({
-                data: {
-                    categoryId: category.categoryId,
-                    attributeKey: attr.attributeKey,
-                    attributeLabel: attr.attributeLabel,
-                    dataType: attr.dataType || "TEXT",
-                    optionsJson: attr.optionsJson || null,
-                    isSystem: true,
-                    isRequired: false,
-                    isVisible: true,
-                    sortOrder: attr.sortOrder ?? 0,
-                },
+                data: withBusinessId(
+                    {
+                        categoryId: category.categoryId,
+                        attributeKey: attr.attributeKey,
+                        attributeLabel: attr.attributeLabel,
+                        dataType: attr.dataType || "TEXT",
+                        optionsJson: attr.optionsJson || null,
+                        isSystem: true,
+                        isRequired: false,
+                        isVisible: true,
+                        sortOrder: attr.sortOrder ?? 0,
+                    },
+                    businessId,
+                ),
             });
         }
     }
@@ -141,10 +156,11 @@ export function opticsCatalogIsComplete(rows) {
 /**
  * Completa un sembrado que se cortó a medias. No vuelve a crear lo que ya existe.
  */
-export async function ensureOpticsCatalog(prisma, createdByUserId) {
+export async function ensureOpticsCatalog(prisma, createdByUserId, businessId = null) {
     const rows = await prisma.category.findMany({
         where: {
             categoryCode: { in: OPTICS_SYSTEM_CATEGORIES.map((definition) => definition.categoryCode) },
+            ...(businessId ? { businessId } : {}),
         },
         select: {
             categoryCode: true,
@@ -158,6 +174,6 @@ export async function ensureOpticsCatalog(prisma, createdByUserId) {
     if (opticsCatalogIsComplete(summary)) {
         return { seededCodes: [], repaired: false };
     }
-    const seeded = await seedOpticsCatalog(prisma, createdByUserId);
+    const seeded = await seedOpticsCatalog(prisma, createdByUserId, businessId);
     return { ...seeded, repaired: true };
 }

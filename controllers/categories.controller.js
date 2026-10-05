@@ -50,7 +50,7 @@ async function repairOpticsCatalogIfNeeded(req) {
     const business = await getBusinessByIdService(businessId);
     if (String(business?.businessType || "").toLowerCase() !== "optics") return;
 
-    const repair = await ensureOpticsCatalog(req.prisma, userId);
+    const repair = await ensureOpticsCatalog(req.prisma, userId, businessId);
     if (!repair.repaired) return;
 
     cacheInvalidate(businessId, "categories");

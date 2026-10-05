@@ -92,4 +92,11 @@ describe("optics catalog seed", () => {
     const second = await ensureOpticsCatalog(prisma, "user-1");
     expect(second.repaired).toBe(false);
   });
+
+  it("stamps the shared business id on new rows", async () => {
+    const prisma = createSharedPrisma();
+    await seedOpticsCatalog(prisma, "user-1", "biz-1");
+    expect(prisma.categories.every((category) => category.businessId === "biz-1")).toBe(true);
+    expect(prisma.attributes.every((attribute) => attribute.businessId === "biz-1")).toBe(true);
+  });
 });
