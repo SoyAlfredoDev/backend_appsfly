@@ -14,10 +14,25 @@ import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
 import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 import { superAdminRequired } from "../middlewares/superAdminMiddleware.js";
+import {
+  dismissAnnouncementsController,
+  getDismissedAnnouncementsController,
+} from "../controllers/announcementDismissal.controller.js";
 
 const router = Router();
 
 // --- 1. Rutas Específicas y de Listado (Van primero) ---
+router.get(
+  "/users/me/dismissed-announcements",
+  authRequired,
+  getDismissedAnnouncementsController,
+);
+router.post(
+  "/users/me/dismissed-announcements",
+  authRequired,
+  dismissAnnouncementsController,
+);
+
 router.get("/users", authRequired, superAdminRequired, getUsersController);
 
 router.get("/users/validateRutExists/:rut", authRequired, validateRutExists);

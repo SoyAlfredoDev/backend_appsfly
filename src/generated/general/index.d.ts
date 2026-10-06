@@ -3334,6 +3334,7 @@ export namespace Prisma {
     userPhoneNumber: number
     userDocumentType: number
     userDocumentNumber: number
+    userDismissedAnnouncementIds: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -3384,6 +3385,7 @@ export namespace Prisma {
     userPhoneNumber?: true
     userDocumentType?: true
     userDocumentNumber?: true
+    userDismissedAnnouncementIds?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -3473,6 +3475,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds: string[]
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -3506,6 +3509,7 @@ export namespace Prisma {
     userPhoneNumber?: boolean
     userDocumentType?: boolean
     userDocumentNumber?: boolean
+    userDismissedAnnouncementIds?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     UserBusiness?: boolean | User$UserBusinessArgs<ExtArgs>
@@ -3533,6 +3537,7 @@ export namespace Prisma {
     userPhoneNumber?: boolean
     userDocumentType?: boolean
     userDocumentNumber?: boolean
+    userDismissedAnnouncementIds?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -3549,6 +3554,7 @@ export namespace Prisma {
     userPhoneNumber?: boolean
     userDocumentType?: boolean
     userDocumentNumber?: boolean
+    userDismissedAnnouncementIds?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -3565,11 +3571,12 @@ export namespace Prisma {
     userPhoneNumber?: boolean
     userDocumentType?: boolean
     userDocumentNumber?: boolean
+    userDismissedAnnouncementIds?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "userFirstName" | "userLastName" | "userEmail" | "userConfirmEmail" | "userPassword" | "userLastConnection" | "userCodePhoneNumber" | "userPhoneNumber" | "userDocumentType" | "userDocumentNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "userFirstName" | "userLastName" | "userEmail" | "userConfirmEmail" | "userPassword" | "userLastConnection" | "userCodePhoneNumber" | "userPhoneNumber" | "userDocumentType" | "userDocumentNumber" | "userDismissedAnnouncementIds" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     UserBusiness?: boolean | User$UserBusinessArgs<ExtArgs>
     UserGuest?: boolean | User$UserGuestArgs<ExtArgs>
@@ -3612,6 +3619,10 @@ export namespace Prisma {
       userPhoneNumber: string
       userDocumentType: string
       userDocumentNumber: string
+      /**
+       * * Anuncios post-login que el usuario pidió no volver a ver (ids de producto, p. ej. pwa-install-v2).
+       */
+      userDismissedAnnouncementIds: string[]
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -4058,6 +4069,7 @@ export namespace Prisma {
     readonly userPhoneNumber: FieldRef<"User", 'String'>
     readonly userDocumentType: FieldRef<"User", 'String'>
     readonly userDocumentNumber: FieldRef<"User", 'String'>
+    readonly userDismissedAnnouncementIds: FieldRef<"User", 'String[]'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -27445,6 +27457,7 @@ export namespace Prisma {
     userPhoneNumber: 'userPhoneNumber',
     userDocumentType: 'userDocumentType',
     userDocumentNumber: 'userDocumentNumber',
+    userDismissedAnnouncementIds: 'userDismissedAnnouncementIds',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -28306,6 +28319,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFilter<"User"> | string
     userDocumentType?: StringFilter<"User"> | string
     userDocumentNumber?: StringFilter<"User"> | string
+    userDismissedAnnouncementIds?: StringNullableListFilter<"User">
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     UserBusiness?: UserBusinessListRelationFilter
@@ -28332,6 +28346,7 @@ export namespace Prisma {
     userPhoneNumber?: SortOrder
     userDocumentType?: SortOrder
     userDocumentNumber?: SortOrder
+    userDismissedAnnouncementIds?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     UserBusiness?: UserBusinessOrderByRelationAggregateInput
@@ -28361,6 +28376,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFilter<"User"> | string
     userDocumentType?: StringFilter<"User"> | string
     userDocumentNumber?: StringFilter<"User"> | string
+    userDismissedAnnouncementIds?: StringNullableListFilter<"User">
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     UserBusiness?: UserBusinessListRelationFilter
@@ -28387,6 +28403,7 @@ export namespace Prisma {
     userPhoneNumber?: SortOrder
     userDocumentType?: SortOrder
     userDocumentNumber?: SortOrder
+    userDismissedAnnouncementIds?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -28409,6 +28426,7 @@ export namespace Prisma {
     userPhoneNumber?: StringWithAggregatesFilter<"User"> | string
     userDocumentType?: StringWithAggregatesFilter<"User"> | string
     userDocumentNumber?: StringWithAggregatesFilter<"User"> | string
+    userDismissedAnnouncementIds?: StringNullableListFilter<"User">
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -30346,6 +30364,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -30372,6 +30391,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -30398,6 +30418,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -30424,6 +30445,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
@@ -30450,6 +30472,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30466,6 +30489,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30482,6 +30506,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32737,6 +32762,14 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -32865,6 +32898,7 @@ export namespace Prisma {
     userPhoneNumber?: SortOrder
     userDocumentType?: SortOrder
     userDocumentNumber?: SortOrder
+    userDismissedAnnouncementIds?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -33855,14 +33889,6 @@ export namespace Prisma {
     not?: NestedEnumTicketStatusFilter<$PrismaModel> | $Enums.TicketStatus
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
   export type TicketCountOrderByAggregateInput = {
     ticketId?: SortOrder
     ticketNumber?: SortOrder
@@ -34657,6 +34683,10 @@ export namespace Prisma {
     _max?: NestedEnumPlatformAgentTaskSafetyFilter<$PrismaModel>
   }
 
+  export type UserCreateuserDismissedAnnouncementIdsInput = {
+    set: string[]
+  }
+
   export type UserBusinessCreateNestedManyWithoutUserInput = {
     create?: XOR<UserBusinessCreateWithoutUserInput, UserBusinessUncheckedCreateWithoutUserInput> | UserBusinessCreateWithoutUserInput[] | UserBusinessUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserBusinessCreateOrConnectWithoutUserInput | UserBusinessCreateOrConnectWithoutUserInput[]
@@ -34807,6 +34837,11 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type UserUpdateuserDismissedAnnouncementIdsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -37593,6 +37628,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -37618,6 +37654,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -37898,6 +37935,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -37923,6 +37961,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
@@ -38255,6 +38294,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserGuest?: UserGuestCreateNestedManyWithoutUserInput
@@ -38280,6 +38320,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserGuest?: UserGuestUncheckedCreateNestedManyWithoutUserInput
@@ -38408,6 +38449,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserGuest?: UserGuestUpdateManyWithoutUserNestedInput
@@ -38433,6 +38475,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserGuest?: UserGuestUncheckedUpdateManyWithoutUserNestedInput
@@ -38551,6 +38594,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -38576,6 +38620,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -38704,6 +38749,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -38729,6 +38775,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
@@ -38975,6 +39022,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -39000,6 +39048,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -39255,6 +39304,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -39280,6 +39330,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
@@ -39605,6 +39656,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -39630,6 +39682,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -39817,6 +39870,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -39842,6 +39896,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
@@ -40036,6 +40091,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -40061,6 +40117,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -40289,6 +40346,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -40314,6 +40372,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
@@ -40373,6 +40432,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -40398,6 +40458,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -40455,6 +40516,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -40480,6 +40542,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
@@ -40505,6 +40568,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -40530,6 +40594,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -40600,6 +40665,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -40625,6 +40691,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
@@ -40685,6 +40752,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -40710,6 +40778,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -40795,6 +40864,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -40820,6 +40890,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput
@@ -41194,6 +41265,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessCreateNestedManyWithoutUserInput
@@ -41219,6 +41291,7 @@ export namespace Prisma {
     userPhoneNumber: string
     userDocumentType: string
     userDocumentNumber: string
+    userDismissedAnnouncementIds?: UserCreateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: Date | string
     updatedAt?: Date | string
     UserBusiness?: UserBusinessUncheckedCreateNestedManyWithoutUserInput
@@ -41260,6 +41333,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUpdateManyWithoutUserNestedInput
@@ -41285,6 +41359,7 @@ export namespace Prisma {
     userPhoneNumber?: StringFieldUpdateOperationsInput | string
     userDocumentType?: StringFieldUpdateOperationsInput | string
     userDocumentNumber?: StringFieldUpdateOperationsInput | string
+    userDismissedAnnouncementIds?: UserUpdateuserDismissedAnnouncementIdsInput | string[]
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     UserBusiness?: UserBusinessUncheckedUpdateManyWithoutUserNestedInput

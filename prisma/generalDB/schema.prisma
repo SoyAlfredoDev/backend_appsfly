@@ -23,6 +23,8 @@ model User {
     userPhoneNumber     String
     userDocumentType    String
     userDocumentNumber  String
+    /** Anuncios post-login que el usuario pidió no volver a ver (ids de producto, p. ej. pwa-install-v2). */
+    userDismissedAnnouncementIds String[] @default([])
     createdAt           DateTime  @default(now())
     updatedAt           DateTime  @updatedAt
 

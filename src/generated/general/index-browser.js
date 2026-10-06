@@ -133,6 +133,7 @@ exports.Prisma.UserScalarFieldEnum = {
   userPhoneNumber: 'userPhoneNumber',
   userDocumentType: 'userDocumentType',
   userDocumentNumber: 'userDocumentNumber',
+  userDismissedAnnouncementIds: 'userDismissedAnnouncementIds',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
