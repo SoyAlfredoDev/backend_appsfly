@@ -2,6 +2,9 @@ node_modules
 tmp
 coverage
 dist
+api/server.js
+.cursor/
+tmp-prod-*.mjs
 .env
 .vercel
 .env.*

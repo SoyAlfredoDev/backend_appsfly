@@ -190,11 +190,25 @@ function runSharedMigrations(schema, env) {
     runPrismaMigrate(schema, env);
   } catch (error) {
     const output = `${error.stdout ?? ""}\n${error.stderr ?? ""}\n${error.message ?? ""}`;
-    if (!isSchemaNotEmptyError(output)) throw error;
-    console.warn(
-      "Shared database is not baselined. Running idempotent SQL and marking migrations.",
-    );
-    baselineSharedMigrations(schema, env);
+    console.error(output);
+    if (!isSchemaNotEmptyError(output)) {
+      console.warn(
+        "Shared data-plane migrations failed. Continuing the Vercel build so the API can deploy.",
+      );
+      return;
+    }
+    try {
+      console.warn(
+        "Shared database is not baselined. Running idempotent SQL and marking migrations.",
+      );
+      baselineSharedMigrations(schema, env);
+    } catch (baselineError) {
+      const baselineOutput = `${baselineError.stdout ?? ""}\n${baselineError.stderr ?? ""}\n${baselineError.message ?? ""}`;
+      console.error(baselineOutput);
+      console.warn(
+        "Shared baseline failed. Continuing the Vercel build; apply shared migrations manually.",
+      );
+    }
   }
 }
 

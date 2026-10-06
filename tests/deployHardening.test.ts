@@ -137,6 +137,7 @@ describe("Vercel build migrations", () => {
     expect(isSchemaNotEmptyError("Error: P3005: The database schema is not empty.")).toBe(true);
     expect(isSchemaNotEmptyError("db_schema_not_empty")).toBe(true);
     expect(isSchemaNotEmptyError("Error: P3018: A migration failed to apply")).toBe(false);
+    expect(isSchemaNotEmptyError("db_migration_failed")).toBe(false);
   });
 
   it("lists shared migration folders in order", () => {
