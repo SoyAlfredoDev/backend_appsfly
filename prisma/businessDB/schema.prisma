@@ -101,7 +101,8 @@ model Product {
     /** Permite vender el producto aunque quantityOnHand sea 0 o negativo */
     productAllowZeroStock  Boolean          @default(false)
     /** Si true, al venderse puede generar Orden de Trabajo (óptica) */
-    productRequiresLabWork Boolean          @default(false)
+    isVariantParent        Boolean                 @default(false)
+  productRequiresLabWork Boolean          @default(false)
     createdByUserId        String
     user                   User             @relation(fields: [createdByUserId], references: [userId])
     createdAt              DateTime         @default(now())
@@ -111,9 +112,30 @@ model Product {
     productStock           ProductStock?
     QuotationDetail        QuotationDetail[]
     attributeValues        ProductAttributeValue[]
+  variantParentId        String?
+  variantParent          Product?                @relation("ProductVariantParent", fields: [variantParentId], references: [productId], onDelete: Cascade)
+  variantChildren        Product[]               @relation("ProductVariantParent")
+  variantFamily          ProductVariant[]        @relation("ProductVariantFamily")
+  variantMetadata        ProductVariant?         @relation("ProductVariantProduct")
+  @@index([variantParentId])
 }
 
 /** Códigos escaneables (barcode/QR/SKU alias) polimórficos por entidad. */
+model ProductVariant {
+  variantId       String   @id @default(uuid())
+  productId       String   @unique
+  product         Product  @relation("ProductVariantProduct", fields: [productId], references: [productId], onDelete: Cascade)
+  parentProductId String
+  parentProduct   Product  @relation("ProductVariantFamily", fields: [parentProductId], references: [productId], onDelete: Cascade)
+  combinationKey  String
+  optionsJson     String
+  priceOverride   Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([parentProductId, combinationKey])
+}
+
 model ScanCode {
     scanCodeId      String   @id @default(uuid())
     /** PRODUCT | SERVICE | WORK_ORDER | CUSTOMER | … */
