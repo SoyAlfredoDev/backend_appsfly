@@ -42,12 +42,22 @@ export const sendEmail = async ({ to, subject, html, text, from, replyTo, attach
         }
 
         if (attachments?.length) {
-            payload.attachments = attachments.map((file) => ({
-                filename: file.filename,
-                content: Buffer.isBuffer(file.content)
-                    ? file.content.toString("base64")
-                    : file.content,
-            }));
+            payload.attachments = attachments.map((file) => {
+                const attachment = {
+                    filename: file.filename,
+                    content: Buffer.isBuffer(file.content)
+                        ? file.content.toString("base64")
+                        : file.content,
+                };
+                const contentId = file.contentId?.trim();
+                if (contentId) {
+                    attachment.contentId = contentId;
+                }
+                if (file.contentType?.trim()) {
+                    attachment.contentType = file.contentType.trim();
+                }
+                return attachment;
+            });
         }
 
         if (tags && typeof tags === "object" && Object.keys(tags).length > 0) {

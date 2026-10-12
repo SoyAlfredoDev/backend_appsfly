@@ -1,4 +1,4 @@
-import { createPurchase, getPurchaseById, getPurchases, getMonthlyPurchases, getDayPurchases, getPurchasesByProviderIdService, countPurchasesMonthService, createPurchaseComplete, updatePurchaseHeader, cancelPurchaseWithInventory } from '../services/purchaseServices.js';
+import { createPurchase, getPurchaseById, getPurchases, getMonthlyPurchases, getDayPurchases, getPurchasesByProviderIdService, countPurchasesMonthService, createPurchaseComplete, updatePurchaseHeader, cancelPurchaseWithInventory, paySupplierPurchase } from '../services/purchaseServices.js';
 import { InsufficientStockError } from '../services/inventory/inventoryService.js';
 import definePurchaseNumber from '../libs/definePurchaseNumber.js';
 import { getTodayBusinessDate, DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
@@ -55,6 +55,7 @@ export const createPurchaseCompleteController = async (req, res) => {
             purchaseComment,
             note,
             purchaseTotal,
+            purchaseSettlement,
         } = req.body;
 
         const purchasePayload = purchase ?? {
@@ -63,6 +64,7 @@ export const createPurchaseCompleteController = async (req, res) => {
             purchaseRealNumber: purchaseRealNumber ?? documentNumber,
             purchaseComment: purchaseComment ?? note,
             purchaseTotal,
+            purchaseSettlement: purchaseSettlement ?? purchase?.purchaseSettlement,
         };
 
         let detailsPayload = purchaseDetails;
@@ -193,6 +195,28 @@ export const getMonthlyPurchasesController = async (req, res) => {
     } catch (error) {
         console.error("(purchase.controller.js): Error getting monthly purchases:", error);
         res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const paySupplierPurchaseController = async (req, res) => {
+    try {
+        const purchase = await paySupplierPurchase(
+            req.params.id,
+            req.body?.paymentMethod,
+            req.prisma,
+            req.user.payload.id,
+        );
+        res.status(200).json({
+            message: "Pago a proveedor registrado",
+            purchase,
+        });
+    } catch (error) {
+        console.error("(purchase.controller.js): Error paying purchase:", error);
+        const status = error.status ?? error.statusCode ?? 500;
+        res.status(status).json({
+            code: error.code ?? "PURCHASE_PAYMENT_FAILED",
+            message: error.message || "No se pudo registrar el pago",
+        });
     }
 };
 

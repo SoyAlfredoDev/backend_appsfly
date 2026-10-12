@@ -1,6 +1,8 @@
 import { getPaymentByDateService } from './paymentsService.js';
 import {
+    applyHourlySale,
     businessDayBoundsUtc,
+    closureDayKey,
     DEFAULT_BUSINESS_TIMEZONE,
     hourInTimezone,
 } from '../libs/businessTimezone.js';
@@ -28,32 +30,34 @@ export async function getDailySaleDetailService(
 
     if (!closure) return null;
 
-    const day = closure.dailySalesDay;
-    const { start, endInclusive } = businessDayBoundsUtc(day, timeZone);
-
-    const sales = await prisma.sale.findMany({
-        where: {
-            createdAt: { gte: start, lte: endInclusive },
-        },
-        include: {
-            customer: {
-                select: {
-                    customerFirstName: true,
-                    customerLastName: true,
+    const day = closureDayKey(closure.dailySalesDay);
+    let sales = [];
+    if (day) {
+        const { start, endInclusive } = businessDayBoundsUtc(day, timeZone);
+        sales = await prisma.sale.findMany({
+            where: {
+                createdAt: { gte: start, lte: endInclusive },
+            },
+            include: {
+                customer: {
+                    select: {
+                        customerFirstName: true,
+                        customerLastName: true,
+                    },
+                },
+                Payment: true,
+                SaleDetail: {
+                    select: {
+                        saleDetailTotal: true,
+                        saleDetailQuantity: true,
+                    },
                 },
             },
-            Payment: true,
-            SaleDetail: {
-                select: {
-                    saleDetailTotal: true,
-                    saleDetailQuantity: true,
-                },
-            },
-        },
-        orderBy: { createdAt: 'asc' },
-    });
+            orderBy: { createdAt: 'asc' },
+        });
+    }
 
-    const payments = await getPaymentByDateService(day, day, prisma, timeZone);
+    const payments = day ? await getPaymentByDateService(day, day, prisma, timeZone) : [];
 
     const hourlySales = Array.from({ length: 24 }, (_, hour) => ({
         hour,
@@ -63,17 +67,15 @@ export async function getDailySaleDetailService(
     }));
 
     const salesSummary = sales.map((sale) => {
-        const saleTotal = sale.SaleDetail.reduce(
-            (acc, d) => acc + (d.saleDetailTotal || 0),
-            0,
+        const details = Array.isArray(sale.SaleDetail) ? sale.SaleDetail : [];
+        const salePayments = Array.isArray(sale.Payment) ? sale.Payment : [];
+        const saleTotal = details.reduce((acc, item) => acc + (item.saleDetailTotal || 0), 0);
+        const paid = salePayments.reduce((acc, payment) => acc + (payment.paymentAmount || 0), 0);
+        applyHourlySale(
+            hourlySales,
+            hourInTimezone(new Date(sale.createdAt), timeZone),
+            saleTotal,
         );
-        const paid = sale.Payment.reduce(
-            (acc, p) => acc + (p.paymentAmount || 0),
-            0,
-        );
-        const hour = hourInTimezone(new Date(sale.createdAt), timeZone);
-        hourlySales[hour].total += saleTotal;
-        hourlySales[hour].count += 1;
 
         return {
             saleId: sale.saleId,
@@ -83,10 +85,7 @@ export async function getDailySaleDetailService(
             saleTotal,
             paid,
             pending: saleTotal - paid,
-            itemsCount: sale.SaleDetail.reduce(
-                (acc, d) => acc + (d.saleDetailQuantity || 0),
-                0,
-            ),
+            itemsCount: details.reduce((acc, item) => acc + (item.saleDetailQuantity || 0), 0),
         };
     });
 

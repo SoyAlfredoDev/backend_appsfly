@@ -15,6 +15,10 @@ import {
     findSubscriptionByPreapprovalId,
 } from "./mpSubscriptionBillingService.js";
 import { sendDualSubscriptionPaymentEmails } from "../../emails/dispatchers/subscriptionPayment.dispatcher.js";
+import {
+    isRecurringChargeSource,
+    shouldExtendPaidPeriod,
+} from "../billing/subscriptionCheckout.js";
 
 
 
@@ -341,6 +345,7 @@ async function handleSubscriptionAuthorizedPayment(resourceId, action) {
     let subscription = preapprovalId
         ? await findSubscriptionByPreapprovalId(preapprovalId)
         : null;
+    let justActivated = false;
 
     if (isAuthorizedPaymentSuccessful(authorized)) {
         if (!subscription && preapprovalId) {
@@ -352,6 +357,7 @@ async function handleSubscriptionAuthorizedPayment(resourceId, action) {
                     mpPreapprovalData: preapproval,
                 });
                 subscription = await findSubscriptionByPreapprovalId(preapprovalId);
+                justActivated = Boolean(subscription);
             }
         }
 
@@ -379,7 +385,24 @@ async function handleSubscriptionAuthorizedPayment(resourceId, action) {
                 };
             }
 
-            const extended = await extendSubscriptionRenewal(subscription.subscriptionBusinessId);
+            const approvedPayments = await general.subscriptionPayment.findMany({
+                where: {
+                    subscriptionId: subscription.subscriptionId,
+                    status: "APPROVED",
+                },
+                select: { metadata: true, mpPaymentId: true },
+            });
+            const hasPriorRecurringCharge = approvedPayments.some((payment) => {
+                if (String(payment.mpPaymentId || "") === mpPaymentKey) return false;
+                const source = payment.metadata && typeof payment.metadata === "object"
+                    ? payment.metadata.source
+                    : null;
+                return isRecurringChargeSource(source);
+            });
+            const extend = shouldExtendPaidPeriod({ justActivated, hasPriorRecurringCharge });
+            const extended = extend
+                ? await extendSubscriptionRenewal(subscription.subscriptionBusinessId)
+                : subscription;
             const amount = Number(
                 authorized.transaction_amount
                 ?? authorized.payment?.transaction_amount
@@ -393,7 +416,7 @@ async function handleSubscriptionAuthorizedPayment(resourceId, action) {
                 mpPaymentId: mpPaymentKey,
                 mpPreapprovalId: preapprovalId ? String(preapprovalId) : null,
                 metadata: {
-                    source: "webhook_renewal",
+                    source: extend ? "webhook_renewal" : "webhook_activation",
                     eventType,
                     authorizedPaymentId: String(resourceId),
                     authorizedStatus: authorized.status,

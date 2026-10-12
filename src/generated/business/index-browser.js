@@ -322,6 +322,9 @@ exports.Prisma.DailySalesScalarFieldEnum = {
   dailySalesNumberOfSales: 'dailySalesNumberOfSales',
   dailySalesTotalIncome: 'dailySalesTotalIncome',
   dailySalesDetailIncome: 'dailySalesDetailIncome',
+  dailySalesExpectedCash: 'dailySalesExpectedCash',
+  dailySalesCountedCash: 'dailySalesCountedCash',
+  dailySalesCashDifference: 'dailySalesCashDifference',
   createdByUserId: 'createdByUserId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -407,6 +410,8 @@ exports.Prisma.PurchaseScalarFieldEnum = {
   purchaseTotal: 'purchaseTotal',
   purchaseStatus: 'purchaseStatus',
   purchaseComment: 'purchaseComment',
+  purchaseSettlement: 'purchaseSettlement',
+  purchasePaidAt: 'purchasePaidAt',
   createdByUserId: 'createdByUserId',
   cancelledByUserId: 'cancelledByUserId',
   cancelledAt: 'cancelledAt',

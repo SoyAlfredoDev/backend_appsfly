@@ -5,6 +5,7 @@
 import dotenv from "dotenv";
 import { PrismaClient as GeneralPrisma } from "../src/generated/general/index.js";
 import { PrismaClient as SharedPrisma } from "../src/generated/shared/index.js";
+import { deleteTenantCloudinaryFolder } from "../services/cloudinaryService.js";
 
 dotenv.config({ path: process.env.ENV_FILE ?? ".env.production" });
 
@@ -210,6 +211,8 @@ async function main() {
   for (const businessId of BUSINESS_IDS) {
     console.log(`\nDeleting shared tenant data for ${businessId}...`);
     await deleteSharedTenantData(businessId);
+    console.log(`\nDeleting Cloudinary folder for ${businessId}...`);
+    await deleteTenantCloudinaryFolder(businessId);
   }
 
   for (const businessId of BUSINESS_IDS) {

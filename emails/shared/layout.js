@@ -1,5 +1,5 @@
 /**
- * Logo blanco de AppsFly — frontend/public/logo-appsfly-white.png
+ * Logo a color de AppsFly — frontend/public/logo_appsfly.png
  * Debe ser accesible públicamente en el host del frontend (Vercel / appsfly.cl).
  */
 export function getFrontendBaseUrl() {
@@ -29,7 +29,7 @@ export function getAppsFlyEmailLogoUrl() {
         return process.env.APPSFLY_EMAIL_LOGO_URL.trim();
     }
     const base = (process.env.FRONTEND_URL_PRODUCTION || "https://appsfly.cl").replace(/\/+$/, "");
-    return `${base}/logo-appsfly-white.png`;
+    return `${base}/logo_appsfly.png`;
 }
 
 export function getAppsFlyPlatformUrl() {
@@ -61,6 +61,75 @@ function renderBusinessEmailHeader({ businessName, businessLogoUrl }) {
           <p class="email-heading" style="margin:0;font-size:22px;font-weight:700;color:#021f41;line-height:1.3;font-family:Arial,Helvetica,sans-serif;">
             ${escapeHtml(name)}
           </p>
+        </td>
+      </tr>`;
+}
+
+const APPSFLY_SOCIAL_LINKS = [
+    { href: "https://www.instagram.com/appsfly.app/", label: "Instagram" },
+    { href: "https://www.facebook.com/61585307100875", label: "Facebook" },
+    { href: "https://twitter.com/appsfly_app", label: "X" },
+    { href: "https://www.tiktok.com/@appsfly.software", label: "TikTok" },
+    { href: "https://www.linkedin.com/company/appsfly/", label: "LinkedIn" },
+];
+
+function renderAppsFlyTrustFooter(year) {
+    const socialCells = APPSFLY_SOCIAL_LINKS.map((item, index) => {
+        const padding = index === 0 ? "0 12px 0 0" : "0 12px";
+        const border = index === 0 ? "none" : "1px solid #dbe3ee";
+        return `<td style="padding:${padding};border-left:${border};font-family:Arial,Helvetica,sans-serif;">
+            <a href="${escapeHtml(item.href)}" target="_blank" rel="noopener noreferrer" style="color:#021f41;text-decoration:none;font-size:12px;font-weight:700;font-family:Arial,Helvetica,sans-serif;">${escapeHtml(item.label)}</a>
+          </td>`;
+    }).join("");
+
+    return `<tr>
+        <td bgcolor="#f4f7fb" style="background-color:#f4f7fb;padding:0;border-top:1px solid #e5e7eb;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td align="center" style="padding:24px 32px 0;font-family:Arial,Helvetica,sans-serif;">
+                <p style="margin:0;font-size:11px;line-height:1.45;letter-spacing:0.04em;font-weight:700;color:#021f41;font-family:Arial,Helvetica,sans-serif;">
+                  TECNOLOGÍA Y SERVICIOS APPSFLY SPA
+                </p>
+                <p style="margin:6px 0 0;font-size:12px;line-height:1.4;color:#64748b;font-family:Arial,Helvetica,sans-serif;">
+                  RUT 77.719.288-4
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:14px 32px 0;font-family:Arial,Helvetica,sans-serif;">
+                <p style="margin:0;font-size:13px;line-height:1.45;color:#475569;font-family:Arial,Helvetica,sans-serif;">Huérfanos 779, depto. 705</p>
+                <p style="margin:3px 0 0;font-size:13px;line-height:1.45;color:#475569;font-family:Arial,Helvetica,sans-serif;">Santiago, Región Metropolitana</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:18px 16px 4px;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                  <tr>${socialCells}</tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:12px 48px 0;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tr>
+                    <td style="border-top:1px solid #e2e8f0;font-size:0;line-height:0;">&nbsp;</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:14px 24px 0;font-family:Arial,Helvetica,sans-serif;">
+                <a href="https://appsfly.cl" target="_blank" rel="noopener noreferrer" style="color:#094fd1;text-decoration:none;font-size:13px;font-weight:700;font-family:Arial,Helvetica,sans-serif;">appsfly.cl</a>
+                <span style="color:#cbd5e1;font-family:Arial,Helvetica,sans-serif;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+                <a href="mailto:soporte@appsfly.app" style="color:#094fd1;text-decoration:none;font-size:13px;font-family:Arial,Helvetica,sans-serif;">soporte@appsfly.app</a>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:10px 24px 22px;font-family:Arial,Helvetica,sans-serif;">
+                <p style="margin:0;font-size:11px;line-height:1.4;color:#94a3b8;font-family:Arial,Helvetica,sans-serif;">&copy; ${year} AppsFly</p>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>`;
 }
@@ -190,14 +259,20 @@ export function wrapEmailLayout({ title, preheader, bodyHtml }) {
         <table role="presentation" class="email-card" width="600" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0;">
           <!-- Header con logo (imagen: no se invierte en dark mode) -->
           <tr>
-            <td class="email-header" align="center" bgcolor="#021f41" style="background-color:#021f41;padding:32px 24px;">
-              <img
-                src="${escapeHtml(logoUrl)}"
-                alt="AppsFly"
-                width="168"
-                height="48"
-                style="width:168px;max-width:168px;height:auto;margin:0 auto 12px;display:block;"
-              />
+            <td class="email-header" align="center" bgcolor="#021f41" style="background-color:#021f41;padding:28px 24px 24px;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:0 auto 14px;">
+                <tr>
+                  <td align="center" bgcolor="#ffffff" style="background-color:#ffffff;border-radius:12px;padding:14px 18px;">
+                    <img
+                      src="${escapeHtml(logoUrl)}"
+                      alt="AppsFly"
+                      width="200"
+                      height="44"
+                      style="width:200px;max-width:200px;height:auto;display:block;border:0;outline:none;text-decoration:none;"
+                    />
+                  </td>
+                </tr>
+              </table>
               <p style="margin:0;font-size:13px;line-height:1.4;color:#cbd5e1;font-family:Arial,Helvetica,sans-serif;">
                 Gestión inteligente para tu negocio
               </p>
@@ -209,17 +284,7 @@ export function wrapEmailLayout({ title, preheader, bodyHtml }) {
               ${bodyHtml}
             </td>
           </tr>
-          <!-- Footer -->
-          <tr>
-            <td bgcolor="#ffffff" style="background-color:#ffffff;padding:16px 28px 28px;border-top:1px solid #e5e7eb;text-align:center;">
-              <p class="email-footer-text" style="margin:0 0 6px;font-size:12px;line-height:1.5;color:#9ca3af;font-family:Arial,Helvetica,sans-serif;">
-                Este es un mensaje automático. Por favor no respondas a este correo.
-              </p>
-              <p class="email-footer-text" style="margin:0;font-size:12px;color:#9ca3af;font-family:Arial,Helvetica,sans-serif;">
-                &copy; ${year} AppsFly. Todos los derechos reservados.
-              </p>
-            </td>
-          </tr>
+          ${renderAppsFlyTrustFooter(year)}
         </table>
       </td>
     </tr>

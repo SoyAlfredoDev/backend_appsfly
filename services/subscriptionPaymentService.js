@@ -6,6 +6,7 @@ import {
     mapMercadoPagoStatus,
     isMercadoPagoConfigured,
     createMercadoPagoPreapproval,
+    createMercadoPagoPendingPreapproval,
     mapMercadoPagoPreapprovalStatus,
     getMercadoPagoPreapproval,
 } from "./mercadopago/index.js";
@@ -13,7 +14,6 @@ import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscri
 import { getPlanPricing } from "../libs/planPricing.js";
 import {
     assertApprovedCheckoutPrice,
-    checkoutUrlForPlan,
     findOpticsPlan,
 } from "./billing/opticsPlanCatalog.js";
 
@@ -94,6 +94,11 @@ export async function recordPromoFreeTrialPayment({
     });
 }
 
+/**
+ * Alta de suscripción. Crea el pago local y un preapproval pendiente en
+ * Mercado Pago con external_reference = subscriptionPaymentId. Devuelve el
+ * init_point de esa adhesión. No usar el link compartido del catálogo.
+ */
 export async function createMercadoPagoCheckout({
     subscriptionPaymentId,
     pendingSubscriptionId,
@@ -102,18 +107,6 @@ export async function createMercadoPagoCheckout({
     createdByUserId,
     payerEmail,
 }) {
-    const paymentLink = checkoutUrlForPlan(subscriptionPlanId);
-    if (paymentLink) {
-        const catalogPlan = findOpticsPlan(subscriptionPlanId);
-        return {
-            mode: "PAYMENT_LINK",
-            checkoutUrl: paymentLink,
-            planId: subscriptionPlanId,
-            planName: catalogPlan?.displayName ?? null,
-            billingType: "MERCADO_PAGO_LINK",
-        };
-    }
-
     const catalogPlan = findOpticsPlan(subscriptionPlanId);
     if (catalogPlan && !catalogPlan.forSale) {
         const error = new Error("Este plan no está disponible para nuevas contrataciones.");
@@ -141,6 +134,12 @@ export async function createMercadoPagoCheckout({
     }
     if (catalogPlan) {
         assertApprovedCheckoutPrice(catalogPlan);
+    }
+    if (!payerEmail) {
+        const error = new Error("Se requiere el correo de la cuenta para crear la suscripción.");
+        error.code = "PAYER_EMAIL_REQUIRED";
+        error.statusCode = 400;
+        throw error;
     }
 
     const existingSubscriptions = await getSubscriptionsByBusinessIdService(subscriptionBusinessId);
@@ -177,8 +176,58 @@ export async function createMercadoPagoCheckout({
         },
     });
 
+    let preapproval;
+    try {
+        preapproval = await createMercadoPagoPendingPreapproval({
+            reason: `AppsFly — ${planSelected.planName}`,
+            externalReference: paymentRecord.subscriptionPaymentId,
+            payerEmail,
+            amount: pricing.total,
+            currency: planSelected.planCurrency || "CLP",
+        });
+    } catch (error) {
+        await general.subscriptionPayment.update({
+            where: { subscriptionPaymentId },
+            data: {
+                status: "REJECTED",
+                metadata: {
+                    ...(paymentRecord.metadata ?? {}),
+                    preapprovalError: error.message,
+                },
+            },
+        });
+        throw error;
+    }
+
+    const checkoutUrl = preapproval.init_point || preapproval.sandbox_init_point;
+    if (!checkoutUrl || !preapproval.id) {
+        await general.subscriptionPayment.update({
+            where: { subscriptionPaymentId },
+            data: { status: "REJECTED" },
+        });
+        const error = new Error("Mercado Pago no devolvió el link de suscripción.");
+        error.code = "PREAPPROVAL_LINK_MISSING";
+        error.statusCode = 502;
+        throw error;
+    }
+
+    await general.subscriptionPayment.update({
+        where: { subscriptionPaymentId },
+        data: {
+            metadata: {
+                ...(paymentRecord.metadata ?? {}),
+                mpPreapprovalId: String(preapproval.id),
+                mpPreapprovalStatus: preapproval.status,
+                checkoutUrl,
+            },
+        },
+    });
+
     return {
+        mode: "SUBSCRIPTION_CHECKOUT",
+        checkoutUrl,
         paymentId: paymentRecord.subscriptionPaymentId,
+        mpPreapprovalId: String(preapproval.id),
         amount: pricing.total,
         netAmount: pricing.net,
         ivaAmount: pricing.iva,
@@ -188,6 +237,43 @@ export async function createMercadoPagoCheckout({
         billingType: "MONTHLY_RECURRING",
         billingLabel: "Suscripción mensual recurrente (neto + IVA)",
     };
+}
+
+export async function syncMercadoPagoPreapprovalPayment({ subscriptionPaymentId, userId }) {
+    const paymentRecord = await general.subscriptionPayment.findUnique({
+        where: { subscriptionPaymentId },
+    });
+    if (!paymentRecord) {
+        const error = new Error("Pago no encontrado.");
+        error.code = "PAYMENT_NOT_FOUND";
+        error.statusCode = 404;
+        throw error;
+    }
+    if (paymentRecord.createdByUserId !== userId) {
+        const error = new Error("No puedes confirmar este pago.");
+        error.code = "PAYMENT_FORBIDDEN";
+        error.statusCode = 403;
+        throw error;
+    }
+    if (paymentRecord.status === "APPROVED" && paymentRecord.subscriptionId) {
+        const subscription = await general.subscription.findUnique({
+            where: { subscriptionId: paymentRecord.subscriptionId },
+        });
+        return { payment: paymentRecord, subscription, alreadyProcessed: true };
+    }
+
+    const mpPreapprovalId = paymentRecord.metadata?.mpPreapprovalId;
+    if (!mpPreapprovalId) {
+        const error = new Error("Esta suscripción todavía no tiene un identificador de Mercado Pago.");
+        error.code = "PREAPPROVAL_NOT_STARTED";
+        error.statusCode = 409;
+        throw error;
+    }
+
+    return finalizeMercadoPagoPreapproval({
+        subscriptionPaymentId,
+        mpPreapprovalId: String(mpPreapprovalId),
+    });
 }
 
 /**

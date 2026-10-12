@@ -2,6 +2,7 @@ import {
     getMercadoPagoAccessToken,
     isMercadoPagoBackendConfigured,
 } from "../../config/mercadopagoEnv.js";
+import { buildPendingPreapprovalBody } from "../billing/subscriptionCheckout.js";
 
 const MP_API_BASE = "https://api.mercadopago.com";
 
@@ -70,6 +71,12 @@ function getWebhookBaseUrl() {
 
 function buildWebhookUrl() {
     return `${getWebhookBaseUrl()}/api/webhooks/mercadopago`;
+}
+
+function buildSubscriptionBackUrl(externalReference) {
+    const url = new URL(`${getPreferenceFrontendBaseUrl()}/subscription/payment/return`);
+    url.searchParams.set("external_reference", externalReference);
+    return url.toString();
 }
 
 export function isMercadoPagoConfigured() {
@@ -249,6 +256,7 @@ export async function createMercadoPagoPreapproval({
             currency_id: currency,
         },
         back_url: backUrl,
+        notification_url: buildWebhookUrl(),
         status: "authorized",
     };
 
@@ -268,6 +276,54 @@ export async function createMercadoPagoPreapproval({
             data?.message
             || data?.cause?.[0]?.description
             || "No se pudo crear la suscripción recurrente en Mercado Pago.",
+        );
+    }
+
+    return data;
+}
+
+/**
+ * Suscripción pendiente con link propio. external_reference es el pago local.
+ * El pagador completa la tarjeta en init_point; el webhook la activa.
+ */
+export async function createMercadoPagoPendingPreapproval({
+    reason,
+    externalReference,
+    payerEmail,
+    amount,
+    currency = "CLP",
+}) {
+    const token = getMercadoPagoAccessToken();
+    if (!token) {
+        throw new Error("Mercado Pago no está configurado.");
+    }
+
+    const payload = buildPendingPreapprovalBody({
+        reason,
+        externalReference,
+        payerEmail,
+        amount: Number(amount),
+        currency,
+        backUrl: buildSubscriptionBackUrl(externalReference),
+        notificationUrl: buildWebhookUrl(),
+    });
+
+    const response = await fetch(`${MP_API_BASE}/preapproval`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        console.error("[mercadopago/mpApiClient] pending preapproval error:", data);
+        throw new Error(
+            data?.message
+            || data?.cause?.[0]?.description
+            || "No se pudo crear la suscripción en Mercado Pago.",
         );
     }
 

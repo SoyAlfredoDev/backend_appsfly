@@ -1,25 +1,13 @@
 /**
  * Ledger centralizado — toda operación con dinero debe registrarse aquí.
  */
+export {
+    TRANSACTION_TYPES,
+    TRANSACTION_DIRECTIONS,
+    CASH_PAYMENT_METHOD,
+} from "./cashBook.js";
 
-export const TRANSACTION_TYPES = {
-    PAYMENT: "PAYMENT",
-    EXPENSE: "EXPENSE",
-    PURCHASE: "PURCHASE",
-    PURCHASE_CANCEL: "PURCHASE_CANCEL",
-    ADJUSTMENT: "ADJUSTMENT",
-};
-
-export const TRANSACTION_DIRECTIONS = {
-    IN: "IN",
-    OUT: "OUT",
-};
-
-const buildAmountPayload = (amount, direction) => ({
-    amount: Math.abs(Number(amount) || 0),
-    direction: direction === TRANSACTION_DIRECTIONS.OUT ? "OUT" : "IN",
-    currency: "CLP",
-});
+import { amountPayload, TRANSACTION_TYPES } from "./cashBook.js";
 
 /**
  * Registra un movimiento financiero (idempotente por tabla + registro + tipo).
@@ -38,6 +26,7 @@ export async function recordFinancialTransaction(
         description,
         createdByUserId,
         transactionOldValue = null,
+        meta = null,
     },
 ) {
     if (!createdByUserId) {
@@ -72,7 +61,7 @@ export async function recordFinancialTransaction(
             transactionTable: transactionTable ?? null,
             transactionRecordId: transactionRecordId ?? null,
             transactionOldValue,
-            transactionNewValue: buildAmountPayload(amount, direction),
+            transactionNewValue: amountPayload(amount, direction, meta),
             transactionDescription: description?.trim() || null,
             createdByUserId,
         },

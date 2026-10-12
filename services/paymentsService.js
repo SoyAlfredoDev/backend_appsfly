@@ -28,6 +28,7 @@ export const createPaymentService = async (data, prisma) => {
                     ? `Pago recibido — Venta #${sale.saleNumber}`
                     : "Pago recibido — Venta",
                 createdByUserId: data.createdByUserId,
+                meta: { saleId: res.saleId },
             });
 
             return res;

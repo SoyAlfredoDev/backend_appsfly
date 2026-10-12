@@ -340,6 +340,12 @@ model DailySales {
     dailySalesNumberOfSales Int?
     dailySalesTotalIncome   Int?
     dailySalesDetailIncome  Json?
+    /** Efectivo que el libro espera en el cajón al cierre de ese día. */
+    dailySalesExpectedCash  Int?
+    /** Efectivo contado por quien cierra. Null si el arqueo quedó pendiente. */
+    dailySalesCountedCash   Int?
+    /** Contado − esperado. */
+    dailySalesCashDifference Int?
     createdByUserId         String
     createdAt               DateTime @default(now())
     updatedAt               DateTime @updatedAt
@@ -446,6 +452,9 @@ model Purchase {
     purchaseTotal   Int
     purchaseStatus  String?
     purchaseComment String?
+    /** CASH mueve la caja al registrar. CREDIT espera el pago al proveedor. */
+    purchaseSettlement String @default("CASH")
+    purchasePaidAt    DateTime?
 
     createdByUserId String
     user            User   @relation("PurchaseCreatedBy", fields: [createdByUserId], references: [userId])

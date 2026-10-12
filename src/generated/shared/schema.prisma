@@ -429,17 +429,29 @@ model CashExpense {
 }
 
 model DailySales {
-  businessId              String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
-  dailySalesId            String   @id
-  dailySalesDay           String
-  dailySalesTotalSales    Int?
-  dailySalesNumberOfSales Int?
-  dailySalesTotalIncome   Int?
-  dailySalesDetailIncome  Json?
-  createdByUserId         String
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
-  user                    User     @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
+  businessId               String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  dailySalesId             String   @id
+  dailySalesDay            String
+  dailySalesTotalSales     Int?
+  dailySalesNumberOfSales  Int?
+  dailySalesTotalIncome    Int?
+  dailySalesDetailIncome   Json?
+  /**
+   * Efectivo que el libro espera en el cajón al cierre de ese día.
+   */
+  dailySalesExpectedCash   Int?
+  /**
+   * Efectivo contado por quien cierra. Null si el arqueo quedó pendiente.
+   */
+  dailySalesCountedCash    Int?
+  /**
+   * Contado − esperado.
+   */
+  dailySalesCashDifference Int?
+  createdByUserId          String
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+  user                     User     @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
 
   @@unique([businessId, dailySalesId])
   @@unique([businessId, dailySalesDay])
@@ -565,9 +577,14 @@ model Purchase {
   purchaseProviderId String
   provider           Provider @relation(fields: [businessId, purchaseProviderId], references: [businessId, providerId])
 
-  purchaseTotal   Int
-  purchaseStatus  String?
-  purchaseComment String?
+  purchaseTotal      Int
+  purchaseStatus     String?
+  purchaseComment    String?
+  /**
+   * CASH mueve la caja al registrar. CREDIT espera el pago al proveedor.
+   */
+  purchaseSettlement String    @default("CASH")
+  purchasePaidAt     DateTime?
 
   createdByUserId String
   user            User   @relation("PurchaseCreatedBy", fields: [businessId, createdByUserId], references: [businessId, userId])

@@ -5,6 +5,7 @@ export {
     mapMercadoPagoStatus,
     createMercadoPagoPaymentFromBrick,
     createMercadoPagoPreapproval,
+    createMercadoPagoPendingPreapproval,
     updateMercadoPagoPreapproval,
     mapMercadoPagoPreapprovalStatus,
     getMercadoPagoPreapproval,

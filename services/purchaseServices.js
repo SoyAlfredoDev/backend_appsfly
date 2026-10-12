@@ -6,6 +6,11 @@ import {
     TRANSACTION_DIRECTIONS,
 } from "./financial/financialLedgerService.js";
 import {
+    normalizeSettlement,
+    purchaseLedgerEntry,
+    supplierPaymentEntry,
+} from "./financial/cashBook.js";
+import {
     businessDayBoundsUtc,
     businessMonthBoundsUtc,
     DEFAULT_BUSINESS_TIMEZONE,
@@ -44,6 +49,8 @@ export const createPurchaseComplete = async (
         (sum, detail) => sum + Number(detail.purchaseDetailTotal || 0),
         0,
     );
+    const settlement = normalizeSettlement(purchase.purchaseSettlement);
+    const purchaseTotal = Number(purchase.purchaseTotal ?? detailsTotal);
 
     return prisma.$transaction(async (tx) => {
         const createdPurchase = await tx.purchase.create({
@@ -52,9 +59,11 @@ export const createPurchaseComplete = async (
                 purchaseNumber,
                 purchaseRealNumber: purchase.purchaseRealNumber.trim(),
                 purchaseProviderId: purchase.purchaseProviderId,
-                purchaseTotal: Number(purchase.purchaseTotal ?? detailsTotal),
+                purchaseTotal,
                 purchaseStatus: "COMPLETED",
                 purchaseComment: purchase.purchaseComment?.trim() || null,
+                purchaseSettlement: settlement,
+                purchasePaidAt: settlement === "CASH" ? new Date() : null,
                 createdByUserId: userId,
             },
         });
@@ -112,18 +121,17 @@ export const createPurchaseComplete = async (
             select: { providerName: true },
         });
 
-        await recordFinancialTransaction(tx, {
-            transactionType: TRANSACTION_TYPES.PURCHASE,
-            transactionMethod: "2",
-            transactionTable: "Purchase",
-            transactionRecordId: createdPurchase.purchaseId,
-            amount: createdPurchase.purchaseTotal,
-            direction: TRANSACTION_DIRECTIONS.OUT,
-            description: provider?.providerName
-                ? `Compra #${createdPurchase.purchaseNumber} — ${provider.providerName}`
-                : `Compra #${createdPurchase.purchaseNumber}`,
-            createdByUserId: userId,
+        const ledgerEntry = purchaseLedgerEntry({
+            settlement,
+            purchaseId: createdPurchase.purchaseId,
+            purchaseNumber: createdPurchase.purchaseNumber,
+            total: createdPurchase.purchaseTotal,
+            providerName: provider?.providerName ?? null,
+            userId,
         });
+        if (ledgerEntry) {
+            await recordFinancialTransaction(tx, ledgerEntry);
+        }
 
         return tx.purchase.findUnique({
             where: { purchaseId: purchase.purchaseId },
@@ -312,6 +320,54 @@ const purchaseInclude = {
     },
 };
 
+export const paySupplierPurchase = async (purchaseId, paymentMethod, prisma, userId) => {
+    return prisma.$transaction(async (tx) => {
+        const purchase = await tx.purchase.findUnique({
+            where: { purchaseId },
+            include: { provider: { select: { providerName: true } } },
+        });
+        if (!purchase) {
+            const error = new Error("Compra no encontrada");
+            error.status = 404;
+            error.code = "PURCHASE_NOT_FOUND";
+            throw error;
+        }
+        if (purchase.purchaseStatus === "CANCELLED") {
+            const error = new Error("La compra está anulada");
+            error.status = 400;
+            error.code = "PURCHASE_CANCELLED";
+            throw error;
+        }
+        if (normalizeSettlement(purchase.purchaseSettlement) !== "CREDIT") {
+            const error = new Error("Esta compra ya se pagó al registrarla");
+            error.status = 400;
+            error.code = "PURCHASE_ALREADY_SETTLED";
+            throw error;
+        }
+        if (purchase.purchasePaidAt) {
+            const error = new Error("Esta compra ya tiene un pago registrado");
+            error.status = 400;
+            error.code = "PURCHASE_ALREADY_PAID";
+            throw error;
+        }
+
+        const entry = supplierPaymentEntry({
+            purchaseId: purchase.purchaseId,
+            purchaseNumber: purchase.purchaseNumber,
+            total: purchase.purchaseTotal,
+            providerName: purchase.provider?.providerName ?? null,
+            paymentMethod,
+            userId,
+        });
+        await recordFinancialTransaction(tx, entry);
+        return tx.purchase.update({
+            where: { purchaseId },
+            data: { purchasePaidAt: new Date() },
+            include: purchaseInclude,
+        });
+    });
+};
+
 export const updatePurchaseHeader = async (purchaseId, body, prisma) => {
     const existing = await prisma.purchase.findUnique({
         where: { purchaseId },
@@ -428,18 +484,30 @@ export const cancelPurchaseWithInventory = async (purchaseId, userId, prisma) =>
         });
 
         if (purchase.purchaseStatus === "COMPLETED") {
-            await recordFinancialTransaction(tx, {
-                transactionType: TRANSACTION_TYPES.PURCHASE_CANCEL,
-                transactionMethod: "2",
-                transactionTable: "Purchase",
-                transactionRecordId: `${purchase.purchaseId}:cancel`,
-                amount: purchase.purchaseTotal,
-                direction: TRANSACTION_DIRECTIONS.IN,
-                description: purchase.purchaseNumber
-                    ? `Anulación compra #${purchase.purchaseNumber}`
-                    : `Anulación compra ${purchase.purchaseId}`,
-                createdByUserId: userId,
+            const cashOut = await tx.transactions.findFirst({
+                where: {
+                    transactionTable: "Purchase",
+                    transactionRecordId: purchase.purchaseId,
+                    transactionType: {
+                        in: [TRANSACTION_TYPES.PURCHASE, TRANSACTION_TYPES.SUPPLIER_PAYMENT],
+                    },
+                },
             });
+            if (cashOut) {
+                const settledAmount = Number(cashOut.transactionNewValue?.amount ?? purchase.purchaseTotal);
+                await recordFinancialTransaction(tx, {
+                    transactionType: TRANSACTION_TYPES.PURCHASE_CANCEL,
+                    transactionMethod: cashOut.transactionMethod,
+                    transactionTable: "Purchase",
+                    transactionRecordId: `${purchase.purchaseId}:cancel`,
+                    amount: settledAmount,
+                    direction: TRANSACTION_DIRECTIONS.IN,
+                    description: purchase.purchaseNumber
+                        ? `Anulación compra #${purchase.purchaseNumber}`
+                        : `Anulación compra ${purchase.purchaseId}`,
+                    createdByUserId: userId,
+                });
+            }
         }
 
         return updated;

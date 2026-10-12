@@ -90,4 +90,42 @@ export async function deleteCloudinaryImageIfReplaced(oldUrl, newUrl) {
     return deleteCloudinaryImageByUrl(normalizedOld);
 }
 
+export const TENANT_FOLDER_ROOT = 'tenants';
+
+export function tenantCloudinaryPrefix(businessId) {
+    if (typeof businessId !== 'string' || businessId.trim() === '') {
+        throw new Error('businessId is required to resolve the tenant Cloudinary folder.');
+    }
+    return `${TENANT_FOLDER_ROOT}/${businessId.trim()}`;
+}
+
+/**
+ * Best-effort deletion of every asset under tenants/{businessId}.
+ * Used when offboarding an inactive business.
+ */
+export async function deleteTenantCloudinaryFolder(businessId) {
+    const prefix = tenantCloudinaryPrefix(businessId);
+
+    try {
+        const deleted = await cloudinary.api.delete_resources_by_prefix(prefix, {
+            resource_type: 'image',
+        });
+        try {
+            await cloudinary.api.delete_folder(prefix);
+        } catch (folderError) {
+            console.warn(
+                `⚠️ Could not delete Cloudinary folder ${prefix}:`,
+                folderError.message,
+            );
+        }
+        return deleted;
+    } catch (error) {
+        console.error(
+            `⚠️ Failed to delete Cloudinary assets for tenant ${prefix}:`,
+            error.message,
+        );
+        return null;
+    }
+}
+
 export default cloudinary;

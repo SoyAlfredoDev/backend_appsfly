@@ -52,6 +52,16 @@ describe("shared tenant database schema", () => {
     expect(migration).toContain("Customer_businessId_one_walk_in_key");
   });
 
+  it("stores purchase settlement and the daily cash count", async () => {
+    const schema = await readFile(schemaPath, "utf8");
+    const migration = await readSharedMigrations();
+
+    expect(schema).toContain("purchaseSettlement");
+    expect(schema).toContain("dailySalesCountedCash");
+    expect(migration).toContain('ADD COLUMN IF NOT EXISTS "purchaseSettlement"');
+    expect(migration).toContain('ADD COLUMN IF NOT EXISTS "dailySalesCountedCash"');
+  });
+
   it("requires every expense to reference an expense category", async () => {
     const schema = await readFile(schemaPath, "utf8");
     const expense = schema.match(/^model Expense \{[\s\S]*?^\}/mu)?.[0] ?? "";

@@ -1,11 +1,18 @@
-import { sumPaymentsByPaymentMethodsService } from "./paymentsService.js";
-import { sumExpensesByPaymentMethod } from "./expensesService.js";
 import {
+    businessDayBoundsUtc,
     businessMonthBoundsUtc,
     DEFAULT_BUSINESS_TIMEZONE,
     getTodayBusinessDate,
 } from "../libs/businessTimezone.js";
 import { normalizePagination, paginatedResult } from "../libs/pagination.js";
+import {
+    assertLedgerFilter,
+    CASH_PAYMENT_METHOD,
+    parseStoredAmount,
+    splitCashTotals,
+    sumCashBalance,
+    TRANSACTION_TYPES,
+} from "./financial/cashBook.js";
 
 const CASH_PAYMENT_METHOD = "2";
 const CASH_DETAIL_LIMIT = 100;
@@ -31,15 +38,31 @@ export const getTransactions = async (prisma, options = {}) => {
         });
 
         const query = typeof q === "string" ? q.trim() : "";
-        const where = query
-            ? {
-                OR: [
-                    { transactionType: { contains: query, mode: "insensitive" } },
-                    { transactionDescription: { contains: query, mode: "insensitive" } },
-                    { transactionMethod: { contains: query, mode: "insensitive" } },
-                ],
-            }
-            : {};
+        const method = options.method != null && options.method !== "" ? String(options.method) : "";
+        const type = options.type != null && options.type !== "" ? String(options.type) : "";
+        assertLedgerFilter(method, type);
+
+        const where = {};
+        if (query) {
+            where.OR = [
+                { transactionType: { contains: query, mode: "insensitive" } },
+                { transactionDescription: { contains: query, mode: "insensitive" } },
+                { transactionMethod: { contains: query, mode: "insensitive" } },
+            ];
+        }
+        if (method) where.transactionMethod = method;
+        if (type) where.transactionType = type;
+
+        const timeZone = options.timeZone || DEFAULT_BUSINESS_TIMEZONE;
+        const from = typeof options.from === "string" ? options.from.trim() : "";
+        const to = typeof options.to === "string" ? options.to.trim() : "";
+        if (from || to) {
+            const startKey = from && to && from > to ? to : from || to;
+            const endKey = from && to && from > to ? from : to || from;
+            const { start } = businessDayBoundsUtc(startKey, timeZone);
+            const { endExclusive } = businessDayBoundsUtc(endKey, timeZone);
+            where.createdAt = { gte: start, lt: endExclusive };
+        }
 
         const [total, rows] = await Promise.all([
             prisma.transactions.count({ where }),
@@ -95,14 +118,25 @@ export const getTransactionsSummary = async (
         timeZone,
     );
 
-    const [monthRows, movementCount, cashPayments, cashExpenses] = await Promise.all([
+    const { start: dayStart, endExclusive: dayEnd } = businessDayBoundsUtc(today, timeZone);
+
+    const [monthRows, movementCount, cashRows, todayPayments] = await Promise.all([
         prisma.transactions.findMany({
             where: { createdAt: { gte: monthStart, lt: monthEnd } },
             select: { transactionNewValue: true },
         }),
         prisma.transactions.count(),
-        sumPaymentsByPaymentMethodsService(CASH_PAYMENT_METHOD, prisma),
-        sumExpensesByPaymentMethod(CASH_PAYMENT_METHOD, prisma),
+        prisma.transactions.findMany({
+            where: { transactionMethod: CASH_PAYMENT_METHOD },
+            select: { transactionNewValue: true, transactionMethod: true },
+        }),
+        prisma.transactions.findMany({
+            where: {
+                transactionType: TRANSACTION_TYPES.PAYMENT,
+                createdAt: { gte: dayStart, lt: dayEnd },
+            },
+            select: { transactionNewValue: true },
+        }),
     ]);
 
     let totalInMonth = 0;
@@ -114,8 +148,15 @@ export const getTransactionsSummary = async (
         else totalInMonth += amount;
     }
 
+    let collectedToday = 0;
+    for (const row of todayPayments) {
+        const { amount, direction } = parseStoredAmount(row.transactionNewValue);
+        if (direction === "IN") collectedToday += amount;
+    }
+
     return {
-        cashAvailable: Number(cashPayments) - Number(cashExpenses),
+        cashAvailable: sumCashBalance(cashRows),
+        collectedToday,
         totalInMonth,
         totalOutMonth,
         movementCount,
@@ -124,83 +165,61 @@ export const getTransactionsSummary = async (
     };
 };
 
-export async function getCashAvailableDetail(prisma) {
-    const [payments, expenses, cashPaymentsAgg, cashExpensesAgg] = await Promise.all([
-        prisma.payment.findMany({
-            where: { paymentMethod: CASH_PAYMENT_METHOD },
-            orderBy: { createdAt: "desc" },
-            take: CASH_DETAIL_LIMIT,
-            include: {
-                Sale: { select: { saleId: true, saleNumber: true } },
-                user: {
-                    select: {
-                        userFirstName: true,
-                        userLastName: true,
-                    },
-                },
-            },
-        }),
-        prisma.expense.findMany({
-            where: { expensePaymentMethod: CASH_PAYMENT_METHOD },
-            orderBy: { createdAt: "desc" },
-            take: CASH_DETAIL_LIMIT,
-            include: {
-                user: {
-                    select: {
-                        userFirstName: true,
-                        userLastName: true,
-                    },
-                },
-            },
-        }),
-        sumPaymentsByPaymentMethodsService(CASH_PAYMENT_METHOD, prisma),
-        sumExpensesByPaymentMethod(CASH_PAYMENT_METHOD, prisma),
-    ]);
+const CASH_ORIGIN = {
+    PAYMENT: "Cobro de venta",
+    EXPENSE: "Gasto",
+    PURCHASE: "Compra de contado",
+    PURCHASE_CANCEL: "Anulación de compra",
+    ADJUSTMENT: "Ajuste",
+    OPENING: "Fondo inicial",
+    WITHDRAWAL: "Retiro a banco",
+    OTHER_INCOME: "Otro ingreso",
+    SUPPLIER_PAYMENT: "Pago a proveedor",
+};
 
-    const cashPaymentsTotal = Number(cashPaymentsAgg) || 0;
-    const cashExpensesTotal = Number(cashExpensesAgg) || 0;
+export async function getCashAvailableDetail(prisma) {
+    const cashWhere = { transactionMethod: CASH_PAYMENT_METHOD };
+    const [rows, totalRows] = await Promise.all([
+        prisma.transactions.findMany({
+            where: cashWhere,
+            orderBy: { createdAt: "desc" },
+            take: CASH_DETAIL_LIMIT,
+            include: transactionInclude,
+        }),
+        prisma.transactions.findMany({
+            where: cashWhere,
+            select: { transactionMethod: true, transactionNewValue: true },
+        }),
+    ]);
+    const totals = splitCashTotals(totalRows);
+    const mapRow = (row) => {
+        const parsed = parseStoredAmount(row.transactionNewValue);
+        const saleId =
+            row.transactionNewValue && typeof row.transactionNewValue === "object"
+                ? row.transactionNewValue.saleId ?? null
+                : null;
+        return {
+            id: row.transactionId,
+            date: row.createdAt,
+            amount: parsed.amount,
+            origin: CASH_ORIGIN[row.transactionType] ?? "Movimiento",
+            description: row.transactionDescription?.trim() || "Movimiento en efectivo",
+            saleId,
+            user: row.user,
+        };
+    };
 
     return {
-        cashAvailable: cashPaymentsTotal - cashExpensesTotal,
-        cashPaymentsTotal,
-        cashExpensesTotal,
-        truncated: true,
+        cashAvailable: totals.balance,
+        cashPaymentsTotal: totals.cashIn,
+        cashExpensesTotal: totals.cashOut,
+        truncated: totalRows.length > CASH_DETAIL_LIMIT,
         recentLimit: CASH_DETAIL_LIMIT,
-        payments: payments.map((row) => ({
-            id: row.paymentId,
-            date: row.createdAt,
-            amount: row.paymentAmount,
-            origin: "Pago de venta",
-            description: row.Sale?.saleNumber
-                ? `Venta #${row.Sale.saleNumber}`
-                : "Pago en efectivo",
-            saleId: row.Sale?.saleId ?? row.saleId,
-            user: row.user,
-        })),
-        expenses: expenses.map((row) => ({
-            id: row.expenseId,
-            date: row.createdAt,
-            amount: row.expenseAmount,
-            origin: "Gasto operacional",
-            description: row.expenseDescription?.trim() || "Gasto en efectivo",
-            user: row.user,
-        })),
+        payments: rows
+            .filter((row) => parseStoredAmount(row.transactionNewValue).direction === "IN")
+            .map(mapRow),
+        expenses: rows
+            .filter((row) => parseStoredAmount(row.transactionNewValue).direction === "OUT")
+            .map(mapRow),
     };
-}
-
-function parseStoredAmount(value) {
-    if (value == null) return { amount: 0, direction: "IN" };
-    if (typeof value === "number") {
-        return {
-            amount: Math.abs(value),
-            direction: value >= 0 ? "IN" : "OUT",
-        };
-    }
-    if (typeof value === "object") {
-        return {
-            amount: Math.abs(Number(value.amount) || 0),
-            direction: value.direction === "OUT" ? "OUT" : "IN",
-        };
-    }
-    return { amount: 0, direction: "IN" };
 }

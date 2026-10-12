@@ -9,7 +9,7 @@ const tzOf = (req) => req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE;
 
 export const createDailySaleController = async (req, res) => {
     try {
-        const { dailySalesDay, dailySalesId } = req.body;
+        const { dailySalesDay, dailySalesId, countedCash } = req.body;
         const { prisma, user } = req;
         const timeZone = tzOf(req);
 
@@ -26,12 +26,20 @@ export const createDailySaleController = async (req, res) => {
             dailySalesId: dailySalesId ?? randomUUID(),
             createdByUserId: user.payload.id,
             prisma,
+            countedCash,
             timeZone,
         });
 
         return res.status(201).json(createdDailySale);
 
     } catch (error) {
+        if (error.status && error.code) {
+            return res.status(error.status).json({
+                message: error.message,
+                code: error.code,
+                type: error.code,
+            });
+        }
         if (error.code === 'NO_SALES') {
             return res.status(400).json({
                 message: error.message,

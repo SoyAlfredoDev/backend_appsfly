@@ -7,6 +7,7 @@ import {
     createPurchaseCompleteController,
     updatePurchaseController,
     cancelPurchaseController,
+    paySupplierPurchaseController,
     getMonthlyPurchasesController,
     getDayPurchasesController,
     getMonthlyPurchasesNowController,
@@ -32,5 +33,6 @@ router.post("/purchases", ...admin, createPurchaseController);
 router.get("/purchases/:id", ...admin, getPurchaseByIdController);
 router.put("/purchases/:id", ...admin, updatePurchaseController);
 router.post("/purchases/:id/cancel", ...admin, cancelPurchaseController);
+router.post("/purchases/:id/pay", ...admin, paySupplierPurchaseController);
 
 export default router;

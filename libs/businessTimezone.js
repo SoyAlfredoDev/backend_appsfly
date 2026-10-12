@@ -228,6 +228,26 @@ export function parseBusinessDateOnly(
     return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
+/** YYYY-MM-DD from a date-only string, ISO datetime, or legacy timestamp text. */
+export function closureDayKey(value) {
+    const match = String(value ?? "")
+        .trim()
+        .match(/^(\d{4}-\d{2}-\d{2})/);
+    return match?.[1] ?? "";
+}
+
+/**
+ * Adds a sale into an hourly bucket. Ignores hours outside 0–23 so one
+ * bad timestamp cannot fail the whole closure detail.
+ */
+export function applyHourlySale(hourlySales, hour, saleTotal) {
+    const index = Number(hour);
+    if (!Array.isArray(hourlySales) || !Number.isInteger(index)) return;
+    if (index < 0 || index >= hourlySales.length) return;
+    hourlySales[index].total += Number(saleTotal) || 0;
+    hourlySales[index].count += 1;
+}
+
 export function formatDateKeyLabel(dateKey, locale = "es-CL") {
     const [year, month, day] = String(dateKey).split("-").map(Number);
     const d = new Date(year, month - 1, day);

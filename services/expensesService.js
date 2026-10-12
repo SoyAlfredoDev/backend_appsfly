@@ -7,6 +7,10 @@ import {
     TRANSACTION_DIRECTIONS,
 } from "./financial/financialLedgerService.js";
 import {
+    removeLinkedFinancialTransaction,
+    syncLinkedFinancialTransaction,
+} from "./financial/ledgerSync.js";
+import {
     businessMonthBoundsUtc,
     DEFAULT_BUSINESS_TIMEZONE,
 } from "../libs/businessTimezone.js";
@@ -275,11 +279,26 @@ export const getExpenseByIdService = async (id, prisma) => {
 // 4. UPDATE Expense
 export const updateExpenseService = async (id, data, prisma) => {
   try {
-    const res = await prisma.expense.update({
-      where: { expenseId: id },
-      data: data,
+    return prisma.$transaction(async (tx) => {
+      const res = await tx.expense.update({
+        where: { expenseId: id },
+        data,
+        include: expenseInclude,
+      });
+
+      await syncLinkedFinancialTransaction(tx, {
+        transactionType: TRANSACTION_TYPES.EXPENSE,
+        transactionMethod: res.expensePaymentMethod,
+        transactionTable: "Expense",
+        transactionRecordId: res.expenseId,
+        amount: res.expenseAmount,
+        direction: TRANSACTION_DIRECTIONS.OUT,
+        description: res.expenseDescription?.trim() || "Gasto operacional",
+        createdByUserId: res.createdByUserId,
+      });
+
+      return res;
     });
-    return res;
   } catch (error) {
     console.error(
       `(expensesService.js): Error updating expense with ID ${id}:`,
@@ -292,12 +311,16 @@ export const updateExpenseService = async (id, data, prisma) => {
 // 5. DELETE Expense
 export const deleteExpenseService = async (id, prisma) => {
   try {
-    // Finds and deletes the expense record by its ID
-    const res = await prisma.expense.delete({
-      where: { expenseId: id },
+    return prisma.$transaction(async (tx) => {
+      await removeLinkedFinancialTransaction(tx, {
+        transactionTable: "Expense",
+        transactionRecordId: id,
+        transactionType: TRANSACTION_TYPES.EXPENSE,
+      });
+      return tx.expense.delete({
+        where: { expenseId: id },
+      });
     });
-    // Returns the record that was deleted for confirmation
-    return res;
   } catch (error) {
     console.error(
       `(expensesService.js): Error deleting expense with ID ${id}:`,

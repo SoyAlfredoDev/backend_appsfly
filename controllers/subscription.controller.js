@@ -6,6 +6,7 @@ import {
     finalizeMercadoPagoPayment,
     recordPromoFreeTrialPayment,
     processPaymentBrickSubmission,
+    syncMercadoPagoPreapprovalPayment,
     FREE_TRIAL_PLAN_ID,
 } from "../services/subscriptionPaymentService.js";
 import {
@@ -244,6 +245,23 @@ export const processSubscriptionPaymentBrickController = async (req, res) => {
     } catch (error) {
         console.error("Error processing Payment Brick:", error);
         return res.status(500).json({ message: error.message || "Error al procesar el pago." });
+    }
+};
+
+export const syncSubscriptionPreapprovalController = async (req, res) => {
+    try {
+        const result = await syncMercadoPagoPreapprovalPayment({
+            subscriptionPaymentId: req.params.paymentId,
+            userId: req.user.payload.id,
+        });
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error("Error syncing subscription preapproval:", error);
+        const status = Number.isInteger(error.statusCode) ? error.statusCode : 500;
+        return res.status(status).json({
+            message: error.message || "Error al confirmar la suscripción.",
+            ...(error.code ? { code: error.code } : {}),
+        });
     }
 };
 

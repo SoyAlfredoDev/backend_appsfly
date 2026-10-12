@@ -1,60 +1,39 @@
+import { randomUUID } from "node:crypto";
 import {
     getTransactions,
     getTransactionById,
     getTransactionsSummary,
     getCashAvailableDetail,
 } from "../services/transactionsService.js";
-import {
-    recordFinancialTransaction,
-    TRANSACTION_TYPES,
-    TRANSACTION_DIRECTIONS,
-} from "../services/financial/financialLedgerService.js";
+import { recordFinancialTransaction } from "../services/financial/financialLedgerService.js";
+import { parseManualMovement } from "../services/financial/cashBook.js";
 
 export const createTransactionController = async (req, res) => {
     try {
-        const {
-            transactionId,
-            transactionType = TRANSACTION_TYPES.ADJUSTMENT,
-            transactionMethod,
-            transactionDescription,
-            transactionNewValue,
-            direction,
-            amount,
-        } = req.body;
-
+        const movement = parseManualMovement(req.body);
         const userId = req.user.payload.id;
-        const numericAmount =
-            amount != null
-                ? Number(amount)
-                : typeof transactionNewValue === "number"
-                  ? Number(transactionNewValue)
-                  : Number(transactionNewValue?.amount ?? 0);
-
-        const resolvedDirection =
-            direction === TRANSACTION_DIRECTIONS.OUT ||
-            direction === "OUT" ||
-            numericAmount < 0
-                ? TRANSACTION_DIRECTIONS.OUT
-                : TRANSACTION_DIRECTIONS.IN;
-
-        const recordId = transactionId ?? req.body.transactionRecordId;
+        const recordId = req.body.transactionId ?? randomUUID();
 
         const newTransaction = await recordFinancialTransaction(req.prisma, {
             transactionId: recordId,
-            transactionType,
-            transactionMethod,
+            transactionType: movement.transactionType,
+            transactionMethod: movement.transactionMethod,
             transactionTable: "Transactions",
             transactionRecordId: recordId,
-            amount: numericAmount,
-            direction: resolvedDirection,
-            description: transactionDescription,
+            amount: movement.amount,
+            direction: movement.direction,
+            description: movement.description,
             createdByUserId: userId,
         });
 
         res.status(201).json(newTransaction);
     } catch (error) {
         console.error("(transactions.controller.js): Error creating transaction:", error);
-        res.status(500).json({ error: error.message || "Internal server error" });
+        const status = error.status ?? 500;
+        res.status(status).json({
+            code: error.code ?? "TRANSACTION_CREATE_FAILED",
+            message: error.message || "No se pudo registrar el movimiento",
+        });
     }
 };
 
@@ -64,11 +43,20 @@ export const getTransactionsController = async (req, res) => {
             page: req.query.page,
             limit: req.query.limit,
             q: req.query.q,
+            method: req.query.method,
+            type: req.query.type,
+            from: req.query.from,
+            to: req.query.to,
+            timeZone: req.businessTimezone,
         });
         res.status(200).json(transactions);
     } catch (error) {
         console.error("(transactions.controller.js): Error fetching transactions:", error);
-        res.status(500).json({ error: "Internal server error" });
+        const status = error.status ?? 500;
+        res.status(status).json({
+            code: error.code ?? "TRANSACTIONS_FETCH_FAILED",
+            message: error.message || "No se pudieron cargar los movimientos",
+        });
     }
 };
 

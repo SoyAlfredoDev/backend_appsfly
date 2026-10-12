@@ -23290,12 +23290,18 @@ export namespace Prisma {
     dailySalesTotalSales: number | null
     dailySalesNumberOfSales: number | null
     dailySalesTotalIncome: number | null
+    dailySalesExpectedCash: number | null
+    dailySalesCountedCash: number | null
+    dailySalesCashDifference: number | null
   }
 
   export type DailySalesSumAggregateOutputType = {
     dailySalesTotalSales: number | null
     dailySalesNumberOfSales: number | null
     dailySalesTotalIncome: number | null
+    dailySalesExpectedCash: number | null
+    dailySalesCountedCash: number | null
+    dailySalesCashDifference: number | null
   }
 
   export type DailySalesMinAggregateOutputType = {
@@ -23305,6 +23311,9 @@ export namespace Prisma {
     dailySalesTotalSales: number | null
     dailySalesNumberOfSales: number | null
     dailySalesTotalIncome: number | null
+    dailySalesExpectedCash: number | null
+    dailySalesCountedCash: number | null
+    dailySalesCashDifference: number | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -23317,6 +23326,9 @@ export namespace Prisma {
     dailySalesTotalSales: number | null
     dailySalesNumberOfSales: number | null
     dailySalesTotalIncome: number | null
+    dailySalesExpectedCash: number | null
+    dailySalesCountedCash: number | null
+    dailySalesCashDifference: number | null
     createdByUserId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -23330,6 +23342,9 @@ export namespace Prisma {
     dailySalesNumberOfSales: number
     dailySalesTotalIncome: number
     dailySalesDetailIncome: number
+    dailySalesExpectedCash: number
+    dailySalesCountedCash: number
+    dailySalesCashDifference: number
     createdByUserId: number
     createdAt: number
     updatedAt: number
@@ -23341,12 +23356,18 @@ export namespace Prisma {
     dailySalesTotalSales?: true
     dailySalesNumberOfSales?: true
     dailySalesTotalIncome?: true
+    dailySalesExpectedCash?: true
+    dailySalesCountedCash?: true
+    dailySalesCashDifference?: true
   }
 
   export type DailySalesSumAggregateInputType = {
     dailySalesTotalSales?: true
     dailySalesNumberOfSales?: true
     dailySalesTotalIncome?: true
+    dailySalesExpectedCash?: true
+    dailySalesCountedCash?: true
+    dailySalesCashDifference?: true
   }
 
   export type DailySalesMinAggregateInputType = {
@@ -23356,6 +23377,9 @@ export namespace Prisma {
     dailySalesTotalSales?: true
     dailySalesNumberOfSales?: true
     dailySalesTotalIncome?: true
+    dailySalesExpectedCash?: true
+    dailySalesCountedCash?: true
+    dailySalesCashDifference?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -23368,6 +23392,9 @@ export namespace Prisma {
     dailySalesTotalSales?: true
     dailySalesNumberOfSales?: true
     dailySalesTotalIncome?: true
+    dailySalesExpectedCash?: true
+    dailySalesCountedCash?: true
+    dailySalesCashDifference?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -23381,6 +23408,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: true
     dailySalesTotalIncome?: true
     dailySalesDetailIncome?: true
+    dailySalesExpectedCash?: true
+    dailySalesCountedCash?: true
+    dailySalesCashDifference?: true
     createdByUserId?: true
     createdAt?: true
     updatedAt?: true
@@ -23481,6 +23511,9 @@ export namespace Prisma {
     dailySalesNumberOfSales: number | null
     dailySalesTotalIncome: number | null
     dailySalesDetailIncome: JsonValue | null
+    dailySalesExpectedCash: number | null
+    dailySalesCountedCash: number | null
+    dailySalesCashDifference: number | null
     createdByUserId: string
     createdAt: Date
     updatedAt: Date
@@ -23513,6 +23546,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: boolean
     dailySalesTotalIncome?: boolean
     dailySalesDetailIncome?: boolean
+    dailySalesExpectedCash?: boolean
+    dailySalesCountedCash?: boolean
+    dailySalesCashDifference?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -23527,6 +23563,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: boolean
     dailySalesTotalIncome?: boolean
     dailySalesDetailIncome?: boolean
+    dailySalesExpectedCash?: boolean
+    dailySalesCountedCash?: boolean
+    dailySalesCashDifference?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -23541,6 +23580,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: boolean
     dailySalesTotalIncome?: boolean
     dailySalesDetailIncome?: boolean
+    dailySalesExpectedCash?: boolean
+    dailySalesCountedCash?: boolean
+    dailySalesCashDifference?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -23555,12 +23597,15 @@ export namespace Prisma {
     dailySalesNumberOfSales?: boolean
     dailySalesTotalIncome?: boolean
     dailySalesDetailIncome?: boolean
+    dailySalesExpectedCash?: boolean
+    dailySalesCountedCash?: boolean
+    dailySalesCashDifference?: boolean
     createdByUserId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DailySalesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "dailySalesId" | "dailySalesDay" | "dailySalesTotalSales" | "dailySalesNumberOfSales" | "dailySalesTotalIncome" | "dailySalesDetailIncome" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["dailySales"]>
+  export type DailySalesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "dailySalesId" | "dailySalesDay" | "dailySalesTotalSales" | "dailySalesNumberOfSales" | "dailySalesTotalIncome" | "dailySalesDetailIncome" | "dailySalesExpectedCash" | "dailySalesCountedCash" | "dailySalesCashDifference" | "createdByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["dailySales"]>
   export type DailySalesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -23584,6 +23629,21 @@ export namespace Prisma {
       dailySalesNumberOfSales: number | null
       dailySalesTotalIncome: number | null
       dailySalesDetailIncome: Prisma.JsonValue | null
+      /**
+       * *
+       *    * Efectivo que el libro espera en el cajón al cierre de ese día.
+       */
+      dailySalesExpectedCash: number | null
+      /**
+       * *
+       *    * Efectivo contado por quien cierra. Null si el arqueo quedó pendiente.
+       */
+      dailySalesCountedCash: number | null
+      /**
+       * *
+       *    * Contado − esperado.
+       */
+      dailySalesCashDifference: number | null
       createdByUserId: string
       createdAt: Date
       updatedAt: Date
@@ -24018,6 +24078,9 @@ export namespace Prisma {
     readonly dailySalesNumberOfSales: FieldRef<"DailySales", 'Int'>
     readonly dailySalesTotalIncome: FieldRef<"DailySales", 'Int'>
     readonly dailySalesDetailIncome: FieldRef<"DailySales", 'Json'>
+    readonly dailySalesExpectedCash: FieldRef<"DailySales", 'Int'>
+    readonly dailySalesCountedCash: FieldRef<"DailySales", 'Int'>
+    readonly dailySalesCashDifference: FieldRef<"DailySales", 'Int'>
     readonly createdByUserId: FieldRef<"DailySales", 'String'>
     readonly createdAt: FieldRef<"DailySales", 'DateTime'>
     readonly updatedAt: FieldRef<"DailySales", 'DateTime'>
@@ -30407,6 +30470,8 @@ export namespace Prisma {
     purchaseTotal: number | null
     purchaseStatus: string | null
     purchaseComment: string | null
+    purchaseSettlement: string | null
+    purchasePaidAt: Date | null
     createdByUserId: string | null
     cancelledByUserId: string | null
     cancelledAt: Date | null
@@ -30423,6 +30488,8 @@ export namespace Prisma {
     purchaseTotal: number | null
     purchaseStatus: string | null
     purchaseComment: string | null
+    purchaseSettlement: string | null
+    purchasePaidAt: Date | null
     createdByUserId: string | null
     cancelledByUserId: string | null
     cancelledAt: Date | null
@@ -30439,6 +30506,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus: number
     purchaseComment: number
+    purchaseSettlement: number
+    purchasePaidAt: number
     createdByUserId: number
     cancelledByUserId: number
     cancelledAt: number
@@ -30465,6 +30534,8 @@ export namespace Prisma {
     purchaseTotal?: true
     purchaseStatus?: true
     purchaseComment?: true
+    purchaseSettlement?: true
+    purchasePaidAt?: true
     createdByUserId?: true
     cancelledByUserId?: true
     cancelledAt?: true
@@ -30481,6 +30552,8 @@ export namespace Prisma {
     purchaseTotal?: true
     purchaseStatus?: true
     purchaseComment?: true
+    purchaseSettlement?: true
+    purchasePaidAt?: true
     createdByUserId?: true
     cancelledByUserId?: true
     cancelledAt?: true
@@ -30497,6 +30570,8 @@ export namespace Prisma {
     purchaseTotal?: true
     purchaseStatus?: true
     purchaseComment?: true
+    purchaseSettlement?: true
+    purchasePaidAt?: true
     createdByUserId?: true
     cancelledByUserId?: true
     cancelledAt?: true
@@ -30600,6 +30675,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus: string | null
     purchaseComment: string | null
+    purchaseSettlement: string
+    purchasePaidAt: Date | null
     createdByUserId: string
     cancelledByUserId: string | null
     cancelledAt: Date | null
@@ -30635,6 +30712,8 @@ export namespace Prisma {
     purchaseTotal?: boolean
     purchaseStatus?: boolean
     purchaseComment?: boolean
+    purchaseSettlement?: boolean
+    purchasePaidAt?: boolean
     createdByUserId?: boolean
     cancelledByUserId?: boolean
     cancelledAt?: boolean
@@ -30656,6 +30735,8 @@ export namespace Prisma {
     purchaseTotal?: boolean
     purchaseStatus?: boolean
     purchaseComment?: boolean
+    purchaseSettlement?: boolean
+    purchasePaidAt?: boolean
     createdByUserId?: boolean
     cancelledByUserId?: boolean
     cancelledAt?: boolean
@@ -30675,6 +30756,8 @@ export namespace Prisma {
     purchaseTotal?: boolean
     purchaseStatus?: boolean
     purchaseComment?: boolean
+    purchaseSettlement?: boolean
+    purchasePaidAt?: boolean
     createdByUserId?: boolean
     cancelledByUserId?: boolean
     cancelledAt?: boolean
@@ -30694,6 +30777,8 @@ export namespace Prisma {
     purchaseTotal?: boolean
     purchaseStatus?: boolean
     purchaseComment?: boolean
+    purchaseSettlement?: boolean
+    purchasePaidAt?: boolean
     createdByUserId?: boolean
     cancelledByUserId?: boolean
     cancelledAt?: boolean
@@ -30701,7 +30786,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PurchaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "purchaseId" | "purchaseNumber" | "purchaseRealNumber" | "purchaseProviderId" | "purchaseTotal" | "purchaseStatus" | "purchaseComment" | "createdByUserId" | "cancelledByUserId" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["purchase"]>
+  export type PurchaseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"businessId" | "purchaseId" | "purchaseNumber" | "purchaseRealNumber" | "purchaseProviderId" | "purchaseTotal" | "purchaseStatus" | "purchaseComment" | "purchaseSettlement" | "purchasePaidAt" | "createdByUserId" | "cancelledByUserId" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["purchase"]>
   export type PurchaseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     provider?: boolean | ProviderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -30737,6 +30822,12 @@ export namespace Prisma {
       purchaseTotal: number
       purchaseStatus: string | null
       purchaseComment: string | null
+      /**
+       * *
+       *    * CASH mueve la caja al registrar. CREDIT espera el pago al proveedor.
+       */
+      purchaseSettlement: string
+      purchasePaidAt: Date | null
       createdByUserId: string
       cancelledByUserId: string | null
       cancelledAt: Date | null
@@ -31177,6 +31268,8 @@ export namespace Prisma {
     readonly purchaseTotal: FieldRef<"Purchase", 'Int'>
     readonly purchaseStatus: FieldRef<"Purchase", 'String'>
     readonly purchaseComment: FieldRef<"Purchase", 'String'>
+    readonly purchaseSettlement: FieldRef<"Purchase", 'String'>
+    readonly purchasePaidAt: FieldRef<"Purchase", 'DateTime'>
     readonly createdByUserId: FieldRef<"Purchase", 'String'>
     readonly cancelledByUserId: FieldRef<"Purchase", 'String'>
     readonly cancelledAt: FieldRef<"Purchase", 'DateTime'>
@@ -49619,6 +49712,9 @@ export namespace Prisma {
     dailySalesNumberOfSales: 'dailySalesNumberOfSales',
     dailySalesTotalIncome: 'dailySalesTotalIncome',
     dailySalesDetailIncome: 'dailySalesDetailIncome',
+    dailySalesExpectedCash: 'dailySalesExpectedCash',
+    dailySalesCountedCash: 'dailySalesCountedCash',
+    dailySalesCashDifference: 'dailySalesCashDifference',
     createdByUserId: 'createdByUserId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -49728,6 +49824,8 @@ export namespace Prisma {
     purchaseTotal: 'purchaseTotal',
     purchaseStatus: 'purchaseStatus',
     purchaseComment: 'purchaseComment',
+    purchaseSettlement: 'purchaseSettlement',
+    purchasePaidAt: 'purchasePaidAt',
     createdByUserId: 'createdByUserId',
     cancelledByUserId: 'cancelledByUserId',
     cancelledAt: 'cancelledAt',
@@ -51904,6 +52002,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: IntNullableFilter<"DailySales"> | number | null
     dailySalesTotalIncome?: IntNullableFilter<"DailySales"> | number | null
     dailySalesDetailIncome?: JsonNullableFilter<"DailySales">
+    dailySalesExpectedCash?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesCountedCash?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesCashDifference?: IntNullableFilter<"DailySales"> | number | null
     createdByUserId?: StringFilter<"DailySales"> | string
     createdAt?: DateTimeFilter<"DailySales"> | Date | string
     updatedAt?: DateTimeFilter<"DailySales"> | Date | string
@@ -51918,6 +52019,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: SortOrderInput | SortOrder
     dailySalesTotalIncome?: SortOrderInput | SortOrder
     dailySalesDetailIncome?: SortOrderInput | SortOrder
+    dailySalesExpectedCash?: SortOrderInput | SortOrder
+    dailySalesCountedCash?: SortOrderInput | SortOrder
+    dailySalesCashDifference?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -51937,6 +52041,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: IntNullableFilter<"DailySales"> | number | null
     dailySalesTotalIncome?: IntNullableFilter<"DailySales"> | number | null
     dailySalesDetailIncome?: JsonNullableFilter<"DailySales">
+    dailySalesExpectedCash?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesCountedCash?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesCashDifference?: IntNullableFilter<"DailySales"> | number | null
     createdByUserId?: StringFilter<"DailySales"> | string
     createdAt?: DateTimeFilter<"DailySales"> | Date | string
     updatedAt?: DateTimeFilter<"DailySales"> | Date | string
@@ -51951,6 +52058,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: SortOrderInput | SortOrder
     dailySalesTotalIncome?: SortOrderInput | SortOrder
     dailySalesDetailIncome?: SortOrderInput | SortOrder
+    dailySalesExpectedCash?: SortOrderInput | SortOrder
+    dailySalesCountedCash?: SortOrderInput | SortOrder
+    dailySalesCashDifference?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -51972,6 +52082,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: IntNullableWithAggregatesFilter<"DailySales"> | number | null
     dailySalesTotalIncome?: IntNullableWithAggregatesFilter<"DailySales"> | number | null
     dailySalesDetailIncome?: JsonNullableWithAggregatesFilter<"DailySales">
+    dailySalesExpectedCash?: IntNullableWithAggregatesFilter<"DailySales"> | number | null
+    dailySalesCountedCash?: IntNullableWithAggregatesFilter<"DailySales"> | number | null
+    dailySalesCashDifference?: IntNullableWithAggregatesFilter<"DailySales"> | number | null
     createdByUserId?: StringWithAggregatesFilter<"DailySales"> | string
     createdAt?: DateTimeWithAggregatesFilter<"DailySales"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DailySales"> | Date | string
@@ -52468,6 +52581,8 @@ export namespace Prisma {
     purchaseTotal?: IntFilter<"Purchase"> | number
     purchaseStatus?: StringNullableFilter<"Purchase"> | string | null
     purchaseComment?: StringNullableFilter<"Purchase"> | string | null
+    purchaseSettlement?: StringFilter<"Purchase"> | string
+    purchasePaidAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
     createdByUserId?: StringFilter<"Purchase"> | string
     cancelledByUserId?: StringNullableFilter<"Purchase"> | string | null
     cancelledAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
@@ -52488,6 +52603,8 @@ export namespace Prisma {
     purchaseTotal?: SortOrder
     purchaseStatus?: SortOrderInput | SortOrder
     purchaseComment?: SortOrderInput | SortOrder
+    purchaseSettlement?: SortOrder
+    purchasePaidAt?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
     cancelledByUserId?: SortOrderInput | SortOrder
     cancelledAt?: SortOrderInput | SortOrder
@@ -52512,6 +52629,8 @@ export namespace Prisma {
     purchaseTotal?: IntFilter<"Purchase"> | number
     purchaseStatus?: StringNullableFilter<"Purchase"> | string | null
     purchaseComment?: StringNullableFilter<"Purchase"> | string | null
+    purchaseSettlement?: StringFilter<"Purchase"> | string
+    purchasePaidAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
     createdByUserId?: StringFilter<"Purchase"> | string
     cancelledByUserId?: StringNullableFilter<"Purchase"> | string | null
     cancelledAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
@@ -52532,6 +52651,8 @@ export namespace Prisma {
     purchaseTotal?: SortOrder
     purchaseStatus?: SortOrderInput | SortOrder
     purchaseComment?: SortOrderInput | SortOrder
+    purchaseSettlement?: SortOrder
+    purchasePaidAt?: SortOrderInput | SortOrder
     createdByUserId?: SortOrder
     cancelledByUserId?: SortOrderInput | SortOrder
     cancelledAt?: SortOrderInput | SortOrder
@@ -52556,6 +52677,8 @@ export namespace Prisma {
     purchaseTotal?: IntWithAggregatesFilter<"Purchase"> | number
     purchaseStatus?: StringNullableWithAggregatesFilter<"Purchase"> | string | null
     purchaseComment?: StringNullableWithAggregatesFilter<"Purchase"> | string | null
+    purchaseSettlement?: StringWithAggregatesFilter<"Purchase"> | string
+    purchasePaidAt?: DateTimeNullableWithAggregatesFilter<"Purchase"> | Date | string | null
     createdByUserId?: StringWithAggregatesFilter<"Purchase"> | string
     cancelledByUserId?: StringNullableWithAggregatesFilter<"Purchase"> | string | null
     cancelledAt?: DateTimeNullableWithAggregatesFilter<"Purchase"> | Date | string | null
@@ -55802,6 +55925,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: number | null
     dailySalesTotalIncome?: number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: number | null
+    dailySalesCountedCash?: number | null
+    dailySalesCashDifference?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutDailySalesInput
@@ -55815,6 +55941,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: number | null
     dailySalesTotalIncome?: number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: number | null
+    dailySalesCountedCash?: number | null
+    dailySalesCashDifference?: number | null
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55827,6 +55956,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCountedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCashDifference?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutDailySalesNestedInput
@@ -55840,6 +55972,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCountedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCashDifference?: NullableIntFieldUpdateOperationsInput | number | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -55853,6 +55988,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: number | null
     dailySalesTotalIncome?: number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: number | null
+    dailySalesCountedCash?: number | null
+    dailySalesCashDifference?: number | null
     createdByUserId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -55865,6 +56003,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCountedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCashDifference?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55877,6 +56018,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCountedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCashDifference?: NullableIntFieldUpdateOperationsInput | number | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56415,6 +56559,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -56433,6 +56579,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     createdByUserId: string
     cancelledByUserId?: string | null
     cancelledAt?: Date | string | null
@@ -56448,6 +56596,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56466,6 +56616,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -56483,6 +56635,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     createdByUserId: string
     cancelledByUserId?: string | null
     cancelledAt?: Date | string | null
@@ -56497,6 +56651,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56511,6 +56667,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -59848,6 +60006,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: SortOrder
     dailySalesTotalIncome?: SortOrder
     dailySalesDetailIncome?: SortOrder
+    dailySalesExpectedCash?: SortOrder
+    dailySalesCountedCash?: SortOrder
+    dailySalesCashDifference?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -59857,6 +60018,9 @@ export namespace Prisma {
     dailySalesTotalSales?: SortOrder
     dailySalesNumberOfSales?: SortOrder
     dailySalesTotalIncome?: SortOrder
+    dailySalesExpectedCash?: SortOrder
+    dailySalesCountedCash?: SortOrder
+    dailySalesCashDifference?: SortOrder
   }
 
   export type DailySalesMaxOrderByAggregateInput = {
@@ -59866,6 +60030,9 @@ export namespace Prisma {
     dailySalesTotalSales?: SortOrder
     dailySalesNumberOfSales?: SortOrder
     dailySalesTotalIncome?: SortOrder
+    dailySalesExpectedCash?: SortOrder
+    dailySalesCountedCash?: SortOrder
+    dailySalesCashDifference?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -59878,6 +60045,9 @@ export namespace Prisma {
     dailySalesTotalSales?: SortOrder
     dailySalesNumberOfSales?: SortOrder
     dailySalesTotalIncome?: SortOrder
+    dailySalesExpectedCash?: SortOrder
+    dailySalesCountedCash?: SortOrder
+    dailySalesCashDifference?: SortOrder
     createdByUserId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -59887,6 +60057,9 @@ export namespace Prisma {
     dailySalesTotalSales?: SortOrder
     dailySalesNumberOfSales?: SortOrder
     dailySalesTotalIncome?: SortOrder
+    dailySalesExpectedCash?: SortOrder
+    dailySalesCountedCash?: SortOrder
+    dailySalesCashDifference?: SortOrder
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -60248,6 +60421,8 @@ export namespace Prisma {
     purchaseTotal?: SortOrder
     purchaseStatus?: SortOrder
     purchaseComment?: SortOrder
+    purchaseSettlement?: SortOrder
+    purchasePaidAt?: SortOrder
     createdByUserId?: SortOrder
     cancelledByUserId?: SortOrder
     cancelledAt?: SortOrder
@@ -60268,6 +60443,8 @@ export namespace Prisma {
     purchaseTotal?: SortOrder
     purchaseStatus?: SortOrder
     purchaseComment?: SortOrder
+    purchaseSettlement?: SortOrder
+    purchasePaidAt?: SortOrder
     createdByUserId?: SortOrder
     cancelledByUserId?: SortOrder
     cancelledAt?: SortOrder
@@ -60284,6 +60461,8 @@ export namespace Prisma {
     purchaseTotal?: SortOrder
     purchaseStatus?: SortOrder
     purchaseComment?: SortOrder
+    purchaseSettlement?: SortOrder
+    purchasePaidAt?: SortOrder
     createdByUserId?: SortOrder
     cancelledByUserId?: SortOrder
     cancelledAt?: SortOrder
@@ -66257,6 +66436,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66273,6 +66454,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     cancelledByUserId?: string | null
     cancelledAt?: Date | string | null
     createdAt?: Date | string
@@ -66297,6 +66480,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -66313,6 +66498,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     createdByUserId: string
     cancelledAt?: Date | string | null
     createdAt?: Date | string
@@ -66441,6 +66628,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: number | null
     dailySalesTotalIncome?: number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: number | null
+    dailySalesCountedCash?: number | null
+    dailySalesCashDifference?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -66452,6 +66642,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: number | null
     dailySalesTotalIncome?: number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: number | null
+    dailySalesCountedCash?: number | null
+    dailySalesCashDifference?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -67382,6 +67575,8 @@ export namespace Prisma {
     purchaseTotal?: IntFilter<"Purchase"> | number
     purchaseStatus?: StringNullableFilter<"Purchase"> | string | null
     purchaseComment?: StringNullableFilter<"Purchase"> | string | null
+    purchaseSettlement?: StringFilter<"Purchase"> | string
+    purchasePaidAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
     createdByUserId?: StringFilter<"Purchase"> | string
     cancelledByUserId?: StringNullableFilter<"Purchase"> | string | null
     cancelledAt?: DateTimeNullableFilter<"Purchase"> | Date | string | null
@@ -67531,6 +67726,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: IntNullableFilter<"DailySales"> | number | null
     dailySalesTotalIncome?: IntNullableFilter<"DailySales"> | number | null
     dailySalesDetailIncome?: JsonNullableFilter<"DailySales">
+    dailySalesExpectedCash?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesCountedCash?: IntNullableFilter<"DailySales"> | number | null
+    dailySalesCashDifference?: IntNullableFilter<"DailySales"> | number | null
     createdByUserId?: StringFilter<"DailySales"> | string
     createdAt?: DateTimeFilter<"DailySales"> | Date | string
     updatedAt?: DateTimeFilter<"DailySales"> | Date | string
@@ -73782,6 +73980,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -73797,6 +73997,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     createdByUserId: string
     cancelledByUserId?: string | null
     cancelledAt?: Date | string | null
@@ -74441,6 +74643,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -74458,6 +74662,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     createdByUserId: string
     cancelledByUserId?: string | null
     cancelledAt?: Date | string | null
@@ -74667,6 +74873,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -74684,6 +74892,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79261,6 +79471,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     cancelledByUserId?: string | null
     cancelledAt?: Date | string | null
     createdAt?: Date | string
@@ -79275,6 +79487,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     createdByUserId: string
     cancelledAt?: Date | string | null
     createdAt?: Date | string
@@ -79324,6 +79538,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: number | null
     dailySalesTotalIncome?: number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: number | null
+    dailySalesCountedCash?: number | null
+    dailySalesCashDifference?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -79975,6 +80192,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -79991,6 +80210,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80006,6 +80227,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80019,6 +80242,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80035,6 +80260,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80050,6 +80277,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -80173,6 +80402,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCountedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCashDifference?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -80184,6 +80416,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCountedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCashDifference?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -80195,6 +80430,9 @@ export namespace Prisma {
     dailySalesNumberOfSales?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesTotalIncome?: NullableIntFieldUpdateOperationsInput | number | null
     dailySalesDetailIncome?: NullableJsonNullValueInput | InputJsonValue
+    dailySalesExpectedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCountedCash?: NullableIntFieldUpdateOperationsInput | number | null
+    dailySalesCashDifference?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -82531,6 +82769,8 @@ export namespace Prisma {
     purchaseTotal: number
     purchaseStatus?: string | null
     purchaseComment?: string | null
+    purchaseSettlement?: string
+    purchasePaidAt?: Date | string | null
     createdByUserId: string
     cancelledByUserId?: string | null
     cancelledAt?: Date | string | null
@@ -82545,6 +82785,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -82560,6 +82802,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -82575,6 +82819,8 @@ export namespace Prisma {
     purchaseTotal?: IntFieldUpdateOperationsInput | number
     purchaseStatus?: NullableStringFieldUpdateOperationsInput | string | null
     purchaseComment?: NullableStringFieldUpdateOperationsInput | string | null
+    purchaseSettlement?: StringFieldUpdateOperationsInput | string
+    purchasePaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdByUserId?: StringFieldUpdateOperationsInput | string
     cancelledByUserId?: NullableStringFieldUpdateOperationsInput | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

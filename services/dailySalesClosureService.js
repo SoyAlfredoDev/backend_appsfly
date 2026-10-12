@@ -4,7 +4,13 @@ import { getSalesByDate } from './salesServices.js';
 import { getPaymentByDateService } from './paymentsService.js';
 import { getSaleDetailByDate } from './saleDetailsService.js';
 import { businessDateHasSales } from '../libs/businessSalesDate.js';
-import { DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
+import { businessDayBoundsUtc, DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
+import {
+    CASH_PAYMENT_METHOD,
+    closureSnapshot,
+    parseCountedCash,
+    sumCashBalance,
+} from './financial/cashBook.js';
 
 function sumPaymentsByMethod(payments, method) {
     return payments
@@ -47,11 +53,24 @@ export async function buildDailyClosurePayload(
     };
 }
 
+async function expectedCashForDay(prisma, dailySalesDay, timeZone) {
+    const { endExclusive } = businessDayBoundsUtc(dailySalesDay, timeZone);
+    const rows = await prisma.transactions.findMany({
+        where: {
+            transactionMethod: CASH_PAYMENT_METHOD,
+            createdAt: { lt: endExclusive },
+        },
+        select: { transactionMethod: true, transactionNewValue: true },
+    });
+    return sumCashBalance(rows);
+}
+
 export async function createDailyClosureForDate({
     dailySalesDay,
     createdByUserId,
     prisma,
     dailySalesId,
+    countedCash,
     timeZone = DEFAULT_BUSINESS_TIMEZONE,
 }) {
     const normalizedDay = String(dailySalesDay ?? '').trim();
@@ -82,6 +101,11 @@ export async function createDailyClosureForDate({
         dailySalesId ?? randomUUID(),
         timeZone,
     );
+    const counted = parseCountedCash(countedCash);
+    const expected = await expectedCashForDay(prisma, normalizedDay, timeZone);
 
-    return createDailySaleService(data, prisma);
+    return createDailySaleService({
+        ...data,
+        ...closureSnapshot(expected, counted),
+    }, prisma);
 }
