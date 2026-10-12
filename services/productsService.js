@@ -41,6 +41,8 @@ const productDetailInclude = {
             },
         },
     },
+    variantMetadata: true,
+    variantParent: { select: { productPrice: true, productPriceFixed: true } },
     ...productStockInclude,
 };
 
@@ -148,7 +150,7 @@ export const createProduct = async (data, prisma) => {
 };
 
 export const updateProduct = async (productId, data, prisma) => {
-    const existing = await prisma.product.findUnique({ where: { productId } });
+    const existing = await prisma.product.findUnique({ where: { productId }, include: { variantMetadata: true } });
     if (!existing) {
         const error = new Error("Producto no encontrado.");
         error.statusCode = 404;
@@ -169,6 +171,13 @@ export const updateProduct = async (productId, data, prisma) => {
             data: productData,
         });
 
+        if (existing.variantMetadata && productData.productPrice !== undefined) {
+            await tx.productVariant.update({
+                where: { productId },
+                data: { priceOverride: Number(productData.productPrice) },
+            });
+        }
+
         await syncProductAttributes(tx, productId, nextCategoryId, attributes);
 
         await syncSkuAlias(tx, productId, nextSku, existing.createdByUserId);
@@ -184,6 +193,161 @@ export const updateProduct = async (productId, data, prisma) => {
 
     return attachCodes(product, prisma);
 };
+
+export const createProductVariants = async (data, prisma) => {
+    const { parent: rawParentData, variants = [] } = data;
+    const { attributes: parentAttributes, ...parentFields } = rawParentData;
+    delete parentFields.codes;
+    delete parentFields.initialStock;
+    const parentData = parentFields;
+    if (!Array.isArray(variants) || variants.length === 0) {
+        const error = new Error("Debe incluir al menos una variante.");
+        error.statusCode = 400;
+        throw error;
+    }
+    if (variants.length > 1000) {
+        const error = new Error("La carga supera el límite de 1.000 variantes por familia.");
+        error.statusCode = 413;
+        throw error;
+    }
+
+    const prepared = variants.map((item) => {
+        const options = item.options && typeof item.options === "object" ? item.options : {};
+        const optionEntries = Object.entries(options)
+            .map(([key, value]) => [String(key).trim(), String(value ?? "").trim()])
+            .filter(([key, value]) => key && value);
+        const normalizedOptions = Object.fromEntries(optionEntries.sort(([a], [b]) => a.localeCompare(b)));
+        const combinationKey = JSON.stringify(normalizedOptions);
+        const price = Number(item.price ?? parentData.productPrice);
+        const initialStock = Number(item.initialStock ?? 0);
+
+        const sku = String(item.sku ?? "").trim();
+        if (!sku || !Number.isSafeInteger(price) || price < 0) {
+            const error = new Error("Cada variante requiere SKU y precio entero no negativo.");
+            error.statusCode = 400;
+            throw error;
+        }
+        if (Object.keys(normalizedOptions).length === 0) {
+            const error = new Error("Cada variante debe incluir al menos una opción.");
+            error.statusCode = 400;
+            throw error;
+        }
+        if (!Number.isSafeInteger(initialStock) || initialStock < 0) {
+            const error = new Error("El stock inicial debe ser un entero no negativo.");
+            error.statusCode = 400;
+            throw error;
+        }
+
+        return { ...item, sku, options: normalizedOptions, combinationKey, price, initialStock };
+    });
+
+    const combinations = new Set();
+    const skus = new Set();
+    const optionKeys = Object.keys(prepared[0].options).join("\u0000");
+    for (const item of prepared) {
+        if (Object.keys(item.options).join("\u0000") !== optionKeys) {
+            const error = new Error("Todas las variantes deben usar las mismas opciones.");
+            error.statusCode = 400;
+            throw error;
+        }
+        if (combinations.has(item.combinationKey)) {
+            const error = new Error("La carga contiene combinaciones repetidas.");
+            error.statusCode = 409;
+            throw error;
+        }
+        if (skus.has(item.sku)) {
+            const error = new Error(`SKU repetido en la carga: ${item.sku}`);
+            error.statusCode = 409;
+            throw error;
+        }
+        combinations.add(item.combinationKey);
+        skus.add(item.sku);
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+        let parent = await tx.product.findUnique({ where: { productSKU: parentData.productSKU } });
+        if (!parent) {
+            parent = await tx.product.create({
+                data: {
+                    ...parentData,
+                    productName: `${parentData.productName} (FAMILIA · NO VENDER)`,
+                    productAllowZeroStock: false,
+                    productStatus: "INACTIVE",
+                    isVariantParent: true,
+                },
+            });
+            await tx.productStock.create({ data: { productId: parent.productId, quantityOnHand: 0 } });
+            await syncProductAttributes(tx, parent.productId, parent.categoryId, parentAttributes);
+        } else if (parent.isVariantParent !== true) {
+            const error = new Error("El SKU padre ya pertenece a un producto normal y no se puede convertir en familia de variantes.");
+            error.statusCode = 409;
+            throw error;
+        }
+
+        const existingVariants = await tx.product.findMany({
+            where: { variantParentId: parent.productId },
+            include: { variantMetadata: true },
+        });
+        const existingKeys = new Set(existingVariants.map((row) => row.variantMetadata?.combinationKey).filter(Boolean));
+        let createdCount = 0;
+        let skippedCount = 0;
+
+        for (const item of prepared) {
+            if (existingKeys.has(item.combinationKey)) {
+                skippedCount += 1;
+                continue;
+            }
+
+            const child = await tx.product.create({
+                data: {
+                    productName: item.name || `${parentData.productName} · ${Object.entries(item.options).map(([key, value]) => `${key} ${value}`).join(" · ")}`,
+                    productDescription: parent.productDescription,
+                    productSKU: item.sku,
+                    categoryId: parent.categoryId,
+                    productPrice: item.price,
+                    productPriceFixed: parent.productPriceFixed,
+                    productStatus: "ACTIVE",
+                    productUnit: parent.productUnit,
+                    productAllowZeroStock: true,
+                    productRequiresLabWork: parent.productRequiresLabWork,
+                    createdByUserId: parent.createdByUserId,
+                    variantParentId: parent.productId,
+                },
+            });
+
+            await tx.productStock.create({
+                data: { productId: child.productId, quantityOnHand: item.initialStock },
+            });
+            await syncProductAttributes(tx, child.productId, child.categoryId, parentAttributes);
+            await tx.productVariant.create({
+                data: {
+                    productId: child.productId,
+                    parentProductId: parent.productId,
+                    combinationKey: item.combinationKey,
+                    optionsJson: JSON.stringify(item.options),
+                    priceOverride: item.price === Number(parent.productPrice) ? null : item.price,
+                },
+            });
+            await syncSkuAlias(tx, child.productId, child.productSKU, child.createdByUserId);
+            existingKeys.add(item.combinationKey);
+            createdCount += 1;
+        }
+
+        const children = await tx.product.findMany({
+            where: { variantParentId: parent.productId },
+            include: {
+                productStock: true,
+                variantMetadata: true,
+                variantParent: { select: { productPrice: true, productPriceFixed: true } },
+            },
+            orderBy: { productSKU: "asc" },
+        });
+        return { parent, children, createdCount, skippedCount };
+    });
+
+    return result;
+};
+
 
 export const getProductById = async (productId, prisma) => {
     const product = await prisma.product.findUnique({
@@ -212,7 +376,7 @@ export const getProducts = async (prisma, options = {}) => {
         });
 
         const query = typeof q === "string" ? q.trim() : "";
-        const where = {};
+        const where = { isVariantParent: false };
         if (categoryId) where.categoryId = categoryId;
         if (query) {
             const codeProductIds = await findProductIdsByExactCode(query, prisma);
@@ -239,6 +403,8 @@ export const getProducts = async (prisma, options = {}) => {
                             isSystem: true,
                         },
                     },
+                    variantMetadata: true,
+                    variantParent: { select: { productPrice: true, productPriceFixed: true } },
                     ...productStockInclude,
                 },
                 orderBy: { productName: "asc" },
