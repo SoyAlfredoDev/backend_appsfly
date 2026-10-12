@@ -14,7 +14,7 @@ import {
     TRANSACTION_TYPES,
 } from "./financial/cashBook.js";
 
-const CASH_PAYMENT_METHOD = "2";
+
 const CASH_DETAIL_LIMIT = 100;
 
 const transactionInclude = {
