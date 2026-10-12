@@ -5,6 +5,7 @@ import {
     getProductViewController,
     updateProductController,
     getProductByIdController,
+    createProductVariantsController,
 } from "../controllers/product.controller.js";
 
 import { authRequired } from "../middlewares/auth.middleware.js";
@@ -15,6 +16,7 @@ const router = Router();
 const auth = [authRequired, dbSelectorMiddleware];
 
 router.post("/products", ...auth, requireTenantAdmin, createProductController);
+router.post("/products/variants/bulk", ...auth, requireTenantAdmin, createProductVariantsController);
 router.get("/products", ...auth, getProductsController);
 router.get("/products/:id/view", ...auth, getProductViewController);
 router.get("/products/:id", ...auth, getProductByIdController);

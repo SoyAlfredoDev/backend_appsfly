@@ -4,6 +4,7 @@ import {
     getProductWithAnalytics,
     updateProduct,
     getProductById,
+    createProductVariants,
 } from "../services/productsService.js";
 import { serializeProductWithStock } from "../utils/productStockSerializer.js";
 
@@ -75,6 +76,9 @@ function publicProduct(serialized) {
         productPriceFixed: serialized.productPriceFixed,
         productAllowZeroStock: serialized.productAllowZeroStock,
         productRequiresLabWork: serialized.productRequiresLabWork,
+        isVariantParent: serialized.isVariantParent === true,
+        variantParentId: serialized.variantParentId ?? null,
+        variantOptions: serialized.variantOptions ?? {},
         productStock: serialized.productStock,
         quantityOnHand: serialized.quantityOnHand,
         attributes: serialized.attributes,
@@ -116,6 +120,45 @@ export const createProductController = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const createProductVariantsController = async (req, res) => {
+    try {
+        const parent = buildProductData({
+            ...req.body?.parent,
+            productStatus: "ACTIVE",
+            createdByUserId: req.body?.parent?.createdByUserId || req.user?.payload?.id,
+        });
+        if (!parent.productName || !parent.productSKU || !parent.categoryId) {
+            return res.status(400).json({ message: "Nombre, SKU y categoría del producto son obligatorios." });
+        }
+        const result = await createProductVariants(
+            { parent, variants: req.body?.variants },
+            req.prisma,
+        );
+        return res.status(201).json({
+            message: "Familia de productos creada.",
+            createdCount: result.createdCount,
+            skippedCount: result.skippedCount,
+            parent: publicProduct(serializeProductWithStock(result.parent)),
+            variants: result.children.map((product) => ({
+                ...publicProduct(serializeProductWithStock(product)),
+                variantOptions: product.variantMetadata?.optionsJson
+                    ? JSON.parse(product.variantMetadata.optionsJson)
+                    : {},
+            })),
+        });
+    } catch (error) {
+        if (error.statusCode && error.statusCode < 500) {
+            return res.status(error.statusCode).json({ message: error.message, code: error.code });
+        }
+        if (error.code === "P2002" || error.code === "CODE_DUPLICATE") {
+            return res.status(409).json({ message: "El SKU o la combinación ya está registrada." });
+        }
+        console.error("(products.controller.js): Error creating product variants:", error);
+        return res.status(500).json({ message: "No se pudo crear la familia de productos." });
+    }
+};
+
 
 export const updateProductController = async (req, res) => {
     try {
