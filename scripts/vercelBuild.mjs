@@ -298,11 +298,19 @@ export async function deployControlPlaneMigrations(env = process.env) {
   runSharedMigrations(sharedSchema, migrationEnv);
 }
 
+export function shouldRunProductionMigrations(env = process.env) {
+  return env.VERCEL === "1" && env.VERCEL_ENV === "production";
+}
+
 async function main() {
   const bundled = await bundleApi();
   if (process.env.VERCEL === "1") {
     await copyFile(bundled, serverPath);
-    await deployControlPlaneMigrations();
+    if (shouldRunProductionMigrations()) {
+      await deployControlPlaneMigrations();
+    } else {
+      console.log("Skipping database migrations for non-production Vercel deployment.");
+    }
   }
 }
 
