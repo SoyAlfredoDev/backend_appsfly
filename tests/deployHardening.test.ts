@@ -83,7 +83,7 @@ describe("serverless database urls", () => {
 });
 
 describe("Vercel build migrations", () => {
-  it("migrates the shared database when the owner or runtime URL is configured", () => {
+  it("migrates the shared database only with an explicit migration connection", () => {
     expect(
       shouldMigrateSharedDatabase({ DATABASE_SHARED_MIGRATION_URL: " postgresql://owner " }),
     ).toBe(true);
@@ -91,17 +91,17 @@ describe("Vercel build migrations", () => {
       shouldMigrateSharedDatabase({
         DATABASE_SHARED_URL: "postgresql://runtime@ep-shared-pooler.example/shared",
       }),
-    ).toBe(true);
+    ).toBe(false);
     expect(shouldMigrateSharedDatabase({})).toBe(false);
   });
 
-  it("derives the shared migration URL from the runtime URL when needed", () => {
+  it("never derives DDL credentials from the runtime connection", () => {
     const env = ensureSharedMigrationEnv({
       DATABASE_SHARED_URL:
         "postgresql://runtime:secret@ep-shared-pooler.example/shared?sslmode=require",
     });
 
-    expect(new URL(env.DATABASE_SHARED_MIGRATION_URL ?? "").hostname).toBe("ep-shared.example");
+    expect(env).not.toHaveProperty("DATABASE_SHARED_MIGRATION_URL");
     expect(env.DATABASE_SHARED_URL).toContain("ep-shared-pooler.example");
   });
 

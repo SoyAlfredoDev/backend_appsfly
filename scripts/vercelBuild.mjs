@@ -14,15 +14,12 @@ const MIGRATION_ATTEMPTS = 5;
 const MIGRATION_RETRY_DELAY_MS = 10_000;
 
 export function shouldMigrateSharedDatabase(env = process.env) {
-  return Boolean(env.DATABASE_SHARED_MIGRATION_URL?.trim() || env.DATABASE_SHARED_URL?.trim());
+  return Boolean(env.DATABASE_SHARED_MIGRATION_URL?.trim());
 }
 
 export function ensureSharedMigrationEnv(env = process.env) {
-  const next = { ...env };
-  if (!next.DATABASE_SHARED_MIGRATION_URL?.trim() && next.DATABASE_SHARED_URL?.trim()) {
-    next.DATABASE_SHARED_MIGRATION_URL = migrationDatabaseUrl(next.DATABASE_SHARED_URL);
-  }
-  return next;
+  // Runtime credentials must never be promoted implicitly to DDL credentials.
+  return { ...env };
 }
 
 export function databaseHostname(url) {
@@ -290,7 +287,9 @@ export async function deployControlPlaneMigrations(env = process.env) {
   await prepareMigrationHost(generalSchema, migrationEnv);
   runPrismaMigrate(generalSchema, migrationEnv);
   if (!shouldMigrateSharedDatabase(migrationEnv)) {
-    console.warn("DATABASE_SHARED_URL is not set. Shared data-plane migrations were skipped.");
+    console.warn(
+      "No explicit shared migration connection. Apply shared schema changes separately before publishing releases that require them.",
+    );
     return;
   }
   const sharedSchema = path.join(backendDir, "prisma", "sharedDB", "schema.prisma");
