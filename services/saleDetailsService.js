@@ -86,7 +86,8 @@ export const getSaleDetailById = async (id, prisma) => {
                     select: {
                         productId: true,
                         productName: true,
-                        productSKU: true
+                        productSKU: true,
+                        productPriceFixed: true
                     }
                 },
                 service: {
@@ -170,4 +171,3 @@ export const getSaleDetailByCustomerIdService = async (customerId, prisma) => {
         throw error;
     }
 }
-
