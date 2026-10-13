@@ -17,6 +17,7 @@ type PaymentInput = { paymentMethod?: unknown; paymentAmount?: unknown };
 type UpdateInput = {
   saleId: string;
   userId: string;
+  businessId?: string;
   details: unknown;
   payments: unknown;
   prisma: PrismaClient;
@@ -58,19 +59,29 @@ export async function getSaleEditabilityById(
   saleId: string,
   prisma: PrismaClient,
   timeZone: string,
+  businessId?: string,
 ) {
   const sale = await prisma.sale.findUnique({
     where: { saleId },
-    select: { saleId: true, createdAt: true },
   });
   if (!sale) return getSaleEditability(null);
+  assertSaleTenant(sale, businessId);
 
   const saleDate = dateKey(sale.createdAt, timeZone);
   const closure = await prisma.dailySales.findFirst({
-    where: { dailySalesDay: saleDate },
+    where: { dailySalesDay: saleDate, ...sharedWhere(sale, businessId) },
     select: { dailySalesId: true },
   });
   return getSaleEditability(sale, { timeZone, isClosed: Boolean(closure) });
+}
+
+function assertSaleTenant(sale: object, businessId?: string) {
+  if ("businessId" in sale && (!businessId || sale.businessId !== businessId))
+    fail(404, "SALE_NOT_FOUND", "Venta no encontrada.");
+}
+
+function sharedWhere(sale: object, businessId?: string) {
+  return "businessId" in sale ? { businessId } : {};
 }
 
 function normalizeChanges(changes: unknown) {
@@ -176,6 +187,7 @@ async function syncPaymentLedger(
 export async function updateSaleAsAdmin({
   saleId,
   userId,
+  businessId,
   details,
   payments,
   prisma,
@@ -196,10 +208,11 @@ export async function updateSaleAsAdmin({
         },
       });
       if (!sale) fail(404, "SALE_NOT_FOUND", "Venta no encontrada.");
+      assertSaleTenant(sale, businessId);
 
       const saleDate = dateKey(sale.createdAt, timeZone);
       const closure = await tx.dailySales.findFirst({
-        where: { dailySalesDay: saleDate },
+        where: { dailySalesDay: saleDate, ...sharedWhere(sale, businessId) },
         select: { dailySalesId: true },
       });
       const editability = getSaleEditability(sale, {
