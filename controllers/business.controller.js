@@ -1,3 +1,4 @@
+import { businessRegistrationInput } from "../services/database/businessRegistrationInput.js";
 import {
   createBusinessService,
   updateBusinessByIdService,
@@ -12,7 +13,7 @@ import { registerUserBusinessServiceBusinessDB } from "../services/businessDB/us
 import { createUserBusinessService } from "../services/userBusinessService.js";
 import { getUserById } from "../services/usersService.js";
 import { runPrismaMigrate } from "../prisma/runMigrate.js";
-import { getPrismaForBusinessId } from "../db.js";
+import { getPrismaForProvisioning } from "../db.js";
 import { seedOpticsCatalog } from "../libs/opticsCatalogSeed.js";
 import { cacheInvalidate } from "../libs/tenantCache.js";
 import { getPlanById } from "../services/planService.js";
@@ -20,8 +21,8 @@ import { resolveInitialDatabaseMode } from "../services/database/tenantDatabaseP
 
 export const createBusinessController = async (req, res) => {
   const userId = req.user.payload.id;
-  const businessData = { ...req.body };
-  const requestedPlanId = businessData.planId;
+  const businessData = businessRegistrationInput(req.body);
+  const requestedPlanId = req.body.planId;
   delete businessData.planId;
   delete businessData.businessConnectionDB;
   delete businessData.businessDatabaseMode;
@@ -108,7 +109,7 @@ export const createBusinessController = async (req, res) => {
       if (!newBusiness) throw new Error("Service returned null/false business record.");
 
       status.createdBusiness = true;
-      businessData.businessId = newBusiness.id || businessData.businessId;
+      businessData.businessId = newBusiness.businessId;
     } catch (error) {
       status.lastError = `3. Business record creation failed: ${error.message}`;
       console.error(status.lastError);
@@ -144,7 +145,7 @@ export const createBusinessController = async (req, res) => {
           userRole: "ADMIN",
         };
 
-        const tenantPrisma = await getPrismaForBusinessId(businessData.businessId);
+        const tenantPrisma = await getPrismaForProvisioning(businessData.businessId);
         if (!tenantPrisma) throw new Error("Could not resolve tenant database client.");
         const userBusinessDB = await registerUserBusinessServiceBusinessDB(
           userPayloadForBusinessDB,
@@ -158,7 +159,7 @@ export const createBusinessController = async (req, res) => {
         // 4.3 Seed catálogo óptica (categorías sistema + atributos)
         if (String(businessData.businessType || "").toLowerCase() === "optics") {
           try {
-            const tenantPrisma = await getPrismaForBusinessId(businessData.businessId);
+            const tenantPrisma = await getPrismaForProvisioning(businessData.businessId);
             if (tenantPrisma) {
               await seedOpticsCatalog(
                 tenantPrisma,
@@ -188,13 +189,15 @@ export const createBusinessController = async (req, res) => {
       status.migratedDB &&
       status.createdBusiness &&
       status.createdRelationUserBusinessGeneralDB &&
-      status.createdUserBusinessDB
+      status.createdUserBusinessDB &&
+      (String(businessData.businessType).toLowerCase() !== "optics" ||
+        status.opticsCatalogSeeded === true)
         ? "ACTIVE"
         : "PENDING";
 
     // --- 6. Guardar estado final del proceso en la DB general ---
     let savedBusiness = newBusiness;
-    if (newBusiness || businessData.businessId) {
+    if (newBusiness) {
       savedBusiness = await updateBusinessByIdService(businessData.businessId, {
         businessProcess: status,
         businessStatus,

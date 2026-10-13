@@ -189,10 +189,8 @@ function runSharedMigrations(schema, env) {
     const output = `${error.stdout ?? ""}\n${error.stderr ?? ""}\n${error.message ?? ""}`;
     console.error(output);
     if (!isSchemaNotEmptyError(output)) {
-      console.warn(
-        "Shared data-plane migrations failed. Continuing the Vercel build so the API can deploy.",
-      );
-      return;
+      console.warn("Shared data-plane migrations failed. Stopping deployment.");
+      throw error;
     }
     try {
       console.warn(
@@ -202,9 +200,8 @@ function runSharedMigrations(schema, env) {
     } catch (baselineError) {
       const baselineOutput = `${baselineError.stdout ?? ""}\n${baselineError.stderr ?? ""}\n${baselineError.message ?? ""}`;
       console.error(baselineOutput);
-      console.warn(
-        "Shared baseline failed. Continuing the Vercel build; apply shared migrations manually.",
-      );
+      console.warn("Shared baseline failed. Deployment must stop until migrations are repaired.");
+      throw baselineError;
     }
   }
 }

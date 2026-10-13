@@ -16,8 +16,46 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run validate
+      - run: npm run vercel-build
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: backend-coverage
           path: coverage
+
+  tenant-isolation:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: appsfly_isolation
+          POSTGRES_PASSWORD: ci-isolation-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_SHARED_URL: postgresql://appsfly_runtime:ci-isolation-only@127.0.0.1:5432/appsfly_isolation
+      DATABASE_SHARED_MIGRATION_URL: postgresql://postgres:ci-isolation-only@127.0.0.1:5432/appsfly_isolation
+      TEST_SHARED_DATABASE_URL: postgresql://appsfly_runtime:ci-isolation-only@127.0.0.1:5432/appsfly_isolation
+      TEST_ISOLATED_DATABASE: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Create restricted fixture role
+        run: >-
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d appsfly_isolation
+          -c "CREATE ROLE appsfly_runtime LOGIN PASSWORD 'ci-isolation-only' NOSUPERUSER NOBYPASSRLS NOCREATEDB NOCREATEROLE;"
+      - run: npx prisma migrate deploy --schema prisma/sharedDB/schema.prisma
+      - name: Grant only fixture DML
+        run: >-
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d appsfly_isolation
+          -c 'GRANT USAGE ON SCHEMA public TO appsfly_runtime; GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO appsfly_runtime; REVOKE ALL ON "_prisma_migrations" FROM appsfly_runtime;'
+      - run: npm run check:shared-security
+      - run: npm run test:tenant-isolation

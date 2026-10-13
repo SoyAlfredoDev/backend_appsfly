@@ -13,10 +13,14 @@ export async function dbSelectorMiddleware(req, res, next) {
 
     const memberships = await getUserBusinessById(userId);
     const requestedBusinessId =
-      req.headers["x-appsfly-business-id"] ||
-      req.headers["x-tenant-business-id"];
+      req.headers["x-appsfly-business-id"] || req.headers["x-tenant-business-id"];
 
     const resolved = resolveTenantMembership(memberships, requestedBusinessId);
+    if (resolved.error === "TENANT_REQUIRED") {
+      return res
+        .status(409)
+        .json({ error: "Selecciona el negocio para continuar.", code: "TENANT_REQUIRED" });
+    }
     if (resolved.error === "NO_MEMBERSHIP") {
       return res.status(403).json({ error: "No tienes un negocio asociado" });
     }
@@ -34,7 +38,8 @@ export async function dbSelectorMiddleware(req, res, next) {
     if (membership.Business?.businessStatus !== "ACTIVE") {
       return res.status(503).json({
         error: "El negocio todavía no está listo para operar.",
-        message: "La configuración del espacio de trabajo está pendiente. Intenta nuevamente o contacta a soporte.",
+        message:
+          "La configuración del espacio de trabajo está pendiente. Intenta nuevamente o contacta a soporte.",
         code: "TENANT_PROVISIONING_INCOMPLETE",
       });
     }
@@ -49,6 +54,9 @@ export async function dbSelectorMiddleware(req, res, next) {
     next();
   } catch (error) {
     console.error("(dbSelectorMiddleware): Error asignando Prisma:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(error.statusCode === 503 ? 503 : 500).json({
+      error: "No se pudo acceder de forma segura al negocio.",
+      code: error.statusCode === 503 ? error.code : "TENANT_DB_UNAVAILABLE",
+    });
   }
 }

@@ -125,6 +125,7 @@ model Product {
   /**
    * Si true, al venderse puede generar Orden de Trabajo (óptica)
    */
+  isVariantParent        Boolean                 @default(false)
   productRequiresLabWork Boolean                 @default(false)
   createdByUserId        String
   user                   User                    @relation(fields: [businessId, createdByUserId], references: [businessId, userId])
@@ -135,15 +136,40 @@ model Product {
   productStock           ProductStock?
   QuotationDetail        QuotationDetail[]
   attributeValues        ProductAttributeValue[]
+  variantParentId        String?
+  variantParent          Product?                @relation("ProductVariantParent", fields: [businessId, variantParentId], references: [businessId, productId], onDelete: Cascade)
+  variantChildren        Product[]               @relation("ProductVariantParent")
+  variantFamily          ProductVariant[]        @relation("ProductVariantFamily")
+  variantMetadata        ProductVariant?         @relation("ProductVariantProduct")
 
   @@unique([businessId, productId])
   @@unique([businessId, productSKU])
   @@index([businessId])
+  @@index([businessId, variantParentId])
 }
 
 /**
  * Códigos escaneables (barcode/QR/SKU alias) polimórficos por entidad.
  */
+model ProductVariant {
+  businessId      String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  variantId       String   @id @default(uuid())
+  productId       String
+  product         Product  @relation("ProductVariantProduct", fields: [businessId, productId], references: [businessId, productId], onDelete: Cascade)
+  parentProductId String
+  parentProduct   Product  @relation("ProductVariantFamily", fields: [businessId, parentProductId], references: [businessId, productId], onDelete: Cascade)
+  combinationKey  String
+  optionsJson     String
+  priceOverride   Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([businessId, parentProductId, combinationKey])
+  @@unique([businessId, variantId])
+  @@unique([businessId, productId])
+  @@index([businessId])
+}
+
 model ScanCode {
   businessId      String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
   scanCodeId      String   @id @default(uuid())

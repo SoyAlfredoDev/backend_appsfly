@@ -1,25 +1,39 @@
 import { Prisma, PrismaClient as SharedPrismaClient } from "../../src/generated/shared/index.js";
 
+import { verifySharedRuntimeSecurity } from "./sharedRuntimeSecurity.js";
+export { assertRestrictedRuntimeRole } from "./sharedRuntimeSecurity.js";
+
+let verifiedAt = 0;
 let sharedPrisma: SharedPrismaClient | null = null;
 let sharedRuntimeVerification: Promise<void> | null = null;
 
-type RuntimeRole = { roleName: string; isSuperuser: boolean; bypassRls: boolean };
-
-export function assertRestrictedRuntimeRole(
-  role: RuntimeRole | undefined,
-): asserts role is RuntimeRole {
-  if (!role || role.isSuperuser !== false || role.bypassRls !== false) {
-    throw Object.assign(new Error("Shared runtime must use a database role that enforces RLS"), {
-      code: "SHARED_RUNTIME_ROLE_UNSAFE",
-    });
-  }
-}
-
+const MODEL_NAMES = new Set(
+  Prisma.dmmf.datamodel.models.map((model) => model.name[0].toLowerCase() + model.name.slice(1)),
+);
 const RAW_QUERY_METHODS = new Set([
   "$executeRaw",
   "$executeRawUnsafe",
   "$queryRaw",
   "$queryRawUnsafe",
+]);
+const MODEL_OPERATIONS = new Set([
+  "findUnique",
+  "findUniqueOrThrow",
+  "findFirst",
+  "findFirstOrThrow",
+  "findMany",
+  "create",
+  "createMany",
+  "createManyAndReturn",
+  "update",
+  "updateMany",
+  "updateManyAndReturn",
+  "delete",
+  "deleteMany",
+  "upsert",
+  "count",
+  "aggregate",
+  "groupBy",
 ]);
 
 type InteractiveTransactionOptions = {
@@ -29,7 +43,7 @@ type InteractiveTransactionOptions = {
 };
 
 function validateBusinessId(businessId: string): string {
-  const normalized = businessId.trim();
+  const normalized = typeof businessId === "string" ? businessId.trim() : "";
   if (!normalized) throw new Error("A businessId is required for shared database access");
   return normalized;
 }
@@ -49,6 +63,7 @@ function createDelegateProxy(
 ): object {
   return new Proxy(delegate, {
     get(target, property, receiver) {
+      if (typeof property !== "string" || !MODEL_OPERATIONS.has(property)) return undefined;
       const operation = Reflect.get(target, property, receiver);
       if (typeof operation !== "function") return operation;
 
@@ -65,21 +80,25 @@ function createDelegateProxy(
           }
           const normalizedArgs = [...args];
           if (
-            delegateName === "appointmentSettings" &&
+            ["appointmentSettings", "user"].includes(delegateName) &&
             ["findUnique", "findUniqueOrThrow", "update", "delete", "upsert"].includes(
               String(property),
             )
           ) {
             const first = normalizedArgs[0];
             if (first && typeof first === "object") {
-              const input = first as { where?: { settingsId?: string } };
-              if (input.where?.settingsId) {
+              const input = first as { where?: { settingsId?: string; userId?: string } };
+              const idField = delegateName === "user" ? "userId" : "settingsId";
+              if (input.where?.[idField]) {
                 normalizedArgs[0] = {
                   ...input,
                   where: {
-                    businessId_settingsId: {
+                    ...Object.fromEntries(
+                      Object.entries(input.where).filter(([key]) => key !== idField),
+                    ),
+                    [`businessId_${idField}`]: {
                       businessId,
-                      settingsId: input.where.settingsId,
+                      [idField]: input.where[idField],
                     },
                   },
                 };
@@ -113,7 +132,19 @@ export function createSharedTenantClient(
 
           return target.$transaction(async (transaction) => {
             await setTenantContext(transaction, businessId);
-            return Reflect.apply(callback, undefined, [transaction]);
+            // Reuse the same delegate normalization inside an interactive transaction.
+            const transactionBase = new Proxy(transaction, {
+              get(tx, key) {
+                if (key === "$transaction")
+                  return (fn: (value: Prisma.TransactionClient) => unknown) => fn(tx);
+                return Reflect.get(tx, key);
+              },
+            });
+            const scoped = createSharedTenantClient(
+              transactionBase as SharedPrismaClient,
+              businessId,
+            );
+            return Reflect.apply(callback, undefined, [scoped]);
           }, options as InteractiveTransactionOptions);
         };
       }
@@ -130,6 +161,7 @@ export function createSharedTenantClient(
           });
       }
 
+      if (typeof property !== "string" || !MODEL_NAMES.has(property)) return undefined;
       const value = Reflect.get(target, property, receiver);
       if (
         typeof property === "string" &&
@@ -161,13 +193,13 @@ export async function getSharedTenantClient(businessId: string): Promise<SharedP
     datasources: { db: { url } },
   });
 
-  sharedRuntimeVerification ??= sharedPrisma.$queryRaw<RuntimeRole[]>`
-    SELECT current_user AS "roleName", rolsuper AS "isSuperuser", rolbypassrls AS "bypassRls"
-    FROM pg_roles WHERE rolname = current_user
-  `.then(([role]) => {
-    assertRestrictedRuntimeRole(role);
-    console.info(`[shared-runtime] verified restricted database role ${role.roleName}`);
-  });
+  if (!sharedRuntimeVerification || Date.now() - verifiedAt > 60_000) {
+    verifiedAt = Date.now();
+    sharedRuntimeVerification = verifySharedRuntimeSecurity(sharedPrisma).catch((error) => {
+      sharedRuntimeVerification = null;
+      throw error;
+    });
+  }
   await sharedRuntimeVerification;
 
   return createSharedTenantClient(sharedPrisma, businessId);

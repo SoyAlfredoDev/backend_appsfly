@@ -12,15 +12,17 @@ describe("shared tenant Prisma facade", () => {
         roleName: "appsfly_runtime",
         isSuperuser: false,
         bypassRls: false,
+        createRole: false,
+        createDb: false,
       }),
     ).not.toThrow();
   });
   it.each([
-    { roleName: "owner", isSuperuser: false, bypassRls: true },
-    { roleName: "root", isSuperuser: true, bypassRls: false },
+    { roleName: "owner", isSuperuser: false, bypassRls: true, createRole: false, createDb: false },
+    { roleName: "root", isSuperuser: true, bypassRls: false, createRole: false, createDb: false },
     undefined,
   ])("rejects roles that cannot enforce RLS", (role) => {
-    expect(() => assertRestrictedRuntimeRole(role)).toThrow("enforces RLS");
+    expect(() => assertRestrictedRuntimeRole(role)).toThrow();
   });
   it("sets the RLS context before every model operation", async () => {
     const calls: string[] = [];

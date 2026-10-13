@@ -3,7 +3,8 @@ import { afterAll, describe, expect, it } from "vitest";
 import { PrismaClient as SharedPrismaClient } from "../src/generated/shared/index.js";
 import { createSharedTenantClient } from "../services/database/sharedTenantClient.js";
 
-const databaseUrl = process.env.DATABASE_SHARED_URL;
+const databaseUrl =
+  process.env.TEST_ISOLATED_DATABASE === "true" ? process.env.TEST_SHARED_DATABASE_URL : undefined;
 const run = databaseUrl ? describe : describe.skip;
 const base = databaseUrl
   ? new SharedPrismaClient({ datasources: { db: { url: databaseUrl } } })
@@ -19,8 +20,8 @@ run("shared database tenant isolation", () => {
     if (!base) return;
     for (const businessId of [businessA, businessB]) {
       const tenant = createSharedTenantClient(base, businessId);
-      await tenant.customer.deleteMany();
-      await tenant.user.deleteMany();
+      await tenant.customer.deleteMany({ where: { businessId } });
+      await tenant.user.deleteMany({ where: { businessId } });
     }
     await base.$disconnect();
   }, 30_000);

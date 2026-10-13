@@ -1,6 +1,5 @@
 import { generalPrisma as general } from "../dbGeneral.js";
 
-
 const safeBusinessSelect = {
   businessId: true,
   businessName: true,
@@ -23,9 +22,9 @@ const safeBusinessSelect = {
   businessReceiptPhone: true,
   businessReceiptEmail: true,
   businessReceiptSocial: true,
-    businessReceiptFooterNote: true,
-    businessQuickSalePaymentMethod: true,
-    businessQuickSaleDocumentType: true,
+  businessReceiptFooterNote: true,
+  businessQuickSalePaymentMethod: true,
+  businessQuickSaleDocumentType: true,
   businessDatabaseMode: true,
   businessDatabaseStatus: true,
   businessSchemaVersion: true,
@@ -93,6 +92,7 @@ export const getBusinessDatabasePlacement = async (businessId) => {
       where: { businessId },
       select: {
         businessId: true,
+        businessStatus: true,
         businessDatabaseMode: true,
         businessDatabaseStatus: true,
         businessDatabaseSecretRef: true,

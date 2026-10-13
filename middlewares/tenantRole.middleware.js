@@ -22,8 +22,22 @@ export async function ensureTenantRole(req, res, next) {
       req.headers["x-appsfly-business-id"] ||
       req.headers["x-tenant-business-id"] ||
       req.params?.businessId ||
-      req.body?.subscriptionBusinessId;
+      req.body?.subscriptionBusinessId ||
+      req.body?.userGuestBusinessId;
+    const resourceBusinessId =
+      req.params?.businessId || req.body?.subscriptionBusinessId || req.body?.userGuestBusinessId;
+    if (resourceBusinessId && requestedBusinessId !== resourceBusinessId) {
+      return res.status(403).json({
+        error: "El negocio solicitado no coincide con el activo.",
+        code: "TENANT_CONTEXT_MISMATCH",
+      });
+    }
     const resolved = resolveTenantMembership(memberships, requestedBusinessId);
+    if (resolved.error === "TENANT_REQUIRED") {
+      return res
+        .status(409)
+        .json({ error: "Selecciona el negocio para continuar.", code: "TENANT_REQUIRED" });
+    }
     if (resolved.error === "FORBIDDEN_BUSINESS") {
       return res.status(403).json({
         error: "No tienes acceso a ese negocio.",

@@ -6,20 +6,19 @@
  * @param {string | undefined} requestedBusinessId
  */
 export function resolveTenantMembership(memberships, requestedBusinessId) {
-    if (!memberships?.length) {
-        return { error: "NO_MEMBERSHIP" };
-    }
+  if (!memberships?.length) {
+    return { error: "NO_MEMBERSHIP" };
+  }
 
-    const requested = String(requestedBusinessId ?? "").trim();
-    if (requested) {
-        const match = memberships.find(
-            (m) => m.userBusinessBusinessId === requested,
-        );
-        if (!match) {
-            return { error: "FORBIDDEN_BUSINESS" };
-        }
-        return { membership: match };
+  const requested = String(requestedBusinessId ?? "").trim();
+  if (requested) {
+    const match = memberships.find((m) => m.userBusinessBusinessId === requested);
+    if (!match) {
+      return { error: "FORBIDDEN_BUSINESS" };
     }
+    return { membership: match };
+  }
 
-    return { membership: memberships[0] };
+  if (memberships.length !== 1) return { error: "TENANT_REQUIRED" };
+  return { membership: memberships[0] };
 }

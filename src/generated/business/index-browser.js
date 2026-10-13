@@ -166,8 +166,21 @@ exports.Prisma.ProductScalarFieldEnum = {
   productStatus: 'productStatus',
   productUnit: 'productUnit',
   productAllowZeroStock: 'productAllowZeroStock',
+  isVariantParent: 'isVariantParent',
   productRequiresLabWork: 'productRequiresLabWork',
   createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  variantParentId: 'variantParentId'
+};
+
+exports.Prisma.ProductVariantScalarFieldEnum = {
+  variantId: 'variantId',
+  productId: 'productId',
+  parentProductId: 'parentProductId',
+  combinationKey: 'combinationKey',
+  optionsJson: 'optionsJson',
+  priceOverride: 'priceOverride',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -823,6 +836,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Customer: 'Customer',
   Product: 'Product',
+  ProductVariant: 'ProductVariant',
   ScanCode: 'ScanCode',
   ProductStock: 'ProductStock',
   InventoryMovement: 'InventoryMovement',
