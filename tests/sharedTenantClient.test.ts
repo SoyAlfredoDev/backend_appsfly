@@ -1,8 +1,27 @@
 import { describe, expect, it, vi } from "vitest";
 import type { PrismaClient as SharedPrismaClient } from "../src/generated/shared/index.js";
-import { createSharedTenantClient } from "../services/database/sharedTenantClient.js";
+import {
+  assertRestrictedRuntimeRole,
+  createSharedTenantClient,
+} from "../services/database/sharedTenantClient.js";
 
 describe("shared tenant Prisma facade", () => {
+  it("allows a verified restricted database role", () => {
+    expect(() =>
+      assertRestrictedRuntimeRole({
+        roleName: "appsfly_runtime",
+        isSuperuser: false,
+        bypassRls: false,
+      }),
+    ).not.toThrow();
+  });
+  it.each([
+    { roleName: "owner", isSuperuser: false, bypassRls: true },
+    { roleName: "root", isSuperuser: true, bypassRls: false },
+    undefined,
+  ])("rejects roles that cannot enforce RLS", (role) => {
+    expect(() => assertRestrictedRuntimeRole(role)).toThrow("enforces RLS");
+  });
   it("sets the RLS context before every model operation", async () => {
     const calls: string[] = [];
     const transaction = {

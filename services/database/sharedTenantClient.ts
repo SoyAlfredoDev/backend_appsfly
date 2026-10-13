@@ -1,6 +1,19 @@
 import { Prisma, PrismaClient as SharedPrismaClient } from "../../src/generated/shared/index.js";
 
 let sharedPrisma: SharedPrismaClient | null = null;
+let sharedRuntimeVerification: Promise<void> | null = null;
+
+type RuntimeRole = { roleName: string; isSuperuser: boolean; bypassRls: boolean };
+
+export function assertRestrictedRuntimeRole(
+  role: RuntimeRole | undefined,
+): asserts role is RuntimeRole {
+  if (!role || role.isSuperuser !== false || role.bypassRls !== false) {
+    throw Object.assign(new Error("Shared runtime must use a database role that enforces RLS"), {
+      code: "SHARED_RUNTIME_ROLE_UNSAFE",
+    });
+  }
+}
 
 const RAW_QUERY_METHODS = new Set([
   "$executeRaw",
@@ -136,7 +149,7 @@ export function createSharedTenantClient(
   }) as SharedPrismaClient;
 }
 
-export function getSharedTenantClient(businessId: string): SharedPrismaClient {
+export async function getSharedTenantClient(businessId: string): Promise<SharedPrismaClient> {
   const url = process.env.DATABASE_SHARED_URL?.trim();
   if (!url) {
     const error = new Error("DATABASE_SHARED_URL is not configured");
@@ -148,6 +161,15 @@ export function getSharedTenantClient(businessId: string): SharedPrismaClient {
     datasources: { db: { url } },
   });
 
+  sharedRuntimeVerification ??= sharedPrisma.$queryRaw<RuntimeRole[]>`
+    SELECT current_user AS "roleName", rolsuper AS "isSuperuser", rolbypassrls AS "bypassRls"
+    FROM pg_roles WHERE rolname = current_user
+  `.then(([role]) => {
+    assertRestrictedRuntimeRole(role);
+    console.info(`[shared-runtime] verified restricted database role ${role.roleName}`);
+  });
+  await sharedRuntimeVerification;
+
   return createSharedTenantClient(sharedPrisma, businessId);
 }
 
@@ -155,4 +177,5 @@ export async function disconnectSharedTenantClient(): Promise<void> {
   if (!sharedPrisma) return;
   await sharedPrisma.$disconnect();
   sharedPrisma = null;
+  sharedRuntimeVerification = null;
 }
