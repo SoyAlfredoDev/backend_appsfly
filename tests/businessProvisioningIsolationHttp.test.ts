@@ -23,13 +23,11 @@ vi.mock("../services/businessDB/userBusiness.js", () => ({
 }));
 vi.mock("../services/userBusinessService.js", () => ({ createUserBusinessService: m.membership }));
 vi.mock("../services/usersService.js", () => ({
-  getUserById: vi
-    .fn()
-    .mockResolvedValue({
-      userFirstName: "QA",
-      userLastName: "QA",
-      userEmail: "qa@example.invalid",
-    }),
+  getUserById: vi.fn().mockResolvedValue({
+    userFirstName: "QA",
+    userLastName: "QA",
+    userEmail: "qa@example.invalid",
+  }),
 }));
 vi.mock("../prisma/runMigrate.js", () => ({ runPrismaMigrate: vi.fn() }));
 vi.mock("../db.js", () => ({ getPrismaForProvisioning: m.tenant }));

@@ -7,6 +7,11 @@ dotenv.config();
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 export const authRequired = (req, res, next) => {
+    // Authenticated responses must never be reused between users or businesses.
+    res.set('Cache-Control', 'private, no-store');
+    res.vary('Authorization');
+    res.vary('X-AppsFly-Business-Id');
+    res.vary('X-Tenant-Business-Id');
     try {
         // Get the Authorization header: "Bearer <token>"
         const authHeader = req.headers.authorization;
