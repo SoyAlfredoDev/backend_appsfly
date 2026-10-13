@@ -116,7 +116,7 @@ export const getSaleByIdController = async (req, res) => {
             return res.status(404).json({ message: "Sale not found" });
         }
         if (req.tenantRole === "ADMIN") {
-            sale.editability = await getSaleEditabilityById(id, req.prisma, tzOf(req));
+            sale.editability = await getSaleEditabilityById(id, req.prisma, tzOf(req), req.tenantBusinessId);
         }
         res.status(200).json(sale);
     } catch (error) {
@@ -130,6 +130,7 @@ export const updateSaleController = async (req, res) => {
         const result = await updateSaleAsAdmin({
             saleId: req.params.id,
             userId: req.user.payload.id,
+            businessId: req.tenantBusinessId,
             details: req.body?.details,
             payments: req.body?.payments,
             prisma: req.prisma,

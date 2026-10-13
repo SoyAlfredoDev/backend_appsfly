@@ -100,6 +100,42 @@ describe("sale edit eligibility", () => {
 });
 
 describe("updateSaleAsAdmin", () => {
+  it("rejects a shared sale belonging to another tenant before any write", async () => {
+    const foreignSale = { ...structuredClone(saleToday), businessId: "another-tenant" };
+    const tx = transactionFor(foreignSale);
+    await expect(
+      updateSaleAsAdmin({
+        saleId: "sale-1",
+        userId: "admin-1",
+        businessId: "qa-tenant",
+        details: [],
+        payments: [],
+        prisma: { $transaction: (callback) => callback(tx) },
+        timeZone: "UTC",
+        now,
+      }),
+    ).rejects.toMatchObject({ statusCode: 404, code: "SALE_NOT_FOUND" });
+    expect(tx.payment.update).not.toHaveBeenCalled();
+    expect(tx.sale.update).not.toHaveBeenCalled();
+  });
+
+  it("scopes shared closures to the actual tenant", async () => {
+    const sharedSale = { ...structuredClone(saleToday), businessId: "qa-tenant" };
+    const tx = transactionFor(sharedSale);
+    await updateSaleAsAdmin({
+      saleId: "sale-1",
+      userId: "admin-1",
+      businessId: "qa-tenant",
+      details: [],
+      payments: [],
+      prisma: { $transaction: (callback) => callback(tx) },
+      timeZone: "UTC",
+      now,
+    });
+    expect(tx.dailySales.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { dailySalesDay: "2026-10-12", businessId: "qa-tenant" } }),
+    );
+  });
   it("updates a variable product, splits payments, and leaves the balance receivable", async () => {
     const tx = transactionFor();
     const prisma = { $transaction: vi.fn((callback) => callback(tx)) };
