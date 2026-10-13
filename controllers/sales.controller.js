@@ -6,6 +6,7 @@ import defineSaleNumber from '../libs/defineSaleNumber.js';
 import { isCreditSalesAllowed, isDeliveryControlEnabled } from '../services/businessSettingsService.js';
 import { getBusinessByIdService } from '../services/businessService.js';
 import { getTodayBusinessDate, DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
+import { getSaleEditabilityById, updateSaleAsAdmin } from '../services/sales/saleEditService.js';
 
 const tzOf = (req) => req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE;
 
@@ -114,10 +115,38 @@ export const getSaleByIdController = async (req, res) => {
         if (!sale) {
             return res.status(404).json({ message: "Sale not found" });
         }
+        if (req.tenantRole === "ADMIN") {
+            sale.editability = await getSaleEditabilityById(id, req.prisma, tzOf(req));
+        }
         res.status(200).json(sale);
     } catch (error) {
         console.error("(sales.controller.js): Error fetching sale by ID:", error);
         res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+export const updateSaleController = async (req, res) => {
+    try {
+        const result = await updateSaleAsAdmin({
+            saleId: req.params.id,
+            userId: req.user.payload.id,
+            details: req.body?.details,
+            payments: req.body?.payments,
+            prisma: req.prisma,
+            timeZone: tzOf(req),
+        });
+        res.status(200).json({ message: "Venta actualizada.", ...result });
+    } catch (error) {
+        const status = error.code === "P2034" ? 409 : (error.statusCode ?? 500);
+        if (status >= 500) console.error("(sales.controller.js): Error updating sale:", error);
+        res.status(status).json({
+            message: status >= 500
+                ? "No se pudo actualizar la venta."
+                : error.code === "P2034"
+                    ? "La venta cambió durante la edición. Recarga e intenta nuevamente."
+                    : error.message,
+            code: error.code === "P2034" ? "SALE_EDIT_CONFLICT" : (error.statusCode ? error.code : "SALE_EDIT_FAILED"),
+        });
     }
 };
 

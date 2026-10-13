@@ -13,8 +13,10 @@ import {
     markSaleDeliveredController,
     sendSaleEmailController,
     getSaleShareLinkController,
+    updateSaleController,
 } from "../controllers/sales.controller.js";
 
+import { requireTenantAdmin } from "../middlewares/tenantRole.middleware.js";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
 import { pendingDailyClosureMiddleware } from "../middlewares/pendingDailyClosureMiddleware.js";
@@ -72,6 +74,8 @@ router.get("/sales", authRequired, dbSelectorMiddleware, getSalesController);
 
 // 6. Get sale by ID
 router.get("/sales/:id", authRequired, dbSelectorMiddleware, getSaleByIdController);
+
+router.patch("/sales/:id", authRequired, dbSelectorMiddleware, requireTenantAdmin, updateSaleController);
 
 // 6b. Marcar venta como entregada
 router.patch("/sales/:id/delivery", authRequired, dbSelectorMiddleware, markSaleDeliveredController);
