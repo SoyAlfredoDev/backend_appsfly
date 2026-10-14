@@ -130,6 +130,8 @@ export async function deliverBillingNotice(
     });
     const result = await sendEmail({
       to: payment.createdBy.userEmail,
+      from: "AppsFly <no-reply@appsfly.cl>",
+      replyTo: "contacto@appsfly.cl",
       ...content,
       idempotencyKey: `billing-${key}`,
     });

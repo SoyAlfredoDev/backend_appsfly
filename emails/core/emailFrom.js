@@ -1,4 +1,4 @@
-const DEFAULT_DOMAIN = "appsfly.app";
+const DEFAULT_DOMAIN = "appsfly.cl";
 
 export function getPlatformEmailDomain() {
     const fromEnv = process.env.PLATFORM_EMAIL_DOMAIN?.trim().toLowerCase();

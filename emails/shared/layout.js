@@ -121,7 +121,7 @@ function renderAppsFlyTrustFooter(year) {
               <td align="center" style="padding:14px 24px 0;font-family:Arial,Helvetica,sans-serif;">
                 <a href="https://appsfly.cl" target="_blank" rel="noopener noreferrer" style="color:#094fd1;text-decoration:none;font-size:13px;font-weight:700;font-family:Arial,Helvetica,sans-serif;">appsfly.cl</a>
                 <span style="color:#cbd5e1;font-family:Arial,Helvetica,sans-serif;">&nbsp;&nbsp;·&nbsp;&nbsp;</span>
-                <a href="mailto:soporte@appsfly.app" style="color:#094fd1;text-decoration:none;font-size:13px;font-family:Arial,Helvetica,sans-serif;">soporte@appsfly.app</a>
+                <a href="mailto:contacto@appsfly.cl" style="color:#094fd1;text-decoration:none;font-size:13px;font-family:Arial,Helvetica,sans-serif;">contacto@appsfly.cl</a>
               </td>
             </tr>
             <tr>
@@ -136,7 +136,7 @@ function renderAppsFlyTrustFooter(year) {
 
 function renderAppsFlyDiscreetFooter() {
     const platformUrl = getAppsFlyPlatformUrl();
-    const supportEmail = "soporte@appsfly.app";
+    const supportEmail = "contacto@appsfly.cl";
 
     return `<tr>
         <td bgcolor="#fafbfc" style="background-color:#fafbfc;padding:14px 28px 22px;border-top:1px solid #e5e7eb;text-align:center;">

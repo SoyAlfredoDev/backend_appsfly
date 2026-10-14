@@ -41,6 +41,9 @@ export const resendWebhookController = async (req, res) => {
             }
         }
     } else {
+        if (isProductionEnvironment()) {
+            return res.status(503).json({ received: false, code: "WEBHOOK_SECRET_NOT_CONFIGURED" });
+        }
         console.warn("[resend-webhook] RESEND_WEBHOOK_SECRET no configurado; firma omitida.");
         try {
             payload = JSON.parse(rawBody);
@@ -49,16 +52,13 @@ export const resendWebhookController = async (req, res) => {
         }
     }
 
-    res.status(200).json({ received: true });
-
-    setImmediate(() => {
-        processResendEmailWebhookEvent(payload)
-            .then(async (campaignResult) => {
-                if (campaignResult?.handled) return campaignResult;
-                return processQuotationResendWebhookEvent(payload);
-            })
-            .catch((error) => {
-                console.error("[resend-webhook] Error procesando evento:", error);
-            });
-    });
+    try {
+        // Finish before acknowledging: Vercel may freeze work after the response.
+        const campaignResult = await processResendEmailWebhookEvent(payload);
+        if (!campaignResult?.handled) await processQuotationResendWebhookEvent(payload);
+        return res.status(200).json({ received: true });
+    } catch (error) {
+        console.error("[resend-webhook] Error procesando evento:", error.message);
+        return res.status(503).json({ received: false, code: "WEBHOOK_PROCESSING_FAILED" });
+    }
 };

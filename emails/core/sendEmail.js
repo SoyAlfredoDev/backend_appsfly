@@ -21,7 +21,7 @@ export const shouldDeliverExternalEmail = (env = process.env) => {
 };
 
 /** @param {{to: string | string[], subject: string, html: string, text?: string, from?: string, replyTo?: string, attachments?: Array<{filename: string, content: Buffer | string, contentId?: string, contentType?: string}>, tags?: Record<string, string>, idempotencyKey?: string}} input */
-export const sendEmail = async ({ to, subject, html, text, from = undefined, replyTo = undefined, attachments = undefined, tags = undefined, idempotencyKey = undefined }) => {
+export const sendEmail = async ({ to, subject, html, text, from = undefined, replyTo = "contacto@appsfly.cl", attachments = undefined, tags = undefined, idempotencyKey = undefined }) => {
     if (!shouldDeliverExternalEmail()) {
         console.info(
             "[email] Entrega externa omitida fuera de producción. Define EMAIL_DELIVERY_ENABLED=true para habilitarla.",

@@ -26,33 +26,9 @@ async function findRecipientByProviderMessageId(emailId) {
 }
 
 async function findRecipientForWebhookEvent(data) {
-    const emailId = data?.email_id;
-    if (emailId) {
-        const byId = await findRecipientByProviderMessageId(emailId);
-        if (byId) return byId;
-    }
-
-    const toList = Array.isArray(data?.to) ? data.to : data?.to ? [data.to] : [];
-    const normalizedEmail = String(toList[0] ?? "").trim().toLowerCase();
-    if (!normalizedEmail) return null;
-
-    return general.platformEmailCampaignRecipient.findFirst({
-        where: {
-            recipientEmail: normalizedEmail,
-            providerMessageId: { not: null },
-            deliveryStatus: { in: ["PENDING", "SENT", "DELIVERED"] },
-            sentAt: { gte: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000) },
-        },
-        orderBy: { sentAt: "desc" },
-        select: {
-            recipientId: true,
-            runId: true,
-            deliveryStatus: true,
-            openedAt: true,
-            openCount: true,
-            deliveredAt: true,
-        },
-    });
+    // An address can receive billing, quotations and multiple campaigns.
+    // Only the exact provider message identifies the dispatch being updated.
+    return findRecipientByProviderMessageId(data?.email_id);
 }
 
 async function handleEmailSent(recipient, data) {

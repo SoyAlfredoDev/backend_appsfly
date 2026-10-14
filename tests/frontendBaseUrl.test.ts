@@ -65,6 +65,6 @@ describe("public frontend URL", () => {
     expect(html).toContain("RUT 77.719.288-4");
     expect(html).toContain("https://www.instagram.com/appsfly.app/");
     expect(html).toContain("https://www.linkedin.com/company/appsfly/");
-    expect(html).toContain("soporte@appsfly.app");
+    expect(html).toContain("contacto@appsfly.cl");
   });
 });

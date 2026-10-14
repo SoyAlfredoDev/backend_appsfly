@@ -76,6 +76,8 @@ describe("durable transactional notifications", () => {
     await deliverBillingNotice("p", "paid", end);
     expect(m.send).toHaveBeenCalledTimes(1);
     expect(m.send.mock.calls[0][0].idempotencyKey).toMatch(/^billing-/);
+    expect(m.send.mock.calls[0][0].from).toBe("AppsFly <no-reply@appsfly.cl>");
+    expect(m.send.mock.calls[0][0].replyTo).toBe("contacto@appsfly.cl");
   });
   it("retries a failed send using the same provider idempotency key", async () => {
     m.send.mockRejectedValueOnce(new Error("provider unavailable"));
