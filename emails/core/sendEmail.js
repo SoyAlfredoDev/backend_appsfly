@@ -39,7 +39,7 @@ export const sendEmail = async ({ to, subject, html, text, from = undefined, rep
         };
 
         if (replyTo?.trim()) {
-            payload.reply_to = replyTo.trim();
+            payload.replyTo = replyTo.trim();
         }
 
         if (attachments?.length) {
