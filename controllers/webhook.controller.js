@@ -32,6 +32,9 @@ export const mercadoPagoWebhookController = async (req, res) => {
             ?? req.query?.id,
     });
 
+    if (signatureResult.skipped && isProductionEnvironment()) {
+        return res.status(503).json({ received: false, code: "WEBHOOK_SECRET_NOT_CONFIGURED" });
+    }
     if (!signatureResult.skipped && !signatureResult.valid) {
         console.warn("[webhook] Firma inválida:", signatureResult.reason, {
             topic: notification.topic,
@@ -60,9 +63,9 @@ export const mercadoPagoWebhookController = async (req, res) => {
         });
     } catch (error) {
         console.error("[webhook] Error procesando notificación Mercado Pago:", error);
-        // 200 para no spamear reintentos por errores de aplicación; el log queda para auditoría.
-        return res.status(200).json({
-            received: true,
+        // Return a retryable failure: a logged error is not an acknowledged payment.
+        return res.status(503).json({
+            received: false,
             id: notification.resourceId,
             error: "PROCESSING_FAILED",
         });

@@ -62,10 +62,11 @@ export function verifyMercadoPagoWebhookSignature({
     const manifest = buildMercadoPagoSignatureManifest({ dataId, xRequestId, ts });
     const computed = crypto.createHmac("sha256", secret).update(manifest).digest("hex");
 
+    const valid = /^[a-f0-9]{64}$/i.test(v1) && crypto.timingSafeEqual(Buffer.from(computed, "hex"), Buffer.from(v1, "hex"));
     return {
-        valid: computed === v1,
+        valid,
         skipped: false,
-        reason: computed === v1 ? "OK" : "SIGNATURE_MISMATCH",
+        reason: valid ? "OK" : "SIGNATURE_MISMATCH",
     };
 }
 

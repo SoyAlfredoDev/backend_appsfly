@@ -1,3 +1,4 @@
+import { runBillingNotices } from "../services/billing/billingNotifications.js";
 import { runAllDueEmailCampaigns } from "../services/adminEmailCampaign/adminEmailCampaignScheduler.js";
 import { reconcileMercadoPagoSubscriptionRenewals } from "../services/mercadopago/mpRenewalReconcileService.js";
 
@@ -53,9 +54,11 @@ export async function cronMpSubscriptionRenewalsController(req, res) {
         if (!assertCronAuthorized(req, res)) return;
 
         const result = await reconcileMercadoPagoSubscriptionRenewals();
-        return res.status(200).json({
+        const notices = await runBillingNotices();
+        return res.status(result.failed || notices.failed ? 503 : 200).json({
             message: "Reconciliación de renovaciones Mercado Pago completada.",
             ...result,
+            notices,
         });
     } catch (error) {
         console.error("(cron.mpSubscriptionRenewals):", error);

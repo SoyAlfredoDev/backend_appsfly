@@ -1,3 +1,4 @@
+import { requirePaymentTenant } from "../services/billing/paymentAccess.js";
 import { Router } from "express";
 import { authRequired } from "../middlewares/auth.middleware.js";
 import {
@@ -18,15 +19,17 @@ const admin = [authRequired, ensureTenantRole, requireTenantAdmin];
 
 router.post("/subscriptions", ...admin, createSubscriptionController);
 router.post("/subscriptions/checkout", ...admin, createSubscriptionCheckoutController);
-router.post("/subscriptions/process-payment", ...admin, processSubscriptionPaymentBrickController);
+router.post("/subscriptions/process-payment", ...admin, requirePaymentTenant, processSubscriptionPaymentBrickController);
 router.post(
   "/subscriptions/payments/:paymentId/confirm",
   ...admin,
+  requirePaymentTenant,
   confirmSubscriptionPaymentController,
 );
 router.post(
   "/subscriptions/payments/:paymentId/sync",
   ...admin,
+  requirePaymentTenant,
   syncSubscriptionPreapprovalController,
 );
 router.post(
@@ -37,7 +40,8 @@ router.post(
 
 router.get(
   "/subscriptions/payments/:paymentId",
-  authRequired,
+  ...admin,
+  requirePaymentTenant,
   getSubscriptionPaymentStatusController,
 );
 router.get(

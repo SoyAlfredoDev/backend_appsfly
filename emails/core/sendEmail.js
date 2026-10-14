@@ -20,7 +20,8 @@ export const shouldDeliverExternalEmail = (env = process.env) => {
     return appEnv === "production" || env.EMAIL_DELIVERY_ENABLED === "true";
 };
 
-export const sendEmail = async ({ to, subject, html, text, from, replyTo, attachments, tags }) => {
+/** @param {{to: string | string[], subject: string, html: string, text?: string, from?: string, replyTo?: string, attachments?: Array<{filename: string, content: Buffer | string, contentId?: string, contentType?: string}>, tags?: Record<string, string>, idempotencyKey?: string}} input */
+export const sendEmail = async ({ to, subject, html, text, from = undefined, replyTo = undefined, attachments = undefined, tags = undefined, idempotencyKey = undefined }) => {
     if (!shouldDeliverExternalEmail()) {
         console.info(
             "[email] Entrega externa omitida fuera de producción. Define EMAIL_DELIVERY_ENABLED=true para habilitarla.",
@@ -72,7 +73,7 @@ export const sendEmail = async ({ to, subject, html, text, from, replyTo, attach
             throw new Error("RESEND_API_KEY is not configured.");
         }
 
-        const { data, error } = await resend.emails.send(payload);
+        const { data, error } = await resend.emails.send(payload, idempotencyKey ? { idempotencyKey } : undefined);
 
         if (error) {
             console.error("Error sending email:", error);

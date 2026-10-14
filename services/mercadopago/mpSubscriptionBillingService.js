@@ -61,10 +61,23 @@ export async function getBusinessBillingStatus(businessId) {
         orderBy: { subscriptionEndDate: "desc" },
     });
 
+    const pending = await general.subscriptionPayment.findFirst({
+        where: { subscriptionBusinessId: businessId, paymentMethod: "MERCADO_PAGO", status: "PENDING" },
+        include: { plan: true }, orderBy: { createdAt: "desc" },
+    });
+    const pendingCheckout = pending ? {
+        paymentId: pending.subscriptionPaymentId, planName: pending.plan.planName,
+        firstChargeAt: pending.metadata?.firstChargeAt || null,
+        authorized: pending.metadata?.mpPreapprovalStatus === "authorized",
+        checkoutUrl: pending.metadata?.checkoutUrl || null,
+        amount: pending.amount, currency: pending.currency,
+        canCancel: Boolean(pending.metadata?.mpPreapprovalId),
+    } : null;
     const current = subscriptions.find(isSubscriptionCurrentlyActive) ?? subscriptions[0] ?? null;
 
     if (!current) {
         return {
+            pendingCheckout,
             hasSubscription: false,
             businessId,
             subscription: null,
@@ -74,10 +87,11 @@ export async function getBusinessBillingStatus(businessId) {
     const isPromoFreeTrial = current.subscriptionPlanId === FREE_TRIAL_PLAN_ID;
     const isPaidCommercial = isCommercialPaidPlan(current);
     const isPaidRecurring = isPaidCommercial && Boolean(current.mpPreapprovalId);
-    const accessStillValid = hasPaidPeriodRemaining(current);
+    const accessStillValid = isSubscriptionCurrentlyActive(current);
     const mpAlreadyCancelled = isMpPreapprovalCancelled(current.mpPreapprovalStatus);
 
     return {
+        pendingCheckout,
         hasSubscription: true,
         businessId,
         subscription: {
@@ -89,7 +103,7 @@ export async function getBusinessBillingStatus(businessId) {
             subscriptionCancelledAt: current.subscriptionCancelledAt,
             mpPreapprovalId: current.mpPreapprovalId,
             mpPreapprovalStatus: current.mpPreapprovalStatus,
-            autoRenewEnabled: current.autoRenewEnabled,
+            autoRenewEnabled: current.autoRenewEnabled && current.mpPreapprovalStatus === "authorized" && Boolean(current.mpPreapprovalId),
             isPaidRecurring,
             isPaidCommercial,
             isPromoFreeTrial,
@@ -98,7 +112,6 @@ export async function getBusinessBillingStatus(businessId) {
             canCancel:
                 isPaidCommercial
                 && current.autoRenewEnabled
-                && accessStillValid
                 && !current.subscriptionCancelledAt
                 && (!current.mpPreapprovalId || !mpAlreadyCancelled),
             plan: current.plan,
@@ -158,12 +171,36 @@ export async function cancelBusinessSubscriptionRenewal({
 
     await assertUserCanManageBusinessBilling(userId, businessId);
 
+    const pending = await general.subscriptionPayment.findFirst({ where: {
+        subscriptionBusinessId: businessId, status: "PENDING", paymentMethod: "MERCADO_PAGO",
+    } });
+    if (pending?.metadata?.mpPreapprovalId) {
+        // The existing trial/paid access remains unchanged when cancelling a future mandate.
+        await updateMercadoPagoPreapproval(String(pending.metadata.mpPreapprovalId), {status: "cancelled"});
+        await general.$transaction(async tx => {
+            if (pending.subscriptionId) await tx.$queryRaw`SELECT "subscriptionId" FROM "Subscription" WHERE "subscriptionId" = ${pending.subscriptionId} FOR UPDATE`;
+            await tx.$queryRaw`SELECT "subscriptionPaymentId" FROM "SubscriptionPayment" WHERE "subscriptionPaymentId" = ${pending.subscriptionPaymentId} FOR UPDATE`;
+            const latest = await tx.subscriptionPayment.findUniqueOrThrow({where:{subscriptionPaymentId:pending.subscriptionPaymentId}});
+            await tx.subscriptionPayment.update({ where: { subscriptionPaymentId: pending.subscriptionPaymentId }, data: {
+                status: latest.status === "APPROVED" ? "APPROVED" : "REJECTED",
+                metadata: {...latest.metadata, mpPreapprovalStatus: "cancelled", cancelledAt: new Date().toISOString(), cancelledByUserId: userId},
+            } });
+            if (latest.subscriptionId) {
+                const current = await tx.subscription.findUniqueOrThrow({where:{subscriptionId:latest.subscriptionId}});
+                await tx.subscription.update({ where: {subscriptionId: current.subscriptionId}, data: {
+                    autoRenewEnabled: false, mpPreapprovalStatus: "cancelled", subscriptionCancelledAt: new Date(),
+                    subscriptionStatus: current.subscriptionStatus === "PENDIENT" ? "INACTIVE" : current.subscriptionEndDate > new Date() ? "CANCELLED" : "EXPIRED",
+                } });
+            }
+        });
+        return {subscription: null, cancellationRecord: null, alreadyCancelled: false};
+    }
+
     const candidates = await general.subscription.findMany({
         where: {
             subscriptionBusinessId: businessId,
             subscriptionPlanId: { not: FREE_TRIAL_PLAN_ID },
-            subscriptionEndDate: { gt: new Date() },
-            subscriptionStatus: { in: ["ACTIVE", "CANCELLED"] },
+            subscriptionStatus: { in: ["ACTIVE", "CANCELLED", "EXPIRED", "PENDIENT"] },
         },
         include: { plan: true },
         orderBy: { subscriptionEndDate: "desc" },
@@ -198,16 +235,18 @@ export async function cancelBusinessSubscriptionRenewal({
     }
 
     const now = new Date();
-    const keepAccessActive = hasPaidPeriodRemaining(subscription);
-
-    const updated = await general.subscription.update({
+    const updated = await general.$transaction(async tx => {
+        await tx.$queryRaw`SELECT "subscriptionId" FROM "Subscription" WHERE "subscriptionId" = ${subscription.subscriptionId} FOR UPDATE`;
+        const current = await tx.subscription.findUniqueOrThrow({where: {subscriptionId: subscription.subscriptionId}});
+        return tx.subscription.update({
         where: { subscriptionId: subscription.subscriptionId },
         data: {
             autoRenewEnabled: false,
             mpPreapprovalStatus: subscription.mpPreapprovalId ? "cancelled" : subscription.mpPreapprovalStatus,
             subscriptionCancelledAt: now,
-            subscriptionStatus: keepAccessActive ? "ACTIVE" : "EXPIRED",
+            subscriptionStatus: hasPaidPeriodRemaining(current) ? "CANCELLED" : "EXPIRED",
         },
+        });
     });
 
     const cancellationRecord = await recordSubscriptionCancellationAudit({

@@ -41,6 +41,10 @@ Production runs on Vercel. Do not add another hosting target.
 
 ## Backend
 
+### Billing contract (audit 2026-10-14)
+
+Mercado Pago preapproval authorization is not payment. Preserve the current trial/paid end through `auto_recurring.start_date`, verify the provider confirms it, and grant paid access only from an actual approved payment with matching mandate, reference, amount and currency. Settlement is transactional and idempotent. Cancellation and failed attempts must preserve already paid access. See `docs/subscription-billing-audit-2026-10-14.md` for tested scenarios and external verification limits. Do not restore the old rule that an authorized preapproval grants a paid month.
+
 - Use TypeScript for new domain services and shared request/response contracts.
 - Keep Express app construction separate from process startup so Supertest can import the app.
 - Unit test pure services with Vitest and test HTTP behavior with Supertest.

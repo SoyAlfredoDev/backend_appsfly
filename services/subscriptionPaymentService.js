@@ -1,3 +1,5 @@
+import { checkoutStartDate, addCalendarMonths, assertDeferredStart } from "./billing/subscriptionLifecycle.js";
+import { registerRecurringAuthorization } from "./billing/recurringSettlement.js";
 import { generalPrisma as general } from "../dbGeneral.js";
 import { getPlanById } from "./planService.js";
 import { createSubscriptionService, getSubscriptionsByBusinessIdService } from "./subscriptionService.js";
@@ -5,12 +7,10 @@ import {
     getMercadoPagoPayment,
     mapMercadoPagoStatus,
     isMercadoPagoConfigured,
-    createMercadoPagoPreapproval,
+    updateMercadoPagoPreapproval,
     createMercadoPagoPendingPreapproval,
-    mapMercadoPagoPreapprovalStatus,
     getMercadoPagoPreapproval,
 } from "./mercadopago/index.js";
-import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
 import { getPlanPricing } from "../libs/planPricing.js";
 import {
     assertApprovedCheckoutPrice,
@@ -28,8 +28,7 @@ export const PAYMENT_METHOD_LABELS = {
 
 function buildSubscriptionDates(planDuration) {
     const subscriptionStartDate = new Date();
-    const subscriptionEndDate = new Date(subscriptionStartDate);
-    subscriptionEndDate.setMonth(subscriptionEndDate.getMonth() + planDuration);
+    const subscriptionEndDate = addCalendarMonths(subscriptionStartDate, planDuration);
     return { subscriptionStartDate, subscriptionEndDate };
 }
 
@@ -143,17 +142,17 @@ export async function createMercadoPagoCheckout({
     }
 
     const existingSubscriptions = await getSubscriptionsByBusinessIdService(subscriptionBusinessId);
-    const hasActive = Array.isArray(existingSubscriptions)
-        && existingSubscriptions.some(
-            (sub) => sub.subscriptionStatus === "ACTIVE" && new Date(sub.subscriptionEndDate) > new Date(),
-        );
-    if (hasActive) {
-        throw new Error("El negocio ya tiene una suscripción activa.");
-    }
+    let firstChargeAt = checkoutStartDate(existingSubscriptions)?.toISOString() || null;
 
     const pricing = getPlanPricing(planSelected.planPrice);
 
-    const paymentRecord = await general.subscriptionPayment.create({
+    const paymentRecord = await general.$transaction(async tx => {
+        await tx.$queryRaw`SELECT "businessId" FROM "Business" WHERE "businessId" = ${subscriptionBusinessId} FOR UPDATE`;
+        firstChargeAt = checkoutStartDate(await tx.subscription.findMany({ where: { subscriptionBusinessId } }))?.toISOString() || null;
+        const pending = await tx.subscriptionPayment.findFirst({ where: { subscriptionBusinessId, paymentMethod: "MERCADO_PAGO", status: "PENDING" } });
+        if (pending?.metadata?.checkoutUrl && pending.subscriptionPlanId === subscriptionPlanId) return pending;
+        if (pending) throw Object.assign(new Error("Ya existe una contratación pendiente. Retoma o cancela esa solicitud antes de iniciar otra."), { code: "CHECKOUT_ALREADY_PENDING", statusCode: 409 });
+        return tx.subscriptionPayment.create({
         data: {
             subscriptionPaymentId,
             subscriptionId: null,
@@ -167,6 +166,8 @@ export async function createMercadoPagoCheckout({
             metadata: {
                 pendingSubscriptionId,
                 checkoutStartedAt: new Date().toISOString(),
+                firstChargeAt,
+                billingVersion: 2,
                 billingType: "MONTHLY_RECURRING",
                 netAmount: pricing.net,
                 ivaAmount: pricing.iva,
@@ -176,6 +177,13 @@ export async function createMercadoPagoCheckout({
         },
     });
 
+    });
+
+    if (paymentRecord.subscriptionPaymentId !== subscriptionPaymentId) {
+        return { mode: "SUBSCRIPTION_CHECKOUT", checkoutUrl: paymentRecord.metadata.checkoutUrl,
+            paymentId: paymentRecord.subscriptionPaymentId, firstChargeAt: paymentRecord.metadata.firstChargeAt,
+            amount: paymentRecord.amount, currency: paymentRecord.currency };
+    }
     let preapproval;
     try {
         preapproval = await createMercadoPagoPendingPreapproval({
@@ -184,26 +192,37 @@ export async function createMercadoPagoCheckout({
             payerEmail,
             amount: pricing.total,
             currency: planSelected.planCurrency || "CLP",
+            firstChargeAt,
         });
     } catch (error) {
         await general.subscriptionPayment.update({
             where: { subscriptionPaymentId },
             data: {
-                status: "REJECTED",
+                status: "PENDING",
                 metadata: {
                     ...(paymentRecord.metadata ?? {}),
-                    preapprovalError: error.message,
+                    checkoutNeedsReview: true,
                 },
             },
         });
         throw error;
     }
 
+    try {
+        assertDeferredStart(firstChargeAt, preapproval.auto_recurring?.start_date);
+    } catch (error) {
+        if (preapproval.id) {
+            await general.subscriptionPayment.update({where:{subscriptionPaymentId},data:{metadata:{...paymentRecord.metadata,mpPreapprovalId:String(preapproval.id),checkoutNeedsReview:true}}});
+            await updateMercadoPagoPreapproval(String(preapproval.id), {status:"cancelled"});
+            await general.subscriptionPayment.update({where:{subscriptionPaymentId},data:{status:"REJECTED"}});
+        }
+        throw error;
+    }
     const checkoutUrl = preapproval.init_point || preapproval.sandbox_init_point;
     if (!checkoutUrl || !preapproval.id) {
         await general.subscriptionPayment.update({
             where: { subscriptionPaymentId },
-            data: { status: "REJECTED" },
+            data: { status: "PENDING", metadata: { ...paymentRecord.metadata, checkoutNeedsReview: true, mpPreapprovalId: preapproval.id || null } },
         });
         const error = new Error("Mercado Pago no devolvió el link de suscripción.");
         error.code = "PREAPPROVAL_LINK_MISSING";
@@ -211,20 +230,18 @@ export async function createMercadoPagoCheckout({
         throw error;
     }
 
-    await general.subscriptionPayment.update({
-        where: { subscriptionPaymentId },
-        data: {
-            metadata: {
-                ...(paymentRecord.metadata ?? {}),
-                mpPreapprovalId: String(preapproval.id),
-                mpPreapprovalStatus: preapproval.status,
-                checkoutUrl,
-            },
-        },
+    await general.$transaction(async tx => {
+        await tx.$queryRaw`SELECT "subscriptionPaymentId" FROM "SubscriptionPayment" WHERE "subscriptionPaymentId" = ${subscriptionPaymentId} FOR UPDATE`;
+        const latest = await tx.subscriptionPayment.findUniqueOrThrow({where:{subscriptionPaymentId}});
+        await tx.subscriptionPayment.update({ where: {subscriptionPaymentId}, data: {metadata: {
+            ...latest.metadata, mpPreapprovalId: String(preapproval.id), checkoutUrl,
+            mpPreapprovalStatus: latest.metadata?.mpPreapprovalStatus || preapproval.status,
+        }} });
     });
 
     return {
         mode: "SUBSCRIPTION_CHECKOUT",
+        firstChargeAt,
         checkoutUrl,
         paymentId: paymentRecord.subscriptionPaymentId,
         mpPreapprovalId: String(preapproval.id),
@@ -279,80 +296,8 @@ export async function syncMercadoPagoPreapprovalPayment({ subscriptionPaymentId,
 /**
  * Procesa el Brick: crea suscripción recurrente mensual (preapproval) en Mercado Pago.
  */
-export async function processPaymentBrickSubmission({
-    subscriptionPaymentId,
-    formData,
-    selectedPaymentMethod,
-}) {
-    const paymentRecord = await general.subscriptionPayment.findUnique({
-        where: { subscriptionPaymentId },
-    });
-
-    if (!paymentRecord) {
-        throw new Error("Registro de pago no encontrado.");
-    }
-
-    if (paymentRecord.status === "APPROVED" && paymentRecord.subscriptionId) {
-        const subscription = await general.subscription.findUnique({
-            where: { subscriptionId: paymentRecord.subscriptionId },
-        });
-        return { payment: paymentRecord, subscription, alreadyProcessed: true };
-    }
-
-    if (!formData?.token) {
-        throw new Error("Falta el token de tarjeta para la suscripción recurrente.");
-    }
-
-    const planSelected = await getPlanById(paymentRecord.subscriptionPlanId);
-    const payerEmail =
-        formData.payer?.email
-        || (await general.user.findUnique({
-            where: { userId: paymentRecord.createdByUserId },
-            select: { userEmail: true },
-        }))?.userEmail;
-
-    if (!payerEmail) {
-        throw new Error("Se requiere un correo para activar la suscripción recurrente.");
-    }
-
-    const preapproval = await createMercadoPagoPreapproval({
-        reason: `AppsFly — ${planSelected?.planName ?? "Suscripción mensual"}`,
-        externalReference: paymentRecord.subscriptionPaymentId,
-        payerEmail,
-        cardTokenId: formData.token,
-        amount: paymentRecord.amount,
-        currency: paymentRecord.currency || "CLP",
-    });
-
-    const mappedPreapproval = mapMercadoPagoPreapprovalStatus(preapproval.status);
-
-    if (mappedPreapproval !== "AUTHORIZED") {
-        const updated = await general.subscriptionPayment.update({
-            where: { subscriptionPaymentId },
-            data: {
-                status: "PENDING",
-                metadata: {
-                    ...(paymentRecord.metadata ?? {}),
-                    mpPreapprovalId: preapproval.id,
-                    mpPreapprovalStatus: preapproval.status,
-                    selectedPaymentMethod,
-                    brickSubmittedAt: new Date().toISOString(),
-                },
-            },
-        });
-        return {
-            payment: updated,
-            subscription: null,
-            alreadyProcessed: false,
-            mpPreapproval: preapproval,
-        };
-    }
-
-    return finalizeMercadoPagoPreapproval({
-        subscriptionPaymentId,
-        mpPreapprovalId: String(preapproval.id),
-        mpPreapprovalData: preapproval,
-    });
+export async function processPaymentBrickSubmission() {
+    throw Object.assign(new Error("Continúa en el checkout seguro de Mercado Pago para autorizar la suscripción."), { code: "USE_HOSTED_CHECKOUT", statusCode: 409 });
 }
 
 /**
@@ -363,141 +308,9 @@ export async function finalizeMercadoPagoPreapproval({
     mpPreapprovalId,
     mpPreapprovalData = null,
 }) {
-    const paymentRecord = await general.subscriptionPayment.findUnique({
-        where: { subscriptionPaymentId },
-    });
-
-    if (!paymentRecord) {
-        throw new Error("Registro de pago no encontrado.");
-    }
-
-    if (paymentRecord.status === "APPROVED" && paymentRecord.subscriptionId) {
-        const subscription = await general.subscription.findUnique({
-            where: { subscriptionId: paymentRecord.subscriptionId },
-        });
-        return { payment: paymentRecord, subscription, alreadyProcessed: true };
-    }
-
     const preapproval = mpPreapprovalData || await getMercadoPagoPreapproval(mpPreapprovalId);
-    const mappedPreapproval = mapMercadoPagoPreapprovalStatus(preapproval.status);
-
-    if (mappedPreapproval !== "AUTHORIZED") {
-        const pending = await general.subscriptionPayment.update({
-            where: { subscriptionPaymentId },
-            data: {
-                status: "PENDING",
-                metadata: {
-                    ...(paymentRecord.metadata ?? {}),
-                    mpPreapprovalId: String(mpPreapprovalId),
-                    mpPreapprovalStatus: preapproval.status,
-                },
-            },
-        });
-        return { payment: pending, subscription: null, alreadyProcessed: false, mpPreapproval: preapproval };
-    }
-
-    const expectedReference = paymentRecord.externalReference || paymentRecord.subscriptionPaymentId;
-    if (
-        preapproval.external_reference
-        && String(preapproval.external_reference) !== String(expectedReference)
-    ) {
-        throw new Error("La referencia externa de la suscripción no coincide.");
-    }
-
-    const recurringAmount = Number(preapproval.auto_recurring?.transaction_amount ?? paymentRecord.amount);
-    if (Math.abs(recurringAmount - paymentRecord.amount) > 0.01) {
-        throw new Error("El monto de la suscripción recurrente no coincide con el plan.");
-    }
-
-    const planSelected = await getPlanById(paymentRecord.subscriptionPlanId);
-    if (!planSelected) {
-        throw new Error("Plan asociado al pago no encontrado.");
-    }
-
-    const pendingSubscriptionId =
-        paymentRecord.subscriptionId
-        || paymentRecord.metadata?.pendingSubscriptionId;
-
-    if (!pendingSubscriptionId) {
-        throw new Error("No hay suscripción pendiente asociada al pago.");
-    }
-
-    let subscription = await general.subscription.findUnique({
-        where: { subscriptionId: pendingSubscriptionId },
-    });
-
-    if (!subscription) {
-        subscription = await createSubscriptionRecord({
-            subscriptionId: pendingSubscriptionId,
-            subscriptionBusinessId: paymentRecord.subscriptionBusinessId,
-            subscriptionPlanId: paymentRecord.subscriptionPlanId,
-            planSelected,
-            subscriptionAmount: paymentRecord.amount,
-            subscriptionPaymentMethod: "MercadoPago",
-            createdByUserId: paymentRecord.createdByUserId,
-            mpPreapprovalId: String(mpPreapprovalId),
-            mpPreapprovalStatus: preapproval.status,
-            autoRenewEnabled: true,
-        });
-    } else {
-        subscription = await general.subscription.update({
-            where: { subscriptionId: pendingSubscriptionId },
-            data: {
-                mpPreapprovalId: String(mpPreapprovalId),
-                mpPreapprovalStatus: preapproval.status,
-                autoRenewEnabled: true,
-                subscriptionStatus: "ACTIVE",
-            },
-        });
-    }
-
-    const approvedPayment = await general.subscriptionPayment.update({
-        where: { subscriptionPaymentId },
-        data: {
-            status: "APPROVED",
-            subscriptionId: subscription.subscriptionId,
-            metadata: {
-                ...(paymentRecord.metadata ?? {}),
-                mpPreapprovalId: String(mpPreapprovalId),
-                mpPreapprovalStatus: preapproval.status,
-                billingType: "MONTHLY_RECURRING",
-                approvedAt: new Date().toISOString(),
-            },
-        },
-    });
-
-    setImmediate(async () => {
-        try {
-            const [business, plan, user] = await Promise.all([
-                general.business.findUnique({ where: { businessId: paymentRecord.subscriptionBusinessId } }),
-                general.plan.findUnique({ where: { planId: paymentRecord.subscriptionPlanId } }),
-                general.user.findUnique({
-                    where: { userId: paymentRecord.createdByUserId },
-                    select: { userFirstName: true, userLastName: true, userEmail: true },
-                }),
-            ]);
-            await sendDualSubscriptionPaymentEmails({
-                user,
-                business,
-                plan,
-                amount: paymentRecord.amount,
-                currency: paymentRecord.currency,
-                paymentMethod: "MERCADO_PAGO",
-                transactionId: String(mpPreapprovalId),
-                subscriptionEndDate: subscription.subscriptionEndDate,
-                eventType: "subscription.preapproval.authorized",
-            });
-        } catch (err) {
-            console.error("[subscriptionPayment] Error enviando correos preapproval:", err.message);
-        }
-    });
-
-    return {
-        payment: approvedPayment,
-        subscription,
-        alreadyProcessed: false,
-        mpPreapproval: preapproval,
-    };
+    if (String(preapproval.id) !== String(mpPreapprovalId)) throw new Error("PREAPPROVAL_ID_MISMATCH");
+    return registerRecurringAuthorization(subscriptionPaymentId, preapproval);
 }
 
 /**
@@ -519,6 +332,9 @@ export async function finalizeMercadoPagoPayment({ subscriptionPaymentId, mpPaym
         return { payment: paymentRecord, subscription, alreadyProcessed: true };
     }
 
+    if (paymentRecord.metadata?.mpPreapprovalId) {
+        return syncMercadoPagoPreapprovalPayment({ subscriptionPaymentId, userId: paymentRecord.createdByUserId });
+    }
     const mpPayment = await getMercadoPagoPayment(mpPaymentId);
     const mappedStatus = mapMercadoPagoStatus(mpPayment.status);
 
@@ -556,14 +372,13 @@ export async function finalizeMercadoPagoPayment({ subscriptionPaymentId, mpPaym
 
     const expectedReference = paymentRecord.externalReference || paymentRecord.subscriptionPaymentId;
     if (
-        mpPayment.external_reference
-        && String(mpPayment.external_reference) !== String(expectedReference)
+        String(mpPayment.external_reference || "") !== String(expectedReference)
     ) {
         throw new Error("La referencia externa del pago no coincide.");
     }
 
     const paidAmount = Number(mpPayment.transaction_amount ?? 0);
-    if (Math.abs(paidAmount - paymentRecord.amount) > 0.01) {
+    if (!Number.isFinite(paidAmount) || paidAmount <= 0 || mpPayment.currency_id !== paymentRecord.currency || Math.abs(paidAmount - paymentRecord.amount) > 0.01) {
         throw new Error("El monto pagado no coincide con el monto esperado.");
     }
 

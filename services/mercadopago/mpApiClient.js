@@ -236,6 +236,7 @@ export async function createMercadoPagoPreapproval({
     cardTokenId,
     amount,
     currency = "CLP",
+    firstChargeAt = null,
 }) {
     const token = getMercadoPagoAccessToken();
     if (!token) {
@@ -250,6 +251,7 @@ export async function createMercadoPagoPreapproval({
         payer_email: payerEmail,
         card_token_id: cardTokenId,
         auto_recurring: {
+            ...(firstChargeAt ? { start_date: firstChargeAt } : {}),
             frequency: 1,
             frequency_type: "months",
             transaction_amount: Number(amount),
@@ -292,6 +294,7 @@ export async function createMercadoPagoPendingPreapproval({
     payerEmail,
     amount,
     currency = "CLP",
+    firstChargeAt = null,
 }) {
     const token = getMercadoPagoAccessToken();
     if (!token) {
@@ -304,6 +307,7 @@ export async function createMercadoPagoPendingPreapproval({
         payerEmail,
         amount: Number(amount),
         currency,
+        firstChargeAt,
         backUrl: buildSubscriptionBackUrl(externalReference),
         notificationUrl: buildWebhookUrl(),
     });
@@ -411,7 +415,10 @@ export async function searchMercadoPagoAuthorizedPaymentsByPreapproval(preapprov
         throw new Error("Mercado Pago no está configurado.");
     }
 
+    const all = [];
+    for (let offset = 0; offset < 10000; offset += limit) {
     const params = new URLSearchParams({
+        offset: String(offset),
         preapproval_id: String(preapprovalId),
         limit: String(limit),
     });
@@ -426,7 +433,11 @@ export async function searchMercadoPagoAuthorizedPaymentsByPreapproval(preapprov
         throw new Error(data?.message || "No se pudieron listar cobros recurrentes en Mercado Pago.");
     }
 
-    return Array.isArray(data.results) ? data.results : [];
+    const results = Array.isArray(data.results) ? data.results : [];
+    all.push(...results);
+    if (results.length < limit || offset + results.length >= Number(data.paging?.total ?? Infinity)) return all;
+    }
+    throw new Error("AUTHORIZED_PAYMENT_PAGINATION_LIMIT");
 }
 
 export { getFrontendBaseUrl, getBackendBaseUrl, buildWebhookUrl };

@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  buildPendingPreapprovalBody,
-  isRecurringChargeSource,
-  shouldExtendPaidPeriod,
-} from "../services/billing/subscriptionCheckout.js";
+import { buildPendingPreapprovalBody } from "../services/billing/subscriptionCheckout.js";
 
 describe("pending Mercado Pago subscription", () => {
   it("builds a pending preapproval tied to the local payment", () => {
@@ -31,29 +27,5 @@ describe("pending Mercado Pago subscription", () => {
       notification_url: "https://api.appsfly.cl/api/webhooks/mercadopago",
       status: "pending",
     });
-  });
-
-  it("keeps the first charge inside the month already granted", () => {
-    expect(shouldExtendPaidPeriod({ justActivated: true, hasPriorRecurringCharge: false })).toBe(
-      false,
-    );
-    expect(shouldExtendPaidPeriod({ justActivated: false, hasPriorRecurringCharge: false })).toBe(
-      false,
-    );
-  });
-
-  it("extends the period only after a previous recurring charge", () => {
-    expect(shouldExtendPaidPeriod({ justActivated: false, hasPriorRecurringCharge: true })).toBe(
-      true,
-    );
-    expect(shouldExtendPaidPeriod({ justActivated: true, hasPriorRecurringCharge: true })).toBe(
-      false,
-    );
-  });
-
-  it("recognizes the charges that already granted a period", () => {
-    expect(isRecurringChargeSource("webhook_activation")).toBe(true);
-    expect(isRecurringChargeSource("webhook_renewal")).toBe(true);
-    expect(isRecurringChargeSource("checkout")).toBe(false);
   });
 });

@@ -1,40 +1,35 @@
+import { processRecurringAuthorization } from "../billing/recurringWebhook.js";
+import { deliverBillingNotice } from "../billing/billingNotifications.js";
 import { generalPrisma as general } from "../../dbGeneral.js";
 import { searchMercadoPagoAuthorizedPaymentsByPreapproval } from "./mpApiClient.js";
 import { processMercadoPagoWebhookNotification } from "./mpWebhookProcessor.js";
 
 
 
-const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
-
-function authorizedPaymentDate(item) {
-    const raw = item?.debit_date || item?.date_created || item?.last_modified;
-    const date = raw ? new Date(raw) : null;
-    return date && !Number.isNaN(date.getTime()) ? date : null;
-}
-
-function isLikelyInitialCharge(subscription, item) {
-    const authDate = authorizedPaymentDate(item);
-    if (!authDate) return false;
-    const start = new Date(subscription.subscriptionStartDate);
-    if (Number.isNaN(start.getTime())) return false;
-    return Math.abs(authDate.getTime() - start.getTime()) <= FORTY_EIGHT_HOURS_MS;
-}
-
-/**
- * Reconciliación de cobros recurrentes MP → AppsFly.
- * Cubre webhooks perdidos. No re-aplica el cobro inicial del alta (ya facturado al crear la suscripción).
- */
 export async function reconcileMercadoPagoSubscriptionRenewals({
-    limitSubscriptions = 100,
+
 } = {}) {
+    const pending = await general.subscriptionPayment.findMany({where:{status:"PENDING",paymentMethod:"MERCADO_PAGO"}});
+    let authorizationFailures = 0;
+    for(const payment of pending) {
+        if (!payment.metadata?.mpPreapprovalId) continue;
+        try { await processRecurringAuthorization(String(payment.metadata.mpPreapprovalId)); }
+        catch { authorizationFailures++; }
+    }
+    const trials = await general.subscriptionPayment.findMany({where:{paymentMethod:"PROMO_FREE_TRIAL",metadata:{path:["trialWelcomePending"],equals:true}},include:{subscription:true}});
+    for(const payment of trials) {
+        if(!payment.subscription) continue;
+        try { await deliverBillingNotice(payment.subscriptionPaymentId,"trial_started",payment.subscription.subscriptionEndDate); }
+        catch { authorizationFailures++; }
+    }
     const subscriptions = await general.subscription.findMany({
         where: {
             mpPreapprovalId: { not: null },
-            autoRenewEnabled: true,
-            subscriptionStatus: { in: ["ACTIVE", "CANCELLED", "EXPIRED"] },
+
+            subscriptionStatus: { in: ["ACTIVE", "CANCELLED", "EXPIRED", "PENDIENT"] },
         },
         orderBy: { subscriptionEndDate: "asc" },
-        take: limitSubscriptions,
+
         select: {
             subscriptionId: true,
             subscriptionBusinessId: true,
@@ -53,7 +48,7 @@ export async function reconcileMercadoPagoSubscriptionRenewals({
         alreadyRecorded: 0,
         skippedInitial: 0,
         pending: 0,
-        failed: 0,
+        failed: authorizationFailures,
         errors: [],
         details: [],
     };
@@ -87,49 +82,7 @@ export async function reconcileMercadoPagoSubscriptionRenewals({
                     },
                 });
 
-                if (already) {
-                    summary.alreadyRecorded += 1;
-                    continue;
-                }
-
-                // Cobro del alta: ya existe el SubscriptionPayment del checkout sin mpPaymentId.
-                if (isLikelyInitialCharge(sub, item)) {
-                    const initialPayment = await general.subscriptionPayment.findFirst({
-                        where: {
-                            subscriptionId: sub.subscriptionId,
-                            status: "APPROVED",
-                            paymentMethod: "MERCADO_PAGO",
-                        },
-                        orderBy: { createdAt: "asc" },
-                    });
-
-                    if (initialPayment) {
-                        if (!initialPayment.mpPaymentId && paymentId) {
-                            await general.subscriptionPayment.update({
-                                where: { subscriptionPaymentId: initialPayment.subscriptionPaymentId },
-                                data: {
-                                    mpPaymentId: paymentId,
-                                    metadata: {
-                                        ...(initialPayment.metadata && typeof initialPayment.metadata === "object"
-                                            ? initialPayment.metadata
-                                            : {}),
-                                        authorizedPaymentId,
-                                        backfilledFromReconcile: true,
-                                    },
-                                },
-                            });
-                        }
-                        summary.skippedInitial += 1;
-                        summary.details.push({
-                            businessId: sub.subscriptionBusinessId,
-                            subscriptionId: sub.subscriptionId,
-                            authorizedPaymentId,
-                            reason: "SKIPPED_INITIAL_CHARGE",
-                        });
-                        continue;
-                    }
-                }
-
+                if (already) summary.alreadyRecorded += 1;
                 const result = await processMercadoPagoWebhookNotification({
                     topic: "subscription_authorized_payment",
                     action: "subscription_authorized_payment.reconcile",

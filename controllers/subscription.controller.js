@@ -1,10 +1,11 @@
+import { deliverBillingNotice } from "../services/billing/billingNotifications.js";
+import { addCalendarMonths } from "../services/billing/subscriptionLifecycle.js";
 import crypto from "crypto";
 import { getSubscriptionsByBusinessIdService } from "../services/subscriptionService.js";
 import { getPlanById } from "../services/planService.js";
 import {
     createMercadoPagoCheckout,
     finalizeMercadoPagoPayment,
-    recordPromoFreeTrialPayment,
     processPaymentBrickSubmission,
     syncMercadoPagoPreapprovalPayment,
     FREE_TRIAL_PLAN_ID,
@@ -13,8 +14,6 @@ import {
     getBusinessBillingStatus,
     cancelBusinessSubscriptionRenewal,
 } from "../services/mercadopago/mpSubscriptionBillingService.js";
-import { createSubscriptionService } from "../services/subscriptionService.js";
-import { sendDualSubscriptionPaymentEmails } from "../emails/dispatchers/subscriptionPayment.dispatcher.js";
 import { generalPrisma as general } from "../dbGeneral.js";
 import { canClaimOpticsTrial } from "../services/billing/opticsPlanCatalog.js";
 
@@ -44,8 +43,7 @@ function buildSubscriptionPayload({
     userId,
 }) {
     const subscriptionStartDate = new Date();
-    const subscriptionEndDate = new Date(subscriptionStartDate);
-    subscriptionEndDate.setMonth(subscriptionEndDate.getMonth() + planSelected.planDuration);
+    const subscriptionEndDate = addCalendarMonths(subscriptionStartDate, planSelected.planDuration);
 
     return {
         subscriptionId,
@@ -58,6 +56,7 @@ function buildSubscriptionPayload({
         subscriptionAmount,
         subscriptionPlanFeatures: planSelected.planFeatures,
         subscriptionPaymentMethod,
+        autoRenewEnabled: false,
         createdByUserId: userId,
     };
 }
@@ -134,38 +133,20 @@ export const createSubscriptionController = async (req, res) => {
             userId,
         });
 
-        const subscription = await createSubscriptionService(data);
-
-        await recordPromoFreeTrialPayment({
-            subscriptionPaymentId,
-            subscriptionId: subscription.subscriptionId,
-            subscriptionBusinessId,
-            subscriptionPlanId,
-            createdByUserId: userId,
+        const subscription = await general.$transaction(async tx => {
+            await tx.$queryRaw`SELECT "businessId" FROM "Business" WHERE "businessId" = ${subscriptionBusinessId} FOR UPDATE`;
+            if (await tx.subscription.count({where:{subscriptionBusinessId}}) || await tx.subscriptionPayment.count({where:{subscriptionBusinessId}})) {
+                throw Object.assign(new Error("Este negocio ya utilizó o contrató una suscripción."), {statusCode:403,code:"TRIAL_ALREADY_USED"});
+            }
+            const sub = await tx.subscription.create({data});
+            await tx.subscriptionPayment.create({data:{subscriptionPaymentId,subscriptionId:sub.subscriptionId,
+                subscriptionBusinessId,subscriptionPlanId,amount:0,currency:"CLP",paymentMethod:"PROMO_FREE_TRIAL",
+                status:"APPROVED",externalReference:subscriptionPaymentId,createdByUserId:userId,
+                metadata:{source:"P001_FREE_TRIAL",billingVersion:2,trialWelcomePending:true}}});
+            return sub;
         });
-
-        const [business, plan, user] = await Promise.all([
-            general.business.findUnique({ where: { businessId: subscriptionBusinessId } }),
-            general.plan.findUnique({ where: { planId: subscriptionPlanId } }),
-            general.user.findUnique({
-                where: { userId },
-                select: { userFirstName: true, userLastName: true, userEmail: true },
-            }),
-        ]);
-
-        setImmediate(() => {
-            sendDualSubscriptionPaymentEmails({
-                user,
-                business,
-                plan,
-                amount: 0,
-                currency: plan?.planCurrency || "CLP",
-                paymentMethod: "PROMO_FREE_TRIAL",
-                transactionId: subscriptionPaymentId,
-                subscriptionEndDate: subscription.subscriptionEndDate,
-                eventType: "promo_free_trial.created",
-            }).catch((err) => console.error("[subscription] Error enviando correos promo:", err.message));
-        });
+        await deliverBillingNotice(subscriptionPaymentId,"trial_started",subscription.subscriptionEndDate)
+            .catch(() => console.error("[billing] Trial welcome pending retry", subscriptionPaymentId));
 
         return res.status(201).json({
             subscription,
@@ -178,7 +159,7 @@ export const createSubscriptionController = async (req, res) => {
         });
     } catch (error) {
         console.error("Error creating subscription:", error);
-        return res.status(500).json({ message: error.message || "Server error creating subscription" });
+        return res.status(error.statusCode || 500).json({ message: error.message || "Server error creating subscription", code: error.code || "SUBSCRIPTION_CREATE_FAILED" });
     }
 };
 
@@ -244,7 +225,7 @@ export const processSubscriptionPaymentBrickController = async (req, res) => {
         return res.status(200).json(result);
     } catch (error) {
         console.error("Error processing Payment Brick:", error);
-        return res.status(500).json({ message: error.message || "Error al procesar el pago." });
+        return res.status(error.statusCode || 500).json({ message: error.message || "Error al procesar el pago.", code: error.code || "PAYMENT_PROCESSING_FAILED" });
     }
 };
 

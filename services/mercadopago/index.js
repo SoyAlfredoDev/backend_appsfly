@@ -24,9 +24,6 @@ export {
 
 export {
     processMercadoPagoWebhookNotification,
-    extendSubscriptionRenewal,
-    expireBusinessSubscription,
-    SUBSCRIPTION_RENEWAL_EXTENSION_DAYS,
 } from "./mpWebhookProcessor.js";
 
 export { sendDualSubscriptionPaymentEmails } from "../../emails/dispatchers/subscriptionPayment.dispatcher.js";
