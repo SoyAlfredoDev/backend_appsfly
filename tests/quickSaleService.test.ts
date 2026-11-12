@@ -66,6 +66,7 @@ function createPrisma() {
     sale: { create: vi.fn(async ({ data }: { data: Record<string, unknown> }) => data) },
     saleDetail: { create: vi.fn(async ({ data }: { data: Record<string, unknown> }) => data) },
     payment: { create: vi.fn(async ({ data }: { data: Record<string, unknown> }) => data) },
+    transactions: { findFirst: vi.fn(), create: vi.fn() },
   };
   return {
     tx,
@@ -167,6 +168,25 @@ describe("createQuickSale", () => {
 
     expect(prisma.tx.payment.create.mock.calls[0]?.[0].data.paymentAmount).toBe(7980);
     expect(result.changeDue).toBe(2020);
+  });
+
+  it("records a general business cash sale in the cash ledger without a receivable", async () => {
+    getBusinessByIdService.mockResolvedValue({ businessType: "general" });
+    await createQuickSale({
+      prisma,
+      userId: "user-1",
+      businessId: "biz-1",
+      body: { ...body, paymentMethod: "2", cashTendered: 10000 },
+    });
+    expect(prisma.tx.sale.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({ salePendingAmount: 0 }),
+    });
+    expect(prisma.$transaction).toHaveBeenCalledWith(expect.any(Function), {
+      isolationLevel: "Serializable",
+    });
+    expect(prisma.tx.transactions.create).toHaveBeenCalledExactlyOnceWith({
+      data: expect.objectContaining({ transactionType: "PAYMENT", transactionMethod: "2" }),
+    });
   });
 
   it("creates the walk-in customer when the business does not have one yet", async () => {

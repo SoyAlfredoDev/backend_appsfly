@@ -34,6 +34,7 @@ export async function dbSelectorMiddleware(req, res, next) {
     const membership = resolved.membership;
     req.tenantBusinessId = membership.userBusinessBusinessId;
     req.tenantRole = membership.userBusinessRole;
+    req.tenantBusinessType = membership.Business?.businessType;
 
     if (membership.Business?.businessStatus !== "ACTIVE") {
       return res.status(503).json({

@@ -1,3 +1,4 @@
+import { GENERAL_BUSINESS_TYPE } from "../services/database/generalBusinessType.js";
 import { businessRegistrationInput } from "../services/database/businessRegistrationInput.js";
 import {
   createBusinessService,
@@ -154,6 +155,11 @@ export const createBusinessController = async (req, res) => {
 
         if (!userBusinessDB) throw new Error("Could not create user inside business DB.");
 
+        if (businessData.businessType === GENERAL_BUSINESS_TYPE) {
+          await tenantPrisma.category.create({
+            data: { categoryName: "General", allowedFor: "BOTH", createdByUserId: userId },
+          });
+        }
         status.createdUserBusinessDB = true;
 
         // 4.3 Seed catálogo óptica (categorías sistema + atributos)

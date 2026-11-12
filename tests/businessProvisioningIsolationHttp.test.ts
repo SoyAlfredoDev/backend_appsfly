@@ -7,6 +7,7 @@ const m = vi.hoisted(() => ({
   membership: vi.fn(),
   tenant: vi.fn(),
   seed: vi.fn(),
+  createCategory: vi.fn(),
 }));
 vi.mock("../services/businessService.js", () => ({
   createBusinessService: m.create,
@@ -51,7 +52,7 @@ describe("business provisioning isolation", () => {
     m.create.mockImplementation(async (data) => ({ ...data }));
     m.update.mockImplementation(async (businessId, data) => ({ businessId, ...data }));
     m.membership.mockResolvedValue({});
-    m.tenant.mockResolvedValue({});
+    m.tenant.mockResolvedValue({ category: { create: m.createCategory } });
     m.seed.mockResolvedValue({});
   });
   afterEach(() => vi.unstubAllEnvs());
@@ -84,6 +85,18 @@ describe("business provisioning isolation", () => {
       expect(payload.UserBusiness).toBeUndefined();
       expect(payload.businessDatabaseMode).toBe("SHARED");
     }
+  });
+  it("starts a general business with a category for both products and services", async () => {
+    const result = await request(app)
+      .post("/business")
+      .set("X-QA-User", "a")
+      .send({ businessName: "QA", businessType: "general" });
+    expect(result.status).toBe(201);
+    expect(m.create).toHaveBeenCalledWith(expect.objectContaining({ businessType: "general" }));
+    expect(m.createCategory).toHaveBeenCalledWith({
+      data: { categoryName: "General", allowedFor: "BOTH", createdByUserId: "a" },
+    });
+    expect(m.seed).not.toHaveBeenCalled();
   });
   it("never activates a tenant whose catalog provisioning failed", async () => {
     m.seed.mockRejectedValue(new Error("QA seed failure"));

@@ -10,6 +10,7 @@ export class InsufficientStockError extends Error {
 /**
  * Aplica un movimiento de inventario dentro de una transacción Prisma (TenantDB).
  * @param {import('@prisma/client').Prisma.TransactionClient} tx
+ * @param {{ productId: string, movementType: string, quantityDelta: number, referenceType?: string, referenceId?: string | null, referenceLabel?: string | null, reason?: string | null, notes?: string | null, createdByUserId: string, allowNegativeOverride?: boolean, unitCost?: number | null }} movement
  */
 export async function applyInventoryMovement(tx, {
     productId,
@@ -86,8 +87,9 @@ export async function applyInventoryMovement(tx, {
                 : Math.round((stockBefore * oldAvg + delta * parsedUnitCost) / stockAfter);
     }
 
+    // A simultaneous sale or adjustment must not overwrite a newer stock balance.
     await tx.productStock.update({
-        where: { productId },
+        where: { productId, version: stock.version },
         data: stockUpdate,
     });
 

@@ -37,6 +37,13 @@ import {
     getQuotationDetailsByQuotationIdController,
 } from "../controllers/quotationDetail.controller.js";
 
+import {
+    createGeneralSaleController,
+    excludeGeneralBusiness,
+    generalReceivablesController,
+    requireGeneralBusiness,
+} from "../services/sales/generalSalesHttp.js";
+
 const router = Router();
 
 /* ----------------------------
@@ -69,6 +76,15 @@ router.post(
     createQuickSaleController,
 );
 
+router.get(
+    "/sales/receivables", authRequired, dbSelectorMiddleware, requireGeneralBusiness,
+    generalReceivablesController,
+);
+router.post(
+    "/sales/general", authRequired, dbSelectorMiddleware, requireGeneralBusiness,
+    pendingDailyClosureMiddleware, createGeneralSaleController,
+);
+
 // 5. Main list of sales
 router.get("/sales", authRequired, dbSelectorMiddleware, getSalesController);
 
@@ -87,7 +103,7 @@ router.post("/sales/:id/send-email", authRequired, dbSelectorMiddleware, sendSal
 router.get("/sales/:id/share-link", authRequired, dbSelectorMiddleware, getSaleShareLinkController);
 
 // 7. Create sale
-router.post("/sales", authRequired, dbSelectorMiddleware, pendingDailyClosureMiddleware, createSaleController);
+router.post("/sales", authRequired, dbSelectorMiddleware, excludeGeneralBusiness, pendingDailyClosureMiddleware, createSaleController);
 
 /* ----------------------------
    QUOTATIONS (co-located for deploy reliability)

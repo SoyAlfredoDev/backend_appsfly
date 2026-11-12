@@ -6,6 +6,7 @@ declare global {
       prisma?: BusinessPrismaClient;
       tenantBusinessId?: string;
       tenantRole?: string;
+      tenantBusinessType?: string;
       businessTimezone?: string;
       user?: { payload?: { id?: string } };
     }

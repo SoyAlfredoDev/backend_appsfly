@@ -7,31 +7,32 @@ import {
 } from "./financial/financialLedgerService.js";
 import { businessDateRangeBoundsUtc, DEFAULT_BUSINESS_TIMEZONE } from "../libs/businessTimezone.js";
 
+export async function recordSalePayment(tx, data, saleNumber) {
+    const payment = await tx.payment.create({ data });
+    await recordFinancialTransaction(tx, {
+        transactionType: TRANSACTION_TYPES.PAYMENT,
+        transactionMethod: payment.paymentMethod,
+        transactionTable: "Payment",
+        transactionRecordId: payment.paymentId,
+        amount: payment.paymentAmount,
+        direction: TRANSACTION_DIRECTIONS.IN,
+        description: saleNumber
+            ? `Pago recibido — Venta #${saleNumber}`
+            : "Pago recibido — Venta",
+        createdByUserId: data.createdByUserId,
+        meta: { saleId: payment.saleId },
+    });
+    return payment;
+}
+
 export const createPaymentService = async (data, prisma) => {
     try {
-        return prisma.$transaction(async (tx) => {
-            const res = await tx.payment.create({ data });
-
+        return await prisma.$transaction(async (tx) => {
             const sale = await tx.sale.findUnique({
-                where: { saleId: res.saleId },
+                where: { saleId: data.saleId },
                 select: { saleNumber: true },
             });
-
-            await recordFinancialTransaction(tx, {
-                transactionType: TRANSACTION_TYPES.PAYMENT,
-                transactionMethod: res.paymentMethod,
-                transactionTable: "Payment",
-                transactionRecordId: res.paymentId,
-                amount: res.paymentAmount,
-                direction: TRANSACTION_DIRECTIONS.IN,
-                description: sale?.saleNumber
-                    ? `Pago recibido — Venta #${sale.saleNumber}`
-                    : "Pago recibido — Venta",
-                createdByUserId: data.createdByUserId,
-                meta: { saleId: res.saleId },
-            });
-
-            return res;
+            return recordSalePayment(tx, data, sale?.saleNumber);
         });
     } catch (error) {
         console.error("(paymentsService.js): Error creating payment:", error);

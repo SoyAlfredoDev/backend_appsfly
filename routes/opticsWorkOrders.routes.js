@@ -25,8 +25,10 @@ import {
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
 
+import { excludeGeneralBusiness } from "../services/sales/generalSalesHttp.js";
+
 const router = Router();
-const auth = [authRequired, dbSelectorMiddleware];
+const auth = [authRequired, dbSelectorMiddleware, excludeGeneralBusiness];
 
 /** Laboratorios */
 router.get("/laboratories", ...auth, getLaboratoriesController);

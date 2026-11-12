@@ -15,6 +15,7 @@ export async function pendingDailyClosureMiddleware(req, res, next) {
     } catch (error) {
         res.status(error.statusCode || 403).json({
             error: error.code || 'BLOQUEO_CIERRE_PENDIENTE',
+            code: error.code || 'BLOQUEO_CIERRE_PENDIENTE',
             message: error.message,
             fechaPendiente: error.fechaPendiente ?? null,
         });

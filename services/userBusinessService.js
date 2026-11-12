@@ -24,6 +24,7 @@ export const getUserBusinessById = async (userId) => {
         Business: {
           select: {
             businessStatus: true,
+            businessType: true,
             businessProcess: true,
           },
         },

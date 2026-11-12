@@ -10,12 +10,14 @@ import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
 import { pendingDailyClosureMiddleware } from "../middlewares/pendingDailyClosureMiddleware.js";
 
+import { generalPaymentController } from "../services/sales/generalSalesHttp.js";
+
 const router = Router();
 
 router.get('/payments/sum/:paymentMethod', authRequired, dbSelectorMiddleware, getSumPaymentsByPaymentMethodsController);
 router.get('/payments/customer/:customerId', authRequired, dbSelectorMiddleware, getPaymentByCustomerIdController);
 router.get('/payments', authRequired, dbSelectorMiddleware, getPaymentsController);
 router.get('/payments/:id', authRequired, dbSelectorMiddleware, getPaymentBySaleIdController);
-router.post('/payments', authRequired, dbSelectorMiddleware, pendingDailyClosureMiddleware, createPaymentController);
+router.post('/payments', authRequired, dbSelectorMiddleware, pendingDailyClosureMiddleware, generalPaymentController, createPaymentController);
 
 export default router;
