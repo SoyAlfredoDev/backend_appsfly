@@ -2,6 +2,8 @@ import crypto from "node:crypto";
 import { afterAll, describe, expect, it } from "vitest";
 import { PrismaClient as SharedPrismaClient } from "../src/generated/shared/index.js";
 import { createSharedTenantClient } from "../services/database/sharedTenantClient.js";
+import { createProduct } from "../services/productsService.js";
+import { resolveCode } from "../services/scanCodesService.js";
 
 const databaseUrl =
   process.env.TEST_ISOLATED_DATABASE === "true" ? process.env.TEST_SHARED_DATABASE_URL : undefined;
@@ -20,6 +22,9 @@ run("shared database tenant isolation", () => {
     if (!base) return;
     for (const businessId of [businessA, businessB]) {
       const tenant = createSharedTenantClient(base, businessId);
+      await tenant.scanCode.deleteMany({ where: { businessId } });
+      await tenant.product.deleteMany({ where: { businessId } });
+      await tenant.category.deleteMany({ where: { businessId } });
       await tenant.customer.deleteMany({ where: { businessId } });
       await tenant.user.deleteMany({ where: { businessId } });
     }
@@ -65,5 +70,36 @@ run("shared database tenant isolation", () => {
     expect(rowsA.map((row) => row.customerFirstName)).toEqual(["Tenant A"]);
     expect(rowsB.map((row) => row.customerFirstName)).toEqual(["Tenant B"]);
     expect(rowsWithoutContext).toEqual([]);
+
+    const sku = `qa-sku-${suffix}`;
+    const barcode = `qa-barcode-${suffix}`;
+    const products = await Promise.all(
+      [tenantA, tenantB].map(async (tenant, index) => {
+        const category = await tenant.category.create({
+          data: { categoryName: "General", allowedFor: "BOTH", createdByUserId: sharedUserId },
+        });
+        return createProduct(
+          {
+            productName: `Product ${index + 1}`,
+            productSKU: sku,
+            productPrice: 100,
+            productStatus: "ACTIVE",
+            productUnit: "UNIT",
+            categoryId: category.categoryId,
+            createdByUserId: sharedUserId,
+            initialStock: 4,
+            codes: [{ codeType: "BARCODE", codeValue: barcode }],
+          },
+          tenant,
+        );
+      }),
+    );
+    expect(products.map((product) => product.productStock.quantityOnHand)).toEqual([4, 4]);
+    for (const [index, tenant] of [tenantA, tenantB].entries()) {
+      expect((await resolveCode(sku, tenant))?.product.productId).toBe(products[index].productId);
+      expect((await resolveCode(barcode, tenant))?.product.productId).toBe(
+        products[index].productId,
+      );
+    }
   }, 30_000);
 });

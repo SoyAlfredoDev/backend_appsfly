@@ -37,7 +37,8 @@ export async function resolveCode(codeValue, prisma) {
     const value = normalizeCodeValue(codeValue);
     if (!value) throw makeError("Código vacío.", 400, "EMPTY_CODE");
 
-    const scan = await prisma.scanCode.findUnique({
+    // La consulta usa la base dedicada o el cliente compartido con RLS del negocio.
+    const scan = await prisma.scanCode.findFirst({
         where: { codeValue: value },
     });
 
@@ -118,7 +119,7 @@ export async function syncSkuAlias(tx, productId, productSKU, createdByUserId = 
         },
     });
 
-    const conflict = await tx.scanCode.findUnique({ where: { codeValue: value } });
+    const conflict = await tx.scanCode.findFirst({ where: { codeValue: value } });
     if (conflict && !(conflict.entityType === SCAN_ENTITY.PRODUCT && conflict.entityId === productId)) {
         throw makeError(
             `El código "${value}" ya está asignado a otra entidad.`,
@@ -190,7 +191,7 @@ export async function upsertCodesForProduct(tx, productId, codes, createdByUserI
     }
 
     for (const item of normalized) {
-        const conflict = await tx.scanCode.findUnique({
+        const conflict = await tx.scanCode.findFirst({
             where: { codeValue: item.codeValue },
         });
         if (
