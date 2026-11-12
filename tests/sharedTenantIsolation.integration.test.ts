@@ -7,6 +7,10 @@ import { PrismaClient as SharedPrismaClient } from "../src/generated/shared/inde
 import { createSharedTenantClient } from "../services/database/sharedTenantClient.js";
 import { createProduct } from "../services/productsService.js";
 import { resolveCode } from "../services/scanCodesService.js";
+import {
+  createManualAdjustment,
+  getInventoryMovements,
+} from "../services/inventory/inventoryMovementQueryService.js";
 
 const databaseUrl =
   process.env.TEST_ISOLATED_DATABASE === "true" ? process.env.TEST_SHARED_DATABASE_URL : undefined;
@@ -26,6 +30,7 @@ run("shared database tenant isolation", () => {
     for (const businessId of [businessA, businessB]) {
       const tenant = createSharedTenantClient(base, businessId);
       await tenant.scanCode.deleteMany({ where: { businessId } });
+      await tenant.inventoryMovement.deleteMany({ where: { businessId } });
       await tenant.product.deleteMany({ where: { businessId } });
       await tenant.service.deleteMany({ where: { businessId } });
       await tenant.category.deleteMany({ where: { businessId } });
@@ -124,6 +129,16 @@ run("shared database tenant isolation", () => {
       expect((await resolveCode(barcode, tenant))?.product.productId).toBe(
         products[index].productId,
       );
+      await createManualAdjustment(tenant, sharedUserId, {
+        productId: products[index].productId,
+        movementType: "AJUSTE_MANUAL",
+        quantityDelta: 1,
+        reason: "Conteo QA",
+      });
+      const movement = await getInventoryMovements(tenant, { q: `Product ${index + 1}` });
+      expect(movement.rows).toMatchObject([
+        { productId: products[index].productId, productSKU: sku, stockBefore: 4, stockAfter: 5 },
+      ]);
     }
   }, 30_000);
 });

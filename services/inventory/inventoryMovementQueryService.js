@@ -64,13 +64,13 @@ export async function getInventoryMovements(prisma, filters = {}) {
             { referenceLabel: { contains: query, mode: "insensitive" } },
             { reason: { contains: query, mode: "insensitive" } },
             {
-                product: {
-                    productName: { contains: query, mode: "insensitive" },
-                },
-            },
-            {
-                product: {
-                    productSKU: { contains: query, mode: "insensitive" },
+                productStock: {
+                    product: {
+                        OR: [
+                            { productName: { contains: query, mode: "insensitive" } },
+                            { productSKU: { contains: query, mode: "insensitive" } },
+                        ],
+                    },
                 },
             },
             ...(codeProductIds.length
@@ -84,11 +84,14 @@ export async function getInventoryMovements(prisma, filters = {}) {
         prisma.inventoryMovement.findMany({
             where,
             include: {
-                product: {
+                productStock: {
                     select: {
-                        productId: true,
-                        productName: true,
-                        productSKU: true,
+                        product: {
+                            select: {
+                                productName: true,
+                                productSKU: true,
+                            },
+                        },
                     },
                 },
                 user: {
@@ -118,8 +121,8 @@ export async function getInventoryMovements(prisma, filters = {}) {
         notes: movement.notes,
         createdAt: movement.createdAt,
         productId: movement.productId,
-        productName: movement.product?.productName,
-        productSKU: movement.product?.productSKU,
+        productName: movement.productStock.product.productName,
+        productSKU: movement.productStock.product.productSKU,
         userName: movement.user
             ? `${movement.user.userFirstName} ${movement.user.userLastName}`
             : "—",
