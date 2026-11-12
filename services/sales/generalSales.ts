@@ -314,6 +314,7 @@ export async function addGeneralSalePayment(
   userId: string,
   saleId: string,
   input: ReturnType<typeof parseGeneralPayment>,
+  reconcileStoredBalance = false,
 ) {
   return serializable(prisma, async (tx) => {
     const existing = await tx.payment.findUnique({ where: { paymentId: input.paymentId } });
@@ -334,7 +335,10 @@ export async function addGeneralSalePayment(
     }
     const sale = await tx.sale.findUnique({ where: { saleId } });
     if (!sale) throw new GeneralSaleError(404, "SALE_NOT_FOUND", "Venta no encontrada.");
-    if (input.paymentAmount > sale.salePendingAmount) {
+    const amounts = reconcileStoredBalance
+      ? await readSaleAmounts(tx, saleId)
+      : { total: sale.saleTotal, paid: sale.saleTotalPayments, pending: sale.salePendingAmount };
+    if (input.paymentAmount > amounts.pending) {
       throw new GeneralSaleError(
         409,
         "PAYMENT_EXCEEDS_BALANCE",
@@ -348,13 +352,29 @@ export async function addGeneralSalePayment(
     );
     await tx.sale.update({
       where: { saleId },
-      data: {
-        saleTotalPayments: { increment: input.paymentAmount },
-        salePendingAmount: { decrement: input.paymentAmount },
-      },
+      data: reconcileStoredBalance
+        ? {
+            saleTotal: amounts.total,
+            saleTotalPayments: amounts.paid + input.paymentAmount,
+            salePendingAmount: amounts.pending - input.paymentAmount,
+          }
+        : {
+            saleTotalPayments: { increment: input.paymentAmount },
+            salePendingAmount: { decrement: input.paymentAmount },
+          },
     });
     return { payment, created: true };
   });
+}
+
+async function readSaleAmounts(tx: Prisma.TransactionClient, saleId: string) {
+  const [details, payments] = await Promise.all([
+    tx.saleDetail.aggregate({ where: { saleId }, _sum: { saleDetailTotal: true } }),
+    tx.payment.aggregate({ where: { saleId }, _sum: { paymentAmount: true } }),
+  ]);
+  const total = details._sum.saleDetailTotal ?? 0;
+  const paid = payments._sum.paymentAmount ?? 0;
+  return { total, paid, pending: total - paid };
 }
 
 export async function listGeneralReceivables(prisma: PrismaClient, page: number, query: string) {

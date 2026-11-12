@@ -41,7 +41,7 @@ export async function getInventorySummary(prisma) {
     };
 }
 
-export async function getInventoryStockList(prisma, { q, lowStockOnly } = {}) {
+export async function getInventoryStockList(prisma, { q, lowStockOnly, clothing = false } = {}) {
     const query = q?.trim();
     const codeProductIds = query ? await findProductIdsByExactCode(query, prisma) : [];
 
@@ -71,6 +71,10 @@ export async function getInventoryStockList(prisma, { q, lowStockOnly } = {}) {
                             categoryName: true,
                         },
                     },
+                    ...(clothing && {
+                        variantMetadata: true,
+                        variantParent: { select: { productName: true, productPrice: true, productPriceFixed: true } },
+                    }),
                 },
             },
         },
@@ -101,6 +105,10 @@ export async function getInventoryStockList(prisma, { q, lowStockOnly } = {}) {
             productId: stock.productId,
             productName: product.productName,
             productSKU: product.productSKU,
+            ...(clothing && {
+                variantOptions: product.variantOptions,
+                modelName: stock.product.variantParent?.productName.replace(/ \(FAMILIA · NO VENDER\)$/, "") ?? null,
+            }),
             categoryName: product.category?.categoryName ?? "—",
             quantityOnHand: stock.quantityOnHand,
             reorderPoint: stock.reorderPoint,

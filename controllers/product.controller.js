@@ -1,3 +1,5 @@
+import { CLOTHING_BUSINESS_TYPE } from "../services/database/retailBusinessType.js";
+import { parseClothingVariants } from "../services/sales/clothingVariants.js";
 import {
     createProduct,
     getProducts,
@@ -123,17 +125,21 @@ export const createProductController = async (req, res) => {
 
 export const createProductVariantsController = async (req, res) => {
     try {
+        const clothing = req.tenantBusinessType === CLOTHING_BUSINESS_TYPE;
+        const input = clothing ? parseClothingVariants(req.body) : req.body;
+
         const parent = buildProductData({
-            ...req.body?.parent,
+            ...input?.parent,
             productStatus: "ACTIVE",
-            createdByUserId: req.body?.parent?.createdByUserId || req.user?.payload?.id,
+            createdByUserId: clothing ? req.user.payload.id : input?.parent?.createdByUserId || req.user?.payload?.id,
         });
         if (!parent.productName || !parent.productSKU || !parent.categoryId) {
             return res.status(400).json({ message: "Nombre, SKU y categoría del producto son obligatorios." });
         }
         const result = await createProductVariants(
-            { parent, variants: req.body?.variants },
+            { parent, variants: input?.variants },
             req.prisma,
+            { clothing },
         );
         return res.status(201).json({
             message: "Familia de productos creada.",
@@ -149,13 +155,13 @@ export const createProductVariantsController = async (req, res) => {
         });
     } catch (error) {
         if (error.statusCode && error.statusCode < 500) {
-            return res.status(error.statusCode).json({ message: error.message, code: error.code });
+            return res.status(error.statusCode).json({ message: error.message, code: error.code || "INVALID_PRODUCT_VARIANTS" });
         }
         if (error.code === "P2002" || error.code === "CODE_DUPLICATE") {
-            return res.status(409).json({ message: "El SKU o la combinación ya está registrada." });
+            return res.status(409).json({ message: "El SKU o la combinación ya está registrada.", code: "PRODUCT_VARIANT_CONFLICT" });
         }
         console.error("(products.controller.js): Error creating product variants:", error);
-        return res.status(500).json({ message: "No se pudo crear la familia de productos." });
+        return res.status(500).json({ message: "No se pudo crear la familia de productos.", code: "PRODUCT_VARIANTS_FAILED" });
     }
 };
 

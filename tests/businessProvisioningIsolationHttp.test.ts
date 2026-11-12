@@ -98,6 +98,17 @@ describe("business provisioning isolation", () => {
     });
     expect(m.seed).not.toHaveBeenCalled();
   });
+  it("prepara una categoría de ropa al registrar una tienda", async () => {
+    const result = await request(app)
+      .post("/business")
+      .set("X-QA-User", "a")
+      .send({ businessName: "QA ropa", businessType: "clothing_store" });
+    expect(result.status).toBe(201);
+    expect(m.createCategory).toHaveBeenCalledWith({
+      data: { categoryName: "Ropa", allowedFor: "PRODUCTS", createdByUserId: "a" },
+    });
+    expect(m.seed).not.toHaveBeenCalled();
+  });
   it("never activates a tenant whose catalog provisioning failed", async () => {
     m.seed.mockRejectedValue(new Error("QA seed failure"));
     const result = await request(app)

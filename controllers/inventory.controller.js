@@ -1,3 +1,4 @@
+import { CLOTHING_BUSINESS_TYPE } from "../services/database/retailBusinessType.js";
 import {
     getInventorySummary,
     getInventoryStockList,
@@ -22,7 +23,7 @@ export const getInventorySummaryController = async (req, res) => {
 export const getInventoryStockController = async (req, res) => {
     try {
         const { q, lowStockOnly } = req.query;
-        const stock = await getInventoryStockList(req.prisma, { q, lowStockOnly });
+        const stock = await getInventoryStockList(req.prisma, { q, lowStockOnly, clothing: req.tenantBusinessType === CLOTHING_BUSINESS_TYPE });
         res.status(200).json(stock);
     } catch (error) {
         console.error("(inventory.controller.js): Error getting stock:", error);

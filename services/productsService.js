@@ -1,3 +1,4 @@
+import { clothingCombinationKey } from "./sales/clothingVariants.js";
 import { serializeProductWithStock, serializeProductsWithStock } from "../utils/productStockSerializer.js";
 import { normalizePagination, paginatedResult } from "../libs/pagination.js";
 import {
@@ -173,7 +174,7 @@ export const updateProduct = async (productId, data, prisma) => {
 
         if (existing.variantMetadata && productData.productPrice !== undefined) {
             await tx.productVariant.update({
-                where: { productId },
+                where: { variantId: existing.variantMetadata.variantId },
                 data: { priceOverride: Number(productData.productPrice) },
             });
         }
@@ -194,7 +195,7 @@ export const updateProduct = async (productId, data, prisma) => {
     return attachCodes(product, prisma);
 };
 
-export const createProductVariants = async (data, prisma) => {
+export const createProductVariants = async (data, prisma, { clothing = false } = {}) => {
     const { parent: rawParentData, variants = [] } = data;
     const { attributes: parentAttributes, ...parentFields } = rawParentData;
     delete parentFields.codes;
@@ -265,12 +266,20 @@ export const createProductVariants = async (data, prisma) => {
     }
 
     const result = await prisma.$transaction(async (tx) => {
-        let parent = await tx.product.findUnique({ where: { productSKU: parentData.productSKU } });
+        if (clothing) {
+            const category = await tx.category.findUnique({ where: { categoryId: parentData.categoryId } });
+            if (!category || category.allowedFor === "SERVICES") {
+                throw Object.assign(new Error("Selecciona una categoría de productos."), {
+                    statusCode: 400, code: "CLOTHING_CATEGORY_INVALID",
+                });
+            }
+        }
+        let parent = await tx.product.findFirst({ where: { productSKU: parentData.productSKU } });
         if (!parent) {
             parent = await tx.product.create({
                 data: {
                     ...parentData,
-                    productName: `${parentData.productName} (FAMILIA · NO VENDER)`,
+                    productName: clothing ? parentData.productName : `${parentData.productName} (FAMILIA · NO VENDER)`,
                     productAllowZeroStock: false,
                     productStatus: "INACTIVE",
                     isVariantParent: true,
@@ -284,23 +293,41 @@ export const createProductVariants = async (data, prisma) => {
             throw error;
         }
 
+        const modelName = parent.productName.replace(/ \(FAMILIA · NO VENDER\)$/, "");
+        if (clothing && (parent.categoryId !== parentData.categoryId || parent.productPrice !== parentData.productPrice || modelName !== parentData.productName)) {
+            throw Object.assign(new Error("El SKU ya corresponde a otro modelo, categoría o precio."), {
+                statusCode: 409, code: "CLOTHING_MODEL_CONFLICT",
+            });
+        }
+
         const existingVariants = await tx.product.findMany({
             where: { variantParentId: parent.productId },
             include: { variantMetadata: true },
         });
-        const existingKeys = new Set(existingVariants.map((row) => row.variantMetadata?.combinationKey).filter(Boolean));
+        const existingByKey = new Map(existingVariants.map((row) => {
+            const metadata = row.variantMetadata;
+            const key = clothing ? clothingCombinationKey(metadata?.optionsJson) ?? metadata?.combinationKey : metadata?.combinationKey;
+            return [key, row.productSKU];
+        }));
         let createdCount = 0;
         let skippedCount = 0;
 
         for (const item of prepared) {
-            if (existingKeys.has(item.combinationKey)) {
+            if (existingByKey.has(item.combinationKey)) {
+                if (clothing && existingByKey.get(item.combinationKey) !== item.sku) {
+                    throw Object.assign(new Error("La talla y el color ya tienen otro SKU asignado."), {
+                        statusCode: 409, code: "CLOTHING_VARIANT_CONFLICT",
+                    });
+                }
                 skippedCount += 1;
                 continue;
             }
 
             const child = await tx.product.create({
                 data: {
-                    productName: item.name || `${parentData.productName} · ${Object.entries(item.options).map(([key, value]) => `${key} ${value}`).join(" · ")}`,
+                    productName: clothing
+                        ? `${modelName} · Talla ${item.options.talla} · Color ${item.options.color}`
+                        : item.name || `${parentData.productName} · ${Object.entries(item.options).map(([key, value]) => `${key} ${value}`).join(" · ")}`,
                     productDescription: parent.productDescription,
                     productSKU: item.sku,
                     categoryId: parent.categoryId,
@@ -308,7 +335,7 @@ export const createProductVariants = async (data, prisma) => {
                     productPriceFixed: parent.productPriceFixed,
                     productStatus: "ACTIVE",
                     productUnit: parent.productUnit,
-                    productAllowZeroStock: true,
+                    productAllowZeroStock: !clothing,
                     productRequiresLabWork: parent.productRequiresLabWork,
                     createdByUserId: parent.createdByUserId,
                     variantParentId: parent.productId,
@@ -329,7 +356,7 @@ export const createProductVariants = async (data, prisma) => {
                 },
             });
             await syncSkuAlias(tx, child.productId, child.productSKU, child.createdByUserId);
-            existingKeys.add(item.combinationKey);
+            existingByKey.set(item.combinationKey, item.sku);
             createdCount += 1;
         }
 
@@ -343,7 +370,7 @@ export const createProductVariants = async (data, prisma) => {
             orderBy: { productSKU: "asc" },
         });
         return { parent, children, createdCount, skippedCount };
-    });
+    }, clothing ? { timeout: 30_000 } : undefined);
 
     return result;
 };

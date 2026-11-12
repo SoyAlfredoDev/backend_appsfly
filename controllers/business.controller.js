@@ -1,4 +1,4 @@
-import { GENERAL_BUSINESS_TYPE } from "../services/database/generalBusinessType.js";
+import { CLOTHING_BUSINESS_TYPE, usesRetailSales } from "../services/database/retailBusinessType.js";
 import { businessRegistrationInput } from "../services/database/businessRegistrationInput.js";
 import {
   createBusinessService,
@@ -155,9 +155,13 @@ export const createBusinessController = async (req, res) => {
 
         if (!userBusinessDB) throw new Error("Could not create user inside business DB.");
 
-        if (businessData.businessType === GENERAL_BUSINESS_TYPE) {
+        if (usesRetailSales(businessData.businessType)) {
           await tenantPrisma.category.create({
-            data: { categoryName: "General", allowedFor: "BOTH", createdByUserId: userId },
+            data: {
+              categoryName: businessData.businessType === CLOTHING_BUSINESS_TYPE ? "Ropa" : "General",
+              allowedFor: businessData.businessType === CLOTHING_BUSINESS_TYPE ? "PRODUCTS" : "BOTH",
+              createdByUserId: userId,
+            },
           });
         }
         status.createdUserBusinessDB = true;

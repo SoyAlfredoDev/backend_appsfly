@@ -35,10 +35,12 @@ vi.mock("../middlewares/dbSelectorMiddleware.js", () => ({
     _res: express.Response,
     next: express.NextFunction,
   ) => {
-    const optics = req.headers["x-test-business"] === "optics";
+    const requested = req.headers["x-test-business"];
+    const businessType =
+      requested === "optics" || requested === "clothing_store" ? requested : "general";
     Object.assign(req, {
-      tenantBusinessType: optics ? "optics" : "general",
-      tenantBusinessId: optics ? "optics-a" : "general-a",
+      tenantBusinessType: businessType,
+      tenantBusinessId: `${businessType}-a`,
       user: { payload: { id: "user-a" } },
       prisma: { ...mocks, $transaction: mocks.transaction },
     });
@@ -137,6 +139,30 @@ describe("operación de Negocio general", () => {
     expect(mocks.transactions.create).toHaveBeenCalledExactlyOnceWith({
       data: expect.objectContaining({ transactionRecordId: "payment-a", transactionMethod: "2" }),
     });
+  });
+
+  it("usa la misma venta transaccional para tienda de ropa", async () => {
+    const result = await request(app)
+      .post("/sales/general")
+      .set("X-Test-Business", "clothing_store")
+      .send(saleInput);
+    expect(result.status).toBe(201);
+    expect(result.body.sale.salePendingAmount).toBe(20000);
+    expect(mocks.productStock.update).toHaveBeenCalledOnce();
+    expect(
+      (await request(app).get("/work-orders").set("X-Test-Business", "clothing_store")).status,
+    ).toBe(403);
+  });
+
+  it("mantiene el alta de ventas para una tienda que aún usa la interfaz anterior", async () => {
+    const result = await request(app).post("/sales").set("X-Test-Business", "clothing_store").send({
+      saleId: "legacy-clothing-sale",
+      saleCustomerId: "customer-a",
+      saleTotal: 12000,
+      saleTotalPayments: 0,
+    });
+    expect(result.status).toBe(201);
+    expect(result.body.sale.salePendingAmount).toBe(12000);
   });
 
   it("rechaza el saldo si el negocio tiene deshabilitado el crédito", async () => {

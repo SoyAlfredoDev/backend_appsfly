@@ -1,5 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
-import { GENERAL_BUSINESS_TYPE } from "../database/generalBusinessType.js";
+import {
+  CLOTHING_BUSINESS_TYPE,
+  GENERAL_BUSINESS_TYPE,
+  usesRetailSales,
+} from "../database/retailBusinessType.js";
+import { listClothingReceivables } from "./clothingReceivables.js";
 import { isCreditSalesAllowed, isDeliveryControlEnabled } from "../businessSettingsService.js";
 import {
   addGeneralSalePayment,
@@ -12,22 +17,29 @@ import {
 } from "./generalSales.js";
 
 export function requireGeneralBusiness(req: Request, res: Response, next: NextFunction) {
-  if (req.tenantBusinessType !== GENERAL_BUSINESS_TYPE) {
+  if (!usesRetailSales(req.tenantBusinessType)) {
     return res.status(403).json({
       code: "GENERAL_BUSINESS_REQUIRED",
-      message: "Esta operación está disponible para Negocio general.",
+      message: "Esta operación está disponible para Negocio general y Tienda de ropa.",
     });
   }
   next();
 }
 
+function unavailableForBusiness(res: Response) {
+  return res.status(403).json({
+    code: "BUSINESS_OPERATION_UNAVAILABLE",
+    message: "Esta operación no está disponible para este tipo de negocio.",
+  });
+}
+
 export function excludeGeneralBusiness(req: Request, res: Response, next: NextFunction) {
-  if (req.tenantBusinessType === GENERAL_BUSINESS_TYPE) {
-    return res.status(403).json({
-      code: "BUSINESS_OPERATION_UNAVAILABLE",
-      message: "Esta operación no está disponible para Negocio general.",
-    });
-  }
+  if (req.tenantBusinessType === GENERAL_BUSINESS_TYPE) return unavailableForBusiness(res);
+  next();
+}
+
+export function excludeRetailBusiness(req: Request, res: Response, next: NextFunction) {
+  if (usesRetailSales(req.tenantBusinessType)) return unavailableForBusiness(res);
   next();
 }
 
@@ -76,7 +88,7 @@ export async function createGeneralSaleController(req: Request, res: Response) {
 }
 
 export async function generalPaymentController(req: Request, res: Response, next: NextFunction) {
-  if (req.tenantBusinessType !== GENERAL_BUSINESS_TYPE) return next();
+  if (!usesRetailSales(req.tenantBusinessType)) return next();
   try {
     const { prisma, userId } = tenantContext(req);
     const saleId: unknown = req.body?.saleId;
@@ -84,7 +96,13 @@ export async function generalPaymentController(req: Request, res: Response, next
       throw new GeneralSaleError(400, "INVALID_SALE_INPUT", "Selecciona una venta válida.");
     }
     const input = parseGeneralPayment(req.body);
-    const { payment, created } = await addGeneralSalePayment(prisma, userId, saleId.trim(), input);
+    const { payment, created } = await addGeneralSalePayment(
+      prisma,
+      userId,
+      saleId.trim(),
+      input,
+      req.tenantBusinessType === CLOTHING_BUSINESS_TYPE,
+    );
     return res.status(created ? 201 : 200).json({ payment });
   } catch (error) {
     return respondWithError(res, error);
@@ -103,7 +121,11 @@ export async function generalReceivablesController(req: Request, res: Response) 
         "Revisa el filtro de búsqueda.",
       );
     }
-    return res.json(await listGeneralReceivables(prisma, page, q));
+    const list =
+      req.tenantBusinessType === CLOTHING_BUSINESS_TYPE
+        ? listClothingReceivables
+        : listGeneralReceivables;
+    return res.json(await list(prisma, page, q));
   } catch (error) {
     return respondWithError(res, error);
   }

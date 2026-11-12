@@ -12,10 +12,10 @@ import {
 import { authRequired } from "../middlewares/auth.middleware.js";
 import { dbSelectorMiddleware } from "../middlewares/dbSelectorMiddleware.js";
 
-import { excludeGeneralBusiness } from "../services/sales/generalSalesHttp.js";
+import { excludeRetailBusiness } from "../services/sales/generalSalesHttp.js";
 
 const router = Router();
-const auth = [authRequired, dbSelectorMiddleware, excludeGeneralBusiness];
+const auth = [authRequired, dbSelectorMiddleware, excludeRetailBusiness];
 
 router.get("/purchase-certificates", ...auth, listPurchaseCertificatesController);
 router.post("/purchase-certificates", ...auth, createFromSaleController);

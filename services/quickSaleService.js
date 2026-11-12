@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { GENERAL_BUSINESS_TYPE } from "./database/generalBusinessType.js";
+import { usesRetailSales } from "./database/retailBusinessType.js";
 import { recordSalePayment } from "./paymentsService.js";
 import { generalPrisma } from "../dbGeneral.js";
 import defineSaleNumber from "../libs/defineSaleNumber.js";
@@ -160,7 +160,7 @@ export async function createQuickSale({ prisma, userId, businessId, body }) {
 
   const business = await getBusinessByIdService(businessId);
   const isOptics = business?.businessType === "optics";
-  const isGeneral = business?.businessType === GENERAL_BUSINESS_TYPE;
+  const retailSales = usesRetailSales(business?.businessType);
   const deliveryControl = await isDeliveryControlEnabled(businessId);
   const deliverNow = deliveryControl && !isOptics;
   const deliveredAt = deliverNow ? new Date() : null;
@@ -219,17 +219,17 @@ export async function createQuickSale({ prisma, userId, businessId, body }) {
         paymentMethod: request.paymentMethod,
         createdByUserId: userId,
       };
-      if (isGeneral) await recordSalePayment(tx, payment, created.saleNumber);
+      if (retailSales) await recordSalePayment(tx, payment, created.saleNumber);
       else await tx.payment.create({ data: payment });
 
       return created;
-    }, isGeneral ? { isolationLevel: "Serializable" } : undefined);
+    }, retailSales ? { isolationLevel: "Serializable" } : undefined);
   } catch (error) {
     if (error instanceof InsufficientStockError || error?.code === "INSUFFICIENT_STOCK") {
       throw error;
     }
     if (error instanceof QuickSaleError) throw error;
-    if (isGeneral && (error?.code === "P2034" || error?.code === "P2025")) {
+    if (retailSales && (error?.code === "P2034" || error?.code === "P2025")) {
       throw new QuickSaleError(409, "SALE_WRITE_CONFLICT", "Actualiza el stock y vuelve a intentar la venta.");
     }
     if (error?.code === "P2002") {
