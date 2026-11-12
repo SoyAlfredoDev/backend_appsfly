@@ -11,19 +11,14 @@ export const createServiceController = async (req, res) => {
             categoryId,
             price,
             unit,
-            createdByUserId,
             priceFixed
         } = req.body;
         const data = {
             serviceName: name,
             serviceDescription: description,
             serviceSKU: sku,
-            category: {
-                connect: { categoryId }
-            },
-            user: {
-                connect: { userId: createdByUserId }
-            },
+            categoryId,
+            createdByUserId: req.user.payload.id,
             servicePrice: Number(price),
             serviceUnit: unit,
             serviceStatus: "ACTIVE",
@@ -41,11 +36,11 @@ export const createServiceController = async (req, res) => {
                 servicePrice: service.servicePrice,
                 serviceStatus: service.serviceStatus,
                 serviceUnit: service.serviceUnit,
-                servicePriceFixed: service.priceFixed
+                servicePriceFixed: service.servicePriceFixed
             }
         });
     } catch (error) {
-        console.error("(services.controller.js): Error creatting services:", error);
+        console.error("(services.controller.js): Error creating service:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 };

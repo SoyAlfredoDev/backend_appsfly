@@ -1,4 +1,7 @@
 import crypto from "node:crypto";
+import express from "express";
+import request from "supertest";
+import { createServiceController } from "../controllers/services.controller.js";
 import { afterAll, describe, expect, it } from "vitest";
 import { PrismaClient as SharedPrismaClient } from "../src/generated/shared/index.js";
 import { createSharedTenantClient } from "../services/database/sharedTenantClient.js";
@@ -24,6 +27,7 @@ run("shared database tenant isolation", () => {
       const tenant = createSharedTenantClient(base, businessId);
       await tenant.scanCode.deleteMany({ where: { businessId } });
       await tenant.product.deleteMany({ where: { businessId } });
+      await tenant.service.deleteMany({ where: { businessId } });
       await tenant.category.deleteMany({ where: { businessId } });
       await tenant.customer.deleteMany({ where: { businessId } });
       await tenant.user.deleteMany({ where: { businessId } });
@@ -78,6 +82,26 @@ run("shared database tenant isolation", () => {
         const category = await tenant.category.create({
           data: { categoryName: "General", allowedFor: "BOTH", createdByUserId: sharedUserId },
         });
+        const app = express();
+        app.use(express.json());
+        app.post(
+          "/services",
+          (req, _res, next) => {
+            Object.assign(req, { prisma: tenant, user: { payload: { id: sharedUserId } } });
+            next();
+          },
+          createServiceController,
+        );
+        const service = await request(app).post("/services").send({
+          name: "Grabado QA",
+          sku,
+          categoryId: category.categoryId,
+          price: 100,
+          unit: "UNIT",
+          priceFixed: true,
+        });
+        expect(service.status).toBe(201);
+        expect(service.body.service.servicePriceFixed).toBe(true);
         return createProduct(
           {
             productName: `Product ${index + 1}`,
