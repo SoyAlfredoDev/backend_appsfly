@@ -23,13 +23,8 @@ export const getDailySalesService = async (prisma) => {
 };
 export const getDailySaleByDateService = async (date, prisma) => {
     try {
-        // Asumiendo que date es String 'YYYY-MM-DD' o Date object.
-        // Si en BD es DateTime, ajustar rango.
-        // Si el esquema usa String para dailySalesDay, la búsqueda es directa.
         const res = await prisma.dailySales.findFirst({
-            where: {
-                dailySalesDay: date
-            }
+            where: { dailySalesDay: { startsWith: date } },
         });
         return res;
     } catch (error) {

@@ -41,6 +41,8 @@ jobs:
       DATABASE_SHARED_MIGRATION_URL: postgresql://postgres:ci-isolation-only@127.0.0.1:5432/appsfly_isolation
       TEST_SHARED_DATABASE_URL: postgresql://appsfly_runtime:ci-isolation-only@127.0.0.1:5432/appsfly_isolation
       TEST_ISOLATED_DATABASE: "true"
+      DATABASE_URL: postgresql://postgres:ci-isolation-only@127.0.0.1:5432/appsfly_dedicated_qa
+      TEST_DEDICATED_DATABASE_URL: postgresql://postgres:ci-isolation-only@127.0.0.1:5432/appsfly_dedicated_qa
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -57,5 +59,10 @@ jobs:
         run: >-
           docker exec ${{ job.services.postgres.id }} psql -U postgres -d appsfly_isolation
           -c 'GRANT USAGE ON SCHEMA public TO appsfly_runtime; GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO appsfly_runtime; REVOKE ALL ON "_prisma_migrations" FROM appsfly_runtime;'
+      - name: Prepare isolated dedicated database
+        run: >-
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d postgres
+          -c "CREATE DATABASE appsfly_dedicated_qa;"
+      - run: npx prisma migrate deploy --schema prisma/businessDB/schema.prisma
       - run: npm run check:shared-security
       - run: npm run test:tenant-isolation

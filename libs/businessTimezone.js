@@ -151,19 +151,25 @@ export function addDaysToDateKey(dateKey, days) {
  */
 export function businessDayBoundsUtc(dateKey, timeZone = DEFAULT_BUSINESS_TIMEZONE) {
     const tz = sanitizeTimezone(timeZone);
-    const start = zonedDateTimeToUtc(dateKey, tz, { hour: 0, minute: 0, second: 0, millisecond: 0 });
-    const endExclusive = zonedDateTimeToUtc(addDaysToDateKey(dateKey, 1), tz, {
-        hour: 0,
-        minute: 0,
-        second: 0,
-        millisecond: 0,
-    });
+    const start = businessDayStartUtc(dateKey, tz);
+    const endExclusive = businessDayStartUtc(addDaysToDateKey(dateKey, 1), tz);
     return {
         start,
         endExclusive,
         /** Compatibilidad con consultas lte al final del día */
         endInclusive: new Date(endExclusive.getTime() - 1),
     };
+}
+
+function businessDayStartUtc(day, timeZone) {
+    const guess = Date.parse(`${day}T00:00:00Z`);
+    const previousOffset = getTimeZoneOffsetMs(new Date(guess - 86_400_000), timeZone);
+    const nextOffset = getTimeZoneOffsetMs(new Date(guess + 86_400_000), timeZone);
+    const first = new Date(guess - Math.max(previousOffset, nextOffset));
+    // At a forward jump over midnight, the first valid instant belongs to the new day.
+    return first.toLocaleDateString("en-CA", { timeZone }) < day
+        ? new Date(guess - Math.min(previousOffset, nextOffset))
+        : first;
 }
 
 /**

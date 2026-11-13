@@ -192,12 +192,17 @@ export function supplierPaymentEntry(input: {
 
 export function parseCountedCash(value: unknown): number | null {
   if (value == null || value === "") return null;
-  const amount = typeof value === "number" ? value : Number(String(value).trim());
-  if (!Number.isInteger(amount) || amount < 0) {
+  const amount =
+    typeof value === "number"
+      ? value
+      : typeof value === "string" && /^\d+$/.test(value.trim())
+        ? Number(value)
+        : NaN;
+  if (!Number.isInteger(amount) || amount < 0 || amount > 2_147_483_647) {
     throw new CashBookError(
       400,
       "CLOSURE_COUNT_INVALID",
-      "El efectivo contado debe ser un entero mayor o igual a cero",
+      "Ingresa el efectivo contado en pesos enteros, entre 0 y 2.147.483.647.",
     );
   }
   return amount;

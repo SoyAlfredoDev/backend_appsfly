@@ -7,7 +7,12 @@ if (!process.env.TEST_SHARED_DATABASE_URL || process.env.TEST_ISOLATED_DATABASE 
 }
 const result = spawnSync(
   process.execPath,
-  ["node_modules/vitest/vitest.mjs", "run", "tests/tenantRls.integration.test.ts"],
+  [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/tenantRls.integration.test.ts",
+    "tests/dailyClosure.integration.test.ts",
+  ],
   { stdio: "inherit" },
 );
 process.exit(result.status ?? 1);

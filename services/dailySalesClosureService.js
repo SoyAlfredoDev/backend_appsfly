@@ -1,13 +1,11 @@
 import { randomUUID } from 'crypto';
-import { createDailySaleService, getDailySaleByDateService } from './dailySalesService.js';
-import { getSalesByDate } from './salesServices.js';
-import { getPaymentByDateService } from './paymentsService.js';
-import { getSaleDetailByDate } from './saleDetailsService.js';
-import { businessDateHasSales } from '../libs/businessSalesDate.js';
+import { getDailySaleByDateService } from './dailySalesService.js';
 import { businessDayBoundsUtc, DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
+import { parseClosureDay } from './financial/dailyClosure.js';
 import {
     CASH_PAYMENT_METHOD,
     closureSnapshot,
+    CashBookError,
     parseCountedCash,
     sumCashBalance,
 } from './financial/cashBook.js';
@@ -25,29 +23,33 @@ export async function buildDailyClosurePayload(
     dailySalesId = randomUUID(),
     timeZone = DEFAULT_BUSINESS_TIMEZONE,
 ) {
-    const [salesCount, payments, saleDetails] = await Promise.all([
-        getSalesByDate(dailySalesDay, dailySalesDay, prisma, timeZone),
-        getPaymentByDateService(dailySalesDay, dailySalesDay, prisma, timeZone),
-        getSaleDetailByDate(dailySalesDay, dailySalesDay, prisma, timeZone),
+    const { start, endExclusive } = businessDayBoundsUtc(dailySalesDay, timeZone);
+    const createdAt = { gte: start, lt: endExclusive };
+    const [salesCount, payments, detailTotals] = await Promise.all([
+        prisma.sale.count({ where: { createdAt } }),
+        prisma.payment.findMany({
+            where: { createdAt },
+            select: { paymentMethod: true, paymentAmount: true },
+        }),
+        prisma.saleDetail.aggregate({
+            where: { sale: { createdAt } },
+            _sum: { saleDetailTotal: true },
+        }),
     ]);
-
-    const safePayments = Array.isArray(payments) ? payments : [];
-    const safeDetails = Array.isArray(saleDetails) ? saleDetails : [];
-
-    const totalSales = safeDetails.reduce((acc, s) => acc + (s.saleDetailTotal || 0), 0);
-    const totalIncome = safePayments.reduce((acc, p) => acc + (p.paymentAmount || 0), 0);
+    const totalSales = detailTotals._sum.saleDetailTotal ?? 0;
+    const totalIncome = payments.reduce((total, payment) => total + payment.paymentAmount, 0);
 
     return {
         dailySalesId,
         dailySalesDay,
-        dailySalesNumberOfSales: Array.isArray(salesCount) ? salesCount.length : 0,
+        dailySalesNumberOfSales: salesCount,
         dailySalesTotalSales: totalSales,
         dailySalesTotalIncome: totalIncome,
         dailySalesDetailIncome: {
-            0: sumPaymentsByMethod(safePayments, 0),
-            1: sumPaymentsByMethod(safePayments, 1),
-            2: sumPaymentsByMethod(safePayments, 2),
-            3: sumPaymentsByMethod(safePayments, 3),
+            0: sumPaymentsByMethod(payments, 0),
+            1: sumPaymentsByMethod(payments, 1),
+            2: sumPaymentsByMethod(payments, 2),
+            3: sumPaymentsByMethod(payments, 3),
         },
         createdByUserId,
     };
@@ -73,39 +75,25 @@ export async function createDailyClosureForDate({
     countedCash,
     timeZone = DEFAULT_BUSINESS_TIMEZONE,
 }) {
-    const normalizedDay = String(dailySalesDay ?? '').trim();
-    if (!normalizedDay) {
-        const err = new Error('Fecha de cierre inválida.');
-        err.code = 'INVALID_DATE';
-        throw err;
-    }
-
-    const hasSales = await businessDateHasSales(prisma, normalizedDay, timeZone);
-    if (!hasSales) {
-        const err = new Error(`No hay ventas registradas para ${normalizedDay}. No se puede generar cierre.`);
-        err.code = 'NO_SALES';
-        throw err;
-    }
-
-    const existing = await getDailySaleByDateService(normalizedDay, prisma);
-    if (existing) {
-        const err = new Error(`Ya existe un cierre para ${normalizedDay}.`);
-        err.code = 'DUPLICATE_DATE';
-        throw err;
-    }
-
-    const data = await buildDailyClosurePayload(
-        normalizedDay,
-        createdByUserId,
-        prisma,
-        dailySalesId ?? randomUUID(),
-        timeZone,
-    );
+    const day = parseClosureDay(dailySalesDay, timeZone);
     const counted = parseCountedCash(countedCash);
-    const expected = await expectedCashForDay(prisma, normalizedDay, timeZone);
 
-    return createDailySaleService({
-        ...data,
-        ...closureSnapshot(expected, counted),
-    }, prisma);
+    return prisma.$transaction(async (tx) => {
+        const duplicate = () => new CashBookError(400, 'DUPLICATE_DATE', `Ya existe un cierre para ${day}.`);
+        if (await getDailySaleByDateService(day, tx)) throw duplicate();
+
+        const data = await buildDailyClosurePayload(day, createdByUserId, tx, dailySalesId, timeZone);
+        if (data.dailySalesNumberOfSales === 0) {
+            throw new CashBookError(400, 'NO_SALES', `No hay ventas registradas para ${day}. No se puede generar cierre.`);
+        }
+
+        const expected = await expectedCashForDay(tx, day, timeZone);
+        const record = { ...data, ...closureSnapshot(expected, counted) };
+        const { count } = await tx.dailySales.createMany({ data: [record], skipDuplicates: true });
+        if (!count) {
+            if (await getDailySaleByDateService(day, tx)) throw duplicate();
+            throw new CashBookError(409, 'CLOSURE_ID_CONFLICT', 'Ya existe un cierre con ese identificador.');
+        }
+        return tx.dailySales.findUniqueOrThrow({ where: { dailySalesId: record.dailySalesId } });
+    });
 }
