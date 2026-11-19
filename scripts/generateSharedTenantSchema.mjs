@@ -33,7 +33,7 @@ function transformModel(name, body) {
   let hasBusinessIndex = false;
 
   const transformed = body.map((line) => {
-    const fieldMatch = line.match(/^\s{4}([A-Za-z][A-Za-z0-9_]*)\s+[^/].*$/u);
+    const fieldMatch = line.match(/^\s+([A-Za-z][A-Za-z0-9_]*)\s+[^/].*$/u);
 
     if (fieldMatch && line.includes("@id")) {
       idField = fieldMatch[1];

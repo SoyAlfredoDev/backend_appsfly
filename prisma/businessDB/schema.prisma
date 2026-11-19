@@ -993,3 +993,16 @@ model Appointment {
     @@index([startsAt, endsAt])
     @@index([status, startsAt])
 }
+
+model IntegrationOperation {
+    id         String   @id
+    kind       String
+    externalId String
+    digest     String
+    result     Json
+    keyId      String
+    createdAt  DateTime @default(now())
+
+    @@unique([kind, externalId])
+    @@index([createdAt])
+}

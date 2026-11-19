@@ -90,6 +90,7 @@ model Business {
     subscriptionPayments SubscriptionPayment[]
     subscriptionCancellations SubscriptionCancellation[]
     taxProviderAccount          TaxProviderAccount?
+    integrationKeys             IntegrationKey[]
 
     @@index([businessDatabaseMode, businessDatabaseStatus])
 }
@@ -632,3 +633,20 @@ enum TicketDetailOrigin {
 
 
 
+
+model IntegrationKey {
+    id          String   @id
+    businessId  String
+    createdBy   String
+    name        String
+    digest      String
+    scopes      String[]
+    createdAt   DateTime @default(now())
+    lastUsedAt  DateTime?
+    revokedAt   DateTime?
+    windowStart DateTime?
+    windowCount Int      @default(0)
+    business    Business @relation(fields: [businessId], references: [businessId], onDelete: Cascade)
+
+    @@index([businessId, createdAt])
+}

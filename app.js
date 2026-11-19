@@ -1,3 +1,4 @@
+import integrationRoutes from "./routes/integration.routes.js";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
@@ -135,6 +136,7 @@ app.use("/api", publicAppointmentRoutes);
 app.use("/api", appointmentsRoutes);
 app.use("/api", authRoutes);
 app.use("/api", mediaRoutes);
+app.use("/api", integrationRoutes);
 app.use("/api", customersRoutes);
 app.use("/api", prescriptionsRoutes);
 app.use("/api", opticsWorkOrdersRoutes);

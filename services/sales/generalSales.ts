@@ -115,7 +115,7 @@ export function prismaErrorCode(error: unknown) {
   return error && typeof error === "object" && "code" in error ? error.code : undefined;
 }
 
-async function serializable<T>(
+export async function serializable<T>(
   prisma: PrismaClient,
   operation: (tx: Prisma.TransactionClient) => Promise<T>,
 ): Promise<T> {
@@ -146,14 +146,16 @@ export async function createGeneralSale({
   input,
   allowCredit,
   controlDelivery,
+  transaction,
 }: {
   prisma: PrismaClient;
   userId: string;
   input: ReturnType<typeof parseGeneralSale>;
   allowCredit: boolean;
   controlDelivery: boolean;
+  transaction?: Prisma.TransactionClient;
 }) {
-  return serializable(prisma, async (tx) => {
+  const write = async (tx: Prisma.TransactionClient) => {
     const existing = await tx.sale.findUnique({
       where: { saleId: input.saleId },
       include: { SaleDetail: { select: { saleDetailId: true } } },
@@ -306,7 +308,8 @@ export async function createGeneralSale({
       );
     }
     return { sale, created: true };
-  });
+  };
+  return transaction ? write(transaction) : serializable(prisma, write);
 }
 
 export async function addGeneralSalePayment(
@@ -315,8 +318,9 @@ export async function addGeneralSalePayment(
   saleId: string,
   input: ReturnType<typeof parseGeneralPayment>,
   reconcileStoredBalance = false,
+  transaction?: Prisma.TransactionClient,
 ) {
-  return serializable(prisma, async (tx) => {
+  const write = async (tx: Prisma.TransactionClient) => {
     const existing = await tx.payment.findUnique({ where: { paymentId: input.paymentId } });
     if (existing) {
       if (
@@ -364,7 +368,8 @@ export async function addGeneralSalePayment(
           },
     });
     return { payment, created: true };
-  });
+  };
+  return transaction ? write(transaction) : serializable(prisma, write);
 }
 
 async function readSaleAmounts(tx: Prisma.TransactionClient, saleId: string) {

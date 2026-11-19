@@ -1200,3 +1200,18 @@ model Appointment {
   @@index([businessId, startsAt, endsAt])
   @@index([businessId, status, startsAt])
 }
+
+model IntegrationOperation {
+  businessId String   @default(dbgenerated("current_setting('app.current_business_id', true)"))
+  id         String   @id
+  kind       String
+  externalId String
+  digest     String
+  result     Json
+  keyId      String
+  createdAt  DateTime @default(now())
+
+  @@unique([businessId, kind, externalId])
+  @@unique([businessId, id])
+  @@index([businessId, createdAt])
+}
