@@ -11,6 +11,8 @@ import {
   serializable,
 } from "../sales/generalSales.js";
 
+import { customerWriteOptions, prepareCustomerDocument } from "../customers/customerRut.js";
+
 export class IntegrationError extends GeneralSaleError {}
 
 export function object(value: unknown): Record<string, unknown> {
@@ -90,6 +92,7 @@ async function customer(
   tx: Prisma.TransactionClient,
   data: Record<string, unknown>,
   userId: string,
+  businessId: string,
 ) {
   if (data.appsflyCustomerId !== undefined) {
     const id = inputText(data.appsflyCustomerId, 100);
@@ -100,14 +103,17 @@ async function customer(
     if (!existing) throw new IntegrationError(404, "CUSTOMER_NOT_FOUND", "Cliente no encontrado.");
     return { id: existing.customerId };
   }
+  const document = await prepareCustomerDocument(tx, businessId, {
+    customerDocumentNumber: optionalText(data.documentNumber, 30),
+    customerDocumentType: data.documentNumber ? inputText(data.documentType, 30) : null,
+  });
   const saved = await tx.customer.create({
     data: {
       customerFirstName: inputText(data.firstName, 120).toLowerCase(),
       customerLastName: optionalText(data.lastName, 120)?.toLowerCase() ?? "",
       customerEmail: optionalText(data.email, 254)?.toLowerCase(),
       customerPhoneNumber: optionalText(data.phone, 30),
-      customerDocumentNumber: optionalText(data.documentNumber, 30),
-      customerDocumentType: data.documentNumber ? inputText(data.documentType, 30) : null,
+      ...document,
       createdByUserId: userId,
     },
   });
@@ -117,6 +123,7 @@ async function customer(
 type Context = {
   prisma: PrismaClient;
   keyId: string;
+  businessId: string;
   userId: string;
   timezone: string;
   businessType: string;
@@ -272,7 +279,11 @@ export async function executeOperation(
   ) {
     throw new IntegrationError(403, "SCOPE_REQUIRED", "La llave no permite registrar pagos.");
   }
-  return serializable(context.prisma, async (tx) => {
+  const execute = async (tx: Prisma.TransactionClient) => {
+    if (kind === "customers") {
+      const key = `appsfly:integration-customer:${context.businessId}:${externalId}`;
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${key}, 0::bigint))`;
+    }
     const existing = await tx.integrationOperation.findFirst({ where: { kind, externalId } });
     if (existing) {
       if (existing.digest !== hash(JSON.stringify(sortedJson(input)))) {
@@ -287,7 +298,7 @@ export async function executeOperation(
 
     let result: Prisma.InputJsonObject;
     if (kind === "customers") {
-      result = await customer(tx, input, context.userId);
+      result = await customer(tx, input, context.userId, context.businessId);
     } else {
       if (data.occurredOn !== getTodayBusinessDate(context.timezone)) {
         throw new IntegrationError(
@@ -324,5 +335,8 @@ export async function executeOperation(
     }
     await saveOperation(tx, kind, externalId, input, result, context.keyId);
     return { result, created: true };
-  });
+  };
+  return kind === "customers"
+    ? context.prisma.$transaction(execute, customerWriteOptions)
+    : serializable(context.prisma, execute);
 }

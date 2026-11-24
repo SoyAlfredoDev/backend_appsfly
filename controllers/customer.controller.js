@@ -1,4 +1,5 @@
-import { createCustomer, getCustomers, getCustomersByRut, deleteCustomerByIdService, getCustomerByIdService, updateCustomer } from '../services/customersService.js'
+import { createCustomerWithRut, CustomerRutError, findCustomersByRut, requireValidCustomerRut, updateCustomerWithRut } from "../services/customers/customerRut.js";
+import { getCustomers, deleteCustomerByIdService, getCustomerByIdService } from '../services/customersService.js'
 import { assertCustomerMutable, CustomerVisibilityError } from '../services/customers/customerVisibility.js'
 import { getSalesByCustomerIdService } from '../services/salesServices.js'
 import { getSaleDetailByCustomerIdService } from '../services/saleDetailsService.js'
@@ -72,7 +73,7 @@ export const createCustomerController = async (req, res) => {
         };
 
 
-        const customer = await createCustomer(data, req.prisma)
+        const customer = await createCustomerWithRut(req.prisma, req.tenantBusinessId, data)
         res.status(201).json({
             message: 'customer registered successfully',
             customer: {
@@ -87,6 +88,9 @@ export const createCustomerController = async (req, res) => {
         });
 
     } catch (error) {
+        if (error instanceof CustomerRutError) {
+            return res.status(error.statusCode).json({ code: error.code, message: error.message, customers: error.customers });
+        }
         console.error("(customer.controller.js): Error creating customer:", error);
         res.status(500).json({ message: "Internal server error" });
     }
@@ -108,19 +112,16 @@ export const getCustomerController = async (req, res) => {
 
 export const validateRutExists = async (req, res) => {
     try {
-        const { rut } = req.params;
-        const rutFound = await getCustomersByRut(rut, req.prisma);
-        let exists
-        if (rutFound > 0) {
-            exists = true
-        } else {
-            exists = false
-        }
-
-        return res.status(200).json({ exists: exists });
+        const rut = requireValidCustomerRut(req.body?.rut ?? req.params.rut);
+        const customers = await findCustomersByRut(req.prisma, rut);
+        const exists = customers.length > 0;
+        return res.status(200).json(req.method === "GET" ? { exists } : { rut, exists, customers });
     } catch (error) {
+        if (error instanceof CustomerRutError) {
+            return res.status(error.statusCode).json({ code: error.code, message: error.message, customers: error.customers });
+        }
         console.error("(customer.controller.js): error validating if the rut exists:", error);
-        res.status(500).json({ error: "Error validating RUT" });
+        res.status(500).json({ code: "CUSTOMER_RUT_LOOKUP_FAILED", message: "No se pudo consultar el RUT." });
     }
 };
 
@@ -246,7 +247,7 @@ export const updateCustomerController = async (req, res) => {
             throw error;
         }
 
-        const updatedCustomer = await updateCustomer(customerId, data, req.prisma);
+        const updatedCustomer = await updateCustomerWithRut(req.prisma, req.tenantBusinessId, customerId, data);
         await deleteCloudinaryImageIfReplaced(existingCustomer.customerImageUrl, data.customerImageUrl);
         res.status(200).json({
             message: 'Customer updated successfully',
@@ -254,6 +255,9 @@ export const updateCustomerController = async (req, res) => {
         });
 
     } catch (error) {
+        if (error instanceof CustomerRutError) {
+            return res.status(error.statusCode).json({ code: error.code, message: error.message, customers: error.customers });
+        }
         console.error("(customer.controller.js): Error updating customer:", error);
         res.status(500).json({ message: "Internal server error" });
     }

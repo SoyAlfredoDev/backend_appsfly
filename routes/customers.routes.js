@@ -9,6 +9,7 @@ const auth = [authRequired, dbSelectorMiddleware];
 
 router.post('/customers', ...auth, createCustomerController);
 router.get('/customers', ...auth, getCustomerController);
+router.post('/customers/rut-lookup', ...auth, validateRutExists);
 router.get('/customers/validateRutExists/:rut', ...auth, validateRutExists);
 router.get('/customers/:customerId', ...auth, getCustomerByIdController);
 router.put('/customers/:customerId', ...auth, updateCustomerController);

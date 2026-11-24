@@ -1,3 +1,4 @@
+import { CustomerRutError } from "../services/customers/customerRut.js";
 import { randomBytes, randomUUID, timingSafeEqual } from "node:crypto";
 import { Router, type RequestHandler } from "express";
 import { generalPrisma } from "../dbGeneral.js";
@@ -37,6 +38,12 @@ function handle(handler: RequestHandler): RequestHandler {
       if (error instanceof GeneralSaleError) {
         if (error.statusCode === 429) res.set("Retry-After", "60");
         res.status(error.statusCode).json({ code: error.code, message: error.message });
+      } else if (error instanceof CustomerRutError) {
+        res.status(error.statusCode).json({
+          code: error.code,
+          message: error.message,
+          customerIds: error.customers.map((customer) => customer.customerId),
+        });
       } else if (
         error instanceof Error &&
         "code" in error &&
@@ -200,6 +207,7 @@ for (const kind of ["customers", "sales", "payments"] as const) {
         {
           prisma,
           keyId: key.id,
+          businessId: key.businessId,
           userId: key.createdBy,
           timezone: key.business.businessTimezone,
           businessType: key.business.businessType,
