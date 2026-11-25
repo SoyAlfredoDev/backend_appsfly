@@ -19,7 +19,13 @@ import {
     statusAfterTimeChange,
 } from "./appointmentPolicy.js";
 import { deliverAppointmentNotice } from "./appointmentNotificationService.js";
+import { buildAppointmentManagementUrl } from "./appointmentManagement.js";
+import { createAppointmentManagementToken } from "./appointmentManagementToken.js";
+import { bookPublicAppointment } from "./appointmentRequest.js";
+import { withAppointmentWriteLock } from "./appointmentWriteLock.js";
 import { generalPrisma as general } from "../../dbGeneral.js";
+
+export { withAppointmentWriteLock } from "./appointmentWriteLock.js";
 
 export function serializeAppointment(appt) {
     return {
@@ -46,8 +52,10 @@ export async function getPublicAppointmentPage(businessId) {
         return {
             available: true,
             business: ctx.branding,
+            timezone: ctx.timezone,
             visitorMessage: ctx.settings.visitorMessage,
             customerNotificationsEnabled: Boolean(ctx.settings.customerNotificationsEnabled),
+            emailRequired: false,
             slotDurationMinutes: ctx.settings.slotDurationMinutes,
             maxDaysAhead: ctx.settings.maxDaysAhead,
             galleryImageUrls: (ctx.settings.galleryImageUrls || []).filter(Boolean),
@@ -62,6 +70,7 @@ export async function getPublicAppointmentPage(businessId) {
             return {
                 available: false,
                 business: soft.branding,
+                timezone: soft.timezone,
                 message: "El agendamiento no está disponible en este momento.",
             };
         } catch {
@@ -91,60 +100,26 @@ export async function getPublicAvailableSlots(businessId, { from, to } = {}) {
     };
 }
 
-export async function withAppointmentWriteLock(prisma, businessId, work) {
-    const lockKey = `appointments:${businessId || "tenant"}`;
-    return prisma.$transaction(async (tx) => {
-        await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${lockKey}, 0))`;
-        return work(tx);
-    });
-}
-
 export async function createPublicAppointment(businessId, payload) {
     const ctx = await assertPublicAppointmentAccess(businessId);
-    if (ctx.settings.customerNotificationsEnabled && !payload.customerEmail) {
-        const err = new Error("Ingresa un correo para recibir la confirmación de tu cita.");
-        err.statusCode = 400;
-        err.code = "CUSTOMER_EMAIL_REQUIRED";
-        throw err;
+    const result = await bookPublicAppointment(ctx, businessId, payload);
+    const { managementToken } = result;
+    const appointment = serializeAppointment(result.row);
+    if (!result.replayed) {
+        await deliverAppointmentNotice({
+            enabled: ctx.settings.customerNotificationsEnabled,
+            kind: "requested",
+            appointment,
+            businessName: ctx.branding.name,
+            businessLogoUrl: ctx.branding.logoUrl,
+            businessEmail: ctx.branding.email,
+            timezone: ctx.timezone,
+            notifyBusiness: true,
+            managementUrl: buildAppointmentManagementUrl(businessId, managementToken),
+        });
     }
 
-    const created = await withAppointmentWriteLock(ctx.prisma, businessId, async (tx) => {
-        const { startsAt, endsAt } = await assertSlotIsBookable({
-            prisma: tx,
-            settings: ctx.settings,
-            timezone: ctx.timezone,
-            startsAt: payload.startsAt,
-        });
-
-        return tx.appointment.create({
-            data: {
-                firstName: payload.firstName.trim(),
-                lastName: payload.lastName.trim(),
-                phoneCode: payload.phoneCode || "+56",
-                phoneNumber: payload.phoneNumber.trim(),
-                customerEmail: payload.customerEmail || null,
-                contactConsent: true,
-                startsAt,
-                endsAt,
-                status: "PENDING",
-                notes: payload.notes?.trim() || null,
-            },
-        });
-    });
-
-    const appointment = serializeAppointment(created);
-    await deliverAppointmentNotice({
-        enabled: ctx.settings.customerNotificationsEnabled,
-        kind: "requested",
-        appointment,
-        businessName: ctx.branding.name,
-        businessLogoUrl: ctx.branding.logoUrl,
-        businessEmail: ctx.branding.email,
-        timezone: ctx.timezone,
-        notifyBusiness: true,
-    });
-
-    return appointment;
+    return { appointment, timezone: ctx.timezone, managementToken, replayed: result.replayed };
 }
 
 export async function getTenantAppointmentSettings(prisma, businessId) {
@@ -245,25 +220,20 @@ export async function listTenantAppointments(prisma, { status, from, to } = {}) 
 }
 
 export async function patchTenantAppointment(prisma, timezone, appointmentId, payload, businessId) {
-    const existing = await prisma.appointment.findUnique({
-        where: { appointmentId },
-    });
-
-    if (!existing) {
-        const err = new Error("Cita no encontrada.");
-        err.statusCode = 404;
-        err.code = "APPOINTMENT_NOT_FOUND";
-        throw err;
-    }
-
-    const data = {};
-
-    if (payload.notes !== undefined) data.notes = payload.notes;
-    if (payload.staffNotes !== undefined) data.staffNotes = payload.staffNotes;
-
-    if (payload.startsAt) {
-        const settings = await ensureAppointmentSettings(prisma);
-        const booked = await withAppointmentWriteLock(prisma, businessId, async (tx) => {
+    const { existing, updated } = await withAppointmentWriteLock(prisma, businessId, async (tx) => {
+        const existing = await tx.appointment.findUnique({ where: { appointmentId } });
+        if (!existing) {
+            const err = new Error("Cita no encontrada.");
+            err.statusCode = 404;
+            err.code = "APPOINTMENT_NOT_FOUND";
+            throw err;
+        }
+        const data = {};
+        if (payload.notes !== undefined) data.notes = payload.notes;
+        if (payload.staffNotes !== undefined) data.staffNotes = payload.staffNotes;
+        if (payload.status) data.status = payload.status;
+        if (payload.startsAt && Date.parse(payload.startsAt) !== existing.startsAt.getTime()) {
+            const settings = await ensureAppointmentSettings(tx);
             const slot = await assertSlotIsBookable({
                 prisma: tx,
                 settings,
@@ -271,36 +241,15 @@ export async function patchTenantAppointment(prisma, timezone, appointmentId, pa
                 startsAt: payload.startsAt,
                 excludeAppointmentId: appointmentId,
             });
-            return tx.appointment.update({
-                where: { appointmentId },
-                data: {
-                    ...data,
-                    startsAt: slot.startsAt,
-                    endsAt: slot.endsAt,
-                    status: payload.status || statusAfterTimeChange(existing.status),
-                },
-            });
+            data.startsAt = slot.startsAt;
+            data.endsAt = slot.endsAt;
+            data.status = payload.status || statusAfterTimeChange(existing.status);
+        }
+        const updated = await tx.appointment.update({
+            where: { appointmentId },
+            data,
         });
-
-        const appointment = serializeAppointment(booked);
-        await notifyTenantAppointmentChange({
-            prisma,
-            businessId,
-            timezone,
-            previous: existing,
-            appointment,
-            startsAtChanged: true,
-        });
-        return appointment;
-    }
-
-    if (payload.status) {
-        data.status = payload.status;
-    }
-
-    const updated = await prisma.appointment.update({
-        where: { appointmentId },
-        data,
+        return { existing, updated };
     });
     const appointment = serializeAppointment(updated);
     await notifyTenantAppointmentChange({
@@ -309,7 +258,7 @@ export async function patchTenantAppointment(prisma, timezone, appointmentId, pa
         timezone,
         previous: existing,
         appointment,
-        startsAtChanged: false,
+        startsAtChanged: existing.startsAt.getTime() !== updated.startsAt.getTime(),
     });
     return appointment;
 }
@@ -369,5 +318,11 @@ async function notifyTenantAppointmentChange({
         businessEmail: branding.email,
         timezone,
         notifyBusiness: false,
+        managementUrl: businessId
+            ? buildAppointmentManagementUrl(
+                businessId,
+                createAppointmentManagementToken(businessId, appointment.appointmentId),
+            )
+            : null,
     });
 }

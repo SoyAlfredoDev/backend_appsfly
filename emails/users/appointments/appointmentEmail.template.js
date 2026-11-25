@@ -25,6 +25,12 @@ const KIND_COPY = {
         businessSubject: "Cita reagendada",
         businessLead: "Una cita cambió de horario.",
     },
+    reschedule_request: {
+        customerSubject: "Recibimos tu solicitud de cambio de hora",
+        customerLead: "Se liberó tu horario anterior. El negocio revisará esta nueva solicitud y te avisará al confirmarla.",
+        businessSubject: "Solicitud de cambio de hora",
+        businessLead: "Un cliente liberó su horario anterior y pidió una hora nueva. La solicitud quedó pendiente.",
+    },
     completed: {
         customerSubject: "Tu cita fue atendida",
         customerLead: "Marcamos tu cita como atendida.",
@@ -40,7 +46,7 @@ function paragraph(text) {
 /**
  * @param {{
  *   audience: "customer" | "business",
- *   kind: "requested" | "confirmed" | "cancelled" | "rescheduled" | "completed",
+ *   kind: "requested" | "confirmed" | "cancelled" | "rescheduled" | "reschedule_request" | "completed",
  *   businessName: string,
  *   businessLogoUrl?: string | null,
  *   customerName: string,
@@ -48,6 +54,7 @@ function paragraph(text) {
  *   phoneLabel?: string | null,
  *   notes?: string | null,
  *   panelUrl?: string | null,
+ *   managementUrl?: string | null,
  * }} input
  */
 export function buildAppointmentEmail({
@@ -60,6 +67,7 @@ export function buildAppointmentEmail({
     phoneLabel = null,
     notes = null,
     panelUrl = null,
+    managementUrl = null,
 }) {
     const copy = KIND_COPY[kind] || KIND_COPY.requested;
     const business = businessName?.trim() || "el negocio";
@@ -87,11 +95,17 @@ export function buildAppointmentEmail({
             `<a href="${escapeHtml(panelUrl)}" style="color:#047857;font-weight:700;text-decoration:none;">Abrir el panel de citas</a>`,
         )
         : "";
+    const manage = !isBusiness && managementUrl
+        ? paragraph(
+            `<a href="${escapeHtml(managementUrl)}" style="color:#047857;font-weight:700;text-decoration:none;">Gestionar mi cita</a>`,
+        )
+        : "";
 
     const bodyHtml = [
         paragraph(escapeHtml(lead)),
         details,
         panel,
+        manage,
     ].join("");
 
     const textLines = [
@@ -101,6 +115,7 @@ export function buildAppointmentEmail({
         phoneLabel ? `Teléfono: ${phoneLabel}` : null,
         notes ? `Comentario: ${notes}` : null,
         isBusiness && panelUrl ? `Panel: ${panelUrl}` : null,
+        !isBusiness && managementUrl ? `Gestionar mi cita: ${managementUrl}` : null,
     ].filter(Boolean);
 
     return {

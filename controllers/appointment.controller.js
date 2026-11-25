@@ -45,7 +45,7 @@ export async function getAppointmentSettingsController(req, res) {
             req.prisma,
             req.tenantBusinessId,
         );
-        res.status(200).json({ settings });
+        res.status(200).json({ settings: { ...settings, timezone: resolveBusinessTimezone(req.businessTimezone) } });
     } catch (error) {
         console.error("(appointment.controller): get settings", error);
         res.status(500).json({ message: "No se pudo cargar la configuración de citas." });
@@ -60,7 +60,7 @@ export async function updateAppointmentSettingsController(req, res) {
             req.tenantBusinessId,
             payload,
         );
-        res.status(200).json({ settings });
+        res.status(200).json({ settings: { ...settings, timezone: resolveBusinessTimezone(req.businessTimezone) } });
     } catch (error) {
         if (error instanceof ZodError) return sendZodError(res, error);
         const status = error.statusCode || 500;

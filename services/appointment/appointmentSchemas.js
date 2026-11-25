@@ -61,6 +61,7 @@ export const updateAppointmentSettingsSchema = z.object({
 });
 
 export const createPublicAppointmentSchema = z.object({
+    clientRequestId: z.uuid().optional(),
     firstName: z.string().trim().min(1, "El nombre es obligatorio.").max(80),
     lastName: z.string().trim().min(1, "El apellido es obligatorio.").max(80),
     phoneCode: z.literal("+56").default("+56"),

@@ -8,6 +8,11 @@ import {
     getPublicAppointmentPage,
     getPublicAvailableSlots,
 } from "../services/appointment/appointmentService.js";
+import {
+    appointmentManagementActionSchema,
+    changeAppointmentManagement,
+    getAppointmentManagement,
+} from "../services/appointment/appointmentManagement.js";
 
 function sendZodError(res, error) {
     return res.status(400).json({
@@ -54,11 +59,12 @@ export async function getPublicAppointmentSlotsController(req, res) {
 }
 
 export async function createPublicAppointmentController(req, res) {
+    res.set("Cache-Control", "private, no-store");
     try {
         const { businessId } = req.params;
         const payload = createPublicAppointmentSchema.parse(req.body);
-        const appointment = await createPublicAppointment(businessId, payload);
-        res.status(201).json({ appointment });
+        const { replayed, ...result } = await createPublicAppointment(businessId, payload);
+        res.status(replayed ? 200 : 201).json(result);
     } catch (error) {
         if (error instanceof ZodError) return sendZodError(res, error);
         const status = error.statusCode || 500;
@@ -67,7 +73,31 @@ export async function createPublicAppointmentController(req, res) {
         }
         res.status(status).json({
             message: error.message || "No se pudo agendar la cita.",
-            code: error.code,
+            code: error.code || "APPOINTMENT_CREATE_FAILED",
+        });
+    }
+}
+
+export async function appointmentManagementController(req, res) {
+    res.set("Cache-Control", "private, no-store");
+    res.set("Referrer-Policy", "no-referrer");
+    res.vary("Authorization");
+    try {
+        const { businessId } = req.params;
+        const authorization = req.get("Authorization");
+        const result = req.method === "PATCH"
+            ? await changeAppointmentManagement(businessId, authorization, appointmentManagementActionSchema.parse(req.body))
+            : await getAppointmentManagement(businessId, authorization);
+        res.status(200).json(result);
+    } catch (error) {
+        if (error instanceof ZodError) return sendZodError(res, error);
+        const status = error.statusCode || 500;
+        if (status >= 500) {
+            console.error("(publicAppointment.controller): manage", error.code || error.name);
+        }
+        res.status(status).json({
+            message: status >= 500 ? "No se pudo gestionar la cita." : error.message,
+            code: error.code || "APPOINTMENT_MANAGEMENT_FAILED",
         });
     }
 }

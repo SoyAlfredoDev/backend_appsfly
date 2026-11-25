@@ -137,6 +137,10 @@ export async function listAvailableSlots({
     return slots;
 }
 
+/**
+ * @param {{ prisma: object, settings: { slotDurationMinutes?: number, maxDaysAhead?: number },
+ * timezone: string, startsAt: string | Date, excludeAppointmentId?: string | null }} input
+ */
 export async function assertSlotIsBookable({
     prisma,
     settings,

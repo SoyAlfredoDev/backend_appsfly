@@ -18,6 +18,11 @@ export function formatAppointmentWhen(startsAt, timeZone) {
 /**
  * Avisa al visitante y, en una solicitud nueva, también al negocio.
  * Un fallo de correo no deshace la cita.
+ * @param {{enabled: boolean, kind: string, appointment: {
+ *   customerEmail?: string | null, firstName: string, lastName: string,
+ *   phoneCode: string, phoneNumber: string, notes?: string | null, startsAt: string | Date
+ * }, businessName: string, businessLogoUrl?: string | null, businessEmail?: string | null,
+ * timezone: string, notifyBusiness?: boolean, managementUrl?: string | null}} options
  */
 export async function deliverAppointmentNotice({
     enabled,
@@ -28,6 +33,7 @@ export async function deliverAppointmentNotice({
     businessEmail = null,
     timezone,
     notifyBusiness = false,
+    managementUrl = null,
 }) {
     if (!enabled || !kind || !appointment) return;
 
@@ -56,7 +62,11 @@ export async function deliverAppointmentNotice({
     await Promise.all(
         recipients.map(async ({ to, audience }) => {
             try {
-                const message = buildAppointmentEmail({ ...contentBase, audience });
+                const message = buildAppointmentEmail({
+                    ...contentBase,
+                    audience,
+                    managementUrl: audience === "customer" ? managementUrl : null,
+                });
                 await sendEmail({
                     to,
                     subject: message.subject,
