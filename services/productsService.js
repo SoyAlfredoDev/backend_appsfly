@@ -83,13 +83,11 @@ async function syncProductAttributes(tx, productId, categoryId, attributes) {
         if (typeof value === "boolean") value = value ? "true" : "false";
         else value = String(value);
 
+        const attributeIdentity = { productId, categoryAttributeId: def.categoryAttributeId };
         await tx.productAttributeValue.upsert({
-            where: {
-                productId_categoryAttributeId: {
-                    productId,
-                    categoryAttributeId: def.categoryAttributeId,
-                },
-            },
+            where: def.businessId
+                ? { businessId_productId_categoryAttributeId: { businessId: def.businessId, ...attributeIdentity } }
+                : { productId_categoryAttributeId: attributeIdentity },
             create: {
                 productId,
                 categoryAttributeId: def.categoryAttributeId,
