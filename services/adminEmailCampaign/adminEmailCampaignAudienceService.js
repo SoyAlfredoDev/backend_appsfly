@@ -8,7 +8,17 @@ import {
     wasContactedInChileMonth,
 } from "./adminEmailCampaignChileDate.js";
 
-import { buildProspectUnsubscribeUrl } from "../emailProspect/emailProspectService.js";
+import {
+    canDeliverCampaignEmail,
+    listCampaignSuppressions,
+    listNewsletterConsent,
+    newsletterUnsubscribeUrl,
+    normalizeMarketingEmail,
+} from "./campaignNewsletterConsent.js";
+import {
+    SYSTEM_CAMPAIGN_DAILY_PLAN_EXPIRY_5D,
+    SYSTEM_CAMPAIGN_DAILY_PLAN_EXPIRY_TODAY,
+} from "./adminEmailCampaignConstants.js";
 import { getFrontendBaseUrl } from "../../emails/shared/layout.js";
 
 
@@ -81,7 +91,7 @@ function buildAdminRecipient(user, business, extra = {}) {
 
  */
 
-export async function resolveSuspendedBusinessAdminRecipients() {
+async function resolveBusinessAdminRecipients(segment) {
 
     const businesses = await general.business.findMany({
 
@@ -141,7 +151,10 @@ export async function resolveSuspendedBusinessAdminRecipients() {
 
         const hasActivePlan = (business.subscriptions ?? []).some(isSubscriptionActive);
 
-        if (hasActivePlan) continue;
+        if (segment === "active" ? !hasActivePlan : hasActivePlan) continue;
+        if (segment === "expired" && !(business.subscriptions ?? []).some(
+            (sub) => sub.subscriptionStatus === "EXPIRED" || new Date(sub.subscriptionEndDate) <= new Date(),
+        )) continue;
 
 
 
@@ -177,11 +190,11 @@ export async function resolvePlanExpiringBusinessAdminRecipients({ daysBeforeExp
 
     const targetParts = addDaysToDateParts(todayParts, daysBeforeExpiry);
 
-    const targetKey = getDayKey(
-
-        new Date(Date.UTC(targetParts.year, targetParts.month - 1, targetParts.day)),
-
-    );
+    const targetKey = [
+        targetParts.year,
+        String(targetParts.month).padStart(2, "0"),
+        String(targetParts.day).padStart(2, "0"),
+    ].join("-");
 
 
 
@@ -297,9 +310,13 @@ export async function resolvePlanExpiringBusinessAdminRecipients({ daysBeforeExp
 
 
 
+export async function resolveSuspendedBusinessAdminRecipients() {
+    return resolveBusinessAdminRecipients("suspended");
+}
+
 export async function countSuspendedBusinessAdminRecipients() {
 
-    const list = await resolveSuspendedBusinessAdminRecipients();
+    const list = await resolveAudienceRecipients("SUSPENDED_BUSINESS_ADMINS");
 
     const uniqueEmails = new Set(list.map((r) => r.email));
 
@@ -317,9 +334,11 @@ export async function countSuspendedBusinessAdminRecipients() {
 
 
 
-export async function countPlanExpiringBusinessAdminRecipients(daysBeforeExpiry) {
-
-    const list = await resolvePlanExpiringBusinessAdminRecipients({ daysBeforeExpiry });
+export async function countPlanExpiringBusinessAdminRecipients(daysBeforeExpiry, options = {}) {
+    const audienceType = daysBeforeExpiry === 0
+        ? SYSTEM_CAMPAIGN_DAILY_PLAN_EXPIRY_TODAY.audienceType
+        : SYSTEM_CAMPAIGN_DAILY_PLAN_EXPIRY_5D.audienceType;
+    const list = await resolveAudienceRecipients(audienceType, null, options);
 
     const uniqueEmails = new Set(list.map((r) => r.email));
 
@@ -359,40 +378,27 @@ function sortProspectOutreachQueue(prospects) {
  * Prospectos activos que NO son usuarios registrados en AppsFly.
  * Excluye quienes ya recibieron outreach este mes (calendario Chile).
  */
-export async function resolvePlatformProspectRecipients() {
+async function findOptedInProspects(consent) {
     const prospects = await general.platformEmailProspect.findMany({
-        where: { status: "ACTIVE" },
+        where: { status: "ACTIVE", email: { in: [...consent.keys()], mode: "insensitive" } },
     });
-
     if (!prospects.length) return [];
 
     const users = await general.user.findMany({
         select: { userEmail: true },
     });
-    const registeredEmails = new Set(
-        users.map((u) => u.userEmail?.trim().toLowerCase()).filter(Boolean),
-    );
-
-    const suspendedAdmins = await resolveSuspendedBusinessAdminRecipients();
-    const suspendedEmails = new Set(suspendedAdmins.map((r) => r.email));
-
+    const registeredEmails = new Set(users.map((user) => normalizeMarketingEmail(user.userEmail)));
     const eligibleProspects = sortProspectOutreachQueue(
-        prospects.filter(
-            (prospect) => !wasContactedInChileMonth(prospect.lastOutreachAt),
-        ),
+        prospects.filter((prospect) => !wasContactedInChileMonth(prospect.lastOutreachAt)),
     );
-
     const registerUrl = `${getFrontendBaseUrl()}/register?from=prospect-email`;
-    const recipients = [];
 
-    for (const prospect of eligibleProspects) {
-        const email = prospect.email.trim().toLowerCase();
-        if (registeredEmails.has(email) || suspendedEmails.has(email)) continue;
-
-        recipients.push({
+    return eligibleProspects
+        .filter((prospect) => !registeredEmails.has(normalizeMarketingEmail(prospect.email)))
+        .map((prospect) => ({
             userId: prospect.prospectId,
             businessId: null,
-            email,
+            email: prospect.email,
             firstName: prospect.firstName?.trim() || "Estimado",
             lastName: prospect.lastName?.trim() || "",
             businessName: prospect.companyName?.trim() || "Tu negocio",
@@ -400,138 +406,142 @@ export async function resolvePlatformProspectRecipients() {
             outreachEmailsSent: prospect.outreachEmailsSent ?? 0,
             lastOutreachVariantId: prospect.lastOutreachVariantId ?? null,
             registerUrl,
-            unsubscribeUrl: buildProspectUnsubscribeUrl(prospect.unsubscribeToken),
-        });
-    }
+        }));
+}
 
-    return recipients;
+export async function resolvePlatformProspectRecipients() {
+    return resolveAudienceRecipients("PLATFORM_PROSPECTS");
 }
 
 export async function countPlatformProspectRecipients() {
     const list = await resolvePlatformProspectRecipients();
-    const uniqueEmails = new Set(list.map((r) => r.email));
-    const totalActive = await general.platformEmailProspect.count({
-        where: { status: "ACTIVE" },
-    });
+    const totalActive = await general.platformEmailProspect.count({ where: { status: "ACTIVE" } });
     return {
         estimatedRecipients: list.length,
-        uniqueEmails: uniqueEmails.size,
+        uniqueEmails: list.length,
         activeInList: totalActive,
-        excludedAsUsers: Math.max(0, totalActive - list.length),
+        excludedFromAudience: Math.max(0, totalActive - list.length),
         maxOnePerMonth: true,
-        note: "Máximo 1 correo por prospecto al mes (calendario Chile). Cola: nunca contactados primero.",
+        note: "Solo prospectos suscritos a las novedades, con un envío máximo al mes.",
     };
 }
 
+function isSystemServiceNotice(audienceType, campaignKey) {
+    return [SYSTEM_CAMPAIGN_DAILY_PLAN_EXPIRY_5D, SYSTEM_CAMPAIGN_DAILY_PLAN_EXPIRY_TODAY].some(
+        (campaign) => campaign.audienceType === audienceType && campaign.campaignKey === campaignKey,
+    );
+}
 
+export async function isCampaignRecipientEligible(campaign, recipient) {
+    const email = normalizeMarketingEmail(recipient.email ?? recipient.recipientEmail);
+    if (!email) return false;
+    return canDeliverCampaignEmail(email, !isSystemServiceNotice(campaign.audienceType, campaign.campaignKey));
+}
 
-export async function resolveAudienceRecipients(audienceType, audienceParams = null) {
+async function findNewsletterUsers(audienceType, consent) {
+    const where = { userEmail: { in: [...consent.keys()], mode: "insensitive" } };
+    if (audienceType === "CONFIRMED_EMAIL") where.userConfirmEmail = true;
+    if (audienceType === "PENDING_EMAIL") where.userConfirmEmail = false;
+    const users = await general.user.findMany({
+        where,
+        select: {
+            userId: true,
+            userEmail: true,
+            userFirstName: true,
+            userLastName: true,
+            userConfirmEmail: true,
+        },
+    });
+    return users.map((user) => ({
+        userId: user.userId,
+        businessId: null,
+        email: user.userEmail,
+        firstName: user.userFirstName,
+        lastName: user.userLastName,
+        businessName: "Tu negocio",
+        emailConfirmed: user.userConfirmEmail,
+    }));
+}
 
+/**
+ * @param {string} audienceType
+ * @param {unknown} [_audienceParams]
+ * @param {{campaignKey?: string | null}} [options]
+ */
+export async function resolveAudienceRecipients(
+    audienceType,
+    _audienceParams = null,
+    { campaignKey = null } = {},
+) {
+    if (audienceType === "CUSTOM_SEGMENT") return [];
+    const serviceNotice = isSystemServiceNotice(audienceType, campaignKey);
+    const [consent, suppressed] = await Promise.all([
+        serviceNotice ? new Map() : listNewsletterConsent(),
+        listCampaignSuppressions({ includesProspectOptOuts: !serviceNotice }),
+    ]);
+    if (!serviceNotice && consent.size === 0) return [];
+
+    let candidates;
     switch (audienceType) {
-
         case "SUSPENDED_BUSINESS_ADMINS":
-
-            return resolveSuspendedBusinessAdminRecipients();
-
+            candidates = await resolveSuspendedBusinessAdminRecipients();
+            break;
         case "BUSINESS_ADMINS_PLAN_EXPIRING_5D":
-
-            return resolvePlanExpiringBusinessAdminRecipients({ daysBeforeExpiry: 5 });
-
+            candidates = await resolvePlanExpiringBusinessAdminRecipients({ daysBeforeExpiry: 5 });
+            break;
         case "BUSINESS_ADMINS_PLAN_EXPIRING_TODAY":
-
-            return resolvePlanExpiringBusinessAdminRecipients({ daysBeforeExpiry: 0 });
-
-        case "PLATFORM_PROSPECTS":
-
-            return resolvePlatformProspectRecipients();
-
-        default:
-
-            return [];
-
-    }
-
-}
-
-
-
-export async function countAudienceByType(audienceType) {
-
-    switch (audienceType) {
-
-        case "SUSPENDED_BUSINESS_ADMINS": {
-
-            const stats = await countSuspendedBusinessAdminRecipients();
-
-            return stats.estimatedRecipients;
-
-        }
-
-        case "BUSINESS_ADMINS_PLAN_EXPIRING_5D": {
-
-            const stats = await countPlanExpiringBusinessAdminRecipients(5);
-
-            return stats.estimatedRecipients;
-
-        }
-
-        case "BUSINESS_ADMINS_PLAN_EXPIRING_TODAY": {
-
-            const stats = await countPlanExpiringBusinessAdminRecipients(0);
-
-            return stats.estimatedRecipients;
-
-        }
-
-        case "PLATFORM_PROSPECTS": {
-
-            const stats = await countPlatformProspectRecipients();
-
-            return stats.estimatedRecipients;
-
-        }
-
-        case "ALL_USERS":
-
-            return general.user.count();
-
-        case "CONFIRMED_EMAIL":
-
-            return general.user.count({ where: { userConfirmEmail: true } });
-
-        case "PENDING_EMAIL":
-
-            return general.user.count({ where: { userConfirmEmail: false } });
-
+            candidates = await resolvePlanExpiringBusinessAdminRecipients({ daysBeforeExpiry: 0 });
+            break;
         case "ACTIVE_SUBSCRIPTION":
-
-            return general.subscription.count({
-
-                where: { subscriptionStatus: "ACTIVE" },
-
-            });
-
+            candidates = await resolveBusinessAdminRecipients("active");
+            break;
         case "EXPIRED_SUBSCRIPTION":
-
-            return general.subscription.count({
-
-                where: { subscriptionStatus: "EXPIRED" },
-
-            });
-
+            candidates = await resolveBusinessAdminRecipients("expired");
+            break;
+        case "ALL_USERS":
+        case "CONFIRMED_EMAIL":
+        case "PENDING_EMAIL":
+            candidates = await findNewsletterUsers(audienceType, consent);
+            break;
+        case "PLATFORM_PROSPECTS":
+            candidates = await findOptedInProspects(consent);
+            break;
         case "NEWSLETTER_SUBSCRIBERS":
-
-            return general.newsletterSubscriber.count();
-
-        case "CUSTOM_SEGMENT":
-
-            return 0;
-
+            candidates = [...consent].map(([email, userId]) => ({
+                userId,
+                businessId: null,
+                email,
+                firstName: "",
+                lastName: "",
+                businessName: "Tu negocio",
+                emailConfirmed: false,
+            }));
+            break;
         default:
-
-            return 0;
-
+            return [];
     }
 
+    const seen = new Set();
+    const recipients = [];
+    for (const candidate of candidates) {
+        const email = normalizeMarketingEmail(candidate.email);
+        if (!email || suppressed.has(email) || (!serviceNotice && !consent.has(email))) continue;
+        const key = serviceNotice ? `${candidate.businessId}:${email}` : email;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        recipients.push({
+            ...candidate,
+            email,
+            ...(!serviceNotice && {
+                newsletterSubscriberId: consent.get(email),
+                unsubscribeUrl: newsletterUnsubscribeUrl(consent.get(email)),
+            }),
+        });
+    }
+    return recipients;
 }
 
+export async function countAudienceByType(audienceType, options = {}) {
+    const recipients = await resolveAudienceRecipients(audienceType, null, options);
+    return recipients.length;
+}

@@ -1,3 +1,5 @@
+import { getPlatformEmailDomain } from "../../emails/core/emailFrom.js";
+
 /** Metadatos de campañas de email de plataforma (admin). No mezclar con ASMR tenant. */
 
 export const PLATFORM_EMAIL_CAMPAIGN_STATUSES = [
@@ -76,7 +78,7 @@ export const SYSTEM_CAMPAIGN_MONTHLY_SUSPENDED = {
         "Recordar al administrador que su negocio está suspendido por falta de plan activo e invitarlo a activar la suscripción desde su perfil.",
     emailSubject: "{{firstName}}, activa tu negocio en AppsFly",
     senderName: "AppsFly Cuentas",
-    senderEmail: "reactivacion@appsfly.app",
+    senderEmail: `reactivacion@${getPlatformEmailDomain()}`,
 };
 
 /** Campaña predefinida #2 — aviso 5 días antes del vencimiento */
@@ -92,7 +94,7 @@ export const SYSTEM_CAMPAIGN_DAILY_PLAN_EXPIRY_5D = {
         "Advertir al administrador que su plan vence en 5 días, recordar el beneficio del servicio y dirigirlo a pagar o renovar desde su perfil.",
     emailSubject: "{{firstName}}, el plan de {{businessName}} vence en 5 días",
     senderName: "AppsFly Avisos",
-    senderEmail: "avisos@appsfly.app",
+    senderEmail: `avisos@${getPlatformEmailDomain()}`,
 };
 
 /** Campaña predefinida #3 — aviso el día del vencimiento */
@@ -108,7 +110,7 @@ export const SYSTEM_CAMPAIGN_DAILY_PLAN_EXPIRY_TODAY = {
         "Informar al administrador que su plan vence hoy y que debe pagar inmediatamente para mantener el acceso a AppsFly.",
     emailSubject: "{{firstName}}, el plan de {{businessName}} vence hoy",
     senderName: "AppsFly Pagos",
-    senderEmail: "pagos@appsfly.app",
+    senderEmail: `pagos@${getPlatformEmailDomain()}`,
 };
 
 /** Campaña predefinida #4 — outreach semanal a prospectos (lun, mié, vie) */
@@ -116,7 +118,7 @@ export const SYSTEM_CAMPAIGN_WEEKLY_PROSPECTS = {
     campaignKey: "monthly-prospect-outreach",
     campaignName: "Outreach prospectos — lun, mié, vie",
     campaignDescription:
-        `Correo automático lun/mié/vie a prospectos que aún no son clientes. Hasta ${PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN} correos por ciclo (de ${RESEND_FREE_DAILY_EMAIL_LIMIT}/día en Resend; ${OTHER_CAMPAIGNS_DAILY_EMAIL_RESERVE} reservados para avisos de plan). Máximo 1 correo por prospecto al mes, cola justa y rotación de mensajes y remitentes.`,
+        `Correo automático lun/mié/vie a prospectos suscritos a las novedades de AppsFly. Hasta ${PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN} correos por ciclo (de ${RESEND_FREE_DAILY_EMAIL_LIMIT}/día en Resend; ${OTHER_CAMPAIGNS_DAILY_EMAIL_RESERVE} reservados para avisos de plan). Máximo 1 correo por prospecto al mes, cola justa y rotación de mensajes.`,
     audienceType: "PLATFORM_PROSPECTS",
     scheduleFrequency: "WEEKLY",
     autoRunWeekdays: PROSPECT_OUTREACH_WEEKDAYS,
@@ -124,7 +126,7 @@ export const SYSTEM_CAMPAIGN_WEEKLY_PROSPECTS = {
         "Invitar a negocios que no usan AppsFly a registrarse, explicando ventas, inventario, compras, reportes, acceso multi-usuario y seguridad.",
     emailSubject: "{{firstName}}, gestiona ventas e inventario con AppsFly",
     senderName: "AppsFly",
-    senderEmail: "hola@appsfly.app",
+    senderEmail: `hola@${getPlatformEmailDomain()}`,
 };
 
 /** @deprecated alias */

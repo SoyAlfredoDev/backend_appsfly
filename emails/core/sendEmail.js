@@ -20,8 +20,8 @@ export const shouldDeliverExternalEmail = (env = process.env) => {
     return appEnv === "production" || env.EMAIL_DELIVERY_ENABLED === "true";
 };
 
-/** @param {{to: string | string[], subject: string, html: string, text?: string, from?: string, replyTo?: string, attachments?: Array<{filename: string, content: Buffer | string, contentId?: string, contentType?: string}>, tags?: Record<string, string>, idempotencyKey?: string}} input */
-export const sendEmail = async ({ to, subject, html, text, from = undefined, replyTo = "contacto@appsfly.cl", attachments = undefined, tags = undefined, idempotencyKey = undefined }) => {
+/** @param {{to: string | string[], subject: string, html: string, text?: string, from?: string, replyTo?: string, attachments?: Array<{filename: string, content: Buffer | string, contentId?: string, contentType?: string}>, tags?: Record<string, string>, headers?: Record<string, string>, idempotencyKey?: string, timeoutMs?: number}} input */
+export const sendEmail = async ({ to, subject, html, text, from = undefined, replyTo = "contacto@appsfly.cl", attachments = undefined, tags = undefined, headers = undefined, idempotencyKey = undefined, timeoutMs = undefined }) => {
     if (!shouldDeliverExternalEmail()) {
         console.info(
             "[email] Entrega externa omitida fuera de producción. Define EMAIL_DELIVERY_ENABLED=true para habilitarla.",
@@ -68,16 +68,27 @@ export const sendEmail = async ({ to, subject, html, text, from = undefined, rep
             }));
         }
 
+        if (headers && Object.keys(headers).length > 0) {
+            payload.headers = headers;
+        }
+
         const resend = getResend();
         if (!resend) {
             throw new Error("RESEND_API_KEY is not configured.");
         }
 
-        const { data, error } = await resend.emails.send(payload, idempotencyKey ? { idempotencyKey } : undefined);
+        const { data, error, headers: responseHeaders } = await resend.emails.send(payload, {
+            ...(idempotencyKey && { idempotencyKey }),
+            ...(timeoutMs && { signal: AbortSignal.timeout(timeoutMs) }),
+        });
 
         if (error) {
             console.error("Error sending email:", error);
-            throw new Error(error.message);
+            throw Object.assign(new Error(error.message), {
+                code: error.name,
+                statusCode: error.statusCode ?? null,
+                retryAfter: responseHeaders?.["retry-after"],
+            });
         }
 
         return data;

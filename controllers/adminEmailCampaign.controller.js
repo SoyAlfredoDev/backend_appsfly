@@ -160,7 +160,7 @@ export const runDueEmailCampaignsController = async (req, res) => {
         await ensureSystemEmailCampaigns(userId);
         const result = await runAllDueEmailCampaigns();
         return res.json({
-            message: result.ran
+            message: result.paused ? "Hay campañas en pausa o pendientes del siguiente ciclo." : result.ran
                 ? "Se procesaron las campañas pendientes."
                 : "No había campañas pendientes de envío.",
             ...result,
@@ -203,7 +203,7 @@ export const createEmailCampaignController = async (req, res) => {
         }
 
         const audienceType =
-            parseAudienceType(req.body.audienceType) ?? "ALL_USERS";
+            parseAudienceType(req.body.audienceType) ?? "NEWSLETTER_SUBSCRIBERS";
 
         const campaign = await createPlatformEmailCampaignService({
             campaignName: payload.campaignName,
@@ -307,15 +307,23 @@ export const previewEmailCampaignAudienceController = async (req, res) => {
             return res.status(400).json({ message: "Tipo de audiencia inválido." });
         }
 
-        const estimatedRecipients = await countAudiencePreviewService(audienceType);
+        const campaignId = req.body?.campaignId;
+        const existingCampaign = typeof campaignId === "string"
+            ? await getPlatformEmailCampaignByIdService(campaignId)
+            : null;
+        const options = {
+            campaignKey: existingCampaign?.audienceType === audienceType
+                ? existingCampaign.campaignKey
+                : null,
+        };
         let audienceDetail = null;
 
         if (audienceType === "SUSPENDED_BUSINESS_ADMINS") {
             audienceDetail = await countSuspendedBusinessAdminRecipients();
         } else if (audienceType === "BUSINESS_ADMINS_PLAN_EXPIRING_5D") {
-            audienceDetail = await countPlanExpiringBusinessAdminRecipients(5);
+            audienceDetail = await countPlanExpiringBusinessAdminRecipients(5, options);
         } else if (audienceType === "BUSINESS_ADMINS_PLAN_EXPIRING_TODAY") {
-            audienceDetail = await countPlanExpiringBusinessAdminRecipients(0);
+            audienceDetail = await countPlanExpiringBusinessAdminRecipients(0, options);
         } else if (audienceType === "PLATFORM_PROSPECTS") {
             audienceDetail = await countPlatformProspectRecipients();
         }
@@ -323,21 +331,22 @@ export const previewEmailCampaignAudienceController = async (req, res) => {
         const audienceNotes = {
             CUSTOM_SEGMENT: "Segmentos personalizados se configurarán próximamente.",
             SUSPENDED_BUSINESS_ADMINS:
-                "Administradores de negocios sin plan activo (pantalla suspendida).",
+                "Administradores de negocios sin plan activo, suscritos a las novedades.",
             BUSINESS_ADMINS_PLAN_EXPIRING_5D:
                 "Administradores de negocios cuyo plan activo vence en 5 días (calendario Chile).",
             BUSINESS_ADMINS_PLAN_EXPIRING_TODAY:
                 "Administradores de negocios cuyo plan activo vence hoy (calendario Chile).",
             PLATFORM_PROSPECTS:
-                "Prospectos activos en la lista (no usuarios registrados ni admins suspendidos).",
+                "Prospectos activos suscritos a las novedades que todavía no usan AppsFly.",
         };
 
         return res.json({
             audienceType,
             label: PLATFORM_EMAIL_AUDIENCE_LABELS[audienceType],
-            estimatedRecipients,
+            estimatedRecipients:
+                audienceDetail?.estimatedRecipients ?? await countAudiencePreviewService(audienceType, options),
             audienceDetail,
-            note: audienceNotes[audienceType] ?? null,
+            note: audienceNotes[audienceType] ?? "Solo direcciones suscritas a las novedades de AppsFly.",
         });
     } catch (error) {
         console.error("(adminEmailCampaign.previewAudience):", error);
@@ -401,17 +410,25 @@ export const executeEmailCampaignController = async (req, res) => {
     try {
         const force = Boolean(req.body?.force);
         const result = await executePlatformEmailCampaign(req.params.id, { force });
-        return res.json(result);
+        if (result.run.runStatus === "FAILED") {
+            return res.status(422).json({
+                message: "El proveedor no aceptó correos de esta campaña. Revisa el historial.",
+                code: "CAMPAIGN_SEND_FAILED",
+                ...result,
+            });
+        }
+        return res.status(result.paused ? 202 : 200).json(result);
     } catch (error) {
         if (error.message === "CAMPAIGN_NOT_FOUND") {
             return res.status(404).json({ message: "Campaña no encontrada." });
         }
         if (error.message === "CAMPAIGN_ALREADY_RUNNING") {
-            return res.status(409).json({ message: "La campaña ya se está enviando." });
+            return res.status(409).json({ message: "Ya hay una campaña enviándose. Intenta nuevamente al terminar.", code: "CAMPAIGN_ALREADY_RUNNING" });
         }
         if (error.message === "NO_RECIPIENTS") {
             return res.status(400).json({
-                message: "No hay destinatarios para esta audiencia en este momento.",
+                message: "No hay destinatarios habilitados para esta audiencia en este momento.",
+                code: "NO_RECIPIENTS",
             });
         }
         if (error.message === "MONTHLY_COOLDOWN") {

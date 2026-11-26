@@ -7,7 +7,7 @@ import {
     SYSTEM_CAMPAIGN_DEFINITIONS,
 } from "./adminEmailCampaignConstants.js";
 import { resolveCampaignSenderFrom } from "./adminEmailCampaignSenderService.js";
-import { resolveAudienceRecipients } from "./adminEmailCampaignAudienceService.js";
+import { isCampaignRecipientEligible, resolveAudienceRecipients } from "./adminEmailCampaignAudienceService.js";
 import { renderCampaignEmail } from "./adminEmailCampaignTemplateService.js";
 import { getPlatformEmailCampaignByIdService } from "./adminEmailCampaignService.js";
 import {
@@ -27,10 +27,42 @@ import { trackProspectOutreachSend } from "../emailProspect/emailProspectConvers
 import { evaluateCampaignDue } from "./adminEmailCampaignSchedulerDue.js";
 import { getProspectOutreachVariantStats } from "./adminEmailCampaignProspectVariantStats.js";
 import { syncCampaignDeliveryFromResend } from "./adminEmailCampaignResendSyncService.js";
+import { campaignQueueMessage, campaignQueuePause } from "./adminEmailCampaignQueue.js";
+import {
+    campaignQuotaPause,
+    campaignSendPause,
+    readCampaignEmailQuota,
+} from "../billing/campaignEmailQuota.js";
 
 
 
-const SEND_DELAY_MS = 120;
+const SEND_DELAY_MS = 150;
+const MAX_RESEND_ATTEMPT_AGE_MS = 23 * 60 * 60 * 1000;
+const NEXT_CYCLE_MS = 15 * 60 * 1000;
+const ATTEMPT_PREFIX = "SEND_ATTEMPT:";
+const QUEUE_RUNNING_MAX_AGE_MS = 2 * 60 * 1000;
+
+function later(code = "CAMPAIGN_BATCH_QUEUED") {
+    return { code, retryAt: new Date(Date.now() + NEXT_CYCLE_MS) };
+}
+
+function queueLog(meta, pause) {
+    return {
+        ...meta,
+        deliveryQueue: { code: pause.code, resumeAt: pause.retryAt.toISOString() },
+    };
+}
+
+function pausedCampaign(campaign, run, pause) {
+    return {
+        campaign,
+        run,
+        paused: true,
+        code: pause.code,
+        resumeAt: pause.resumeAt,
+        message: campaignQueueMessage(pause.code),
+    };
+}
 
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -152,7 +184,25 @@ export async function recoverStuckCampaignRuns({ maxAgeMs = STUCK_RUN_MAX_AGE_MS
         },
     });
 
+    const abandonedQueue = await general.platformEmailCampaignRun.findMany({
+        where: {
+            runStatus: "RUNNING",
+            startedAt: { lt: new Date(Date.now() - QUEUE_RUNNING_MAX_AGE_MS) },
+            errorLog: { path: ["managedDelivery"], equals: true },
+        },
+        select: { runId: true, errorLog: true, startedAt: true },
+    });
+    for (const { runId, errorLog, startedAt } of abandonedQueue) {
+        await general.platformEmailCampaignRun.updateMany({
+            where: { runId, runStatus: "RUNNING", startedAt },
+            data: { runStatus: "PENDING", errorLog: queueLog(errorLog, {
+                code: "CAMPAIGN_BATCH_QUEUED", retryAt: new Date(),
+            }) },
+        });
+    }
+
     for (const run of stuckRuns) {
+        if (run.errorLog?.managedDelivery) continue;
         await syncRunMetricsFromRecipients(run.runId);
         await general.platformEmailCampaignRun.update({
             where: { runId: run.runId },
@@ -174,7 +224,7 @@ export async function recoverStuckCampaignRuns({ maxAgeMs = STUCK_RUN_MAX_AGE_MS
     let recoveredCampaigns = 0;
     for (const campaign of sendingCampaigns) {
         const stillRunning = await general.platformEmailCampaignRun.count({
-            where: { campaignId: campaign.campaignId, runStatus: "RUNNING" },
+            where: { campaignId: campaign.campaignId, runStatus: { in: ["RUNNING", "PENDING"] } },
         });
         if (stillRunning === 0) {
             await general.platformEmailCampaign.update({
@@ -188,289 +238,303 @@ export async function recoverStuckCampaignRuns({ maxAgeMs = STUCK_RUN_MAX_AGE_MS
     return { recoveredRuns: stuckRuns.length, recoveredCampaigns };
 }
 
-export async function executePlatformEmailCampaign(
-    campaignId,
-    { force = false, source = "manual", dueMeta = null } = {},
-) {
-    await recoverStuckCampaignRuns();
+async function claimCampaignRun(campaign, recipients, meta, { resumeOnly, force, source }) {
+    return general.$transaction(async (tx) => {
+        const [{ locked }] = await tx.$queryRawUnsafe(
+            "SELECT pg_try_advisory_xact_lock(110478238, 32) AS locked",
+        );
+        if (!locked) throw new Error("CAMPAIGN_ALREADY_RUNNING");
 
-    const campaign = await getPlatformEmailCampaignByIdService(campaignId);
-    if (!campaign) {
-        throw new Error("CAMPAIGN_NOT_FOUND");
-    }
-
-    if (campaign.campaignStatus === "SENDING") {
-        throw new Error("CAMPAIGN_ALREADY_RUNNING");
-    }
-
-    if (source !== "auto") {
-        const monthlyCheck = canRunMonthlyCampaign(campaign, { force });
-        if (!monthlyCheck.allowed) {
-            const err = new Error("MONTHLY_COOLDOWN");
-            err.details = monthlyCheck;
-            throw err;
-        }
-    }
-
-    const allRecipients = await resolveAudienceRecipients(
-        campaign.audienceType,
-        campaign.audienceParams,
-    );
-
-    let recipients = allRecipients;
-    let prospectSendMeta = null;
-    let prospectLimits = null;
-
-    if (isProspectOutreachCampaign(campaign)) {
-        const prepared = prepareProspectOutreachBatch(allRecipients, campaign);
-        recipients = prepared.recipients;
-        prospectSendMeta = prepared.meta;
-        prospectLimits = prepared.limits;
-    }
-
-    if (!recipients.length) {
-        if (source === "auto") {
-            const skipMessage =
-                campaign.audienceType === "SUSPENDED_BUSINESS_ADMINS"
-                    ? "No había negocios suspendidos para contactar en este ciclo."
-                    : campaign.audienceType === "BUSINESS_ADMINS_PLAN_EXPIRING_5D"
-                      ? "No había negocios con plan por vencer en 5 días hoy."
-                      : campaign.audienceType === "BUSINESS_ADMINS_PLAN_EXPIRING_TODAY"
-                        ? "No había negocios con plan por vencer hoy."
-                        : campaign.audienceType === "PLATFORM_PROSPECTS"
-                          ? "No había prospectos activos elegibles para este envío."
-                          : "No había destinatarios para esta audiencia en este ciclo.";
-            await createCampaignNotification(campaign, {
-                notificationType: "CAMPAIGN_SKIPPED",
-                title: `Campaña sin destinatarios: ${campaign.campaignName}`,
-                message: skipMessage,
-                payload: {
-                    campaignId: campaign.campaignId,
-                    campaignKey: campaign.campaignKey,
-                    source: "auto",
-                    dueMeta,
-                },
+        const previousRun = await tx.platformEmailCampaignRun.findFirst({
+            where: {
                 campaignId: campaign.campaignId,
-            });
-            // Marcar el ciclo como ejecutado para no reintentar en cada tick del scheduler
-            // (diario = 1 vez/día, mensual = 1 vez/mes vía wasRunToday / wasRunThisMonth).
-            await general.platformEmailCampaign.update({
-                where: { campaignId },
-                data: { lastRunAt: new Date() },
-            });
-        }
-        throw new Error("NO_RECIPIENTS");
-    }
-
-    const runId = crypto.randomUUID();
-
-    await general.platformEmailCampaign.update({
-        where: { campaignId },
-        data: { campaignStatus: "SENDING" },
-    });
-
-    const run = await general.platformEmailCampaignRun.create({
-        data: {
-            runId,
-            campaignId,
-            runStatus: "RUNNING",
-            startedAt: new Date(),
-            recipientCount: recipients.length,
-        },
-    });
-
-    let sentCount = 0;
-    let deliveredCount = 0;
-    let failedCount = 0;
-    const errors = [];
-
-    const defaultSenderFrom = resolveCampaignSenderFrom(campaign);
-    const sendDelayMs = prospectLimits?.sendDelayMs ?? SEND_DELAY_MS;
-
-    let prospectVariantStats = null;
-    if (isProspectOutreachCampaign(campaign)) {
-        const statsResult = await getProspectOutreachVariantStats();
-        prospectVariantStats = statsResult.variants;
-    }
-
-    for (let sendIndex = 0; sendIndex < recipients.length; sendIndex += 1) {
-        const recipient = recipients[sendIndex];
-        const senderFrom = prospectLimits
-            ? resolveProspectOutreachSenderFrom(sendIndex, prospectLimits)
-            : defaultSenderFrom;
-
-        const recipientId = crypto.randomUUID();
-        const isProspectSend = isProspectOutreachCampaign(campaign);
-        const { subject, html, text, variantId } = renderCampaignEmail(campaign, recipient, {
-            sendIndexInBatch: sendIndex,
-            variantStats: prospectVariantStats,
-            campaignRecipientId: isProspectSend ? recipientId : null,
+                runStatus: "PENDING",
+                errorLog: { path: ["managedDelivery"], equals: true },
+            },
+            orderBy: { createdAt: "asc" },
         });
+        const pause = campaignQueuePause(previousRun);
+        if (pause && Date.parse(pause.resumeAt) > Date.now()) return { run: previousRun, pause };
 
-        await general.platformEmailCampaignRecipient.create({
+        if (await tx.platformEmailCampaignRun.count({ where: { runStatus: "RUNNING" } })) {
+            throw new Error("CAMPAIGN_ALREADY_RUNNING");
+        }
+        const current = await tx.platformEmailCampaign.findUnique({ where: { campaignId: campaign.campaignId } });
+        if (!current || current.campaignStatus === "ARCHIVED") throw new Error("CAMPAIGN_NOT_FOUND");
+        if (previousRun) {
+            const run = await tx.platformEmailCampaignRun.update({
+                where: { runId: previousRun.runId },
+                data: { runStatus: "RUNNING", startedAt: new Date() },
+            });
+            return { run };
+        }
+        if (resumeOnly || current.campaignStatus === "SENDING" || +current.updatedAt !== +campaign.updatedAt) {
+            throw new Error("CAMPAIGN_ALREADY_RUNNING");
+        }
+        if (source !== "auto") {
+            const monthlyCheck = canRunMonthlyCampaign(current, { force });
+            if (!monthlyCheck.allowed) {
+                const err = new Error("MONTHLY_COOLDOWN");
+                err.details = monthlyCheck;
+                throw err;
+            }
+        }
+        if (!recipients.length) throw new Error("NO_RECIPIENTS");
+
+        const run = await tx.platformEmailCampaignRun.create({
             data: {
-                recipientId,
-                runId,
-                userId: recipient.userId,
-                businessId: recipient.businessId,
-                recipientEmail: recipient.email,
-                recipientName: `${recipient.firstName} ${recipient.lastName}`.trim(),
-                businessName: recipient.businessName,
-                deliveryStatus: "PENDING",
-                messageVariantId: variantId ?? null,
+                campaignId: campaign.campaignId,
+                runStatus: "RUNNING",
+                startedAt: new Date(),
+                recipientCount: recipients.length,
+                errorLog: meta,
             },
         });
+        await tx.platformEmailCampaignRecipient.createMany({
+            data: recipients.map((recipient) => ({
+                runId: run.runId,
+                userId: recipient.userId,
+                businessId: recipient.businessId ?? null,
+                recipientEmail: recipient.email,
+                recipientName: [recipient.firstName, recipient.lastName].filter(Boolean).join(" "),
+                businessName: recipient.businessName ?? null,
+            })),
+        });
+        await tx.platformEmailCampaign.update({
+            where: { campaignId: campaign.campaignId },
+            data: { campaignStatus: "SENDING" },
+        });
+        return { run };
+    }, { timeout: 10000 });
+}
 
-        try {
-            const result = await sendEmail({
-                to: recipient.email,
-                subject,
-                html,
-                text,
-                from: senderFrom,
+function quotaAfterSends(quota, sent) {
+    return {
+        ...quota,
+        remaining: Math.max(0, quota.remaining - sent),
+        daily: { ...quota.daily, remaining: Math.max(0, quota.daily.remaining - sent) },
+        monthly: { ...quota.monthly, remaining: Math.max(0, quota.monthly.remaining - sent) },
+    };
+}
+
+async function updateRecipient(recipientId, data) {
+    return general.platformEmailCampaignRecipient.update({ where: { recipientId }, data });
+}
+
+function recipientKey(businessId, email) {
+    return [businessId ?? "", email].join(":");
+}
+
+async function processQueuedRecipients(campaign, run, byRecipient, deadline) {
+    if (deadline - Date.now() < 5000) return later();
+
+    let quota;
+    try {
+        quota = await readCampaignEmailQuota();
+    } catch (error) {
+        if (error.code === "CAMPAIGN_QUOTA_UNAVAILABLE") return later(error.code);
+        throw error;
+    }
+    const initialPause = campaignQuotaPause(quota);
+    if (initialPause) return initialPause;
+
+    const rows = await general.platformEmailCampaignRecipient.findMany({
+        where: { runId: run.runId, deliveryStatus: "PENDING" },
+        orderBy: [{ createdAt: "asc" }, { recipientId: "asc" }],
+        take: 100,
+    });
+    const prospect = isProspectOutreachCampaign(campaign);
+    const variantStats = prospect ? (await getProspectOutreachVariantStats()).variants : null;
+    let sent = 0;
+    for (const row of rows) {
+        const remaining = quotaAfterSends(quota, sent);
+        const pause = campaignQuotaPause(remaining);
+        if (pause) return pause;
+        if (deadline - Date.now() < 5000) return later();
+
+        const recipient = byRecipient.get(recipientKey(row.businessId, row.recipientEmail));
+        if (!recipient || !(await isCampaignRecipientEligible(campaign, recipient))) {
+            await updateRecipient(row.recipientId, {
+                deliveryStatus: "FAILED",
+                errorMessage: "El destinatario ya no está habilitado para este envío.",
             });
-
-            sentCount += 1;
-
-            await general.platformEmailCampaignRecipient.update({
-                where: { recipientId },
-                data: {
-                    deliveryStatus: "SENT",
-                    providerMessageId: result?.id ?? null,
-                    sentAt: new Date(),
-                },
-            });
-
-            if (isProspectOutreachCampaign(campaign) && recipient.userId) {
-                await trackProspectOutreachSend(recipient.userId, variantId);
-            }
-        } catch (error) {
-            failedCount += 1;
-            const message = error.message ?? "Error de envío";
-            errors.push({ email: recipient.email, message });
-
-            await general.platformEmailCampaignRecipient.update({
-                where: { recipientId },
-                data: {
-                    deliveryStatus: "FAILED",
-                    errorMessage: message,
-                },
-            });
+            continue;
         }
 
-        await sleep(sendDelayMs);
+        const previousAttempt = row.errorMessage?.startsWith(ATTEMPT_PREFIX) ? row.errorMessage : null;
+        if (previousAttempt && Date.now() - Date.parse(previousAttempt.slice(ATTEMPT_PREFIX.length)) >= MAX_RESEND_ATTEMPT_AGE_MS) {
+            await updateRecipient(row.recipientId, {
+                deliveryStatus: "FAILED",
+                errorMessage: "El proveedor no confirmó el envío a tiempo. Requiere revisión.",
+            });
+            continue;
+        }
+
+        const rendered = renderCampaignEmail(campaign, recipient, {
+            sendIndexInBatch: sent,
+            forcedVariantId: previousAttempt ? row.messageVariantId : null,
+            variantStats,
+            campaignRecipientId: prospect ? row.recipientId : null,
+        });
+        if (!previousAttempt) {
+            await updateRecipient(row.recipientId, {
+                errorMessage: ATTEMPT_PREFIX + new Date().toISOString(),
+                messageVariantId: rendered.variantId ?? null,
+            });
+        } else if (rendered.variantId && rendered.variantId !== row.messageVariantId) {
+            // A changed template would make the original idempotent attempt ambiguous.
+            await updateRecipient(row.recipientId, {
+                deliveryStatus: "FAILED",
+                errorMessage: "Se requiere revisar el envío antes de repetirlo con otro contenido.",
+            });
+            continue;
+        }
+
+        let result;
+        try {
+            result = await sendEmail({
+                to: recipient.email,
+                subject: rendered.subject,
+                html: rendered.html,
+                text: rendered.text,
+                headers: rendered.headers,
+                from: prospect ? resolveProspectOutreachSenderFrom(0) : resolveCampaignSenderFrom(campaign),
+                timeoutMs: 4000,
+                idempotencyKey: "campaign/" + row.recipientId,
+            });
+        } catch (error) {
+            const providerPause = campaignSendPause(error, remaining);
+            if (providerPause) {
+                if (!previousAttempt && providerPause.code !== "CAMPAIGN_DELIVERY_UNCERTAIN") {
+                    await updateRecipient(row.recipientId, { errorMessage: null });
+                }
+                return providerPause;
+            }
+            await updateRecipient(row.recipientId, {
+                deliveryStatus: "FAILED",
+                errorMessage: error.statusCode === 409 && previousAttempt
+                    ? "Requiere comprobar en Resend el resultado del primer intento."
+                    : error.message ?? "Error de envío",
+            });
+            continue;
+        }
+
+        if (!result?.id) {
+            if (!result?.skipped) return later("CAMPAIGN_DELIVERY_UNCERTAIN");
+            await updateRecipient(row.recipientId, {
+                deliveryStatus: "FAILED", errorMessage: "La entrega externa está deshabilitada.",
+            });
+            continue;
+        }
+        sent += 1;
+        await updateRecipient(row.recipientId, {
+            deliveryStatus: "SENT",
+            providerMessageId: result.id,
+            sentAt: new Date(),
+            errorMessage: null,
+        });
+        if (prospect) await trackProspectOutreachSend(recipient.userId, rendered.variantId);
+
+        await sleep(SEND_DELAY_MS);
+    }
+    const stillPending = await general.platformEmailCampaignRecipient.count({
+        where: { runId: run.runId, deliveryStatus: "PENDING" },
+    });
+    return stillPending ? campaignQuotaPause(quotaAfterSends(quota, sent)) ?? later() : null;
+}
+
+async function finishQueuedRun(campaign, run, pause, { source, dueMeta }) {
+    const meta = run.errorLog ?? {};
+    const updated = await syncRunMetricsFromRecipients(run.runId);
+    if (pause) {
+        const queued = await general.platformEmailCampaignRun.update({
+            where: { runId: run.runId },
+            data: { runStatus: "PENDING", errorLog: queueLog(meta, pause) },
+        });
+        return pausedCampaign(campaign, queued, campaignQueuePause(queued));
     }
 
     const completedAt = new Date();
-    const runStatus = failedCount === recipients.length ? "FAILED" : "COMPLETED";
-    const campaignStatus =
-        failedCount === recipients.length ? "FAILED" : "SENT";
-
-    const syncedRun = await syncRunMetricsFromRecipients(runId);
-    sentCount = syncedRun.sentCount;
-    deliveredCount = syncedRun.deliveredCount;
-    failedCount = syncedRun.failedCount;
-    const bouncedCount = syncedRun.bouncedCount;
-    const openedCount = syncedRun.openedCount;
-    const clickedCount = syncedRun.clickedCount;
-
-    const runErrorLog = errors.length ? errors.slice(0, 50) : null;
-    const errorLogPayload = prospectSendMeta
-        ? { prospectSendPolicy: prospectSendMeta, sendErrors: runErrorLog }
-        : runErrorLog;
-
-    await general.platformEmailCampaignRun.update({
-        where: { runId },
-        data: {
-            runStatus,
-            completedAt,
-            errorLog: errorLogPayload,
-        },
-    });
-
-    const updatedCampaign = await general.platformEmailCampaign.findUnique({
-        where: { campaignId },
-        include: {
-            createdBy: {
-                select: {
-                    userId: true,
-                    userFirstName: true,
-                    userLastName: true,
-                    userEmail: true,
-                },
+    const runStatus = updated.sentCount === 0 ? "FAILED" : "COMPLETED";
+    const completedRun = await general.$transaction(async (tx) => {
+        const completed = await tx.platformEmailCampaignRun.update({
+            where: { runId: run.runId },
+            data: { runStatus, completedAt, errorLog: { ...meta, deliveryQueue: null } },
+        });
+        await tx.platformEmailCampaign.update({
+            where: { campaignId: campaign.campaignId },
+            data: {
+                campaignStatus: runStatus === "FAILED" ? "FAILED" : "SENT",
+                lastRunAt: completedAt,
+                ...(updated.sentCount > 0 ? { sentAt: completedAt } : {}),
             },
-            runs: {
-                orderBy: { createdAt: "desc" },
-                take: 5,
-                include: {
-                    recipients: {
-                        orderBy: { createdAt: "desc" },
-                        take: 20,
-                    },
-                },
-            },
-        },
+        });
+        return completed;
     });
-
-    await general.platformEmailCampaign.update({
-        where: { campaignId },
-        data: {
-            campaignStatus,
-            sentAt: completedAt,
-            lastRunAt: completedAt,
-        },
-    });
-
-    const completedRun = {
-        ...run,
-        runStatus,
-        completedAt,
-        sentCount,
-        deliveredCount,
-        failedCount,
-        bouncedCount,
-        openedCount,
-        clickedCount,
-        recipientCount: recipients.length,
-        prospectSendMeta,
-    };
-
-    const notificationData = buildCampaignSuccessNotification(
-        updatedCampaign,
-        completedRun,
-    );
-    if (prospectSendMeta?.deferredCount > 0) {
-        notificationData.message += ` ${prospectSendMeta.notice}`;
-        notificationData.payload = {
-            ...notificationData.payload,
-            prospectSendMeta,
-        };
-    }
-    if (source === "auto") {
+    const updatedCampaign = await getPlatformEmailCampaignByIdService(campaign.campaignId);
+    const notificationData = buildCampaignSuccessNotification(updatedCampaign, completedRun);
+    if (source === "auto" && runStatus !== "FAILED") {
         notificationData.notificationType = "CAMPAIGN_AUTO_RUN";
-        notificationData.title = `Envío automático: ${updatedCampaign.campaignName}`;
+        notificationData.title = "Envío automático: " + updatedCampaign.campaignName;
         if (dueMeta?.reason === "CATCH_UP") {
-            const slotLabel = formatMissedSlotLabel(dueMeta);
-            notificationData.message = `Recuperación del envío pendiente (${slotLabel}). ${notificationData.message}`;
-            notificationData.payload = {
-                ...notificationData.payload,
-                dueMeta,
-                catchUp: true,
-            };
+            notificationData.message = "Recuperación del envío pendiente (" + formatMissedSlotLabel(dueMeta) + "). " + notificationData.message;
         }
     }
     await createCampaignNotification(updatedCampaign, notificationData);
-
     setImmediate(() => {
-        syncCampaignDeliveryFromResend(campaignId).catch((error) => {
+        syncCampaignDeliveryFromResend(campaign.campaignId).catch((error) => {
             console.warn("[campaign-send] Sync entregas Resend post-envío:", error.message);
         });
     });
+    return { campaign: updatedCampaign, run: completedRun };
+}
 
-    return {
-        campaign: updatedCampaign,
-        run: completedRun,
-    };
+export async function executePlatformEmailCampaign(
+    campaignId,
+    { force = false, source = "manual", dueMeta = null, resumeOnly = false, deadline = Date.now() + 40000 } = {},
+) {
+    await recoverStuckCampaignRuns();
+    const campaign = await getPlatformEmailCampaignByIdService(campaignId);
+    if (!campaign || campaign.campaignStatus === "ARCHIVED") throw new Error("CAMPAIGN_NOT_FOUND");
+
+    const pending = campaign.runs.find((run) => campaignQueuePause(run));
+    const knownPause = campaignQueuePause(pending);
+    if (knownPause && Date.parse(knownPause.resumeAt) > Date.now()) {
+        return pausedCampaign(campaign, pending, knownPause);
+    }
+    const allRecipients = await resolveAudienceRecipients(campaign.audienceType, campaign.audienceParams, {
+        campaignKey: campaign.campaignKey,
+    });
+    const byRecipient = new Map(allRecipients.map((recipient) => [
+        recipientKey(recipient.businessId, recipient.email), recipient,
+    ]));
+    const recipients = [...byRecipient.values()];
+    const selected = isProspectOutreachCampaign(campaign)
+        ? prepareProspectOutreachBatch(recipients, campaign)
+        : { recipients, meta: undefined };
+    const meta = { managedDelivery: true, source, ...(selected.meta ? { prospectSendPolicy: selected.meta } : {}) };
+
+    let claim;
+    try {
+        claim = await claimCampaignRun(campaign, selected.recipients, meta, { resumeOnly, force, source });
+    } catch (error) {
+        if (error.message === "NO_RECIPIENTS" && source === "auto") {
+            await general.platformEmailCampaign.update({
+                where: { campaignId }, data: { lastRunAt: new Date() },
+            });
+            await createCampaignNotification(campaign, {
+                notificationType: "CAMPAIGN_SKIPPED",
+                title: "Campaña sin destinatarios: " + campaign.campaignName,
+                message: "No había destinatarios elegibles para esta audiencia.",
+                payload: { campaignId, source, dueMeta },
+                campaignId,
+            });
+        }
+        throw error;
+    }
+    if (claim.pause) return pausedCampaign(campaign, claim.run, claim.pause);
+    const pause = await processQueuedRecipients(campaign, claim.run, byRecipient, deadline);
+    return finishQueuedRun(campaign, claim.run, pause, { source, dueMeta });
 }
 
 export async function getCampaignRunStats(campaignId) {

@@ -1,3 +1,4 @@
+import { addNewsletterUnsubscribe } from "./campaignNewsletterConsent.js";
 import {
     escapeHtml,
     getFrontendBaseUrl,
@@ -596,8 +597,11 @@ export function renderCampaignEmail(campaign, recipient = null, renderOptions = 
         );
         return {
             subject: rendered.subject,
-            html: rendered.html,
-            text: rendered.text,
+            ...addNewsletterUnsubscribe(
+                rendered.html,
+                rendered.text,
+                recipient?.newsletterSubscriberId ? recipient.unsubscribeUrl : undefined,
+            ),
             variantId: rendered.variantId,
             variantName: rendered.variantName,
             pickStrategy: rendered.pickStrategy,
@@ -626,7 +630,15 @@ export function renderCampaignEmail(campaign, recipient = null, renderOptions = 
 
 
 
-    return { subject, html, text, sampleData: data };
+    return {
+        subject,
+        ...addNewsletterUnsubscribe(
+            html,
+            text,
+            recipient?.newsletterSubscriberId ? recipient.unsubscribeUrl : undefined,
+        ),
+        sampleData: data,
+    };
 
 }
 

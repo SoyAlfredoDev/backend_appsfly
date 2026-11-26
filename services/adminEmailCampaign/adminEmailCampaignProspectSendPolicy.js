@@ -1,37 +1,23 @@
-import { formatSenderFrom } from "../../emails/core/emailFrom.js";
+import { formatSenderFrom, getPlatformEmailDomain } from "../../emails/core/emailFrom.js";
 import {
     PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN,
 } from "./adminEmailCampaignConstants.js";
 
-/**
- * Límites de envío para outreach a prospectos (contactos externos, no opt-in).
- *
- * Referencias: deliverability cold email ~50–150/día por identidad de remitente;
- * Resend 5 req/s — usamos delay mayor y rotación de remitentes en el mismo dominio.
- */
-
-export const PROSPECT_OUTREACH_SENDER_POOL = [
-    { email: "hola@appsfly.app", name: "AppsFly" },
-    { email: "novedades@appsfly.app", name: "AppsFly Novedades" },
-    { email: "invitaciones@appsfly.app", name: "AppsFly Invitaciones" },
-    { email: "contacto@appsfly.app", name: "AppsFly Contacto" },
-];
+function getProspectSenderPool() {
+    return [{ email: `novedades@${getPlatformEmailDomain()}`, name: "AppsFly Novedades" }];
+}
 
 function envInt(name, fallback) {
     const n = Number(process.env[name]);
     return Number.isFinite(n) && n > 0 ? Math.floor(n) : fallback;
 }
 
-const DEFAULT_MAX_PER_SENDER = Math.ceil(
-    PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN / PROSPECT_OUTREACH_SENDER_POOL.length,
-);
-
 export function getProspectOutreachLimits() {
     return {
         maxPerRun: envInt("PROSPECT_OUTREACH_MAX_PER_RUN", PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN),
-        maxPerSender: envInt("PROSPECT_OUTREACH_MAX_PER_SENDER", DEFAULT_MAX_PER_SENDER),
+        maxPerSender: envInt("PROSPECT_OUTREACH_MAX_PER_SENDER", PROSPECT_OUTREACH_DEFAULT_MAX_PER_RUN),
         sendDelayMs: envInt("PROSPECT_OUTREACH_SEND_DELAY_MS", 180),
-        senderPool: PROSPECT_OUTREACH_SENDER_POOL,
+        senderPool: getProspectSenderPool(),
     };
 }
 
@@ -68,10 +54,10 @@ export function prepareProspectOutreachBatch(recipients, campaign) {
 }
 
 /**
- * Rota remitente cada maxPerSender correos (mismo dominio appsfly.app).
+ * Usa el dominio verificado de la plataforma para los prospectos suscritos.
  */
 export function resolveProspectOutreachSenderFrom(sendIndex, limits = getProspectOutreachLimits()) {
-    const pool = limits.senderPool.length ? limits.senderPool : PROSPECT_OUTREACH_SENDER_POOL;
+    const pool = limits.senderPool.length ? limits.senderPool : getProspectSenderPool();
     const slot = Math.floor(sendIndex / limits.maxPerSender);
     const sender = pool[slot % pool.length];
     return formatSenderFrom(sender.name, sender.email);

@@ -5,6 +5,7 @@ import {
     PLATFORM_EMAIL_AUDIENCE_LABELS,
 } from "./adminEmailCampaignConstants.js";
 import { countAudienceByType } from "./adminEmailCampaignAudienceService.js";
+import { campaignQueuePause } from "./adminEmailCampaignQueue.js";
 import { getSenderMetadata } from "./adminEmailCampaignSenderService.js";
 import { syncStaleCampaignDeliveriesFromResend } from "./adminEmailCampaignResendSyncService.js";
 
@@ -33,6 +34,7 @@ function normalizeCampaign(row) {
     return {
         ...row,
         audienceParams: row.audienceParams ?? null,
+        deliveryPause: row.runs?.map(campaignQueuePause).find(Boolean) ?? null,
     };
 }
 
@@ -87,8 +89,8 @@ export async function deletePlatformEmailCampaignService(campaignId) {
     });
 }
 
-export async function countAudiencePreviewService(audienceType) {
-    return countAudienceByType(audienceType);
+export async function countAudiencePreviewService(audienceType, options) {
+    return countAudienceByType(audienceType, options);
 }
 
 export function getCampaignMetadata() {
