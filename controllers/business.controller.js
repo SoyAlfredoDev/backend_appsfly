@@ -1,4 +1,5 @@
-import { CLOTHING_BUSINESS_TYPE, usesRetailSales } from "../services/database/retailBusinessType.js";
+import { CLOTHING_BUSINESS_TYPE, HARDWARE_BUSINESS_TYPE, usesRetailSales } from "../services/database/retailBusinessType.js";
+import { seedHardwareCatalog } from "../services/database/hardwareCatalog.js";
 import { businessRegistrationInput } from "../services/database/businessRegistrationInput.js";
 import {
   createBusinessService,
@@ -155,7 +156,9 @@ export const createBusinessController = async (req, res) => {
 
         if (!userBusinessDB) throw new Error("Could not create user inside business DB.");
 
-        if (usesRetailSales(businessData.businessType)) {
+        if (businessData.businessType === HARDWARE_BUSINESS_TYPE) {
+          await seedHardwareCatalog(tenantPrisma, userId);
+        } else if (usesRetailSales(businessData.businessType)) {
           await tenantPrisma.category.create({
             data: {
               categoryName: businessData.businessType === CLOTHING_BUSINESS_TYPE ? "Ropa" : "General",

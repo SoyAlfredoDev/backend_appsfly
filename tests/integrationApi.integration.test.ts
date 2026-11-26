@@ -14,7 +14,7 @@ const enabled =
       value &&
       new URL(value).hostname === "127.0.0.1" &&
       (new URL(value).pathname.startsWith("/af_integration_") ||
-        ["/appsfly_isolation", "/appsfly_dedicated_qa", "/appsfly_integration_qa"].includes(
+        ["/appsfly_isolation", "/appsfly_dedicated_qa", "/appsfly_trial_qa"].includes(
           new URL(value).pathname,
         )),
   );
@@ -238,14 +238,16 @@ describe.skipIf(!enabled)("API externa con PostgreSQL local", () => {
       if (mode === "SHARED") {
         const { createDailyClosureForDate } =
           await import("../services/dailySalesClosureService.js");
-        await createDailyClosureForDate({
+        const closureInput = {
           dailySalesDay: occurredOn,
           dailySalesId: randomUUID(),
           createdByUserId: userId,
           prisma: tenant,
           timeZone: "America/Santiago",
           countedCash: 0,
-        });
+          withoutCashCount: false,
+        };
+        await createDailyClosureForDate(closureInput);
         await post("sales", sale).expect(200);
         await post("payments", payment).expect(200);
         const blocked = await post("payments", {

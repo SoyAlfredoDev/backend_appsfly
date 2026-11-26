@@ -170,7 +170,7 @@ describe("createQuickSale", () => {
     expect(result.changeDue).toBe(2020);
   });
 
-  it.each(["general", "clothing_store"])(
+  it.each(["general", "clothing_store", "hardware_store"])(
     "records a %s cash sale in the cash ledger without a receivable",
     async (businessType) => {
       getBusinessByIdService.mockResolvedValue({ businessType });

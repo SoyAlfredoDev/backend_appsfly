@@ -8,6 +8,7 @@ const m = vi.hoisted(() => ({
   tenant: vi.fn(),
   seed: vi.fn(),
   createCategory: vi.fn(),
+  seedHardware: vi.fn(),
 }));
 vi.mock("../services/businessService.js", () => ({
   createBusinessService: m.create,
@@ -32,6 +33,7 @@ vi.mock("../services/usersService.js", () => ({
 }));
 vi.mock("../prisma/runMigrate.js", () => ({ runPrismaMigrate: vi.fn() }));
 vi.mock("../db.js", () => ({ getPrismaForProvisioning: m.tenant }));
+vi.mock("../services/database/hardwareCatalog.js", () => ({ seedHardwareCatalog: m.seedHardware }));
 vi.mock("../libs/opticsCatalogSeed.js", () => ({ seedOpticsCatalog: m.seed }));
 vi.mock("../services/planService.js", () => ({ getPlanById: vi.fn() }));
 import { createBusinessController } from "../controllers/business.controller.js";
@@ -108,6 +110,19 @@ describe("business provisioning isolation", () => {
       data: { categoryName: "Ropa", allowedFor: "PRODUCTS", createdByUserId: "a" },
     });
     expect(m.seed).not.toHaveBeenCalled();
+  });
+  it("provisions the hardware starter catalog in its own tenant", async () => {
+    const result = await request(app)
+      .post("/business")
+      .set("X-QA-User", "a")
+      .send({ businessName: "QA ferretería", businessType: "hardware_store" });
+    expect(result.status).toBe(201);
+    expect(m.seedHardware).toHaveBeenCalledExactlyOnceWith(
+      await m.tenant.mock.results[0].value,
+      "a",
+    );
+    expect(m.seed).not.toHaveBeenCalled();
+    expect(m.createCategory).not.toHaveBeenCalled();
   });
   it("never activates a tenant whose catalog provisioning failed", async () => {
     m.seed.mockRejectedValue(new Error("QA seed failure"));

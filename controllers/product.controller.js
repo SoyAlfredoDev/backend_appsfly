@@ -1,4 +1,4 @@
-import { CLOTHING_BUSINESS_TYPE } from "../services/database/retailBusinessType.js";
+import { CLOTHING_BUSINESS_TYPE, HARDWARE_BUSINESS_TYPE } from "../services/database/retailBusinessType.js";
 import { parseClothingVariants } from "../services/sales/clothingVariants.js";
 import {
     createProduct,
@@ -101,7 +101,7 @@ export const createProductController = async (req, res) => {
             return res.status(400).json({ message: "Nombre, SKU y categoría son obligatorios." });
         }
 
-        const product = await createProduct(data, req.prisma);
+        const product = await createProduct(data, req.prisma, { hardware: req.tenantBusinessType === HARDWARE_BUSINESS_TYPE });
         const serialized = serializeProductWithStock(product);
 
         res.status(201).json({
@@ -139,7 +139,7 @@ export const createProductVariantsController = async (req, res) => {
         const result = await createProductVariants(
             { parent, variants: input?.variants },
             req.prisma,
-            { clothing },
+            { clothing, hardware: req.tenantBusinessType === HARDWARE_BUSINESS_TYPE },
         );
         return res.status(201).json({
             message: "Familia de productos creada.",
@@ -172,7 +172,7 @@ export const updateProductController = async (req, res) => {
         const data = buildProductData(req.body);
         delete data.initialStock;
 
-        const product = await updateProduct(id, data, req.prisma);
+        const product = await updateProduct(id, data, req.prisma, { hardware: req.tenantBusinessType === HARDWARE_BUSINESS_TYPE });
         const serialized = serializeProductWithStock(product);
         res.status(200).json({
             message: "product updated successfully",

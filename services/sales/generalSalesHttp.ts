@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import {
   CLOTHING_BUSINESS_TYPE,
   GENERAL_BUSINESS_TYPE,
+  HARDWARE_BUSINESS_TYPE,
   usesRetailSales,
 } from "../database/retailBusinessType.js";
 import { listClothingReceivables } from "./clothingReceivables.js";
@@ -20,7 +21,8 @@ export function requireGeneralBusiness(req: Request, res: Response, next: NextFu
   if (!usesRetailSales(req.tenantBusinessType)) {
     return res.status(403).json({
       code: "GENERAL_BUSINESS_REQUIRED",
-      message: "Esta operación está disponible para Negocio general y Tienda de ropa.",
+      message:
+        "Esta operación está disponible para Negocio general, Tienda de ropa y Ferretería / tienda de repuestos.",
     });
   }
   next();
@@ -34,7 +36,12 @@ function unavailableForBusiness(res: Response) {
 }
 
 export function excludeGeneralBusiness(req: Request, res: Response, next: NextFunction) {
-  if (req.tenantBusinessType === GENERAL_BUSINESS_TYPE) return unavailableForBusiness(res);
+  if (
+    req.tenantBusinessType === GENERAL_BUSINESS_TYPE ||
+    req.tenantBusinessType === HARDWARE_BUSINESS_TYPE
+  ) {
+    return unavailableForBusiness(res);
+  }
   next();
 }
 

@@ -37,7 +37,9 @@ vi.mock("../middlewares/dbSelectorMiddleware.js", () => ({
   ) => {
     const requested = req.headers["x-test-business"];
     const businessType =
-      requested === "optics" || requested === "clothing_store" ? requested : "general";
+      requested === "optics" || requested === "clothing_store" || requested === "hardware_store"
+        ? requested
+        : "general";
     Object.assign(req, {
       tenantBusinessType: businessType,
       tenantBusinessId: `${businessType}-a`,
@@ -141,17 +143,30 @@ describe("operación de Negocio general", () => {
     });
   });
 
-  it("usa la misma venta transaccional para tienda de ropa", async () => {
+  it.each(["clothing_store", "hardware_store"])(
+    "usa la misma venta transaccional para %s",
+    async (businessType) => {
+      const result = await request(app)
+        .post("/sales/general")
+        .set("X-Test-Business", businessType)
+        .send(saleInput);
+      expect(result.status).toBe(201);
+      expect(result.body.sale.salePendingAmount).toBe(20000);
+      expect(mocks.productStock.update).toHaveBeenCalledOnce();
+      expect(
+        (await request(app).get("/work-orders").set("X-Test-Business", businessType)).status,
+      ).toBe(403);
+    },
+  );
+
+  it("usa exclusivamente la ruta de venta transaccional en ferretería", async () => {
     const result = await request(app)
-      .post("/sales/general")
-      .set("X-Test-Business", "clothing_store")
+      .post("/sales")
+      .set("X-Test-Business", "hardware_store")
       .send(saleInput);
-    expect(result.status).toBe(201);
-    expect(result.body.sale.salePendingAmount).toBe(20000);
-    expect(mocks.productStock.update).toHaveBeenCalledOnce();
-    expect(
-      (await request(app).get("/work-orders").set("X-Test-Business", "clothing_store")).status,
-    ).toBe(403);
+    expect(result.status).toBe(403);
+    expect(result.body.code).toBe("BUSINESS_OPERATION_UNAVAILABLE");
+    expect(mocks.sale.create).not.toHaveBeenCalled();
   });
 
   it("mantiene el alta de ventas para una tienda que aún usa la interfaz anterior", async () => {

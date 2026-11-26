@@ -1,3 +1,4 @@
+import { validateHardwareProductAttributes } from "./database/hardwareProductAttributes.js";
 import { clothingCombinationKey } from "./sales/clothingVariants.js";
 import { serializeProductWithStock, serializeProductsWithStock } from "../utils/productStockSerializer.js";
 import { normalizePagination, paginatedResult } from "../libs/pagination.js";
@@ -57,8 +58,8 @@ async function attachCodes(product, prisma) {
     return { ...product, codes };
 }
 
-async function syncProductAttributes(tx, productId, categoryId, attributes) {
-    if (!attributes || typeof attributes !== "object") return;
+async function syncProductAttributes(tx, { productId, categoryId, businessId }, attributes, hardwareValidation) {
+    if (!hardwareValidation && (!attributes || typeof attributes !== "object")) return;
 
     const defs = await tx.categoryAttribute.findMany({
         where: { categoryId, isVisible: true },
@@ -66,7 +67,19 @@ async function syncProductAttributes(tx, productId, categoryId, attributes) {
     const byKey = new Map(defs.map((d) => [d.attributeKey, d]));
     const byId = new Map(defs.map((d) => [d.categoryAttributeId, d]));
 
-    for (const [key, raw] of Object.entries(attributes)) {
+    let values = attributes;
+    if (hardwareValidation) {
+        const previousValues = hardwareValidation.requireAll ? [] : await tx.productAttributeValue.findMany({
+            where: { productId },
+            select: { categoryAttributeId: true, value: true },
+        });
+        values = validateHardwareProductAttributes(defs, attributes, {
+            requireAll: hardwareValidation.requireAll,
+            previousValues: new Map(previousValues.map((row) => [row.categoryAttributeId, row.value])),
+        });
+    }
+
+    for (const [key, raw] of Object.entries(values)) {
         const def = byKey.get(key) || byId.get(key);
         if (!def) continue;
 
@@ -84,9 +97,10 @@ async function syncProductAttributes(tx, productId, categoryId, attributes) {
         else value = String(value);
 
         const attributeIdentity = { productId, categoryAttributeId: def.categoryAttributeId };
+        const attributeBusinessId = def.businessId ?? businessId;
         await tx.productAttributeValue.upsert({
-            where: def.businessId
-                ? { businessId_productId_categoryAttributeId: { businessId: def.businessId, ...attributeIdentity } }
+            where: attributeBusinessId
+                ? { businessId_productId_categoryAttributeId: { businessId: attributeBusinessId, ...attributeIdentity } }
                 : { productId_categoryAttributeId: attributeIdentity },
             create: {
                 productId,
@@ -98,7 +112,7 @@ async function syncProductAttributes(tx, productId, categoryId, attributes) {
     }
 }
 
-export const createProduct = async (data, prisma) => {
+export const createProduct = async (data, prisma, { hardware = false } = {}) => {
     try {
         const { initialStock, attributes, codes, ...productData } = data;
         const startingQty = Number.isFinite(Number(initialStock))
@@ -115,12 +129,7 @@ export const createProduct = async (data, prisma) => {
                 },
             });
 
-            await syncProductAttributes(
-                tx,
-                created.productId,
-                created.categoryId,
-                attributes,
-            );
+            await syncProductAttributes(tx, created, attributes, hardware && { requireAll: true });
 
             await syncSkuAlias(
                 tx,
@@ -148,7 +157,7 @@ export const createProduct = async (data, prisma) => {
     }
 };
 
-export const updateProduct = async (productId, data, prisma) => {
+export const updateProduct = async (productId, data, prisma, { hardware = false } = {}) => {
     const existing = await prisma.product.findUnique({ where: { productId }, include: { variantMetadata: true } });
     if (!existing) {
         const error = new Error("Producto no encontrado.");
@@ -177,7 +186,12 @@ export const updateProduct = async (productId, data, prisma) => {
             });
         }
 
-        await syncProductAttributes(tx, productId, nextCategoryId, attributes);
+        await syncProductAttributes(
+            tx,
+            { ...existing, categoryId: nextCategoryId },
+            attributes,
+            hardware && { requireAll: nextCategoryId !== existing.categoryId },
+        );
 
         await syncSkuAlias(tx, productId, nextSku, existing.createdByUserId);
         if (codes !== undefined) {
@@ -193,7 +207,7 @@ export const updateProduct = async (productId, data, prisma) => {
     return attachCodes(product, prisma);
 };
 
-export const createProductVariants = async (data, prisma, { clothing = false } = {}) => {
+export const createProductVariants = async (data, prisma, { clothing = false, hardware = false } = {}) => {
     const { parent: rawParentData, variants = [] } = data;
     const { attributes: parentAttributes, ...parentFields } = rawParentData;
     delete parentFields.codes;
@@ -284,7 +298,7 @@ export const createProductVariants = async (data, prisma, { clothing = false } =
                 },
             });
             await tx.productStock.create({ data: { productId: parent.productId, quantityOnHand: 0 } });
-            await syncProductAttributes(tx, parent.productId, parent.categoryId, parentAttributes);
+            await syncProductAttributes(tx, parent, parentAttributes, hardware && { requireAll: true });
         } else if (parent.isVariantParent !== true) {
             const error = new Error("El SKU padre ya pertenece a un producto normal y no se puede convertir en familia de variantes.");
             error.statusCode = 409;
@@ -343,7 +357,7 @@ export const createProductVariants = async (data, prisma, { clothing = false } =
             await tx.productStock.create({
                 data: { productId: child.productId, quantityOnHand: item.initialStock },
             });
-            await syncProductAttributes(tx, child.productId, child.categoryId, parentAttributes);
+            await syncProductAttributes(tx, child, parentAttributes, hardware && { requireAll: true });
             await tx.productVariant.create({
                 data: {
                     productId: child.productId,
