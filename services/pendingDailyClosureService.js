@@ -77,6 +77,7 @@ export async function closeAllPendingClosures(
             const record = await createDailyClosureForDate({
                 dailySalesDay,
                 createdByUserId: userId,
+                withoutCashCount: true,
                 prisma,
                 timeZone,
             });

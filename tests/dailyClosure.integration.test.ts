@@ -212,8 +212,12 @@ describe.each(["dedicated", "shared"] as const)("cierres con PostgreSQL %s", (mo
         ).body.code,
       ).toBe("CLOSURE_COUNT_INVALID");
       expect(
-        (await request(app).post("/dailySales").send({ dailySalesDay: "2025-09-05" }).expect(400))
-          .body.code,
+        (
+          await request(app)
+            .post("/dailySales")
+            .send({ dailySalesDay: "2025-09-05", countedCash: 0 })
+            .expect(400)
+        ).body.code,
       ).toBe("NO_SALES");
 
       const outcomes = await Promise.all(
@@ -238,15 +242,55 @@ describe.each(["dedicated", "shared"] as const)("cierres con PostgreSQL %s", (mo
       const detail = await request(app).get(`/dailySales/${saved.dailySalesId}/detail`).expect(200);
       expect(detail.body.totals).toMatchObject({ sales: 170000, income: 34000 });
       expect(detail.body.payments).toHaveLength(2);
+      const invalidBulk = await request(app)
+        .post("/dailySales/close-all-pending")
+        .send({ withoutCashCount: false })
+        .expect(400);
+      expect(invalidBulk.body.code).toBe("CLOSURE_COUNT_REQUIRED");
       expect(
-        (await request(app).post("/dailySales/close-all-pending").expect(201)).body.closedCount,
-      ).toBe(1);
+        (await request(app).post("/dailySales").send({ dailySalesDay: priorDay }).expect(400)).body
+          .code,
+      ).toBe("CLOSURE_COUNT_REQUIRED");
       expect(
-        (await request(app).post("/dailySales/close-all-pending").expect(200)).body.closedCount,
-      ).toBe(0);
+        (
+          await request(app)
+            .post("/dailySales")
+            .send({ dailySalesDay: priorDay, countedCash: 0, withoutCashCount: true })
+            .expect(400)
+        ).body.code,
+      ).toBe("CLOSURE_COUNT_MODE_INVALID");
+      const skipped = await request(app)
+        .post("/dailySales")
+        .send({ dailySalesDay: priorDay, withoutCashCount: true })
+        .expect(201);
+      expect(skipped.body).toMatchObject({
+        dailySalesCountedCash: null,
+        dailySalesCashDifference: null,
+      });
+      const history = await request(app).get("/dailySales").expect(200);
+      expect(history.body).toContainEqual(
+        expect.objectContaining({ dailySalesDay: priorDay, dailySalesCountedCash: null }),
+      );
       await request(app).post("/protected-write").expect(204);
 
+      const legacyDay = "2025-09-04";
+      await sale(businessDayBoundsUtc(legacyDay, timeZone).start, 20000);
       await sale(new Date(), 20000);
+      const legacy = await request(app).post("/dailySales/close-all-pending").expect(201);
+      expect(legacy.body.closed).toMatchObject([{ dailySalesDay: legacyDay }]);
+      const legacyDetail = await request(app)
+        .get(`/dailySales/${legacy.body.closed[0].dailySalesId}/detail`)
+        .expect(200);
+      expect(legacyDetail.body.closure.dailySalesCountedCash).toBeNull();
+
+      expect(
+        (
+          await request(app)
+            .post("/dailySales")
+            .send({ dailySalesDay: today, withoutCashCount: true })
+            .expect(400)
+        ).body.code,
+      ).toBe("CLOSURE_COUNT_REQUIRED");
       await request(app)
         .post("/dailySales")
         .send({ dailySalesDay: today, countedCash: 0 })
@@ -254,7 +298,7 @@ describe.each(["dedicated", "shared"] as const)("cierres con PostgreSQL %s", (mo
       expect((await request(app).post("/protected-write").expect(403)).body.code).toBe(
         "DAY_CLOSED",
       );
-      expect((await request(app).get("/dailySales").expect(200)).body).toHaveLength(4);
+      expect((await request(app).get("/dailySales").expect(200)).body).toHaveLength(5);
     });
   });
 });

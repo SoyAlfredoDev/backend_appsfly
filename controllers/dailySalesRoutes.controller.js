@@ -8,7 +8,7 @@ const tzOf = (req) => req.businessTimezone || DEFAULT_BUSINESS_TIMEZONE;
 
 export const createDailySaleController = async (req, res) => {
     try {
-        const { dailySalesDay, dailySalesId, countedCash } = req.body;
+        const { dailySalesDay, dailySalesId, countedCash, withoutCashCount } = req.body ?? {};
         const { prisma, user } = req;
         const timeZone = tzOf(req);
 
@@ -18,6 +18,7 @@ export const createDailySaleController = async (req, res) => {
             createdByUserId: user.payload.id,
             prisma,
             countedCash,
+            withoutCashCount,
             timeZone,
         });
 
@@ -67,6 +68,13 @@ export const getClosureStatusController = async (req, res) => {
 };
 
 export const closeAllPendingClosuresController = async (req, res) => {
+    // Older clients already confirm the bulk close and send an empty body.
+    if (req.body?.withoutCashCount !== undefined && req.body.withoutCashCount !== true) {
+        return res.status(400).json({
+            code: "CLOSURE_COUNT_REQUIRED",
+            message: "Abre el formulario de cierre para indicar el efectivo contado o cerrar una fecha atrasada sin arqueo.",
+        });
+    }
     try {
         const { prisma, user } = req;
         const result = await closeAllPendingClosures(

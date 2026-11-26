@@ -1,12 +1,11 @@
 import { randomUUID } from 'crypto';
 import { getDailySaleByDateService } from './dailySalesService.js';
 import { businessDayBoundsUtc, DEFAULT_BUSINESS_TIMEZONE } from '../libs/businessTimezone.js';
-import { parseClosureDay } from './financial/dailyClosure.js';
+import { parseClosureDay, resolveClosureCashCount } from './financial/dailyClosure.js';
 import {
     CASH_PAYMENT_METHOD,
     closureSnapshot,
     CashBookError,
-    parseCountedCash,
     sumCashBalance,
 } from './financial/cashBook.js';
 
@@ -73,10 +72,11 @@ export async function createDailyClosureForDate({
     prisma,
     dailySalesId,
     countedCash,
+    withoutCashCount = false,
     timeZone = DEFAULT_BUSINESS_TIMEZONE,
 }) {
     const day = parseClosureDay(dailySalesDay, timeZone);
-    const counted = parseCountedCash(countedCash);
+    const counted = resolveClosureCashCount(day, timeZone, countedCash, withoutCashCount);
 
     return prisma.$transaction(async (tx) => {
         const duplicate = () => new CashBookError(400, 'DUPLICATE_DATE', `Ya existe un cierre para ${day}.`);
